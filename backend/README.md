@@ -114,5 +114,3 @@ backend/
 1. Drop the new `.txt` file into `event_info/`
 2. Run: `python scripts/ingest.py`
 3. Restart the server
-
-No code changes needed.
