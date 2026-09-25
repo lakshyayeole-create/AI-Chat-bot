@@ -1,5 +1,5 @@
 """
-DAY 2 - RAG: RETRIEVE CONTEXT FROM CHROMA VECTOR DB -> SEND IT TO AN LLM
+DAY 2 - RAG: RETRIEVE CONTEXT FROM CHROMA VECTOR DB -> SEND IT TO AN LLM (GROK / GROQ)
 
 Educational version with very detailed comments.
 
@@ -22,7 +22,7 @@ This script demonstrates the core RAG flow:
     Put those chunks into a prompt as CONTEXT
           |
           v
-    Send CONTEXT + QUESTION to an LLM
+    Send CONTEXT + QUESTION to the LLM (Grok / Groq)
           |
           v
     Get a grounded answer
@@ -31,14 +31,13 @@ IMPORTANT
 ---------
 1. This script assumes that you already created a ChromaDB database during Day 1.
 2. The ChromaDB collection name and path below MUST match your Day 1 setup.
-3. The embedding model used to create the Day 1 vectors must match the
-   embedding model used here for the user's question.
-4. Add your API key in the OPENAI_API_KEY variable below.
+3. The embedding model matches Day 1 ('sentence-transformers/all-MiniLM-L6-v2').
+4. Add your API key in the .env file (grok_api_key=... or GROK_API_KEY=...).
 5. Never commit your real API key to GitHub.
 
 This version uses:
-    - ChromaDB        -> vector database / retrieval
-    - OpenAI API      -> query embeddings + LLM generation
+    - ChromaDB                  -> vector database / retrieval
+    - Grok / Groq (OpenAI SDK)  -> LLM response generation
 
 The important RAG concept is:
 
@@ -109,12 +108,40 @@ from openai import OpenAI
 # ================================================================
 
 # ------------------------------------------------
-# API KEY
+# API KEY & GROK / GROQ CONFIGURATION
 # ------------------------------------------------
-# Read API key from environment variable or .env file
+# Read API key from environment variable or .env file.
+# Supports: grok_api_key, GROK_API_KEY, GROQ_API_KEY, groq_api_key, XAI_API_KEY, OPENAI_API_KEY
 # ------------------------------------------------
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+API_KEY = (
+    os.getenv("grok_api_key")
+    or os.getenv("GROK_API_KEY")
+    or os.getenv("groq_api_key")
+    or os.getenv("GROQ_API_KEY")
+    or os.getenv("XAI_API_KEY")
+    or os.getenv("OPENAI_API_KEY")
+    or ""
+)
+
+# Detect provider and set appropriate OpenAI-compatible endpoint and default model:
+# - Groq keys start with 'gsk_' (fast LPU inference: llama-3.3-70b-versatile, llama3-8b-8192, etc.)
+# - xAI Grok keys start with 'xai-' (grok-beta, grok-2-latest)
+# - Standard OpenAI keys start with 'sk-'
+if API_KEY.startswith("gsk_"):
+    PROVIDER_NAME = "Groq"
+    DEFAULT_BASE_URL = "https://api.groq.com/openai/v1"
+    DEFAULT_MODEL = "llama-3.3-70b-versatile"
+elif API_KEY.startswith("xai-"):
+    PROVIDER_NAME = "xAI Grok"
+    DEFAULT_BASE_URL = "https://api.x.ai/v1"
+    DEFAULT_MODEL = "grok-beta"
+else:
+    PROVIDER_NAME = "Groq / Grok (OpenAI-compatible)"
+    DEFAULT_BASE_URL = "https://api.groq.com/openai/v1"
+    DEFAULT_MODEL = "llama-3.3-70b-versatile"
+
+BASE_URL = os.getenv("GROK_BASE_URL", os.getenv("GROQ_BASE_URL", DEFAULT_BASE_URL))
 
 
 # ------------------------------------------------
@@ -157,28 +184,20 @@ COLLECTION_NAME = "langchain"
 # ------------------------------------------------
 # EMBEDDING MODEL
 # ------------------------------------------------
-# IMPORTANT:
-# The embedding model used here should be the SAME model that
-# was used when the documents were inserted into ChromaDB.
-#
-# If Day 1 used another embedding model, change this value.
-#
-# text-embedding-3-small is an OpenAI embedding model.
+# Day 1 ingestion.py used sentence-transformers/all-MiniLM-L6-v2.
+# Matching this ensures 100% compatibility with your ChromaDB.
 # ------------------------------------------------
 
-EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 
 # ------------------------------------------------
 # LLM MODEL
 # ------------------------------------------------
 # This is the model that will generate the final answer.
-#
-# You can change this to another model available to your API
-# account.
 # ------------------------------------------------
 
-LLM_MODEL = "gpt-5-mini"
+LLM_MODEL = os.getenv("LLM_MODEL", DEFAULT_MODEL)
 
 
 # ------------------------------------------------
@@ -202,21 +221,22 @@ TOP_K = 3
 
 
 # ================================================================
-# 3. CREATE THE OPENAI CLIENT
+# 3. CREATE THE OPENAI-COMPATIBLE CLIENT (GROK / GROQ)
 # ================================================================
 
-# The OpenAI client uses our API key to communicate with the API.
-#
-# In a real application, you normally load the key from
-# an environment variable or .env file instead of putting it directly in code.
+# Grok and Groq both provide OpenAI-compatible APIs, allowing us to
+# use the official OpenAI Python SDK simply by providing the base_url.
 
-if not OPENAI_API_KEY or OPENAI_API_KEY in ["YOUR_OPENAI_API_KEY_HERE", "PASTE_YOUR_KEY_HERE"]:
+if not API_KEY or API_KEY in ["YOUR_OPENAI_API_KEY_HERE", "PASTE_YOUR_KEY_HERE", "YOUR_GROK_API_KEY_HERE"]:
     raise ValueError(
-        "\nPlease add your OpenAI API key to your .env file (OPENAI_API_KEY=your_key) "
-        "or set it as an environment variable before running the program."
+        "\nPlease add your Grok/Groq API key to your .env file "
+        "(grok_api_key=gsk_... or GROK_API_KEY=...) before running the program."
     )
 
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
+openai_client = OpenAI(
+    api_key=API_KEY,
+    base_url=BASE_URL,
+)
 
 
 # ================================================================
@@ -289,49 +309,44 @@ def create_query_embedding(question):
     """
     Convert the user's question into a vector embedding.
 
-    WHY DO WE NEED THIS?
-    --------------------
-    Our ChromaDB contains document chunks represented as vectors.
+    Day 1 ingestion used:
+        'sentence-transformers/all-MiniLM-L6-v2' (384 dimensions)
 
-    Example:
-
-        "Library opens at 8 AM"
-                    |
-                    v
-        [0.12, -0.44, 0.91, ...]
-
-    The user's question also needs to become a vector:
-
-        "When does the library open?"
-                    |
-                    v
-        [0.10, -0.41, 0.88, ...]
-
-    We can then compare the question vector with the stored vectors
-    and find which chunks are semantically closest.
-
-    This is the retrieval part of RAG.
+    We first try the exact same embedding model to guarantee
+    dimension and semantic match with the ChromaDB collection.
+    If an embedding API is available from the provider, it will fall back to that.
     """
 
-    response = openai_client.embeddings.create(
-        model=EMBEDDING_MODEL,
-        input=question
-    )
+    # 1. Match Day 1 embedding model using sentence-transformers
+    try:
+        from sentence_transformers import SentenceTransformer
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
+        return _model.encode(question).tolist()
+    except Exception:
+        pass
 
-    # The API returns an embedding vector.
-    #
-    # response.data[0].embedding looks conceptually like:
-    #
-    # [
-    #     0.0123,
-    #     -0.1821,
-    #     0.5521,
-    #     ...
-    # ]
-    #
-    # We return that vector so ChromaDB can search using it.
+    # 2. Match Day 1 embedding model using langchain-huggingface
+    try:
+        from langchain_huggingface import HuggingFaceEmbeddings
+        _embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        return _embeddings.embed_query(question)
+    except Exception:
+        pass
 
-    return response.data[0].embedding
+    # 3. Fallback to API embedding if supported by the provider
+    try:
+        response = openai_client.embeddings.create(
+            model=EMBEDDING_MODEL,
+            input=question
+        )
+        return response.data[0].embedding
+    except Exception as error:
+        raise RuntimeError(
+            f"\nCould not generate an embedding vector for the question.\n"
+            f"Because Day 1 ChromaDB was created using 'all-MiniLM-L6-v2', please install sentence-transformers:\n"
+            f"    pip install sentence-transformers\n"
+            f"Original error: {error}"
+        )
 
 
 # ================================================================
@@ -521,9 +536,9 @@ def build_rag_prompt(question, retrieved_documents):
     # ------------------------------------------------------------
 
     prompt = f"""
-You are a helpful University Campus Information Assistant.
+You are a helpful and knowledgeable assistant.
 
-Your job is to answer the student's question using ONLY the
+Your job is to answer the user's question using ONLY the
 information provided in the retrieved context below.
 
 RETRIEVED CONTEXT:
@@ -742,8 +757,10 @@ def main():
     print(f"  Path       : {CHROMA_DB_PATH}")
     print(f"  Collection : {COLLECTION_NAME}")
 
-    print("\nLLM:")
+    print("\nLLM Provider:")
+    print(f"  Provider   : {PROVIDER_NAME}")
     print(f"  Model      : {LLM_MODEL}")
+    print(f"  Base URL   : {BASE_URL}")
 
     print("\nEmbedding:")
     print(f"  Model      : {EMBEDDING_MODEL}")

@@ -1,0 +1,444 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID: ANT-001
+
+Event Name: She Solves 3.0
+
+Event Edition: ANANTYA '26
+
+Theme: Time Stone – Ideas Beyond Time
+
+Event Type: Multi-stage women-oriented hackathon
+
+Organized By:
+PCCOE ACM-W Student Chapter
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE), Pune
+
+Department:
+Department of Computer Engineering
+
+Overview:
+She Solves 3.0 is a multi-stage women-oriented hackathon that
+provides a platform for participants to innovate, build and present
+technology-driven solutions to real-world problems.
+
+The hackathon focuses on:
+- Innovation and Creativity
+- Technical Skills
+- Problem Solving
+- Practical Implementation
+- Social Impact
+
+Official tagline/message:
+Think beyond limits. Build beyond time.
+Don't just participate. Innovate. Build. Solve.
+
+
+==================================================
+EVENT HIGHLIGHTS
+==================================================
+
+Prize Pool:
+₹16,000
+
+Certificates:
+Certificates and goodies for all participants
+
+Team Size:
+2 to 4 female students
+
+Eligibility:
+Female students only
+
+Registration Fee:
+PCCOE Students: ₹0
+Non-PCCOE Students: ₹100
+
+
+==================================================
+EVENT FORMAT
+==================================================
+
+The hackathon consists of 3 rounds:
+
+Round 1:
+Idea Submission / Registration, Ideation and Proposal Submission
+
+Round 2:
+Prototype Development and Online Demo
+
+Round 3:
+Offline Hackathon
+
+
+==================================================
+DATE & TIME
+==================================================
+
+Round 1:
+Mode: Online
+Deadline: Up to 3 October 2026
+
+Round 2:
+Mode: Online
+Date: 5 October 2026
+
+Round 3:
+Mode: Offline
+Date: 9 October 2026
+Time stated in rulebook: 9:00 AM to 5:00 PM
+Location: Pimpri Chinchwad College of Engineering, Pune
+Duration stated in rulebook: 5 hours
+
+Important timing note:
+The rulebook states both "9:00 AM to 5:00 PM" and "Duration: 5 Hours"
+for Round 3. These details are not internally consistent, so the exact
+duration should be confirmed with the organizers.
+
+
+==================================================
+PROBLEM STATEMENT FORMAT
+==================================================
+
+Track:
+Web Development & Software Development
+
+Participants must choose one of the following domains:
+
+1. Health
+2. Environment
+3. Safety
+4. Education
+5. Entrepreneurship
+6. Women Empowerment
+
+Requirement:
+The problem statement and proposed solution must align with one of
+the specified tracks and domains.
+
+
+==================================================
+ROUND 1 — IDEA SUBMISSION
+==================================================
+
+Round Name:
+Registration, Ideation and Proposal Submission
+
+Mode:
+Online
+
+Deadline:
+Up to 3 October 2026
+
+Description:
+Teams must complete their registration and submit a detailed proposal
+explaining their chosen problem, proposed solution, and technical
+approach.
+
+Submission Requirements:
+- Team details
+- Problem statement
+- Proposed solution
+- Technology/domain
+- Expected impact
+- PowerPoint presentation
+
+PPT Format:
+She Solves PPT Template
+
+Evaluation Criteria:
+- Innovation
+- Feasibility
+- Clarity
+- Relevance
+- Potential impact
+
+Selection:
+Top teams will be shortlisted for Round 2.
+
+Important:
+All submissions must be completed on or before the specified deadline.
+
+
+==================================================
+ROUND 2 — PROTOTYPE DEVELOPMENT
+==================================================
+
+Round Name:
+Prototype Development and Online Demo
+
+Mode:
+Online
+
+Date:
+5 October 2026
+
+Description:
+Shortlisted teams will develop a working prototype/MVP based on their
+proposed solution.
+
+Submission Requirements:
+- Working prototype / MVP
+- Project / GitHub link
+- Required submission details
+
+Online Demo:
+Each team will get 10 minutes to explain and demonstrate its prototype.
+
+Evaluation Criteria:
+- Functionality
+- Technical implementation
+- Innovation
+- Feasibility
+- Clarity of presentation
+
+Selection:
+Selected teams will advance to Round 3.
+
+
+==================================================
+ROUND 3 — OFFLINE HACKATHON
+==================================================
+
+Round Name:
+Offline Hackathon
+
+Mode:
+Offline
+
+Date:
+9 October 2026
+
+Time:
+9:00 AM to 5:00 PM
+
+Location:
+Pimpri Chinchwad College of Engineering, Pune
+
+Duration:
+5 hours (as stated in the rulebook)
+
+Description:
+Finalist teams will participate in an offline hackathon.
+
+Teams will be provided with an on-the-spot problem statement and will
+develop a solution within the given time.
+
+Teams must:
+- Build their solution
+- Test their solution
+- Refine their solution
+- Submit the completed work before the end of the round
+
+
+==================================================
+JUDGING CRITERIA
+==================================================
+
+Teams are evaluated based on:
+
+- Innovation and Creativity
+- Technical Implementation
+- Functionality
+- Feasibility
+- Impact
+- Presentation and Clarity
+
+
+==================================================
+WINNER ANNOUNCEMENT
+==================================================
+
+Winners will be announced after the final evaluation based on overall
+performance.
+
+
+==================================================
+GENERAL RULES & GUIDELINES
+==================================================
+
+- Teams must strictly adhere to all deadlines and submission guidelines.
+- Any form of plagiarism, misconduct, or rule violation will result
+  in disqualification.
+- All team members are expected to actively contribute throughout
+  the event.
+- The decision of the judges and organizing committee is final and
+  binding.
+
+
+==================================================
+REGISTRATION
+==================================================
+
+Registration is available through separate links for non-PCCOE
+participants and PCCOE participants.
+
+Non-PCCOE Registration:
+https://unstop.com/o/VX4Lv9M?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+PCCOE Registration:
+https://forms.gle/Waeg8i4qGAoA1w1dA
+
+Registration Fee:
+PCCOE Students: ₹0
+Non-PCCOE Students: ₹100
+
+Registration Deadline:
+Not explicitly specified in the supplied event announcement/rulebook.
+
+
+==================================================
+RESOURCES & DOCUMENTS
+==================================================
+
+Rulebook:
+Available
+
+Rulebook Link:
+https://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH
+
+Rulebook Description:
+Official She Solves 3.0 rulebook containing event overview, event
+format, problem statement format, round details, judging criteria,
+general rules, registration fees and organizer contacts.
+
+PPT Template:
+Available
+
+PPT Template / Resource Folder:
+https://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH
+
+Resource Folder Name:
+SheSolves3.0_PPT_Template
+
+PPT Template Description:
+Official PowerPoint template referenced in the Round 1 submission
+requirements.
+
+Problem Statement:
+For Round 3, an on-the-spot problem statement will be provided to
+finalist teams.
+
+Problem Statement Link:
+Not provided in the supplied information.
+
+Project / GitHub Link:
+Required for Round 2 submission; no specific link provided.
+
+
+==================================================
+PRIZES & PARTICIPATION BENEFITS
+==================================================
+
+Prize Pool:
+₹16,000
+
+Participant Benefits:
+- Certificates for all participants
+- Goodies for all participants
+
+
+==================================================
+CONTACT
+==================================================
+
+Student Coordinators:
+
+Sanchita Sachin Sakhare
+Phone: 9822799225
+Email: sanchita.sakhare24@pccoepune.org
+
+Shivani Vibhute
+Phone: 9226853657
+Email: shivani.vibhute24@pccoepune.org
+
+Faculty Coordinator:
+
+Dr. Aparna Joshi
+Email: aparna.joshi@pccoepune.org
+
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+Non-PCCOE Registration:
+https://unstop.com/o/VX4Lv9M?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+PCCOE Registration:
+https://forms.gle/Waeg8i4qGAoA1w1dA
+
+Rulebook / Resource Folder:
+https://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH
+
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is She Solves 3.0?
+A: She Solves 3.0 is a multi-stage women-oriented hackathon focused on
+innovation, technical skills, problem solving, practical implementation,
+and social impact.
+
+Q: Who can participate?
+A: Female students can participate.
+
+Q: How many members can be in a team?
+A: Each team must have 2 to 4 female participants.
+
+Q: What are the three rounds?
+A: Round 1 is idea submission, Round 2 is prototype development and
+online demo, and Round 3 is an offline hackathon.
+
+Q: What is the Round 1 deadline?
+A: Round 1 submissions are due up to 3 October 2026.
+
+Q: When is Round 2?
+A: Round 2 is on 5 October 2026 and is conducted online.
+
+Q: How long is the Round 2 demo?
+A: Each team gets 10 minutes to explain and demonstrate its prototype.
+
+Q: When is Round 3?
+A: Round 3 is on 9 October 2026.
+
+Q: Where is Round 3 held?
+A: Round 3 is held at Pimpri Chinchwad College of Engineering, Pune.
+
+Q: What is the Round 3 problem statement?
+A: Finalist teams receive an on-the-spot problem statement during
+Round 3.
+
+Q: What tracks are available?
+A: The track is Web Development & Software Development.
+
+Q: What domains can participants choose from?
+A: Health, Environment, Safety, Education, Entrepreneurship, and
+Women Empowerment.
+
+Q: Is there a PPT template?
+A: Yes. Round 1 requires the She Solves PPT Template. The supplied
+Drive resource folder is listed above.
+
+Q: What is the registration fee?
+A: PCCOE students pay ₹0 and non-PCCOE students pay ₹100.
+
+Q: What is the prize pool?
+A: The prize pool is ₹16,000.
+
+Q: Do participants receive certificates?
+A: Yes. Certificates and goodies are stated to be provided to all
+participants.
+
+Q: What happens if a team violates the rules?
+A: Plagiarism, misconduct, or rule violations can result in
+disqualification.
+
+Q: Who makes the final decision?
+A: The decision of the judges and organizing committee is final
+and binding.
