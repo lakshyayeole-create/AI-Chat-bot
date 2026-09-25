@@ -61,15 +61,39 @@ the LLM prompt.
 import os
 from pathlib import Path
 
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-    for parent in [Path.cwd(), Path(__file__).resolve().parent, Path(__file__).resolve().parent.parent, Path(__file__).resolve().parent.parent.parent]:
-        env_file = parent / ".env"
-        if env_file.exists():
-            load_dotenv(env_file)
-except ImportError:
-    pass
+
+def _load_env_file():
+    """
+    Zero-dependency .env loader: reads key-value pairs from .env into os.environ
+    so you do not need 'python-dotenv' installed for this to work.
+    """
+    search_dirs = [Path.cwd()]
+    if "__file__" in globals():
+        current_file = Path(__file__).resolve()
+        search_dirs.extend([
+            current_file.parent,
+            current_file.parent.parent,
+            current_file.parent.parent.parent,
+        ])
+    for directory in search_dirs:
+        env_path = directory / ".env"
+        if env_path.is_file():
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        val = val.strip().strip("'\"")
+                        if key and key not in os.environ:
+                            os.environ[key] = val
+            except Exception:
+                pass
+
+
+_load_env_file()
 
 # ChromaDB is our vector database.
 import chromadb
