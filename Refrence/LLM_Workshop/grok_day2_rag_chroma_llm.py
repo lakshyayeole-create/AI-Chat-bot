@@ -37,7 +37,7 @@ IMPORTANT
 
 This version uses:
     - ChromaDB                  -> vector database / retrieval
-    - Grok / Groq (OpenAI SDK)  -> LLM response generation
+    - Grok / Groq               -> LLM response generation
 
 The important RAG concept is:
 
@@ -97,10 +97,13 @@ _load_env_file()
 # ChromaDB is our vector database.
 import chromadb
 
-# OpenAI is used for:
-#   1. Creating an embedding for the user's question.
-#   2. Sending the retrieved context + question to the LLM.
-from openai import OpenAI
+# Groq / Grok client for calling the LLM
+try:
+    from groq import Groq
+    _IS_GROQ_PACKAGE = True
+except ImportError:
+    from openai import OpenAI as Groq
+    _IS_GROQ_PACKAGE = False
 
 
 # ================================================================
@@ -111,7 +114,7 @@ from openai import OpenAI
 # API KEY & GROK / GROQ CONFIGURATION
 # ------------------------------------------------
 # Read API key from environment variable or .env file.
-# Supports: grok_api_key, GROK_API_KEY, GROQ_API_KEY, groq_api_key, XAI_API_KEY, OPENAI_API_KEY
+# Supports: grok_api_key, GROK_API_KEY, GROQ_API_KEY, groq_api_key, XAI_API_KEY
 # ------------------------------------------------
 
 API_KEY = (
@@ -120,14 +123,12 @@ API_KEY = (
     or os.getenv("groq_api_key")
     or os.getenv("GROQ_API_KEY")
     or os.getenv("XAI_API_KEY")
-    or os.getenv("OPENAI_API_KEY")
     or ""
 )
 
-# Detect provider and set appropriate OpenAI-compatible endpoint and default model:
+# Detect provider and set appropriate endpoint and default model:
 # - Groq keys start with 'gsk_' (fast LPU inference: llama-3.3-70b-versatile, llama3-8b-8192, etc.)
 # - xAI Grok keys start with 'xai-' (grok-beta, grok-2-latest)
-# - Standard OpenAI keys start with 'sk-'
 if API_KEY.startswith("gsk_"):
     PROVIDER_NAME = "Groq"
     DEFAULT_BASE_URL = "https://api.groq.com/openai/v1"
@@ -137,7 +138,7 @@ elif API_KEY.startswith("xai-"):
     DEFAULT_BASE_URL = "https://api.x.ai/v1"
     DEFAULT_MODEL = "grok-beta"
 else:
-    PROVIDER_NAME = "Groq / Grok (OpenAI-compatible)"
+    PROVIDER_NAME = "Groq / Grok"
     DEFAULT_BASE_URL = "https://api.groq.com/openai/v1"
     DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
@@ -221,22 +222,22 @@ TOP_K = 3
 
 
 # ================================================================
-# 3. CREATE THE OPENAI-COMPATIBLE CLIENT (GROK / GROQ)
+# 3. CREATE THE GROK / GROQ CLIENT
 # ================================================================
 
-# Grok and Groq both provide OpenAI-compatible APIs, allowing us to
-# use the official OpenAI Python SDK simply by providing the base_url.
-
-if not API_KEY or API_KEY in ["YOUR_OPENAI_API_KEY_HERE", "PASTE_YOUR_KEY_HERE", "YOUR_GROK_API_KEY_HERE"]:
+if not API_KEY or API_KEY in ["YOUR_GROK_API_KEY_HERE", "PASTE_YOUR_KEY_HERE"]:
     raise ValueError(
         "\nPlease add your Grok/Groq API key to your .env file "
         "(grok_api_key=gsk_... or GROK_API_KEY=...) before running the program."
     )
 
-openai_client = OpenAI(
-    api_key=API_KEY,
-    base_url=BASE_URL,
-)
+if _IS_GROQ_PACKAGE and API_KEY.startswith("gsk_"):
+    grok_client = Groq(api_key=API_KEY)
+else:
+    grok_client = Groq(
+        api_key=API_KEY,
+        base_url=BASE_URL,
+    )
 
 
 # ================================================================
@@ -335,7 +336,7 @@ def create_query_embedding(question):
 
     # 3. Fallback to API embedding if supported by the provider
     try:
-        response = openai_client.embeddings.create(
+        response = grok_client.embeddings.create(
             model=EMBEDDING_MODEL,
             input=question
         )
@@ -614,15 +615,14 @@ def ask_llm(question, retrieved_documents):
     # Day 2.
     # ------------------------------------------------------------
 
-    response = openai_client.chat.completions.create(
+    response = grok_client.chat.completions.create(
         model=LLM_MODEL,
 
         messages=[
             {
                 "role": "system",
                 "content": (
-                    "You are a helpful and accurate university "
-                    "information assistant."
+                    "You are a helpful and accurate assistant."
                 )
             },
             {
