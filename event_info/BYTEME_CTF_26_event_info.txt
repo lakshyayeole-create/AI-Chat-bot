@@ -1,0 +1,354 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID: ANT-001
+
+Event Name: BYTEME CTF '26
+
+Event Edition: ANANTYA '26
+
+Theme / Tagline:
+Think. Hack. Capture the Flag.
+
+Event Type: Cybersecurity Capture The Flag (CTF)
+
+Format: Jeopardy-Style CTF
+
+Organized By:
+OWASP PCCOE Student Chapter
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE), Pune
+
+Department:
+Department of Computer Engineering
+
+Overview:
+BYTEME CTF is a Jeopardy-style Capture The Flag competition
+where participants solve cybersecurity challenges, uncover hidden
+flags, and submit valid flags through the official CTF platform.
+
+The competition includes challenges across multiple cybersecurity
+domains, including:
+- Web
+- OSINT
+- Forensics
+- Cryptography
+- Networking
+- Linux
+- More cybersecurity domains
+
+Participants earn points by successfully solving challenges.
+Challenges may be solved in any order unless otherwise stated,
+and the official scoreboard determines the final standings.
+
+
+==================================================
+EVENT HIGHLIGHTS
+==================================================
+
+Prize Pool:
+₹1.5 LAKH+ (as stated in the event announcement)
+
+Team Size:
+1 to 2 members
+
+Participation:
+Individual and team participation is permitted, subject to
+the official registration portal.
+
+Venue:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+Date:
+9 October 2026
+
+Time:
+9:00 AM to 6:00 PM
+
+
+==================================================
+EVENT FORMAT
+==================================================
+
+Competition Format:
+Jeopardy-Style Capture The Flag
+
+Participants will:
+- Solve cybersecurity challenges
+- Submit valid flags through the official CTF platform
+- Earn points based on successfully solved challenges
+- Compete according to the official scoreboard
+
+Challenges:
+Multiple cybersecurity domains
+
+Challenge Order:
+Challenges may be solved in any order unless otherwise stated.
+
+Scoreboard:
+The official scoreboard determines the final standings.
+
+Scoreboard Freeze:
+6:00 PM
+
+Tie-Breaking:
+Announced tie-breaking mechanisms will apply in case of a tie.
+
+
+==================================================
+EVENT SCHEDULE
+==================================================
+
+Date:
+Friday, 9 October 2026
+
+Time : 9:00 AM - 6:00 PM
+
+==================================================
+TEAM & PARTICIPATION RULES
+==================================================
+
+- A participant may belong to only one registered team.
+- Team composition is final after registration unless approved
+  by the organizers.
+- Participants must carry a valid student ID card.
+- Participants must bring their own laptop and required
+  accessories.
+- Only registered team accounts and credentials may be used.
+
+
+==================================================
+ALLOWED ACTIVITIES
+==================================================
+
+- Collaboration is allowed only with members of your own
+  registered team.
+- Public documentation and technical resources may be used.
+- Scripts, debuggers, disassemblers, packet-analysis tools,
+  and other legitimate tools may be used.
+- Technical clarifications and issues should be reported through
+  the official BYTEME CTF communication channels.
+
+
+==================================================
+PROHIBITED ACTIVITIES
+==================================================
+
+Participants must NOT:
+
+- Share flags, complete solutions, challenge answers, or
+  information that gives another team an unfair advantage.
+- Share team accounts or credentials.
+- Use another team's account.
+- Attack the CTF platform or scoreboard.
+- Attack the registration system or PCCOE infrastructure.
+- Attack other participants.
+- Perform denial-of-service attacks.
+- Disrupt CTF services.
+- Access, modify, delete, or damage another team's data or
+  competition environment.
+- Publish or distribute active flags or solutions before
+  the competition ends.
+
+
+==================================================
+FINAL RULES
+==================================================
+
+- Clarifications, technical issues, and suspected unintended
+  vulnerabilities must be reported through official BYTEME CTF
+  communication channels.
+- Communication channels must not be used to distribute flags
+  or complete solutions during the competition.
+- Participants or teams may be disqualified for rule violations,
+  flag/solution sharing, unauthorized attacks, result manipulation,
+  disruption, or bypassing competition controls.
+- Flag sharing with another team may result in disqualification
+  of the entire team and removal from the final standings.
+- Organizers' decisions regarding rule enforcement, challenge
+  validity, and competition integrity are final.
+- Necessary schedule or competition changes will be communicated
+  through official event channels.
+- Registration and participation in BYTEME CTF constitute
+  acceptance of these rules.
+
+Important Timing Note:
+The supplied schedule lists the briefing from 9:30 AM – 10:30 AM
+while also stating that the CTF begins at 10:00 AM. The source
+information therefore contains an overlap; the exact schedule
+should be confirmed with the organizers.
+
+
+==================================================
+REGISTRATION
+==================================================
+
+PCCOE Students Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSeNNQxkad7eF7f3E3-EGlQCk3rc1mNVHlkMxejbMDLQuA8PYQ/viewform?usp=publish-editor
+
+Unstop Registration:
+https://unstop.com/p/byteme-ctf-26-pimpri-chinchwad-college-of-engineering-1760412
+
+Registration Details:
+The supplied event announcement provides separate registration
+options for PCCOE students and Unstop participants.
+
+Registration Deadline:
+Not specified in the supplied information.
+
+Registration Fee:
+100 rupees per team for other colleges and 0 rupees for PCCOE students.
+
+
+==================================================
+WEBSITE & RESOURCES
+==================================================
+
+Official Website:
+https://bytemectf.owasppccoe.in/
+
+CTF Platform:
+The official CTF platform is referenced in the supplied rulebook,
+but a separate platform URL is not provided.
+
+
+==================================================
+PRIZES & PARTICIPATION BENEFITS
+==================================================
+
+Prize Pool:
+₹1.5 LAKH+ (as stated in the event announcement)
+
+Certificates:
+Not specified in the supplied information.
+
+Goodies:
+Not specified in the supplied information.
+
+
+==================================================
+CONTACT
+==================================================
+
+Suyog Jadhav:
+Phone: +91 98813 92295
+
+Sarthak Warale:
+Phone: +91 80103 60482
+
+Kulbhushan Kumar:
+Phone: +91 98601 02147
+
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+PCCOE Students Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSeNNQxkad7eF7f3E3-EGlQCk3rc1mNVHlkMxejbMDLQuA8PYQ/viewform?usp=publish-editor
+
+Unstop Registration:
+https://unstop.com/p/byteme-ctf-26-pimpri-chinchwad-college-of-engineering-1760412
+
+Official Website:
+https://bytemectf.owasppccoe.in/
+
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is BYTEME CTF '26?
+A: BYTEME CTF '26 is a Jeopardy-style Cybersecurity Capture The
+Flag competition where participants solve challenges and submit
+valid flags through the official CTF platform.
+
+Q: Who organizes BYTEME CTF?
+A: The event is organized by the OWASP PCCOE Student Chapter.
+
+Q: What is the CTF format?
+A: It follows a Jeopardy-style CTF format.
+
+Q: What cybersecurity domains are covered?
+A: Challenges include Web, OSINT, Forensics, Cryptography,
+Networking, Linux, and more.
+
+Q: What is the team size?
+A: Teams can have 1 to 2 members. Individual participation is
+also permitted subject to the official registration portal.
+
+Q: When is BYTEME CTF?
+A: The event is on Friday, 9 October 2026.
+
+Q: What are the event timings?
+A: The supplied announcement states 9:00 AM – 6:00 PM. The detailed
+schedule states participant reporting at 9:00 AM, CTF beginning at
+10:00 AM, competition until 6:00 PM, and results at 6:30 PM.
+
+Q: Where is the event held?
+A: The venue is Pimpri Chinchwad College of Engineering (PCCOE).
+
+Q: What happens at 6:00 PM?
+A: The CTF ends and the scoreboard is frozen. Submissions after
+the 6:00 PM scoreboard freeze are not considered.
+
+Q: When are the winners announced?
+A: Result announcement and winners declaration are scheduled for
+6:30 PM.
+
+Q: Can challenges be solved in any order?
+A: Yes, unless otherwise stated.
+
+Q: What tools can participants use?
+A: Scripts, debuggers, disassemblers, packet-analysis tools, and
+other legitimate tools may be used. Public documentation and
+technical resources may also be used.
+
+Q: Can participants collaborate with other teams?
+A: No. Collaboration is allowed only with members of the same
+registered team.
+
+Q: Can participants share flags or complete solutions?
+A: No. Sharing flags, complete solutions, challenge answers, or
+information that gives another team an unfair advantage is
+prohibited.
+
+Q: Can participants attack the CTF infrastructure?
+A: No. Attacking the CTF platform, scoreboard, registration system,
+PCCOE infrastructure, or other participants is prohibited.
+
+Q: What happens for rule violations?
+A: Participants or teams may be disqualified for rule violations,
+flag/solution sharing, unauthorized attacks, result manipulation,
+disruption, or bypassing competition controls.
+
+Q: What is the prize pool?
+A: The event announcement states a prize pool worth ₹1.5 LAKH+.
+The supplied rulebook text does not provide a more detailed
+breakdown.
+
+Q: Where can I register?
+A: PCCOE students can use the PCCOE registration form, and the
+event is also available on Unstop. The links are listed above.
+
+Q: What is the official website?
+A: https://bytemectf.owasppccoe.in/
+
+Q: What should participants bring?
+A: Participants must carry a valid student ID card and bring
+their own laptop and required accessories.
+
+Q: Who can I contact for queries?
+A: Suyog Jadhav, Sarthak Warale, and Kulbhushan Kumar are listed
+as event contacts above.
+
+
+==================================================
+EVENT MESSAGE
+==================================================
+
+ATTACK THE CHALLENGE, NOT THE COMPETITION INFRASTRUCTURE.
+
+ALL THE BEST!!

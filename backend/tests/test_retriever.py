@@ -36,15 +36,18 @@ def setup_test_index():
     # Reset any cached state
     reset_cache()
 
-    # Build index
-    docs = load_documents(event_info_dir)
+    # Build index specifically from the She Solves event file as designed in spec
+    all_docs = load_documents(event_info_dir)
+    docs = [d for d in all_docs if "she_solves" in d.metadata["source_file"].lower()]
+    if not docs:
+        docs = all_docs
     chunks = chunk_documents(docs)
     texts = [c.text for c in chunks]
     metadata = [{**c.metadata, "chunk_text": c.text} for c in chunks]
     vectors = embed_texts(texts)
 
-    # Save to a test location
-    test_store = backend_dir / "vector_store"
+    # Save to a dedicated test location so production vector_store is never overwritten
+    test_store = backend_dir / "vector_store_test"
     test_store.mkdir(parents=True, exist_ok=True)
     index = build_index(vectors)
     save_index(index, metadata, test_store)
@@ -55,8 +58,14 @@ def setup_test_index():
 
     yield
 
-    # Cleanup
+    # Cleanup test store and restore main index
     reset_cache()
+    if test_store.exists():
+        import shutil
+        shutil.rmtree(test_store, ignore_errors=True)
+    main_store = backend_dir / "vector_store"
+    if main_store.exists():
+        load_index(main_store)
 
 
 class TestRetrieval:

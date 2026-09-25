@@ -1,0 +1,460 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID:
+ANT-004
+
+Event Name:
+DecentraHACK
+
+Event Edition:
+Marvel Edition
+
+Theme:
+Marvel Edition — Agentic AI, Blockchain/Web3 and Open Source
+
+Organized By:
+Linux Foundation Decentralized Trust, CESA, PCCOE
+
+Institution:
+Pimpri Chinchwad College of Engineering Pune
+
+Department:
+Department of Computer Engineering
+
+Event Type:
+Hackathon
+
+Participation:
+Team (2 to 4 members; solo participation is not allowed)
+
+Format:
+3 Rounds
+
+Prize Pool:
+₹20,000+
+
+Certificates:
+Certificates for all participants; goodies and memberships for top
+winners
+
+
+==================================================
+EVENT OVERVIEW
+==================================================
+
+DecentraHACK — Marvel Edition is a 3-round hackathon for students who
+want to build what actually matters.
+
+Across three rounds, teams take an idea from an abstract, to a working
+demo, to a live pitch in front of the judges.
+
+It is organized around three themes:
+- Agentic AI
+- Blockchain / Web3
+- Open Source
+
+Teams are free to pick any problem within these themes and use any
+tools they like, including AI tools.
+
+Official tagline/message:
+A small idea can open a bigger universe.
+Same universe. Brighter ideas.
+
+
+==================================================
+ELIGIBILITY
+==================================================
+
+- College students in second year and above are eligible.
+- Cross-branch teams are allowed.
+- All members of a team must belong to the same college.
+- Cross-college teams are not allowed.
+- Teams must have a minimum of 2 and a maximum of 4 members.
+- Solo participation is not allowed.
+
+
+==================================================
+REGISTRATION
+==================================================
+
+Registration Opens:
+20 September 2026
+
+Registration Closes:
+30 September 2026
+
+Registration Fee:
+Not specified in the supplied rulebook.
+
+Registration Process:
+One member registers as team leader and fills in the team details.
+
+Registration Platform:
+Not provided in the supplied event information.
+
+Registration Link:
+For PCCOE Students :- https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform
+For other colleges :- Go to their specific portal of event
+
+
+
+
+==================================================
+EVENT FORMAT
+==================================================
+
+The hackathon consists of 3 rounds:
+
+Round 1:
+Idea Submission — a written abstract
+
+Round 2:
+Development Phase — working demo submission + PPT 
+
+Round 3:
+Final Presentation — offline pitch to judges
+
+Selection:
+The rulebook does not explicitly state how many teams advance from
+Round 1 to Round 2, or the selection criteria used at that stage.
+
+The top 15 teams overall advance to Round 3.
+
+
+==================================================
+PROBLEM STATEMENT FORMAT
+==================================================
+
+Themes:
+1. Agentic AI
+2. Blockchain / Web3
+3. Open Source
+
+Requirement:
+Teams are free to pick any problem within these themes and use any
+tools they like, including AI tools.
+
+Only the idea submitted in Round 1 may be developed further in later
+rounds.
+
+There is no fixed on-the-spot problem statement.
+
+
+==================================================
+ROUND 1 — IDEA SUBMISSION
+==================================================
+
+Round Name:
+Idea Submission
+
+Mode:
+Online
+
+Deadline:
+Not fixed in the rulebook — will be shared with qualified teams.
+
+Description:
+Teams submit an abstract within a 500-word limit.
+
+Submission Requirements:
+The abstract must cover:
+- The idea
+- The problem it solves, with real-world impact
+- Feasibility
+- Novelty
+- Architecture
+- Revenue model
+
+Evaluation Criteria:
+Not separately listed in the rulebook.
+
+The required abstract components above are the closest stated basis
+for assessment.
+
+
+==================================================
+ROUND 2 — DEVELOPMENT PHASE
+==================================================
+
+Round Name:
+Development Phase
+
+Mode:
+Online
+
+Date:
+Not fixed in the rulebook — will be shared with qualified teams.
+
+Description:
+Teams build out their idea and submit a working demo.
+
+Submission Requirements:
+- A working demo of the solution, submitted as a video shared through
+  a Google Drive link.
+- An accompanying presentation.
+- Teams must ensure the Drive link is accessible before submitting.
+
+Evaluation Criteria:
+Not specified in the rulebook.
+
+Selection:
+The top 15 teams overall advance to Round 3.
+
+
+==================================================
+ROUND 3 — FINAL PRESENTATION
+==================================================
+
+Round Name:
+Final Presentation
+
+Mode:
+Offline
+
+Date:
+9 October 2026
+
+Location:
+PCCOE Campus, Pune
+
+Description:
+The top 15 teams pitch to the judges in person, presenting a working
+demo along with their presentation.
+
+Teams must:
+- Present a working demo of their solution.
+- Present alongside their presentation deck.
+- Pitch live to the judging panel.
+
+
+==================================================
+JUDGING / EVALUATION CRITERIA
+==================================================
+
+Round 1:
+The rulebook does not separately list evaluation criteria.
+
+The stated abstract requirements are:
+- Idea
+- Problem / real-world impact
+- Feasibility
+- Novelty
+- Architecture
+- Revenue model
+
+Round 2:
+Evaluation criteria are not specified in the supplied rulebook.
+
+Round 3:
+The final round consists of a live pitch to the judging panel with
+a working demo and presentation.
+
+The Round 1 abstract requirements are the closest stated indication
+of what is valued across the hackathon.
+
+
+==================================================
+GENERAL RULES & GUIDELINES
+==================================================
+
+- College students in second year and above are eligible.
+- Cross-branch teams are allowed.
+- Minimum 2, maximum 4 members per team; solo participation is not
+  allowed.
+- All members of a team must belong to the same college; cross-college
+  teams are not allowed.
+- One member registers as team leader and fills in the team details.
+- Any AI tools may be used.
+- Decisions of the organizing committee and judges are final.
+- Teams must strictly follow the given timeline.
+- Plagiarism will lead to immediate disqualification.
+- Only the idea submitted in Round 1 may be developed further.
+- All work must be done during the hackathon period.
+- One common GitHub repository is mandatory.
+- Any misconduct may result in disqualification.
+
+
+==================================================
+TOOLS & TECHNOLOGY
+==================================================
+
+Teams may use any tools they like, including AI tools.
+
+Primary themes:
+- Agentic AI
+- Blockchain / Web3
+- Open Source
+
+GitHub:
+One common GitHub repository per team is mandatory.
+
+
+==================================================
+IMPORTANT DATES
+==================================================
+
+Registrations Open:
+20 September 2026
+
+Registrations Close:
+30 September 2026
+
+Round 1 Deadline:
+Not fixed in the rulebook — will be shared with qualified teams.
+
+Round 2 Deadline:
+Not fixed in the rulebook — will be shared with qualified teams.
+
+Final Round:
+9 October 2026
+
+Final Round Location:
+PCCOE Campus, Pune
+
+
+==================================================
+WINNER ANNOUNCEMENT
+==================================================
+
+Winner announcement details were not specified in the supplied
+rulebook.
+
+
+==================================================
+PRIZES & PARTICIPATION BENEFITS
+==================================================
+
+Prize Pool:
+₹20,000+ ("₹20K+")
+
+Participant Benefits:
+- Goodies for top winners
+- Memberships for top winners
+- Certificates for all participants
+
+Specific membership details were not named in the rulebook.
+
+
+==================================================
+RESOURCES & DOCUMENTS
+==================================================
+
+Problem Statement:
+Teams choose their own problem within the three themes:
+Agentic AI, Blockchain/Web3, and Open Source.
+
+There is no fixed on-the-spot problem statement.
+
+Project / GitHub Link:
+A single common GitHub repository per team is mandatory.
+
+Specific repository link:
+Not provided in the supplied event information.
+
+PPT / Presentation:
+An accompanying presentation is required for Round 2 and a
+presentation deck is required for the final round.
+
+
+==================================================
+CONTACT
+==================================================
+
+Student Coordinators:
+
+Rohit Sonawane
+Phone: 8857011104
+
+Mayuresh Mandalik
+Phone: 8799797880
+
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+Registration Platform:
+Go to their specific portal of event
+
+Registration URL:
+For PCCOE Students :- https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform
+
+
+Google Drive Submission:
+Teams must submit the Round 2 working-demo video through a Google
+Drive link. No specific link is provided.
+
+GitHub Repository:
+A common GitHub repository is mandatory for each team.
+No specific link is provided.
+
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is DecentraHACK?
+A: DecentraHACK — Marvel Edition is a 3-round hackathon that takes
+teams from an idea, to a working demo, to a live pitch in front of
+judges, built around Agentic AI, Blockchain/Web3 and Open Source.
+
+Q: Who can participate?
+A: College students in second year and above. Cross-branch teams are
+allowed, but all team members must be from the same college.
+
+Q: How many members can be in a team?
+A: Teams must have a minimum of 2 and a maximum of 4 members. Solo
+participation is not allowed.
+
+Q: What are the three rounds?
+A: Round 1 is idea submission (a written abstract), Round 2 is the
+development phase (working demo), and Round 3 is the final in-person
+presentation.
+
+Q: What is the Round 1 submission?
+A: A 500-word abstract covering the idea, the problem and its
+real-world impact, feasibility, novelty, architecture, and revenue
+model.
+
+Q: When do Round 1 and Round 2 deadlines fall?
+A: They are not fixed in the rulebook; they will be shared with
+qualified teams in the official participant groups.
+
+Q: What does Round 2 require?
+A: A working demo submitted as a video via a Google Drive link, along
+with a presentation. The link must be accessible before submission.
+
+Q: When and where is the final round?
+A: The final round is on 9 October 2026 at the PCCOE campus, Pune.
+The top 15 teams pitch in person to the judges.
+
+Q: What themes can participants choose from?
+A: Agentic AI, Blockchain/Web3, and Open Source. Teams may pick any
+problem within these themes and use any tools, including AI tools.
+
+Q: When do registrations open and close?
+A: Registrations open on 20 September 2026 and close on 30 September
+2026.
+
+Q: What is the registration fee?
+A: Not specified in the supplied rulebook.
+
+Q: What is the prize pool?
+A: The prize pool is ₹20,000+ ("₹20K+").
+
+Q: Do participants receive certificates?
+A: Yes, certificates are given to all participants. Goodies and
+memberships go to top winners.
+
+Q: What happens if a team violates the rules?
+A: Plagiarism or misconduct can lead to immediate disqualification.
+Only the idea submitted in Round 1 may be developed further, and all
+work must be done during the hackathon period.
+
+Q: Who makes the final decision?
+A: The decisions of the organizing committee and judges are final.
+
+Q: Who are the contact coordinators?
+A: Rohit Sonawane (8857011104) and Mayuresh Mandalik (8799797880).

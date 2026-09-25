@@ -1,0 +1,365 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID: ANT-002
+
+Event Name: Codigo 2026
+
+Event Edition: ANANTYA '26
+
+Theme:
+Multiverse of Coding
+
+Event Type:
+3-Round Competitive Programming Contest
+
+Format:
+ICPC Simulation
+
+Organized By:
+Team CESA-SDW | PCCOE ACM Student Chapter
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE), Pune
+
+Department:
+Department of Computer Engineering
+
+Overview:
+Codigo is a 3-round competitive programming contest built to
+simulate the ICPC experience.
+
+The contest progressively tests participants through:
+- Data Structures & Algorithms (DSA)
+- Competitive Programming (CP)
+
+Problems are solved under real contest conditions.
+
+
+==================================================
+EVENT HIGHLIGHTS
+==================================================
+
+Prize Pool:
+₹18,000
+
+Team Size:
+Exactly 3 members per team
+
+Participation:
+Teams of three only. Individual participation is not permitted.
+
+Final Round:
+Lab-Based Offline Final
+
+Official Message:
+When brilliant minds unite, code transforms into limitless power.
+
+Tagline:
+Don't just code. Compete. Conquer. Create.
+
+
+==================================================
+EVENT FORMAT
+==================================================
+
+The contest consists of 3 rounds:
+
+Round 1:
+Qualifier Round
+
+Round 2:
+Semi-Final Round
+
+Round 3:
+Final Round
+
+Progression:
+- Online Qualifier
+- Online Semi-Final
+- Lab-Based Offline Final
+
+
+==================================================
+ROUND 1 — QUALIFIER ROUND
+==================================================
+
+Platform:
+CodeChef
+
+Mode:
+Online
+
+Date:
+6 October 2026
+
+Duration:
+2 Hours
+
+Time:
+7:00 PM – 9:00 PM
+
+Selection:
+The top 45 teams will be shortlisted for Round 2 based on
+their performance in the contest.
+
+
+==================================================
+ROUND 2 — SEMI-FINAL ROUND
+==================================================
+
+Platform:
+CodeChef
+
+Mode:
+Online
+
+Date:
+7 October 2026
+
+Duration:
+2 Hours
+
+Time:
+6:00 PM – 8:00 PM
+
+Selection:
+The rulebook states that the top 20 teams will be shortlisted
+based on performance in the contest.
+
+
+==================================================
+ROUND 3 — FINAL ROUND
+==================================================
+
+Platform:
+HackerRank
+
+Mode:
+Offline (Lab-Based)
+
+Date:
+10 October 2026
+
+Duration:
+3 Hours
+
+Time:
+9:00 AM – 12:00 PM
+
+Format:
+7 CP-based questions
+
+Theme:
+ICPC Simulation
+
+Winners:
+The top 3 teams will be declared as the winners of Codigo 2026.
+
+
+==================================================
+TEAM & PARTICIPATION RULES
+==================================================
+
+Team Composition:
+Exactly 3 members per team
+
+- Participation is strictly allowed in teams of three (3) members.
+- Individual participation is not permitted.
+- In every round, only the registered team as a unit must
+  participate.
+- Individual submissions by team members are not allowed.
+
+
+==================================================
+GENERAL RULES & GUIDELINES
+==================================================
+
+1. Team Composition:
+   Participation is strictly allowed in teams of three (3)
+   members. Individual participation is not permitted.
+
+2. Team Participation in Rounds:
+   In every round, only the registered team as a unit must
+   participate in the contest.
+
+3. Individual Submissions:
+   Individual submissions by team members are not allowed.
+
+4. Platform Compliance:
+   All participants must adhere to the rules and code of conduct
+   of the respective contest platforms (CodeChef / HackerRank).
+
+5. Fair Play Policy:
+   Any form of plagiarism, cheating, or use of unfair means
+   will lead to immediate disqualification of the team.
+
+
+==================================================
+PRIZES
+==================================================
+
+I Prize:
+₹10,000
+
+II Prize:
+₹5,000
+
+III Prize:
+₹3,000
+
+Total Prize Pool:
+₹18,000
+
+
+==================================================
+REGISTRATION
+==================================================
+
+Non-PCCOE Registration — Unstop:
+https://unstop.com/p/codigo-2026-pimpri-chinchwad-college-of-engineering-pccoe-pune-1760417
+
+PCCOE Registration:
+https://forms.gle/zYtdTo8vqWdG3gkJ6
+
+Registration Deadline:
+Not specified in the supplied information.
+
+Registration Fee:
+100 rupees per team for other colleges and 0 rupees for PCCOE students.
+
+
+==================================================
+RESOURCES & DOCUMENTS
+==================================================
+
+Rulebook:
+Available
+
+Rulebook Link:
+https://drive.google.com/drive/folders/1FzJyPu_LnQbMFcfiAVgbK0BlvRyhs6ay?usp=sharing
+
+Rulebook Description:
+Official Codigo 2026 rulebook containing the contest format,
+round details, participation rules, prizes and organizer contacts.
+
+
+==================================================
+CONTACT
+==================================================
+
+Khushie Mohod:
+Phone: 9561976724
+
+Krushnakant Patil:
+Phone: 9529956951
+
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+Non-PCCOE Registration:
+https://unstop.com/p/codigo-2026-pimpri-chinchwad-college-of-engineering-pccoe-pune-1760417
+
+PCCOE Registration:
+https://forms.gle/zYtdTo8vqWdG3gkJ6
+
+Rulebook:
+https://drive.google.com/drive/folders/1FzJyPu_LnQbMFcfiAVgbK0BlvRyhs6ay?usp=sharing
+
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is Codigo 2026?
+A: Codigo 2026 is a 3-round competitive programming contest
+designed to simulate the ICPC experience.
+
+Q: Who organizes Codigo 2026?
+A: The event is organized by Team CESA-SDW | PCCOE ACM Student Chapter.
+
+Q: What is the contest format?
+A: It follows an ICPC Simulation format.
+
+Q: How many rounds are there?
+A: There are three rounds: Qualifier, Semi-Final and Final.
+
+Q: What is the team size?
+A: Each team must have exactly 3 members.
+
+Q: Can an individual participate?
+A: No. Individual participation is not permitted.
+
+Q: When is Round 1?
+A: Round 1 is on 6 October 2026 from 7:00 PM to 9:00 PM
+on CodeChef.
+
+Q: What happens in Round 1?
+A: It is the Qualifier Round. The top 45 teams will be
+shortlisted for Round 2 based on contest performance.
+
+Q: When is Round 2?
+A: Round 2 is on 7 October 2026 from 6:00 PM to 8:00 PM
+on CodeChef.
+
+Q: What happens in Round 2?
+A: It is the Semi-Final Round. The rulebook states that the
+top 45 teams will be shortlisted based on performance.
+
+Q: When is Round 3?
+A: Round 3 is on 10 October 2026 from 9:00 AM to 12:00 PM.
+
+Q: Where is Round 3 held?
+A: Round 3 is an offline, lab-based final conducted on HackerRank.
+
+Q: What is the Round 3 format?
+A: The final consists of 5 CP-based questions and follows an
+ICPC Simulation theme.
+
+Q: How are winners decided?
+A: The top 3 teams will be declared as the winners of Codigo 2026.
+
+Q: What is the prize pool?
+A: The total prize pool is ₹18,000:
+I Prize — ₹10,000
+II Prize — ₹5,000
+III Prize — ₹3,000
+
+Q: Where can non-PCCOE participants register?
+A: Registration is available through the listed Unstop link.
+
+Q: Where can PCCOE students register?
+A: PCCOE students can register through the listed Google Form.
+
+Q: Is there a registration fee?
+A: The supplied information does not specify a registration fee.
+
+Q: What is the rulebook link?
+A: The official rulebook is available through the supplied
+Google Drive folder.
+
+Q: What happens in case of cheating or plagiarism?
+A: Any form of plagiarism, cheating, or use of unfair means
+will lead to immediate disqualification of the team.
+
+Q: Can team members submit individually?
+A: No. Only the registered team as a unit must participate,
+and individual submissions are not allowed.
+
+Q: Which platforms are used?
+A: Round 1 and Round 2 use CodeChef. Round 3 uses HackerRank.
+
+Q: Who can be contacted for queries?
+A: Khushie Mohod and Krushnakant Patil are the listed contacts.
+
+
+==================================================
+EVENT MESSAGE
+==================================================
+
+When brilliant minds unite, code transforms into limitless power.
+
+Don't just code. Compete. Conquer. Create.

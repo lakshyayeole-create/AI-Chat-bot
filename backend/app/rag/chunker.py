@@ -232,7 +232,14 @@ def chunk_documents(
                     "chunk_id": chunk_id,
                 }
 
-                all_chunks.append(Chunk(text=chunk_text, metadata=metadata))
+                # Context-enriched chunk text for accurate semantic embedding and retrieval
+                context_header = (
+                    f"Event: {event_name} (Anantya '26, ID: {event_id}) | "
+                    f"Section: {section_name}\n\n"
+                )
+                enriched_text = f"{context_header}{chunk_text}"
+
+                all_chunks.append(Chunk(text=enriched_text, metadata=metadata))
 
         logger.info(
             "Chunked %s: %d sections, %d chunks",

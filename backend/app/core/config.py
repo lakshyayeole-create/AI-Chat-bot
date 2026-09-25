@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     # --- RAG ---
     chunk_size: int = 800
     chunk_overlap: int = 120
-    top_k: int = 5
-    similarity_threshold: float = 0.3
+    top_k: int = 6
+    similarity_threshold: float = 0.22
 
     # --- Paths ---
     knowledge_dir: str = "../event_info"

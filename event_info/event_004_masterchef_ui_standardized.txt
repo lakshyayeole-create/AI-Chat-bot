@@ -1,0 +1,514 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID:
+ANT-005
+
+Event Name:
+MasterChef UI 2026
+
+Event Edition:
+2026
+
+Theme:
+The Ultimate UI Battle
+
+Organized By:
+Google Developer Groups on Campus, PCCOE (GDGC PCCOE)
+
+Presented By:
+GDGC PCCOE
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE), Pune
+
+Department:
+Department of Computer Engineering
+
+Event Type:
+Hybrid, multi-stage UI/UX design competition with online qualification and offline final rounds, including an XP and MasterChef Coins strategy layer.
+
+Official Tagline:
+Design. Solve. Cook.
+
+Official Event Message:
+Design smart. Play strategic. Stay creative. Don't get cooked.
+
+==================================================
+EVENT OVERVIEW
+==================================================
+
+MasterChef UI is a competitive UI/UX design event that tests UI principles, observation, creativity, problem-solving, design execution and presentation.
+
+The 2026 edition includes a strategy layer in which participants can earn XP through a pre-event campaign and convert XP into MasterChef Coins. Coins can be spent on permitted power-ups, defensive abilities, hints, strategic advantages and sabotages through the official event mechanism.
+
+The competition consists of a Pre-Event Campaign followed by three official rounds:
+- Round 1 — The Taste Test
+- Round 2 — The Pressure Test
+- Round 3 — The Signature Dish
+
+==================================================
+ELIGIBILITY
+==================================================
+
+Eligibility:
+The supplied rulebook does not explicitly specify restrictions based on gender, college or academic year.
+
+Team Size:
+Maximum 2 participants per team. The rulebook does not state a minimum team size.
+
+Team Requirements:
+- Each team registers under a unique team name.
+- Team composition cannot normally be changed after the registration deadline without organizer approval.
+- All members are jointly responsible for their submission and conduct.
+
+==================================================
+REGISTRATION
+==================================================
+
+Registration Fee:
+- FREE for PCCoE students.
+- ₹100 for students from other colleges.
+
+Registration Period:
+Not specified in the supplied event information.
+
+Registration Link — PCCoE Students:
+https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+
+Registration Link — Other Colleges:
+https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+WhatsApp Group:
+https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk
+
+==================================================
+EVENT FORMAT
+==================================================
+
+The competition consists of a Pre-Event Campaign followed by 3 official rounds.
+
+Pre-Event Campaign:
+Online campaign with challenges, clues and hidden content through which participants can earn XP.
+
+Round 1:
+The Taste Test — Online Qualification Round.
+
+Round 2:
+The Pressure Test — Offline UI Recreation Challenge.
+
+Round 3:
+The Signature Dish — Offline Final Round.
+
+==================================================
+PRE-EVENT CAMPAIGN
+==================================================
+
+Mode:
+Online, before the competition.
+
+Description:
+Participants explore a campaign website containing challenges, clues and hidden content to earn XP.
+
+XP may be awarded for:
+- Completing challenges
+- Discovering hidden content
+- Solving puzzles
+- Finding Easter eggs
+- Completing specific objectives
+- Other activities announced by the organizers
+
+The organizers determine the XP value of each activity. XP may contribute to a participant's or team's starting MasterChef Coin balance according to the announced conversion system.
+
+==================================================
+XP & MASTERCHEF COINS
+==================================================
+
+XP System:
+Participants earn XP by completing designated Pre-Event Campaign activities. XP can be converted into MasterChef Coins according to the conversion system announced by the organizers.
+
+MasterChef Coins:
+MasterChef Coins are the official in-event currency and may be spent on:
+- Power-ups
+- Defensive abilities
+- Hints
+- Strategic advantages
+- Permitted sabotages
+- Mystery items
+- Other mechanisms announced by the organizers
+
+Important Rules:
+- Coins do not determine the winner on their own.
+- Coins cannot be bought with real money.
+- Coins cannot be exchanged for cash.
+- Coins cannot be transferred between teams.
+- Coins cannot be gifted or traded between participants.
+- Coins can only be used through the official event mechanism.
+- Each team is responsible for managing its own coin balance.
+- A confirmed transaction normally cannot be reversed.
+- Unused coins have no monetary value after the competition.
+
+==================================================
+THE CHEF'S MARKET
+==================================================
+
+The Chef's Market is the official place where teams spend MasterChef Coins.
+
+Power-Ups:
+- Hint — provides an additional clue or information about a challenge.
+- Time Boost — adds working time within organizer-defined limits.
+- Reroll — allows a team to request a new eligible prompt, element or challenge component.
+- Shield — protects the team from one eligible sabotage.
+- Mystery Box — provides a randomly selected advantage.
+
+Sabotages:
+- Blackout — temporarily blocks a target team's access to a specified reference.
+- Time Tax — reduces the target team's working time by a specified amount.
+- Glitch — adds an extra design constraint for the target team.
+- Swap — requires the target team to exchange a specified eligible element.
+- Mystery Challenge — adds an extra challenge condition.
+
+Sabotage Rules:
+- Sabotages can only be activated during designated periods.
+- Each sabotage has defined effects and limits.
+- Teams receive a limited number of sabotage opportunities.
+- Teams cannot repeatedly target the same team beyond organizer-defined limits.
+- Sabotages cannot permanently prevent another team from completing a round.
+- Sabotages must not delete, damage, access or modify another team's files.
+- Organizers may cancel a sabotage that creates an unintended or unfair advantage.
+
+==================================================
+ROUND 1 — THE TASTE TEST
+==================================================
+
+Mode:
+Online Qualification Round
+
+Description:
+Tests participants' understanding of UI/UX fundamentals, observation, attention to detail and problem-solving.
+
+The round may include:
+- Identifying UI errors
+- UI/UX knowledge
+- Visual analysis
+- Design principles
+- Typography
+- Colour and contrast
+- Layout and spacing
+- Visual hierarchy
+- Usability
+- Other UI-related challenges
+
+Date & Time:
+To be announced by the organizers.
+
+Qualification:
+The number of teams qualifying for the offline rounds, qualification criteria and tie-breaking method will be announced before the round.
+
+==================================================
+ROUND 2 — THE PRESSURE TEST
+==================================================
+
+Mode:
+Offline UI Recreation Challenge
+
+Description:
+Teams receive a reference UI and must recreate it in Figma within the allotted time. The reference design can only be viewed during periods specified by the organizers.
+
+The challenge may evaluate:
+- Layout accuracy
+- Spacing
+- Typography
+- Colours
+- Components
+- Visual hierarchy
+- Alignment
+- Attention to detail
+- Overall visual similarity
+- Time management
+
+Power-Ups & Sabotage:
+Eligible power-ups and sabotages can be activated only during designated windows through the official event mechanism.
+
+Date & Time:
+Not specified in the supplied event information.
+
+==================================================
+ROUND 3 — THE SIGNATURE DISH
+==================================================
+
+Mode:
+Offline Final Round
+
+Description:
+Teams create an original digital product or interface using assigned domains, themes, requirements and design constraints.
+
+The challenge may require teams to:
+- Combine unrelated concepts
+- Develop a coherent product
+- Create a complete UI
+- Solve a defined user problem
+- Incorporate assigned design elements
+- Work within time constraints
+- Present design decisions
+
+Secret Ingredient:
+Teams may receive an additional requirement that must be incorporated into the final product. This may involve a UI interaction, feature, design pattern, visual constraint, user requirement or interaction requirement.
+
+Final Presentation:
+Teams present their product to the judges within an organizer-announced presentation time. The presentation may cover:
+- Problem statement
+- Target users
+- Product concept
+- User flow
+- Design decisions
+- UI/UX choices
+- Assigned themes and domains
+- Secret Ingredient
+- Key features
+- Demonstration of the final product
+
+Date:
+9 October 2026
+
+Venue:
+Pimpri Chinchwad College of Engineering (PCCOE), Pune
+
+==================================================
+DESIGN PLATFORM & TOOLS
+==================================================
+
+Primary Design Platform:
+Figma
+
+Canva:
+Canva may be used only where the organizers specifically permit it for a given round.
+
+Tool Restrictions:
+Permitted tools and resources will be announced before each round. Restrictions may apply to:
+- AI-generated designs
+- Pre-built templates
+- External UI kits
+- Previously created designs
+- Downloaded assets
+- External design systems
+- Other resources that could provide an unfair advantage
+
+AI Tools:
+The supplied announcement states that the event is a UI/UX competition; specific AI-tool permissions are not otherwise detailed in the supplied rulebook. Follow the round-specific organizer instructions.
+
+==================================================
+JUDGING / EVALUATION CRITERIA
+==================================================
+
+Final submissions may be judged on:
+- UI Design — quality, consistency and execution
+- UX — usability and user flow
+- Creativity — originality of the concept
+- Visual Design — typography, colour, hierarchy and composition
+- Problem Solving — quality of design decisions
+- Constraint Integration — effective use of assigned themes and requirements
+- Presentation — clarity and effectiveness of the pitch
+- Product Thinking — fit between problem, product and design
+
+The final weightage of each criterion will be announced by the organizers.
+
+==================================================
+ORIGINALITY & FAIR PLAY
+==================================================
+
+- Every submission must be original work of the submitting team.
+- Organizers may request working files to verify originality.
+- Participants must not copy another team's work.
+- Unauthorized templates or pre-existing designs must not be used where prohibited.
+- Previously completed work must not be submitted where prohibited.
+- Participants must not claim another person's work as their own.
+- Unauthorized collaboration is prohibited.
+- Manipulating XP or leaderboard data is prohibited.
+- Creating multiple accounts for an unfair advantage is prohibited.
+- Exploiting unintended system vulnerabilities is prohibited.
+- Accessing another team's files is prohibited.
+- Sharing restricted challenge material is prohibited.
+- Tampering with another team's work is prohibited.
+
+==================================================
+PRE-EVENT WEBSITE SECURITY
+==================================================
+
+The pre-event campaign may use a cybersecurity-themed interface or fictional scenarios. Only interactions deliberately provided by the organizers are part of the competition.
+
+Participants must not:
+- Attack the hosting infrastructure
+- Scan the actual server
+- Exploit vulnerabilities outside the intended challenge
+- Access restricted systems
+- Gain unauthorized database access
+- Modify or damage the website
+
+Attempts to compromise real infrastructure can lead to immediate disqualification.
+
+==================================================
+SUBMISSION RULES
+==================================================
+
+- All submissions must use the official submission mechanism.
+- Submissions must be made before the announced deadline.
+- Teams must ensure their submissions are accessible.
+- Teams may be asked to provide access to their working design files.
+- Changes after a deadline require organizer approval.
+- Organizers may check submissions for originality and compliance.
+
+==================================================
+DISQUALIFICATION
+==================================================
+
+The organizing committee may disqualify teams for:
+- Cheating
+- Plagiarism
+- Unauthorized collaboration
+- Manipulation of XP or coin systems
+- Unauthorized system access
+- Tampering with another team's work
+- Repeatedly breaking competition rules
+- Serious misconduct
+- Failure to follow organizer instructions
+
+Final disqualification decisions rest with the organizing committee.
+
+==================================================
+IMPORTANT DATES
+==================================================
+
+Event Date:
+9 October 2026
+
+Round 1 Date:
+To be announced.
+
+Round 2 Date:
+Not specified in the supplied event information.
+
+Round 3 / Final:
+9 October 2026
+
+Registration Deadline:
+Not specified in the supplied event information.
+
+==================================================
+PRIZES & CERTIFICATES
+==================================================
+
+Prize Pool:
+₹12,000
+
+Additional Benefits:
+- ACM Membership
+- Goodies
+- Swags
+
+==================================================
+ORGANIZER'S RIGHTS
+==================================================
+
+The organizing committee reserves the right to:
+- Change round timings
+- Change challenge formats
+- Adjust power-up availability
+- Adjust coin costs
+- Introduce or remove gameplay mechanics
+- Resolve unplanned situations
+- Change rules to maintain fairness
+- Disqualify teams that break the rules
+
+Significant changes will be communicated to participants where reasonably possible before they affect the relevant round.
+
+The decisions of the organizing committee and judging panel regarding results, disputes, penalties and disqualification are final.
+
+==================================================
+RESOURCES & DOCUMENTS
+==================================================
+
+Primary Design Platform:
+Figma
+
+Registration — PCCoE Students:
+https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+
+Registration — Other Colleges:
+https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+WhatsApp Group:
+https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk
+
+==================================================
+CONTACT
+==================================================
+
+Mayur Kharat:
+9960432698
+
+Samiksha Mote:
+7558726679
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+PCCoE Student Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+
+Other College Registration:
+https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+WhatsApp Group:
+https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is MasterChef UI 2026?
+A: A competitive UI/UX design event testing UI principles, observation, creativity, problem-solving, design execution and presentation, with an XP and MasterChef Coins strategy layer.
+
+Q: How many members can be in a team?
+A: Maximum 2 participants per team. The supplied rulebook does not state a minimum.
+
+Q: What are the stages of the competition?
+A: A Pre-Event Campaign followed by Round 1 — The Taste Test, Round 2 — The Pressure Test and Round 3 — The Signature Dish.
+
+Q: What is the Pre-Event Campaign?
+A: An online campaign where participants explore challenges and hidden content to earn XP, which may be converted into starting MasterChef Coins.
+
+Q: What are MasterChef Coins?
+A: The official in-event currency used for permitted power-ups, defensive abilities, hints, strategic advantages and sabotages. They cannot be bought with real money, exchanged for cash or transferred between teams.
+
+Q: What is The Taste Test?
+A: The online qualification round testing UI/UX knowledge, observation and problem-solving.
+
+Q: What is The Pressure Test?
+A: The offline UI recreation challenge where teams recreate a reference UI in Figma within the allotted time.
+
+Q: What is The Signature Dish?
+A: The offline final round where teams create an original UI/UX product using assigned themes, domains and constraints, followed by a presentation to judges.
+
+Q: What design platform is used?
+A: Figma is the primary platform. Canva may be used only when specifically permitted by the organizers.
+
+Q: When is the final?
+A: 9 October 2026 at PCCOE, Pune.
+
+Q: What is the registration fee?
+A: Registration is free for PCCoE students and ₹100 for students from other colleges.
+
+Q: What is the prize pool?
+A: ₹12,000, along with goodies, swags and ACM Membership.
+
+Q: What happens if a team breaks the rules?
+A: Cheating, plagiarism, unauthorized collaboration, XP/coin manipulation, unauthorized access, tampering and other serious rule violations can lead to disqualification.
+
+Q: Who makes the final decision?
+A: The organizing committee and judging panel have final authority over results, disputes, penalties and disqualification.
+
+Q: Whom should participants contact for queries?
+A: Mayur Kharat — 9960432698; Samiksha Mote — 7558726679.

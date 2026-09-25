@@ -152,8 +152,8 @@ class TestRealEventFile:
         """Verify the real event file loads successfully."""
         docs = load_documents(she_solves_path.parent)
         assert len(docs) >= 1
-        assert docs[0].metadata["event_id"] == "ANT-001"
-        assert "She Solves" in docs[0].metadata["event_name"]
+        event_names = [d.metadata["event_name"] for d in docs]
+        assert any("She Solves" in name for name in event_names)
 
     def test_chunk_real_file(self, she_solves_path):
         """Verify chunking the real event file produces valid chunks."""

@@ -1,0 +1,452 @@
+==================================================
+EVENT INFORMATION
+==================================================
+
+Event ID: ANT-006
+
+Event Name:
+IoThrone 2026
+
+Organized By:
+IoT Intelligence & Robotics Innovation Society(IIRIS), CESA, PCCOE
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+Department:
+Department of Computer Engineering
+
+Event Type:
+Innovation-driven hackathon
+
+Participation:
+Team (2 to 4 members)
+
+Format:
+3 Rounds
+
+
+==================================================
+EVENT OVERVIEW
+==================================================
+
+IoThrone 2026 is an innovation-driven hackathon that encourages
+participants to transform creative ideas into intelligent and
+functional prototypes using technologies such as AI, ML,
+Computer Vision, Edge AI, IoT, Robotics, and Hardware.
+
+The event provides a hands-on platform to ideate, build, integrate,
+and demonstrate technology-based solutions to real-world problems.
+
+Participants go beyond just presenting an idea by developing a
+working prototype and showcasing its capabilities in a practical
+environment.
+
+The hackathon follows a three-stage journey:
+
+Concept → Prototype → Real-Time Integration
+
+The three stages test participants' innovation, technical skills,
+implementation, problem-solving, and ability to create practical
+solutions.
+
+
+==================================================
+ELIGIBILITY
+==================================================
+
+Eligibility details were not provided in the supplied event
+information.
+
+- Teams must consist of 2 to 4 members.
+- Participants must complete the registration process within the
+  given timeline.
+
+
+==================================================
+REGISTRATION
+==================================================
+
+Registration Platform:
+Visit specific event page.
+
+
+Registration Deadline:
+27 September 2026
+
+Registration Fee:
+Visit specific event page.
+
+Registration Requirements:
+The PPT must be submitted along with the registration for Round 1.
+
+Registration Link:
+https://forms.gle/FKJYg5FCdXdSHWmW7
+
+
+==================================================
+EVENT HIGHLIGHTS
+==================================================
+
+Team Size:
+2 to 4 members
+
+Technologies:
+- Artificial Intelligence (AI)
+- Machine Learning (ML)
+- Computer Vision
+- Edge AI
+- Internet of Things (IoT)
+- Robotics
+- Hardware
+
+
+==================================================
+EVENT FORMAT
+==================================================
+
+The hackathon consists of 3 rounds:
+
+Round 1:
+Online PPT Evaluation
+
+Round 2:
+Offline Prototype Demonstration
+
+Round 3:
+Offline Real-Time Implementation
+
+
+==================================================
+ROUND 1 — PPT EVALUATION
+==================================================
+
+Mode:
+Online
+
+Description:
+Round 1 focuses on evaluating the team's idea, innovation, and
+technical approach through a PowerPoint presentation.
+
+The PPT must be submitted along with the event registration.
+
+Teams should cover:
+- Problem Statement – The real-world problem and its importance.
+- Proposed Solution – How the solution addresses the problem.
+- Innovation – Unique features and what makes the idea different.
+- Technology Stack – AI/ML, IoT, hardware, software, sensors,
+  and other technologies.
+- System Architecture – Overall working flow and interaction
+  between components.
+- Implementation Plan – Steps involved in developing the prototype.
+- Feasibility & Impact – Practicality, scalability, and expected
+  real-world benefits.
+
+Evaluation will focus on:
+- Problem Understanding
+- Innovation
+- Technical Approach
+- Feasibility
+- Implementation Plan
+- Real-World Applicability
+
+
+==================================================
+ROUND 2 — PROTOTYPE DEMONSTRATION
+==================================================
+
+Mode:
+Offline
+
+Description:
+Round 2 focuses on evaluating the team's working prototype,
+technical implementation, and practical applicability.
+
+Selected teams will demonstrate their prototype before an internal
+judging panel.
+
+The demonstration will cover:
+- Technology
+- System Working
+- Innovation
+- Real-World Use
+- Performance
+- Scalability
+
+Date:
+9 October 2026
+
+Time:
+9:00 AM – 4:00 PM
+
+Venue:
+6206 LAB & 6218 LAB
+
+Presentation Slots:
+Each team will be assigned an individual slot within the given
+time window.
+
+Slot Allocation:
+Team-wise slots will be communicated before Round 2.
+
+Evaluation:
+The prototype will be evaluated by the internal judging panel.
+
+Selection:
+The Top 15 teams will advance to Round 3 —
+Real-Time Integration Challenge.
+
+
+==================================================
+ROUND 3 — REAL-TIME IMPLEMENTATION
+==================================================
+
+Mode:
+Offline
+
+Description:
+Round 3 focuses on evaluating the team's ability to adapt,
+integrate, and implement their working prototype in a
+real-time environment.
+
+The Top 15 teams will work with the provided/assigned environment
+or system and demonstrate how effectively their solution can be
+integrated and made functional under real-world conditions.
+
+Date:
+10 October 2026
+
+Time:
+10:00 AM – 2:00 PM
+
+Venue:
+6206 LAB & 6218 LAB
+
+Participants:
+Top 15 teams from Round 2
+
+Evaluation:
+Final evaluation will focus on:
+- Real-Time Integration
+- Functionality
+- Adaptability
+- Technical Implementation
+- Innovation
+- Demonstration
+
+
+==================================================
+GENERAL RULES & REGULATIONS
+==================================================
+
+- Teams must consist of 2-4 members.
+- Participants must complete the registration process within the
+  given timeline.
+- The PPT must be submitted along with the registration for Round 1.
+- Teams must use original ideas and work. Plagiarism or copied
+  projects may lead to disqualification.
+- Participants are responsible for bringing the required hardware,
+  components, and development equipment for their prototype.
+- Teams must report to the venue according to their assigned
+  slot/timing.
+- Participants must follow the instructions given by the organizing
+  and judging panel throughout the event.
+- Teams must ensure their prototype is safe to operate and does not
+  cause damage to equipment or the venue.
+- The decision of the judging panel will be final.
+- Any changes in schedule, venue, or round requirements will be
+  communicated by the organizing team.
+
+
+==================================================
+HARDWARE & TECHNOLOGIES
+==================================================
+
+Participants are responsible for bringing the required hardware,
+components, and development equipment for their prototype.
+
+Technologies mentioned in the supplied event information:
+- Artificial Intelligence (AI)
+- Machine Learning (ML)
+- Computer Vision
+- Edge AI
+- Internet of Things (IoT)
+- Robotics
+- Hardware
+
+
+==================================================
+JUDGING / EVALUATION CRITERIA
+==================================================
+
+Round 1:
+- Problem Understanding
+- Innovation
+- Technical Approach
+- Feasibility
+- Implementation Plan
+- Real-World Applicability
+
+Round 2:
+- Technology
+- System Working
+- Innovation
+- Real-World Use
+- Performance
+- Scalability
+
+Round 3:
+- Real-Time Integration
+- Functionality
+- Adaptability
+- Technical Implementation
+- Innovation
+- Demonstration
+
+
+==================================================
+IMPORTANT DATES
+==================================================
+
+Round 2:
+9 October 2026
+
+Round 3:
+10 October 2026
+
+Round 1 Registration & PPT Submission Deadline:
+27 September 2026
+
+
+==================================================
+PRIZE DISTRIBUTION
+==================================================
+
+Prize Pool:
+₹15,000+
+
+Additional Benefits:
+- Exciting Goodies
+- ACM Chapter Membership
+
+
+==================================================
+RESOURCES & DOCUMENTS
+==================================================
+
+Rulebook:
+Supplied event information refers to a rulebook extraction, but
+no separate readable rulebook content was provided.
+
+PPT Template:
+Not provided in the supplied event information.
+
+Drive Folder:
+https://drive.google.com/file/d/1GWTIgtFIbSpEH3tGjijOGVBm91hj7Xz6/view?usp=sharing
+
+Other Resources:
+Not provided in the supplied event information.
+
+
+==================================================
+CONTACT
+==================================================
+
+Student/Organizer Contact:
+
+Tejas Bankar
+Phone: 9850350084
+
+Aditya Lodhi
+Phone: 7972496216
+
+
+==================================================
+IMPORTANT LINKS
+==================================================
+
+Registration Platform:
+Google Forms
+
+Registration URL:
+https://forms.gle/FKJYg5FCdXdSHWmW7
+
+Rulebook:
+Not provided as a separate readable document.
+
+PPT Template:
+Not provided in the supplied event information.
+
+Drive Folder:
+Not provided in the supplied event information.
+
+Instagram:
+https://www.instagram.com/iiris_pccoe?stkn=dzlhODhkZjdkZTYy
+
+Website:
+https://iiris.vercel.app/
+
+
+==================================================
+FAQ / DIRECT ANSWERS
+==================================================
+
+Q: What is IoThrone 2026?
+A: IoThrone 2026 is an innovation-driven hackathon focused on
+transforming creative ideas into intelligent and functional
+prototypes.
+
+Q: What is the team size?
+A: Teams must consist of 2 to 4 members.
+
+Q: What are the participation requirements?
+A: Teams should have original and innovative project ideas and must arrange their required hardware and components.
+
+Q: How many rounds are there?
+A: The hackathon consists of three rounds: Online PPT Evaluation,
+Offline Prototype Demonstration, and Offline Real-Time
+Implementation.
+
+Q: What technologies can be used?
+A: The supplied event information mentions AI, ML, Computer Vision,
+Edge AI, IoT, Robotics, and Hardware.
+
+Q: What happens in Round 1?
+A: Round 1 evaluates the team's idea, innovation, and technical
+approach through a PowerPoint presentation.
+
+Q: What happens in Round 2?
+A: Selected teams demonstrate their working prototype before an
+internal judging panel.
+
+Q: What is the Round 1 submission deadline?
+A: Registration and PPT submission close on 27 September 2026.
+
+Q: When is Round 2?
+A: Round 2 is on 9 October 2026 from 9:00 AM to 4:00 PM at
+6206 LAB & 6218 LAB.
+
+Q: How many teams advance from Round 2?
+A: The Top 15 teams advance to Round 3.
+
+Q: What happens in Round 3?
+A: The Top 15 teams work with the provided or assigned environment
+or system and demonstrate real-time integration and functionality.
+
+Q: When is Round 3?
+A: Round 3 is on 10 October 2026 from 10:00 AM to 2:00 PM at
+6206 LAB & 6218 LAB.
+
+Q: What are the main evaluation areas in the final round?
+A: Real-Time Integration, Functionality, Adaptability, Technical
+Implementation, Innovation, and Demonstration.
+
+Q: Where can participants register?
+A: Registration is available through the official Google Forms link provided in the event announcement.
+
+Q: Where can participants find updates?
+A: Updates are available through the IIRIS Instagram page and website.
+
+Q: Who should participants contact?
+A: The supplied contact details are Tejas Bankar at 9850350084 and
+Aditya Lodhi at 7972496216.
