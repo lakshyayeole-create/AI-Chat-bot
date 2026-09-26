@@ -49,11 +49,11 @@ async def chat(request: ChatRequest) -> ChatResponse:
         logger.error("Chat pipeline error: %s", str(e))
         raise HTTPException(
             status_code=503,
-            detail="The chatbot is temporarily unavailable. Please try again.",
+            detail=str(e),
         )
     except Exception as e:
         logger.error("Unexpected error in chat endpoint: %s", str(e))
         raise HTTPException(
             status_code=500,
-            detail="The chatbot is temporarily unavailable. Please try again.",
+            detail=str(e),
         )

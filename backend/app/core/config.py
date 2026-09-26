@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     max_message_length: int = 1000
 
     model_config = {
-        "env_file": ".env",
+        "env_file": str(Path(__file__).resolve().parent.parent.parent / ".env"),
         "env_file_encoding": "utf-8",
         "extra": "ignore",
     }

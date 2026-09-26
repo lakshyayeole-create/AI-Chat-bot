@@ -102,10 +102,10 @@
         <!-- Quick Query Chips Bar -->
         <div class="anantya-hud-chips-bar" id="anantya-hud-chips">
           ${CONFIG.quickChips
-            .map(
-              (chip) => `<button class="anantya-hud-chip" data-prompt="${chip}">${chip}</button>`
-            )
-            .join("")}
+        .map(
+          (chip) => `<button class="anantya-hud-chip" data-prompt="${chip}">${chip}</button>`
+        )
+        .join("")}
         </div>
 
         <!-- Input Deck -->
@@ -264,7 +264,7 @@
         try {
           const errData = await response.json();
           if (errData.detail) errorDetail = errData.detail;
-        } catch (_) {}
+        } catch (_) { }
         throw new Error(errorDetail);
       }
 
