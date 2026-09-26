@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANANTYA '26 — PCCOE Tech Fest</title>
+
+  <!-- High-Tech & Futuristic Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <!-- 1. Website Stylesheet (Customizable & Separated) -->
+  <link rel="stylesheet" href="website.css" />
+
+  <!-- 2. Hologram Chatbot HUD Stylesheet (Self-Contained Module) -->
+  <link rel="stylesheet" href="chatbot/chatbot.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <span class="nav-logo-badge">PCCOE ACM-W</span>
+        <span class="nav-brand-title">ANANTYA '26</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#events" class="nav-link">Events</a></li>
+        <li><a href="#hackathons" class="nav-link">Hackathons</a></li>
+      </ul>
+
+      <button class="nav-cta-btn" data-action="open-chatbot">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        AI Event Assistant
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero" id="about">
+    <div class="hero-tag">◈ ANNUAL FLAGSHIP TECHNICAL SYMPOSIUM ◈</div>
+    <h1 class="hero-title">ANANTYA '26</h1>
+    <h2 class="hero-subtitle">TIME STONE — IDEAS BEYOND TIME</h2>
+    <p class="hero-description">
+      Organized by the Department of Computer Engineering and PCCOE ACM-W Student Chapter.
+      Innovate, build, and present technology-driven solutions to real-world challenges.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn-primary" data-action="open-chatbot">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Ask Hologram Assistant
+      </button>
+      <a href="#hackathons" class="btn-secondary">Explore Hackathons</a>
+    </div>
+  </header>
+
+  <!-- Event Stats Strip -->
+  <section class="stats-strip">
+    <div class="stat-card">
+      <div class="stat-value">₹16,000</div>
+      <div class="stat-label">Prize Pool (She Solves)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">2 - 4</div>
+      <div class="stat-label">Team Members</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">MULTI-STAGE</div>
+      <div class="stat-label">Hackathon Format</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">RAG AI</div>
+      <div class="stat-label">Grounded Assistant</div>
+    </div>
+  </section>
+
+  <!-- Flagship Event Showcase -->
+  <section class="section" id="hackathons">
+    <div class="section-header">
+      <div class="section-tag">Flagship Competition</div>
+      <h3 class="section-title">She Solves 3.0</h3>
+    </div>
+
+    <div class="event-featured-card">
+      <div class="event-details">
+        <h4 class="event-details-title">She Solves 3.0 Hackathon</h4>
+        <p class="event-details-desc">
+          A multi-stage women-oriented hackathon providing a platform for female innovators
+          to solve real-world problems through cutting-edge technology and social impact.
+        </p>
+
+        <div class="event-meta-grid">
+          <div class="event-meta-item">
+            <span class="event-meta-label">Eligibility</span>
+            <div class="event-meta-val">Female Students Only</div>
+          </div>
+          <div class="event-meta-item">
+            <span class="event-meta-label">PCCOE Registration</span>
+            <div class="event-meta-val">₹0 (Free)</div>
+          </div>
+          <div class="event-meta-item">
+            <span class="event-meta-label">External Registration</span>
+            <div class="event-meta-val">₹100</div>
+          </div>
+          <div class="event-meta-item">
+            <span class="event-meta-label">Perks</span>
+            <div class="event-meta-val">Goodies & Certificates</div>
+          </div>
+        </div>
+
+        <button class="btn-primary" data-query="Tell me the rules and team requirements for She Solves 3.0">
+          Ask AI About Rules & Registration
+        </button>
+      </div>
+
+      <div class="event-ai-promo">
+        <h4>Need Instant Answers?</h4>
+        <p>
+          Our Hologram RAG AI assistant has ingested the official event document and can answer
+          any question in real-time.
+        </p>
+        <button class="btn-secondary" data-action="open-chatbot">
+          Launch Hologram HUD
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      © ANANTYA '26 • Pimpri Chinchwad College of Engineering (PCCOE), Pune.
+      Powered by <strong>Grok / Groq RAG Engine</strong>.
+    </p>
+  </footer>
+
+  <!-- 1. Website Scripts -->
+  <script src="website.js"></script>
+
+  <!-- 2. Hologram Chatbot Module (Self-Mounting Plug & Play) -->
+  <script src="chatbot/chatbot.js" defer></script>
+
+</body>
+</html>

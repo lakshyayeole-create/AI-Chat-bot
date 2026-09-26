@@ -1,0 +1,646 @@
+/* ==========================================================================
+   ANANTYA HOLOGRAM CHATBOT HUD — STYLESHEET
+   Self-contained, namespaced (.anantya-hud-*) to prevent CSS collisions.
+   ========================================================================== */
+
+:root {
+  --hud-cyan: #00f3ff;
+  --hud-cyan-dim: rgba(0, 243, 255, 0.25);
+  --hud-cyan-glow: 0 0 16px rgba(0, 243, 255, 0.45);
+  --hud-blue: #0a84ff;
+  --hud-purple: #a855f7;
+  --hud-purple-glow: 0 0 16px rgba(168, 85, 247, 0.4);
+  --hud-emerald: #00ff9d;
+  --hud-bg-dark: rgba(3, 7, 18, 0.92);
+  --hud-bg-panel: rgba(8, 19, 37, 0.82);
+  --hud-border: rgba(0, 243, 255, 0.35);
+  --hud-border-hover: rgba(0, 243, 255, 0.8);
+  --hud-text-main: #e2f8ff;
+  --hud-text-dim: #7da5bf;
+  --hud-font-mono: "Share Tech Mono", "JetBrains Mono", Consolas, "Courier New", monospace;
+  --hud-font-sans: "Rajdhani", "Orbitron", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   1. FLOATING CIRCULAR LAUNCHER (BOTTOM-RIGHT)
+   -------------------------------------------------------------------------- */
+.anantya-hud-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(0, 243, 255, 0.3), rgba(3, 7, 18, 0.95));
+  border: 2px solid var(--hud-cyan);
+  box-shadow: 0 0 24px rgba(0, 243, 255, 0.4), inset 0 0 12px rgba(0, 243, 255, 0.3);
+  cursor: pointer;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  user-select: none;
+  padding: 0;
+  outline: none;
+}
+
+.anantya-hud-launcher:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 0 35px rgba(0, 243, 255, 0.75), inset 0 0 18px rgba(0, 243, 255, 0.5);
+}
+
+.anantya-hud-launcher:active {
+  transform: scale(0.95);
+}
+
+/* Pulsing outer holographic aura */
+.anantya-hud-launcher::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed var(--hud-cyan);
+  animation: anantya-rotate 12s linear infinite;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.anantya-hud-launcher::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 243, 255, 0.25);
+  animation: anantya-pulse-aura 2.5s ease-out infinite;
+  pointer-events: none;
+}
+
+/* Rotating launcher core icon */
+.anantya-hud-launcher-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--hud-cyan);
+  filter: drop-shadow(0 0 6px var(--hud-cyan));
+  transition: transform 0.4s ease;
+}
+
+.anantya-hud-launcher.is-open .anantya-hud-launcher-icon {
+  transform: rotate(90deg);
+}
+
+/* Status indicator badge on launcher */
+.anantya-hud-status-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--hud-emerald);
+  border: 2px solid #030712;
+  box-shadow: 0 0 8px var(--hud-emerald);
+  transition: background 0.3s ease;
+}
+
+.anantya-hud-status-badge.is-offline {
+  background: #ff3366;
+  box-shadow: 0 0 8px #ff3366;
+}
+
+/* --------------------------------------------------------------------------
+   2. HOLOGRAM HUD CHAT WINDOW
+   -------------------------------------------------------------------------- */
+.anantya-hud-window {
+  position: fixed;
+  bottom: 104px;
+  right: 28px;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  height: 620px;
+  max-height: calc(100vh - 130px);
+  background: var(--hud-bg-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--hud-border);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 243, 255, 0.25), inset 0 0 30px rgba(0, 243, 255, 0.04);
+  border-radius: 14px;
+  z-index: 99998;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--hud-font-sans);
+  color: var(--hud-text-main);
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.anantya-hud-window.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* Futuristic corner clips / brackets */
+.anantya-hud-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border-top: 3px solid var(--hud-cyan);
+  border-left: 3px solid var(--hud-cyan);
+  border-top-left-radius: 12px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.anantya-hud-window::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  border-bottom: 3px solid var(--hud-cyan);
+  border-right: 3px solid var(--hud-cyan);
+  border-bottom-right-radius: 12px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Hologram scanline effect layer */
+.anantya-hud-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 243, 255, 0.025) 2px,
+    rgba(0, 243, 255, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.8;
+  animation: anantya-scanline-scroll 10s linear infinite;
+}
+
+/* --------------------------------------------------------------------------
+   3. HUD HEADER
+   -------------------------------------------------------------------------- */
+.anantya-hud-header {
+  position: relative;
+  z-index: 6;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, rgba(0, 243, 255, 0.08) 0%, rgba(3, 7, 18, 0.4) 100%);
+  border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.anantya-hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.anantya-hud-core-orb {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--hud-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+.anantya-hud-core-orb::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--hud-cyan);
+  box-shadow: 0 0 8px var(--hud-cyan);
+  animation: anantya-pulse-core 1.8s ease-in-out infinite alternate;
+}
+
+.anantya-hud-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.anantya-hud-title {
+  font-family: var(--hud-font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--hud-cyan);
+  text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.anantya-hud-subtitle {
+  font-family: var(--hud-font-mono);
+  font-size: 10.5px;
+  color: var(--hud-text-dim);
+  letter-spacing: 0.8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.anantya-hud-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hud-emerald);
+  box-shadow: 0 0 6px var(--hud-emerald);
+  display: inline-block;
+}
+
+.anantya-hud-live-dot.is-offline {
+  background: #ff3366;
+  box-shadow: 0 0 6px #ff3366;
+}
+
+.anantya-hud-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.anantya-hud-btn-icon {
+  background: transparent;
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  color: var(--hud-text-dim);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.anantya-hud-btn-icon:hover {
+  color: var(--hud-cyan);
+  border-color: var(--hud-cyan);
+  background: rgba(0, 243, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   4. CHAT MESSAGES STREAM
+   -------------------------------------------------------------------------- */
+.anantya-hud-stream {
+  position: relative;
+  z-index: 6;
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+
+/* Custom glowing cyber scrollbar */
+.anantya-hud-stream::-webkit-scrollbar {
+  width: 5px;
+}
+
+.anantya-hud-stream::-webkit-scrollbar-track {
+  background: rgba(0, 243, 255, 0.03);
+}
+
+.anantya-hud-stream::-webkit-scrollbar-thumb {
+  background: rgba(0, 243, 255, 0.25);
+  border-radius: 3px;
+}
+
+.anantya-hud-stream::-webkit-scrollbar-thumb:hover {
+  background: var(--hud-cyan);
+  box-shadow: 0 0 6px var(--hud-cyan);
+}
+
+/* Transmission wrapper */
+.anantya-hud-msg {
+  display: flex;
+  flex-direction: column;
+  max-width: 86%;
+  animation: anantya-fade-in 0.3s ease forwards;
+}
+
+.anantya-hud-msg.user {
+  align-self: flex-end;
+}
+
+.anantya-hud-msg.assistant {
+  align-self: flex-start;
+}
+
+.anantya-hud-msg-meta {
+  font-family: var(--hud-font-mono);
+  font-size: 10px;
+  color: var(--hud-text-dim);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.anantya-hud-msg.user .anantya-hud-msg-meta {
+  justify-content: flex-end;
+  color: rgba(0, 243, 255, 0.7);
+}
+
+.anantya-hud-bubble {
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  word-break: break-word;
+  position: relative;
+}
+
+/* User Hologram Transmission */
+.anantya-hud-msg.user .anantya-hud-bubble {
+  background: linear-gradient(135deg, rgba(0, 243, 255, 0.15), rgba(10, 132, 255, 0.2));
+  border: 1px solid rgba(0, 243, 255, 0.5);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 243, 255, 0.2);
+  border-bottom-right-radius: 2px;
+}
+
+/* Assistant Hologram Transmission */
+.anantya-hud-msg.assistant .anantya-hud-bubble {
+  background: var(--hud-bg-panel);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  color: var(--hud-text-main);
+  box-shadow: inset 0 0 16px rgba(0, 243, 255, 0.03);
+  border-bottom-left-radius: 2px;
+}
+
+.anantya-hud-bubble p {
+  margin: 0 0 8px 0;
+}
+
+.anantya-hud-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.anantya-hud-bubble ul, .anantya-hud-bubble ol {
+  margin: 4px 0 6px 18px;
+  padding: 0;
+}
+
+.anantya-hud-bubble li {
+  margin-bottom: 3px;
+}
+
+.anantya-hud-bubble strong {
+  color: var(--hud-cyan);
+  font-weight: 600;
+}
+
+/* Hologram Source Citations */
+.anantya-hud-sources {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0, 243, 255, 0.15);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.anantya-hud-source-chip {
+  font-family: var(--hud-font-mono);
+  font-size: 10px;
+  background: rgba(0, 243, 255, 0.08);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  color: var(--hud-cyan);
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.5px;
+}
+
+/* --------------------------------------------------------------------------
+   5. DECODING TRANSMISSION VISUALIZER (LOADING STATE)
+   -------------------------------------------------------------------------- */
+.anantya-hud-visualizer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(0, 243, 255, 0.05);
+  border: 1px dashed rgba(0, 243, 255, 0.3);
+  border-radius: 8px;
+  font-family: var(--hud-font-mono);
+  font-size: 11px;
+  color: var(--hud-cyan);
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.anantya-hud-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 14px;
+}
+
+.anantya-hud-bar {
+  width: 3px;
+  height: 100%;
+  background: var(--hud-cyan);
+  box-shadow: 0 0 6px var(--hud-cyan);
+  animation: anantya-bars 1s ease-in-out infinite alternate;
+}
+
+.anantya-hud-bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.anantya-hud-bar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* --------------------------------------------------------------------------
+   6. QUICK QUERY PROMPT CHIPS
+   -------------------------------------------------------------------------- */
+.anantya-hud-chips-bar {
+  position: relative;
+  z-index: 6;
+  padding: 8px 14px 4px 14px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.anantya-hud-chips-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.anantya-hud-chip {
+  background: rgba(8, 19, 37, 0.9);
+  border: 1px solid rgba(0, 243, 255, 0.25);
+  color: var(--hud-text-dim);
+  font-size: 11.5px;
+  font-family: var(--hud-font-mono);
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.anantya-hud-chip:hover {
+  color: var(--hud-cyan);
+  border-color: var(--hud-cyan);
+  background: rgba(0, 243, 255, 0.12);
+  box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   7. INPUT DECK
+   -------------------------------------------------------------------------- */
+.anantya-hud-input-deck {
+  position: relative;
+  z-index: 6;
+  padding: 12px 14px;
+  background: linear-gradient(0deg, rgba(0, 243, 255, 0.05) 0%, rgba(3, 7, 18, 0.8) 100%);
+  border-top: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.anantya-hud-input-box {
+  display: flex;
+  align-items: center;
+  background: rgba(6, 14, 28, 0.9);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-radius: 8px;
+  padding: 4px 6px 4px 12px;
+  transition: all 0.25s ease;
+}
+
+.anantya-hud-input-box:focus-within {
+  border-color: var(--hud-cyan);
+  box-shadow: 0 0 14px rgba(0, 243, 255, 0.35), inset 0 0 8px rgba(0, 243, 255, 0.1);
+}
+
+.anantya-hud-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--hud-font-sans);
+  font-size: 13.5px;
+  color: var(--hud-text-main);
+  padding: 8px 4px;
+}
+
+.anantya-hud-input::placeholder {
+  color: rgba(125, 165, 191, 0.5);
+  font-family: var(--hud-font-mono);
+  font-size: 12px;
+}
+
+.anantya-hud-send-btn {
+  background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(10, 132, 255, 0.4));
+  border: 1px solid var(--hud-cyan);
+  color: var(--hud-cyan);
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.anantya-hud-send-btn:hover:not(:disabled) {
+  background: var(--hud-cyan);
+  color: #030712;
+  box-shadow: 0 0 12px var(--hud-cyan);
+  transform: scale(1.05);
+}
+
+.anantya-hud-send-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(0, 243, 255, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   8. KEYFRAME ANIMATIONS
+   -------------------------------------------------------------------------- */
+@keyframes anantya-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes anantya-pulse-aura {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes anantya-pulse-core {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 8px var(--hud-cyan)); }
+}
+
+@keyframes anantya-scanline-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 400px; }
+}
+
+@keyframes anantya-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes anantya-bars {
+  0% { height: 4px; }
+  100% { height: 14px; }
+}
+
+/* --------------------------------------------------------------------------
+   9. MOBILE RESPONSIVENESS
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .anantya-hud-launcher {
+    bottom: 18px;
+    right: 18px;
+    width: 56px;
+    height: 56px;
+  }
+
+  .anantya-hud-window {
+    bottom: 84px;
+    right: 14px;
+    left: 14px;
+    width: auto;
+    max-width: none;
+    height: calc(100vh - 110px);
+  }
+}
