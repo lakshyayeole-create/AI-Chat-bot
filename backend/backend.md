@@ -36,7 +36,7 @@ The current backend must be designed so that the 8 `.txt` files can be added lat
 - Text cleaning
 - Chunking
 - Embedding generation
-- Local vector database/index using FAISS
+- Local vector database/index using Qdrant
 - Semantic retrieval
 - Context construction
 - LLM integration
@@ -88,7 +88,7 @@ FastAPI Backend
     |
     +--> Query embedding
     |
-    +--> FAISS semantic search
+    +--> Qdrant semantic search
     |
     +--> Relevant document chunks
     |
@@ -169,7 +169,7 @@ backend/
 │   └── event_008.txt
 │
 ├── vector_store/
-│   ├── index.faiss
+│   ├── index.Qdrant
 │   └── metadata.json
 │
 ├── scripts/
@@ -256,7 +256,7 @@ The ingestion pipeline should:
 4. Clean unnecessary formatting without destroying URLs or meaningful labels.
 5. Split the document into semantic chunks.
 6. Generate an embedding for every chunk.
-7. Store embeddings in FAISS.
+7. Store embeddings in Qdrant.
 8. Store chunk text + metadata in `metadata.json`.
 9. Save the resulting index under `vector_store/`.
 
@@ -356,7 +356,7 @@ Do not create the index using one embedding model and query it using another.
 
 # 10. Vector Store
 
-Use FAISS for the initial implementation.
+Use Qdrant for the initial implementation.
 
 Reason:
 
@@ -374,13 +374,13 @@ The vector store should expose functions such as:
 - load_index(...)
 - search(...)
 
-FAISS should store vectors.
+Qdrant should store vectors.
 
 The actual chunk text and metadata should be stored separately in a serializable file such as:
 
 `vector_store/metadata.json`
 
-The FAISS index position must correspond correctly to the metadata entry.
+The Qdrant index position must correspond correctly to the metadata entry.
 
 ---
 
@@ -398,7 +398,7 @@ Embedding model
     ↓
 Query vector
     ↓
-FAISS search
+Qdrant search
     ↓
 Top K chunks
     ↓
@@ -860,7 +860,7 @@ The script should:
 2. Load all files.
 3. Chunk all files.
 4. Generate embeddings.
-5. Build FAISS index.
+5. Build Qdrant index.
 6. Save metadata.
 7. Print an ingestion summary.
 
@@ -870,7 +870,7 @@ Loaded documents: 8
 Total chunks: 64
 Embedding model: <model>
 Vector dimension: <dimension>
-FAISS index created: yes
+Qdrant index created: yes
 Metadata saved: yes
 
 Do not hardcode the expected number of chunks because the number depends on the actual content.
@@ -956,7 +956,7 @@ Do NOT introduce:
 
 unless there is a concrete requirement later.
 
-A single FastAPI backend with a local FAISS index is sufficient for the MVP.
+A single FastAPI backend with a local Qdrant index is sufficient for the MVP.
 
 ---
 
@@ -976,9 +976,9 @@ The implementation is complete when:
 
 [ ] Embeddings are generated.
 
-[ ] FAISS index is created and saved.
+[ ] Qdrant index is created and saved.
 
-[ ] Metadata is saved and aligned with FAISS vectors.
+[ ] Metadata is saved and aligned with Qdrant vectors.
 
 [ ] FastAPI can load the saved vector index.
 
@@ -1088,7 +1088,7 @@ Validate request
   ↓
 Create query embedding
   ↓
-FAISS semantic search
+Qdrant semantic search
   ↓
 Retrieve relevant chunks
   ↓

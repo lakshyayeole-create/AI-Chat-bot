@@ -1,0 +1,1450 @@
+[
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-001-EVENT_INFORMATION-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT INFORMATION\n\nEvent ID: ANT-001\n\nEvent Name: BYTEME CTF '26\n\nEvent Edition: ANANTYA '26\n\nTheme / Tagline:\nThink. Hack. Capture the Flag.\n\nEvent Type: Cybersecurity Capture The Flag (CTF)\n\nFormat: Jeopardy-Style CTF\n\nOrganized By:\nOWASP PCCOE Student Chapter\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE), Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nOverview:\nBYTEME CTF is a Jeopardy-style Capture The Flag competition\nwhere participants solve cybersecurity challenges, uncover hidden\nflags, and submit valid flags through the official CTF platform.\n\nThe competition includes challenges across multiple cybersecurity\ndomains, including:\n- Web\n- OSINT\n- Forensics\n- Cryptography\n- Networking\n- Linux\n- More cybersecurity domains"
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-001-EVENT_INFORMATION-02",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT INFORMATION\n\nincluding:\n- Web\n- OSINT\n- Forensics\n- Cryptography\n- Networking\n- Linux\n- More cybersecurity domains\n\nParticipants earn points by successfully solving challenges.\nChallenges may be solved in any order unless otherwise stated,\nand the official scoreboard determines the final standings."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT HIGHLIGHTS",
+    "chunk_id": "ANT-001-EVENT_HIGHLIGHTS-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT HIGHLIGHTS\n\nPrize Pool:\n₹1.5 LAKH+ (as stated in the event announcement)\n\nTeam Size:\n1 to 2 members\n\nParticipation:\nIndividual and team participation is permitted, subject to\nthe official registration portal.\n\nVenue:\nPimpri Chinchwad College of Engineering (PCCOE)\n\nDate:\n9 October 2026\n\nTime:\n9:00 AM to 6:00 PM"
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-001-EVENT_FORMAT-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT FORMAT\n\nCompetition Format:\nJeopardy-Style Capture The Flag\n\nParticipants will:\n- Solve cybersecurity challenges\n- Submit valid flags through the official CTF platform\n- Earn points based on successfully solved challenges\n- Compete according to the official scoreboard\n\nChallenges:\nMultiple cybersecurity domains\n\nChallenge Order:\nChallenges may be solved in any order unless otherwise stated.\n\nScoreboard:\nThe official scoreboard determines the final standings.\n\nScoreboard Freeze:\n6:00 PM\n\nTie-Breaking:\nAnnounced tie-breaking mechanisms will apply in case of a tie."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT SCHEDULE",
+    "chunk_id": "ANT-001-EVENT_SCHEDULE-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT SCHEDULE\n\nDate:\nFriday, 9 October 2026\n\nTime : 9:00 AM - 6:00 PM"
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "TEAM & PARTICIPATION RULES",
+    "chunk_id": "ANT-001-TEAM_PARTICIPATION_RULES-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: TEAM & PARTICIPATION RULES\n\n- A participant may belong to only one registered team.\n- Team composition is final after registration unless approved\n  by the organizers.\n- Participants must carry a valid student ID card.\n- Participants must bring their own laptop and required\n  accessories.\n- Only registered team accounts and credentials may be used."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "ALLOWED ACTIVITIES",
+    "chunk_id": "ANT-001-ALLOWED_ACTIVITIES-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: ALLOWED ACTIVITIES\n\n- Collaboration is allowed only with members of your own\n  registered team.\n- Public documentation and technical resources may be used.\n- Scripts, debuggers, disassemblers, packet-analysis tools,\n  and other legitimate tools may be used.\n- Technical clarifications and issues should be reported through\n  the official BYTEME CTF communication channels."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "PROHIBITED ACTIVITIES",
+    "chunk_id": "ANT-001-PROHIBITED_ACTIVITIES-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: PROHIBITED ACTIVITIES\n\nParticipants must NOT:\n\n- Share flags, complete solutions, challenge answers, or\n  information that gives another team an unfair advantage.\n- Share team accounts or credentials.\n- Use another team's account.\n- Attack the CTF platform or scoreboard.\n- Attack the registration system or PCCOE infrastructure.\n- Attack other participants.\n- Perform denial-of-service attacks.\n- Disrupt CTF services.\n- Access, modify, delete, or damage another team's data or\n  competition environment.\n- Publish or distribute active flags or solutions before\n  the competition ends."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FINAL RULES",
+    "chunk_id": "ANT-001-FINAL_RULES-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FINAL RULES\n\n- Clarifications, technical issues, and suspected unintended\n  vulnerabilities must be reported through official BYTEME CTF\n  communication channels.\n- Communication channels must not be used to distribute flags\n  or complete solutions during the competition.\n- Participants or teams may be disqualified for rule violations,\n  flag/solution sharing, unauthorized attacks, result manipulation,\n  disruption, or bypassing competition controls.\n- Flag sharing with another team may result in disqualification\n  of the entire team and removal from the final standings.\n- Organizers' decisions regarding rule enforcement, challenge\n  validity, and competition integrity are final.\n- Necessary schedule or competition changes will be communicated\n  through official event channels.\n- Registration and participation in BYTEME CTF constitute\n  acceptance of these rules."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FINAL RULES",
+    "chunk_id": "ANT-001-FINAL_RULES-02",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FINAL RULES\n\nthrough official event channels.\n- Registration and participation in BYTEME CTF constitute\n  acceptance of these rules.\n\nImportant Timing Note:\nThe supplied schedule lists the briefing from 9:30 AM – 10:30 AM\nwhile also stating that the CTF begins at 10:00 AM. The source\ninformation therefore contains an overlap; the exact schedule\nshould be confirmed with the organizers."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-001-REGISTRATION-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: REGISTRATION\n\nPCCOE Students Registration:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeNNQxkad7eF7f3E3-EGlQCk3rc1mNVHlkMxejbMDLQuA8PYQ/viewform?usp=publish-editor\n\nUnstop Registration:\nhttps://unstop.com/p/byteme-ctf-26-pimpri-chinchwad-college-of-engineering-1760412\n\nRegistration Details:\nThe supplied event announcement provides separate registration\noptions for PCCOE students and Unstop participants.\n\nRegistration Deadline:\nNot specified in the supplied information.\n\nRegistration Fee:\n100 rupees per team for other colleges and 0 rupees for PCCOE students."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "WEBSITE & RESOURCES",
+    "chunk_id": "ANT-001-WEBSITE_RESOURCES-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: WEBSITE & RESOURCES\n\nOfficial Website:\nhttps://bytemectf.owasppccoe.in/\n\nCTF Platform:\nThe official CTF platform is referenced in the supplied rulebook,\nbut a separate platform URL is not provided."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "PRIZES & PARTICIPATION BENEFITS",
+    "chunk_id": "ANT-001-PRIZES_PARTICIPATION_BENEFITS-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: PRIZES & PARTICIPATION BENEFITS\n\nPrize Pool:\n₹1.5 LAKH+ (as stated in the event announcement)\n\nCertificates:\nNot specified in the supplied information.\n\nGoodies:\nNot specified in the supplied information."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-001-CONTACT-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: CONTACT\n\nSuyog Jadhav:\nPhone: +91 98813 92295\n\nSarthak Warale:\nPhone: +91 80103 60482\n\nKulbhushan Kumar:\nPhone: +91 98601 02147"
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-001-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: IMPORTANT LINKS\n\nPCCOE Students Registration:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeNNQxkad7eF7f3E3-EGlQCk3rc1mNVHlkMxejbMDLQuA8PYQ/viewform?usp=publish-editor\n\nUnstop Registration:\nhttps://unstop.com/p/byteme-ctf-26-pimpri-chinchwad-college-of-engineering-1760412\n\nOfficial Website:\nhttps://bytemectf.owasppccoe.in/"
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-001-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is BYTEME CTF '26?\nA: BYTEME CTF '26 is a Jeopardy-style Cybersecurity Capture The\nFlag competition where participants solve challenges and submit\nvalid flags through the official CTF platform.\n\nQ: Who organizes BYTEME CTF?\nA: The event is organized by the OWASP PCCOE Student Chapter.\n\nQ: What is the CTF format?\nA: It follows a Jeopardy-style CTF format.\n\nQ: What cybersecurity domains are covered?\nA: Challenges include Web, OSINT, Forensics, Cryptography,\nNetworking, Linux, and more.\n\nQ: What is the team size?\nA: Teams can have 1 to 2 members. Individual participation is\nalso permitted subject to the official registration portal.\n\nQ: When is BYTEME CTF?\nA: The event is on Friday, 9 October 2026."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-001-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FAQ / DIRECT ANSWERS\n\nQ: What are the event timings?\nA: The supplied announcement states 9:00 AM – 6:00 PM. The detailed\nschedule states participant reporting at 9:00 AM, CTF beginning at\n10:00 AM, competition until 6:00 PM, and results at 6:30 PM.\n\nQ: Where is the event held?\nA: The venue is Pimpri Chinchwad College of Engineering (PCCOE).\n\nQ: What happens at 6:00 PM?\nA: The CTF ends and the scoreboard is frozen. Submissions after\nthe 6:00 PM scoreboard freeze are not considered.\n\nQ: When are the winners announced?\nA: Result announcement and winners declaration are scheduled for\n6:30 PM.\n\nQ: Can challenges be solved in any order?\nA: Yes, unless otherwise stated."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-001-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FAQ / DIRECT ANSWERS\n\nQ: What tools can participants use?\nA: Scripts, debuggers, disassemblers, packet-analysis tools, and\nother legitimate tools may be used. Public documentation and\ntechnical resources may also be used.\n\nQ: Can participants collaborate with other teams?\nA: No. Collaboration is allowed only with members of the same\nregistered team.\n\nQ: Can participants share flags or complete solutions?\nA: No. Sharing flags, complete solutions, challenge answers, or\ninformation that gives another team an unfair advantage is\nprohibited.\n\nQ: Can participants attack the CTF infrastructure?\nA: No. Attacking the CTF platform, scoreboard, registration system,\nPCCOE infrastructure, or other participants is prohibited."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-001-FAQ_DIRECT_ANSWERS-04",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FAQ / DIRECT ANSWERS\n\nQ: What happens for rule violations?\nA: Participants or teams may be disqualified for rule violations,\nflag/solution sharing, unauthorized attacks, result manipulation,\ndisruption, or bypassing competition controls.\n\nQ: What is the prize pool?\nA: The event announcement states a prize pool worth ₹1.5 LAKH+.\nThe supplied rulebook text does not provide a more detailed\nbreakdown.\n\nQ: Where can I register?\nA: PCCOE students can use the PCCOE registration form, and the\nevent is also available on Unstop. The links are listed above.\n\nQ: What is the official website?\nA: https://bytemectf.owasppccoe.in/\n\nQ: What should participants bring?\nA: Participants must carry a valid student ID card and bring\ntheir own laptop and required accessories."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-001-FAQ_DIRECT_ANSWERS-05",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: FAQ / DIRECT ANSWERS\n\nQ: Who can I contact for queries?\nA: Suyog Jadhav, Sarthak Warale, and Kulbhushan Kumar are listed\nas event contacts above."
+  },
+  {
+    "event_id": "ANT-001",
+    "event_name": "BYTEME CTF '26",
+    "source_file": "BYTEME_CTF_26_event_info.txt",
+    "section": "EVENT MESSAGE",
+    "chunk_id": "ANT-001-EVENT_MESSAGE-01",
+    "chunk_text": "Event: BYTEME CTF '26 (Anantya '26, ID: ANT-001) | Section: EVENT MESSAGE\n\nATTACK THE CHALLENGE, NOT THE COMPETITION INFRASTRUCTURE.\n\nALL THE BEST!!"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-002-EVENT_INFORMATION-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: EVENT INFORMATION\n\nEvent ID: ANT-002\n\nEvent Name: Codigo 2026\n\nEvent Edition: ANANTYA '26\n\nTheme:\nMultiverse of Coding\n\nEvent Type:\n3-Round Competitive Programming Contest\n\nFormat:\nICPC Simulation\n\nOrganized By:\nTeam CESA-SDW | PCCOE ACM Student Chapter\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE), Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nOverview:\nCodigo is a 3-round competitive programming contest built to\nsimulate the ICPC experience.\n\nThe contest progressively tests participants through:\n- Data Structures & Algorithms (DSA)\n- Competitive Programming (CP)\n\nProblems are solved under real contest conditions."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "EVENT HIGHLIGHTS",
+    "chunk_id": "ANT-002-EVENT_HIGHLIGHTS-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: EVENT HIGHLIGHTS\n\nPrize Pool:\n₹18,000\n\nTeam Size:\nExactly 3 members per team\n\nParticipation:\nTeams of three only. Individual participation is not permitted.\n\nFinal Round:\nLab-Based Offline Final\n\nOfficial Message:\nWhen brilliant minds unite, code transforms into limitless power.\n\nTagline:\nDon't just code. Compete. Conquer. Create."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-002-EVENT_FORMAT-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: EVENT FORMAT\n\nThe contest consists of 3 rounds:\n\nRound 1:\nQualifier Round\n\nRound 2:\nSemi-Final Round\n\nRound 3:\nFinal Round\n\nProgression:\n- Online Qualifier\n- Online Semi-Final\n- Lab-Based Offline Final"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "ROUND 1 — QUALIFIER ROUND",
+    "chunk_id": "ANT-002-ROUND_1_QUALIFIER_ROUND-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: ROUND 1 — QUALIFIER ROUND\n\nPlatform:\nCodeChef\n\nMode:\nOnline\n\nDate:\n6 October 2026\n\nDuration:\n2 Hours\n\nTime:\n7:00 PM – 9:00 PM\n\nSelection:\nThe top 45 teams will be shortlisted for Round 2 based on\ntheir performance in the contest."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "ROUND 2 — SEMI-FINAL ROUND",
+    "chunk_id": "ANT-002-ROUND_2_SEMIFINAL_ROUND-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: ROUND 2 — SEMI-FINAL ROUND\n\nPlatform:\nCodeChef\n\nMode:\nOnline\n\nDate:\n7 October 2026\n\nDuration:\n2 Hours\n\nTime:\n6:00 PM – 8:00 PM\n\nSelection:\nThe rulebook states that the top 20 teams will be shortlisted\nbased on performance in the contest."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "ROUND 3 — FINAL ROUND",
+    "chunk_id": "ANT-002-ROUND_3_FINAL_ROUND-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: ROUND 3 — FINAL ROUND\n\nPlatform:\nHackerRank\n\nMode:\nOffline (Lab-Based)\n\nDate:\n10 October 2026\n\nDuration:\n3 Hours\n\nTime:\n9:00 AM – 12:00 PM\n\nFormat:\n7 CP-based questions\n\nTheme:\nICPC Simulation\n\nWinners:\nThe top 3 teams will be declared as the winners of Codigo 2026."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "TEAM & PARTICIPATION RULES",
+    "chunk_id": "ANT-002-TEAM_PARTICIPATION_RULES-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: TEAM & PARTICIPATION RULES\n\nTeam Composition:\nExactly 3 members per team\n\n- Participation is strictly allowed in teams of three (3) members.\n- Individual participation is not permitted.\n- In every round, only the registered team as a unit must\n  participate.\n- Individual submissions by team members are not allowed."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "GENERAL RULES & GUIDELINES",
+    "chunk_id": "ANT-002-GENERAL_RULES_GUIDELINES-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: GENERAL RULES & GUIDELINES\n\n1. Team Composition:\n   Participation is strictly allowed in teams of three (3)\n   members. Individual participation is not permitted.\n\n2. Team Participation in Rounds:\n   In every round, only the registered team as a unit must\n   participate in the contest.\n\n3. Individual Submissions:\n   Individual submissions by team members are not allowed.\n\n4. Platform Compliance:\n   All participants must adhere to the rules and code of conduct\n   of the respective contest platforms (CodeChef / HackerRank).\n\n5. Fair Play Policy:\n   Any form of plagiarism, cheating, or use of unfair means\n   will lead to immediate disqualification of the team."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "PRIZES",
+    "chunk_id": "ANT-002-PRIZES-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: PRIZES\n\nI Prize:\n₹10,000\n\nII Prize:\n₹5,000\n\nIII Prize:\n₹3,000\n\nTotal Prize Pool:\n₹18,000"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-002-REGISTRATION-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: REGISTRATION\n\nNon-PCCOE Registration — Unstop:\nhttps://unstop.com/p/codigo-2026-pimpri-chinchwad-college-of-engineering-pccoe-pune-1760417\n\nPCCOE Registration:\nhttps://forms.gle/zYtdTo8vqWdG3gkJ6\n\nRegistration Deadline:\nNot specified in the supplied information.\n\nRegistration Fee:\n100 rupees per team for other colleges and 0 rupees for PCCOE students."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-002-RESOURCES_DOCUMENTS-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: RESOURCES & DOCUMENTS\n\nRulebook:\nAvailable\n\nRulebook Link:\nhttps://drive.google.com/drive/folders/1FzJyPu_LnQbMFcfiAVgbK0BlvRyhs6ay?usp=sharing\n\nRulebook Description:\nOfficial Codigo 2026 rulebook containing the contest format,\nround details, participation rules, prizes and organizer contacts."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-002-CONTACT-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: CONTACT\n\nKhushie Mohod:\nPhone: 9561976724\n\nKrushnakant Patil:\nPhone: 9529956951"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-002-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: IMPORTANT LINKS\n\nNon-PCCOE Registration:\nhttps://unstop.com/p/codigo-2026-pimpri-chinchwad-college-of-engineering-pccoe-pune-1760417\n\nPCCOE Registration:\nhttps://forms.gle/zYtdTo8vqWdG3gkJ6\n\nRulebook:\nhttps://drive.google.com/drive/folders/1FzJyPu_LnQbMFcfiAVgbK0BlvRyhs6ay?usp=sharing"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-002-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is Codigo 2026?\nA: Codigo 2026 is a 3-round competitive programming contest\ndesigned to simulate the ICPC experience.\n\nQ: Who organizes Codigo 2026?\nA: The event is organized by Team CESA-SDW | PCCOE ACM Student Chapter.\n\nQ: What is the contest format?\nA: It follows an ICPC Simulation format.\n\nQ: How many rounds are there?\nA: There are three rounds: Qualifier, Semi-Final and Final.\n\nQ: What is the team size?\nA: Each team must have exactly 3 members.\n\nQ: Can an individual participate?\nA: No. Individual participation is not permitted.\n\nQ: When is Round 1?\nA: Round 1 is on 6 October 2026 from 7:00 PM to 9:00 PM\non CodeChef.\n\nQ: What happens in Round 1?\nA: It is the Qualifier Round. The top 45 teams will be\nshortlisted for Round 2 based on contest performance."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-002-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: FAQ / DIRECT ANSWERS\n\nQ: When is Round 2?\nA: Round 2 is on 7 October 2026 from 6:00 PM to 8:00 PM\non CodeChef.\n\nQ: What happens in Round 2?\nA: It is the Semi-Final Round. The rulebook states that the\ntop 45 teams will be shortlisted based on performance.\n\nQ: When is Round 3?\nA: Round 3 is on 10 October 2026 from 9:00 AM to 12:00 PM.\n\nQ: Where is Round 3 held?\nA: Round 3 is an offline, lab-based final conducted on HackerRank.\n\nQ: What is the Round 3 format?\nA: The final consists of 5 CP-based questions and follows an\nICPC Simulation theme.\n\nQ: How are winners decided?\nA: The top 3 teams will be declared as the winners of Codigo 2026.\n\nQ: What is the prize pool?\nA: The total prize pool is ₹18,000:\nI Prize — ₹10,000\nII Prize — ₹5,000\nIII Prize — ₹3,000"
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-002-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: FAQ / DIRECT ANSWERS\n\nQ: Where can non-PCCOE participants register?\nA: Registration is available through the listed Unstop link.\n\nQ: Where can PCCOE students register?\nA: PCCOE students can register through the listed Google Form.\n\nQ: Is there a registration fee?\nA: The supplied information does not specify a registration fee.\n\nQ: What is the rulebook link?\nA: The official rulebook is available through the supplied\nGoogle Drive folder.\n\nQ: What happens in case of cheating or plagiarism?\nA: Any form of plagiarism, cheating, or use of unfair means\nwill lead to immediate disqualification of the team.\n\nQ: Can team members submit individually?\nA: No. Only the registered team as a unit must participate,\nand individual submissions are not allowed."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-002-FAQ_DIRECT_ANSWERS-04",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: FAQ / DIRECT ANSWERS\n\nQ: Which platforms are used?\nA: Round 1 and Round 2 use CodeChef. Round 3 uses HackerRank.\n\nQ: Who can be contacted for queries?\nA: Khushie Mohod and Krushnakant Patil are the listed contacts."
+  },
+  {
+    "event_id": "ANT-002",
+    "event_name": "Codigo 2026",
+    "source_file": "CODIGO_2026_EVENT_INFO_FINAL.txt",
+    "section": "EVENT MESSAGE",
+    "chunk_id": "ANT-002-EVENT_MESSAGE-01",
+    "chunk_text": "Event: Codigo 2026 (Anantya '26, ID: ANT-002) | Section: EVENT MESSAGE\n\nWhen brilliant minds unite, code transforms into limitless power.\n\nDon't just code. Compete. Conquer. Create."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-000-EVENT_INFORMATION-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: EVENT INFORMATION\n\nEvent ID: ANT-000\n\nEvent Name: Anantya '26 - Flagship Technical Symposium\n\nEvent Edition: ANANTYA '26\n\nHost Institution:\nPimpri Chinchwad College of Engineering (PCCOE), Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nCampus Location & Address:\nSector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044, India\n\nSymposium Theme:\nTechnology, Innovation, and Interdisciplinary Excellence"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-000-EVENT_INFORMATION-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: EVENT INFORMATION\n\nNigdi, Pune, Maharashtra 411044, India\n\nSymposium Theme:\nTechnology, Innovation, and Interdisciplinary Excellence\n\nOverview:\nAnantya is the premier annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune. Anantya brings together brilliant students, developers, designers, coders, ethical hackers, and innovators from colleges and universities across the country. It features a diverse lineup of high-impact technical and creative competitions, spanning competitive programming, cybersecurity, full-stack hackathons, AI & Web3, IoT & robotics, UI/UX design, and digital art."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "TOTAL EVENTS SUMMARY & QUICK FACTS",
+    "chunk_id": "ANT-000-TOTAL_EVENTS_SUMMARY_QUICK_FACTS-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: TOTAL EVENTS SUMMARY & QUICK FACTS\n\nTotal Number of Events:\nThere are a total of 7 distinct events hosted under Anantya '26:\n\n1. BYTEME CTF '26 (Event ID: ANT-001) — Cybersecurity Capture The Flag (CTF)\n2. Codigo 2026 (Event ID: ANT-002) — Competitive Programming Contest (ICPC Simulation)\n3. She Solves 3.0 (Event ID: ANT-003) — Multi-Stage Women-Oriented Hackathon\n4. DecentraHACK (Event ID: ANT-004) — Web3, Blockchain, Agentic AI & Open Source Hackathon\n5. MasterChef UI 2026 (Event ID: ANT-005) — UI/UX Design & Frontend Battle\n6. IoThrone 2026 (Event ID: ANT-006) — IoT & Robotics Innovation Hackathon\n7. Make a Doodle (Event ID: ANT-007) — Creative Digital Art Competition\n\nTotal Prize Pool:\nOver ₹2.2 Lakhs+ in cash prizes, goodies, vouchers, and rewards across all 7 events."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "TOTAL EVENTS SUMMARY & QUICK FACTS",
+    "chunk_id": "ANT-000-TOTAL_EVENTS_SUMMARY_QUICK_FACTS-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: TOTAL EVENTS SUMMARY & QUICK FACTS\n\nArt Competition\n\nTotal Prize Pool:\nOver ₹2.2 Lakhs+ in cash prizes, goodies, vouchers, and rewards across all 7 events.\n\nOrganizing Bodies:\nAnantya '26 is powered by the student clubs and professional chapters of the Department of Computer Engineering at PCCOE:\n- CESA (Computer Engineering Students Association)\n- PCCOE ACM Student Chapter\n- PCCOE ACM-W Student Chapter\n- OWASP PCCOE Student Chapter\n- GDGC PCCOE (Google Developer Groups on Campus)\n- IIRIS (IoT Intelligence & Robotics Innovation Society)\n- Computer Department Art Circle\n- Linux Foundation Decentralized Trust (Partner)"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "EVENTS BY CATEGORY & DOMAIN",
+    "chunk_id": "ANT-000-EVENTS_BY_CATEGORY_DOMAIN-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: EVENTS BY CATEGORY & DOMAIN\n\nParticipants can choose events based on their domain of interest:\n\n1. Hackathons & Build Competitions:\n   - She Solves 3.0 (ANT-003): Women-focused multi-stage hackathon tackling real-world problem statements (Theme: Time Stone – Ideas Beyond Time).\n   - DecentraHACK (ANT-004): 24-hour hybrid hackathon focusing on Agentic AI, Blockchain/Web3, and Open Source (Theme: Marvel Edition).\n   - IoThrone 2026 (ANT-006): Hardware and software innovation hackathon focusing on IoT, smart automation, and robotics.\n\n2. Coding & Competitive Programming:\n   - Codigo 2026 (ANT-002): 3-round intense competitive programming contest simulating the ICPC contest environment, testing DSA, problem-solving, and speed."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "EVENTS BY CATEGORY & DOMAIN",
+    "chunk_id": "ANT-000-EVENTS_BY_CATEGORY_DOMAIN-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: EVENTS BY CATEGORY & DOMAIN\n\ncompetitive programming contest simulating the ICPC contest environment, testing DSA, problem-solving, and speed.\n\n3. Cybersecurity & Ethical Hacking:\n   - BYTEME CTF '26 (ANT-001): Jeopardy-style CTF covering Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT.\n\n4. UI/UX & Frontend Design:\n   - MasterChef UI 2026 (ANT-005): Rapid design challenge testing wireframing, user experience, aesthetic polish, and frontend prototype creation.\n\n5. Digital Art & Creative Design:\n   - Make a Doodle (ANT-007): Digital illustration and art competition themed on Marvel, evaluated on creativity, technique, and visual storytelling."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\n---\nEVENT 1: BYTEME CTF '26\n- Event ID: ANT-001\n- Domain: Cybersecurity / Ethical Hacking / Capture The Flag\n- Organized By: OWASP PCCOE Student Chapter\n- Format: Online Jeopardy-style CTF\n- Team Size: 1 to 2 members\n- Registration Fee: ₹0 for PCCOE students | ₹100 per team for non-PCCOE students\n- Prize Pool: ₹1.5 Lakh+ worth of prizes, cash rewards, and perks\n- Key Areas: Web Exploitation, Reverse Engineering, Binary Exploitation, Cryptography, Forensics, OSINT\n- Who Should Join: Cybersecurity enthusiasts, ethical hackers, bug hunters, security learners"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\nForensics, OSINT\n- Who Should Join: Cybersecurity enthusiasts, ethical hackers, bug hunters, security learners\n\n---\nEVENT 2: Codigo 2026\n- Event ID: ANT-002\n- Domain: Competitive Programming & DSA\n- Organized By: Team CESA-SDW & PCCOE ACM Student Chapter\n- Format: 3 Rounds (Qualifier -> Semi-Final -> Lab-based Offline ICPC Final)\n- Team Size: Exactly 3 members per team (strictly teams of 3)\n- Registration Fee: ₹0 for PCCOE students | ₹100 per team for non-PCCOE students\n- Prize Pool: ₹18,000 cash prizes\n- Who Should Join: Competitive coders, DSA solvers, algorithmic problem solvers"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-03",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\nPrize Pool: ₹18,000 cash prizes\n- Who Should Join: Competitive coders, DSA solvers, algorithmic problem solvers\n\n---\nEVENT 3: She Solves 3.0\n- Event ID: ANT-003\n- Domain: Women-in-Tech Multi-Stage Hackathon\n- Organized By: PCCOE ACM-W Student Chapter\n- Theme: Time Stone – Ideas Beyond Time\n- Format: 3 Rounds (Round 1: Online Abstract & PPT submission -> Round 2: Online Prototype & Viva -> Round 3: Offline 8-Hour Hackathon at PCCOE)\n- Team Size: 2 to 4 female students (All-women teams only)\n- Registration Fee: ₹0 for PCCOE students | ₹100 per team for outside colleges\n- Prize Pool: ₹16,000 (Winner: ₹10,000, Runner-up: ₹6,000)\n- Who Should Join: Women coders, female engineering/diploma students passionate about building impactful tech solutions"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-04",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\nWho Should Join: Women coders, female engineering/diploma students passionate about building impactful tech solutions\n\n---\nEVENT 4: DecentraHACK\n- Event ID: ANT-004\n- Domain: Blockchain, Web3, Agentic AI & Open Source Hackathon\n- Organized By: Linux Foundation Decentralized Trust & CESA PCCOE\n- Theme: Marvel Edition\n- Format: Multi-stage (Online Phase 1 screening -> 24-hour Offline Hackathon at PCCOE campus)\n- Team Size: 2 to 4 members\n- Registration Fee: ₹0 for PCCOE students | refer official event link for outside colleges\n- Prize Pool: ₹20,000+ cash prizes, bounties, and developer credits\n- Who Should Join: Web3 developers, AI enthusiasts, smart contract developers, full-stack hackers"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-05",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\nand developer credits\n- Who Should Join: Web3 developers, AI enthusiasts, smart contract developers, full-stack hackers\n\n---\nEVENT 5: MasterChef UI 2026\n- Event ID: ANT-005\n- Domain: UI/UX & Frontend Design Battle\n- Organized By: Google Developer Groups on Campus (GDGC PCCOE)\n- Theme: The Ultimate UI Battle\n- Format: Hybrid (Online qualification -> Offline live design sprint at PCCOE)\n- Team Size: 1 to 2 members\n- Registration Fee: ₹0 for PCCOE students | ₹100 per team for outside colleges\n- Prize Pool: Cash prizes, Google developer goodies, certificates\n- Who Should Join: UI/UX designers, Figma artists, product designers, frontend developers"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-06",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\ngoodies, certificates\n- Who Should Join: UI/UX designers, Figma artists, product designers, frontend developers\n\n---\nEVENT 6: IoThrone 2026\n- Event ID: ANT-006\n- Domain: IoT, Embedded Systems & Robotics Hackathon\n- Organized By: IoT Intelligence & Robotics Innovation Society (IIRIS), CESA PCCOE\n- Format: Multi-stage (Online Ideation & Proposal -> Hardware/Software Prototyping -> Offline Final Demonstration)\n- Team Size: 2 to 4 members\n- Registration Fee: ₹0 for PCCOE students | refer event registration portal for others\n- Prize Pool: Cash awards, project funding opportunities, IoT hardware kits, certificates\n- Who Should Join: IoT developers, hardware tinkerers, robotics enthusiasts, embedded systems builders"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS",
+    "chunk_id": "ANT-000-COMPLETE_DIRECTORY_OF_ALL_7_ANANTYA_EVENTS-07",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS\n\ncertificates\n- Who Should Join: IoT developers, hardware tinkerers, robotics enthusiasts, embedded systems builders\n\n---\nEVENT 7: Make a Doodle\n- Event ID: ANT-007\n- Domain: Creative Digital Art & Graphic Illustration\n- Organized By: Computer Department Art Circle, PCCOE\n- Theme: Marvel Universe\n- Format: Online digital submission followed by live display and evaluation\n- Team Size: Individual participation (1 person only)\n- Registration Fee: ₹0 for PCCOE students | ₹50 to ₹100 for non-PCCOE students\n- Prize Pool: ₹13,000+ in cash prizes and gift hampers\n- Who Should Join: Digital artists, illustrators, graphic designers, Marvel fans"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "REGISTRATION RULES & PRICING",
+    "chunk_id": "ANT-000-REGISTRATION_RULES_PRICING-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: REGISTRATION RULES & PRICING\n\n1. Pricing Structure:\n   - PCCOE Students: Registration is 100% FREE (₹0) for all Anantya events. Valid PCCOE ID proof is required.\n   - Non-PCCOE Students: A nominal entry fee is charged per team/individual (typically ₹100 per team for technical events, hackathons, and CTF; ₹50 to ₹100 for solo/art competitions).\n\n2. Cross-Event Participation:\n   - Yes, students can register and participate in multiple Anantya events as long as the offline round timings do not overlap.\n   - For team events, all team members must meet the respective event's eligibility criteria (e.g. She Solves requires all female members; Codigo requires exactly 3 members)."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "REGISTRATION RULES & PRICING",
+    "chunk_id": "ANT-000-REGISTRATION_RULES_PRICING-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: REGISTRATION RULES & PRICING\n\nevent's eligibility criteria (e.g. She Solves requires all female members; Codigo requires exactly 3 members).\n\n3. Team Formation Rules:\n   - BYTEME CTF '26: 1 to 2 members.\n   - Codigo 2026: Strictly 3 members.\n   - She Solves 3.0: 2 to 4 female members (all women).\n   - DecentraHACK: 2 to 4 members.\n   - MasterChef UI 2026: 1 to 2 members.\n   - IoThrone 2026: 2 to 4 members.\n   - Make a Doodle: 1 member (solo)."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "VENUE & ACCESSIBILITY",
+    "chunk_id": "ANT-000-VENUE_ACCESSIBILITY-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: VENUE & ACCESSIBILITY\n\nVenue Address:\nPimpri Chinchwad College of Engineering (PCCOE)\nDepartment of Computer Engineering\nSector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044\n\nHow to Reach PCCOE:\n- By Train: Nearest railway station is Akurdi Railway Station (approx. 1 km from campus). Pune Junction is approx. 20 km away.\n- By Metro: PCMC Metro Station on the Pune Metro Purple Line is the closest major metro connectivity.\n- By Bus: Nigdi Bus Stand and Akurdi Railway Station bus stops have frequent PMPML buses connecting across Pune and Pimpri-Chinchwad.\n\nFacilities Provided:\n- High-speed campus Wi-Fi for registered offline participants.\n- Dedicated computer laboratories with development tools.\n- Power outlets for personal laptops during hackathons.\n- Water and refreshments as per event schedules."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "AWARDS & CERTIFICATES",
+    "chunk_id": "ANT-000-AWARDS_CERTIFICATES-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: AWARDS & CERTIFICATES\n\n1. Participation Certificates:\n   - Every registered participant who attends and submits their work will receive an official digital Certificate of Participation from PCCOE Anantya '26.\n\n2. Winners & Runners-Up:\n   - Cash prizes, winner trophies, official merit certificates, and exclusive sponsor goodies/vouchers will be awarded to top-ranking teams in each event.\n\n3. Total Symposium Prize Pool:\n   - Exceeds ₹2,20,000+ across all 7 competitions."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-01",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: What is Anantya?\nA: Anantya is the premier annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune. It hosts 7 flagship competitions spanning hackathons, competitive programming, cybersecurity CTF, Web3, IoT, UI/UX, and digital art.\n\nQ: How many total events are there in Anantya?\nA: There are a total of 7 events under Anantya '26:\n1. BYTEME CTF '26 (Cybersecurity CTF)\n2. Codigo 2026 (Competitive Programming)\n3. She Solves 3.0 (Women's Hackathon)\n4. DecentraHACK (Web3 & AI Hackathon)\n5. MasterChef UI 2026 (UI/UX Design)\n6. IoThrone 2026 (IoT & Robotics Hackathon)\n7. Make a Doodle (Digital Art Competition)"
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-02",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: What types of events are included in Anantya?\nA: Anantya '26 covers 5 major domains:\n- Hackathons: She Solves 3.0, DecentraHACK, IoThrone 2026\n- Competitive Programming: Codigo 2026\n- Cybersecurity: BYTEME CTF '26\n- UI/UX & Frontend: MasterChef UI 2026\n- Creative Arts: Make a Doodle\n\nQ: Can I participate in more than one event?\nA: Yes! You are welcome to register for multiple events, provided that the offline schedules of the selected events do not conflict.\n\nQ: Is registration free for PCCOE students?\nA: Yes, registration is completely free (₹0) for all students of Pimpri Chinchwad College of Engineering (PCCOE) across all Anantya events upon producing a valid college ID."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-03",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: What is the registration fee for outside college students?\nA: For participants from other colleges, registration fees are nominal—generally ₹100 per team for technical events (BYTEME CTF, Codigo, She Solves, MasterChef UI) and ₹50 to ₹100 for solo/art competitions like Make a Doodle.\n\nQ: Which event in Anantya is exclusively for women?\nA: She Solves 3.0 (Event ID: ANT-003) is a hackathon organized by the PCCOE ACM-W Student Chapter exclusively for female participants (teams of 2 to 4 female students).\n\nQ: Which event in Anantya is for competitive programming or DSA?\nA: Codigo 2026 (Event ID: ANT-002) is a 3-round ICPC-simulation competitive programming contest organized by Team CESA-SDW and the PCCOE ACM Student Chapter for teams of exactly 3 members."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-04",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: Which event in Anantya is for cybersecurity or hacking?\nA: BYTEME CTF '26 (Event ID: ANT-001) is a Jeopardy-style Capture The Flag competition organized by the OWASP PCCOE Student Chapter covering web exploitation, reverse engineering, cryptography, forensics, and OSINT.\n\nQ: Which event in Anantya is for UI/UX designers?\nA: MasterChef UI 2026 (Event ID: ANT-005) is organized by GDGC PCCOE for UI/UX designers and frontend creators competing in wireframing, UX logic, and live design prototyping.\n\nQ: Which event in Anantya is for IoT and hardware builders?\nA: IoThrone 2026 (Event ID: ANT-006) is an innovation hackathon organized by IIRIS and CESA PCCOE focusing on Internet of Things (IoT), smart embedded systems, and robotics."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-05",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: Which event in Anantya is for digital artists?\nA: Make a Doodle (Event ID: ANT-007) is a Marvel-themed digital art and graphic design competition organized by the Computer Department Art Circle of PCCOE.\n\nQ: Who can participate in Anantya?\nA: Undergraduate and diploma engineering students from all recognized colleges and universities across India are eligible to participate.\n\nQ: Will all participants receive a certificate?\nA: Yes, all registered participants who submit their work or attend the rounds will receive an official digital Certificate of Participation from PCCOE Anantya '26."
+  },
+  {
+    "event_id": "ANT-000",
+    "event_name": "Anantya '26 - Flagship Technical Symposium",
+    "source_file": "event_000_anantya_overall_info.txt",
+    "section": "FREQUENTLY ASKED QUESTIONS / FAQ",
+    "chunk_id": "ANT-000-FREQUENTLY_ASKED_QUESTIONS_FAQ-06",
+    "chunk_text": "Event: Anantya '26 - Flagship Technical Symposium (Anantya '26, ID: ANT-000) | Section: FREQUENTLY ASKED QUESTIONS / FAQ\n\nQ: Where does Anantya take place?\nA: Anantya is hosted at Pimpri Chinchwad College of Engineering (PCCOE), Sector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044. Initial rounds for many events are online, while the final rounds are hosted offline on campus.\n\nQ: What is the total prize pool across Anantya?\nA: The total prize pool across all 7 events is over ₹2.2 Lakhs+, including cash prizes, sponsor bounties, goodies, and vouchers.\n\nQ: Who organizes Anantya?\nA: Anantya is organized by the Department of Computer Engineering at PCCOE in collaboration with its student bodies: CESA, ACM, ACM-W, OWASP, GDGC, IIRIS, Art Circle, and Linux Foundation Decentralized Trust."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-003-EVENT_INFORMATION-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: EVENT INFORMATION\n\nEvent ID: ANT-003\n\nEvent Name: She Solves 3.0\n\nEvent Edition: ANANTYA '26\n\nTheme: Time Stone – Ideas Beyond Time\n\nEvent Type: Multi-stage women-oriented hackathon\n\nOrganized By:\nPCCOE ACM-W Student Chapter\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE), Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nOverview:\nShe Solves 3.0 is a multi-stage women-oriented hackathon that\nprovides a platform for participants to innovate, build and present\ntechnology-driven solutions to real-world problems.\n\nThe hackathon focuses on:\n- Innovation and Creativity\n- Technical Skills\n- Problem Solving\n- Practical Implementation\n- Social Impact\n\nOfficial tagline/message:\nThink beyond limits. Build beyond time.\nDon't just participate. Innovate. Build. Solve."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "EVENT HIGHLIGHTS",
+    "chunk_id": "ANT-003-EVENT_HIGHLIGHTS-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: EVENT HIGHLIGHTS\n\nPrize Pool:\n₹16,000\n\nCertificates:\nCertificates and goodies for all participants\n\nTeam Size:\n2 to 4 female students\n\nEligibility:\nFemale students only\n\nRegistration Fee:\nPCCOE Students: ₹0\nNon-PCCOE Students: ₹100"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-003-EVENT_FORMAT-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: EVENT FORMAT\n\nThe hackathon consists of 3 rounds:\n\nRound 1:\nIdea Submission / Registration, Ideation and Proposal Submission\n\nRound 2:\nPrototype Development and Online Demo\n\nRound 3:\nOffline Hackathon"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "DATE & TIME",
+    "chunk_id": "ANT-003-DATE_TIME-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: DATE & TIME\n\nRound 1:\nMode: Online\nDeadline: Up to 3 October 2026\n\nRound 2:\nMode: Online\nDate: 5 October 2026\n\nRound 3:\nMode: Offline\nDate: 9 October 2026\nTime stated in rulebook: 9:00 AM to 5:00 PM\nLocation: Pimpri Chinchwad College of Engineering, Pune\nDuration stated in rulebook: 5 hours\n\nImportant timing note:\nThe rulebook states both \"9:00 AM to 5:00 PM\" and \"Duration: 5 Hours\"\nfor Round 3. These details are not internally consistent, so the exact\nduration should be confirmed with the organizers."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "PROBLEM STATEMENT FORMAT",
+    "chunk_id": "ANT-003-PROBLEM_STATEMENT_FORMAT-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: PROBLEM STATEMENT FORMAT\n\nTrack:\nWeb Development & Software Development\n\nParticipants must choose one of the following domains:\n\n1. Health\n2. Environment\n3. Safety\n4. Education\n5. Entrepreneurship\n6. Women Empowerment\n\nRequirement:\nThe problem statement and proposed solution must align with one of\nthe specified tracks and domains."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "ROUND 1 — IDEA SUBMISSION",
+    "chunk_id": "ANT-003-ROUND_1_IDEA_SUBMISSION-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: ROUND 1 — IDEA SUBMISSION\n\nRound Name:\nRegistration, Ideation and Proposal Submission\n\nMode:\nOnline\n\nDeadline:\nUp to 3 October 2026\n\nDescription:\nTeams must complete their registration and submit a detailed proposal\nexplaining their chosen problem, proposed solution, and technical\napproach.\n\nSubmission Requirements:\n- Team details\n- Problem statement\n- Proposed solution\n- Technology/domain\n- Expected impact\n- PowerPoint presentation\n\nPPT Format:\nShe Solves PPT Template\n\nEvaluation Criteria:\n- Innovation\n- Feasibility\n- Clarity\n- Relevance\n- Potential impact\n\nSelection:\nTop teams will be shortlisted for Round 2.\n\nImportant:\nAll submissions must be completed on or before the specified deadline."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "ROUND 2 — PROTOTYPE DEVELOPMENT",
+    "chunk_id": "ANT-003-ROUND_2_PROTOTYPE_DEVELOPMENT-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: ROUND 2 — PROTOTYPE DEVELOPMENT\n\nRound Name:\nPrototype Development and Online Demo\n\nMode:\nOnline\n\nDate:\n5 October 2026\n\nDescription:\nShortlisted teams will develop a working prototype/MVP based on their\nproposed solution.\n\nSubmission Requirements:\n- Working prototype / MVP\n- Project / GitHub link\n- Required submission details\n\nOnline Demo:\nEach team will get 10 minutes to explain and demonstrate its prototype.\n\nEvaluation Criteria:\n- Functionality\n- Technical implementation\n- Innovation\n- Feasibility\n- Clarity of presentation\n\nSelection:\nSelected teams will advance to Round 3."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "ROUND 3 — OFFLINE HACKATHON",
+    "chunk_id": "ANT-003-ROUND_3_OFFLINE_HACKATHON-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: ROUND 3 — OFFLINE HACKATHON\n\nRound Name:\nOffline Hackathon\n\nMode:\nOffline\n\nDate:\n9 October 2026\n\nTime:\n9:00 AM to 5:00 PM\n\nLocation:\nPimpri Chinchwad College of Engineering, Pune\n\nDuration:\n5 hours (as stated in the rulebook)\n\nDescription:\nFinalist teams will participate in an offline hackathon.\n\nTeams will be provided with an on-the-spot problem statement and will\ndevelop a solution within the given time.\n\nTeams must:\n- Build their solution\n- Test their solution\n- Refine their solution\n- Submit the completed work before the end of the round"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "JUDGING CRITERIA",
+    "chunk_id": "ANT-003-JUDGING_CRITERIA-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: JUDGING CRITERIA\n\nTeams are evaluated based on:\n\n- Innovation and Creativity\n- Technical Implementation\n- Functionality\n- Feasibility\n- Impact\n- Presentation and Clarity"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "WINNER ANNOUNCEMENT",
+    "chunk_id": "ANT-003-WINNER_ANNOUNCEMENT-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: WINNER ANNOUNCEMENT\n\nWinners will be announced after the final evaluation based on overall\nperformance."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "GENERAL RULES & GUIDELINES",
+    "chunk_id": "ANT-003-GENERAL_RULES_GUIDELINES-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: GENERAL RULES & GUIDELINES\n\n- Teams must strictly adhere to all deadlines and submission guidelines.\n- Any form of plagiarism, misconduct, or rule violation will result\n  in disqualification.\n- All team members are expected to actively contribute throughout\n  the event.\n- The decision of the judges and organizing committee is final and\n  binding."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-003-REGISTRATION-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: REGISTRATION\n\nRegistration is available through separate links for non-PCCOE\nparticipants and PCCOE participants.\n\nNon-PCCOE Registration:\nhttps://unstop.com/o/VX4Lv9M?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge\n\nPCCOE Registration:\nhttps://forms.gle/Waeg8i4qGAoA1w1dA\n\nRegistration Fee:\nPCCOE Students: ₹0\nNon-PCCOE Students: ₹100\n\nRegistration Deadline:\nNot explicitly specified in the supplied event announcement/rulebook."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-003-RESOURCES_DOCUMENTS-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: RESOURCES & DOCUMENTS\n\nRulebook:\nAvailable\n\nRulebook Link:\nhttps://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH\n\nRulebook Description:\nOfficial She Solves 3.0 rulebook containing event overview, event\nformat, problem statement format, round details, judging criteria,\ngeneral rules, registration fees and organizer contacts.\n\nPPT Template:\nAvailable\n\nPPT Template / Resource Folder:\nhttps://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH\n\nResource Folder Name:\nSheSolves3.0_PPT_Template\n\nPPT Template Description:\nOfficial PowerPoint template referenced in the Round 1 submission\nrequirements.\n\nProblem Statement:\nFor Round 3, an on-the-spot problem statement will be provided to\nfinalist teams.\n\nProblem Statement Link:\nNot provided in the supplied information."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-003-RESOURCES_DOCUMENTS-02",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: RESOURCES & DOCUMENTS\n\nstatement will be provided to\nfinalist teams.\n\nProblem Statement Link:\nNot provided in the supplied information.\n\nProject / GitHub Link:\nRequired for Round 2 submission; no specific link provided."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "PRIZES & PARTICIPATION BENEFITS",
+    "chunk_id": "ANT-003-PRIZES_PARTICIPATION_BENEFITS-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: PRIZES & PARTICIPATION BENEFITS\n\nPrize Pool:\n₹16,000\n\nParticipant Benefits:\n- Certificates for all participants\n- Goodies for all participants"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-003-CONTACT-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: CONTACT\n\nStudent Coordinators:\n\nSanchita Sachin Sakhare\nPhone: 9822799225\nEmail: sanchita.sakhare24@pccoepune.org\n\nShivani Vibhute\nPhone: 9226853657\nEmail: shivani.vibhute24@pccoepune.org\n\nFaculty Coordinator:\n\nDr. Aparna Joshi\nEmail: aparna.joshi@pccoepune.org"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-003-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: IMPORTANT LINKS\n\nNon-PCCOE Registration:\nhttps://unstop.com/o/VX4Lv9M?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge\n\nPCCOE Registration:\nhttps://forms.gle/Waeg8i4qGAoA1w1dA\n\nRulebook / Resource Folder:\nhttps://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH"
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-003-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is She Solves 3.0?\nA: She Solves 3.0 is a multi-stage women-oriented hackathon focused on\ninnovation, technical skills, problem solving, practical implementation,\nand social impact.\n\nQ: Who can participate?\nA: Female students can participate.\n\nQ: How many members can be in a team?\nA: Each team must have 2 to 4 female participants.\n\nQ: What are the three rounds?\nA: Round 1 is idea submission, Round 2 is prototype development and\nonline demo, and Round 3 is an offline hackathon.\n\nQ: What is the Round 1 deadline?\nA: Round 1 submissions are due up to 3 October 2026.\n\nQ: When is Round 2?\nA: Round 2 is on 5 October 2026 and is conducted online.\n\nQ: How long is the Round 2 demo?\nA: Each team gets 10 minutes to explain and demonstrate its prototype."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-003-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: FAQ / DIRECT ANSWERS\n\nQ: When is Round 3?\nA: Round 3 is on 9 October 2026.\n\nQ: Where is Round 3 held?\nA: Round 3 is held at Pimpri Chinchwad College of Engineering, Pune.\n\nQ: What is the Round 3 problem statement?\nA: Finalist teams receive an on-the-spot problem statement during\nRound 3.\n\nQ: What tracks are available?\nA: The track is Web Development & Software Development.\n\nQ: What domains can participants choose from?\nA: Health, Environment, Safety, Education, Entrepreneurship, and\nWomen Empowerment.\n\nQ: Is there a PPT template?\nA: Yes. Round 1 requires the She Solves PPT Template. The supplied\nDrive resource folder is listed above.\n\nQ: What is the registration fee?\nA: PCCOE students pay ₹0 and non-PCCOE students pay ₹100.\n\nQ: What is the prize pool?\nA: The prize pool is ₹16,000."
+  },
+  {
+    "event_id": "ANT-003",
+    "event_name": "She Solves 3.0",
+    "source_file": "event_001_she_solves_3_0.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-003-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: She Solves 3.0 (Anantya '26, ID: ANT-003) | Section: FAQ / DIRECT ANSWERS\n\nQ: Do participants receive certificates?\nA: Yes. Certificates and goodies are stated to be provided to all\nparticipants.\n\nQ: What happens if a team violates the rules?\nA: Plagiarism, misconduct, or rule violations can result in\ndisqualification.\n\nQ: Who makes the final decision?\nA: The decision of the judges and organizing committee is final\nand binding."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-004-EVENT_INFORMATION-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: EVENT INFORMATION\n\nEvent ID:\nANT-004\n\nEvent Name:\nDecentraHACK\n\nEvent Edition:\nMarvel Edition\n\nTheme:\nMarvel Edition — Agentic AI, Blockchain/Web3 and Open Source\n\nOrganized By:\nLinux Foundation Decentralized Trust, CESA, PCCOE\n\nInstitution:\nPimpri Chinchwad College of Engineering Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nEvent Type:\nHackathon\n\nParticipation:\nTeam (2 to 4 members; solo participation is not allowed)\n\nFormat:\n3 Rounds\n\nPrize Pool:\n₹20,000+\n\nCertificates:\nCertificates for all participants; goodies and memberships for top\nwinners"
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "EVENT OVERVIEW",
+    "chunk_id": "ANT-004-EVENT_OVERVIEW-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: EVENT OVERVIEW\n\nDecentraHACK — Marvel Edition is a 3-round hackathon for students who\nwant to build what actually matters.\n\nAcross three rounds, teams take an idea from an abstract, to a working\ndemo, to a live pitch in front of the judges.\n\nIt is organized around three themes:\n- Agentic AI\n- Blockchain / Web3\n- Open Source\n\nTeams are free to pick any problem within these themes and use any\ntools they like, including AI tools.\n\nOfficial tagline/message:\nA small idea can open a bigger universe.\nSame universe. Brighter ideas."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "ELIGIBILITY",
+    "chunk_id": "ANT-004-ELIGIBILITY-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: ELIGIBILITY\n\n- College students in second year and above are eligible.\n- Cross-branch teams are allowed.\n- All members of a team must belong to the same college.\n- Cross-college teams are not allowed.\n- Teams must have a minimum of 2 and a maximum of 4 members.\n- Solo participation is not allowed."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-004-REGISTRATION-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: REGISTRATION\n\nRegistration Opens:\n20 September 2026\n\nRegistration Closes:\n30 September 2026\n\nRegistration Fee:\nNot specified in the supplied rulebook.\n\nRegistration Process:\nOne member registers as team leader and fills in the team details.\n\nRegistration Platform:\nNot provided in the supplied event information.\n\nRegistration Link:\nFor PCCOE Students :- https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform\nFor other colleges :- Go to their specific portal of event"
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-004-EVENT_FORMAT-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: EVENT FORMAT\n\nThe hackathon consists of 3 rounds:\n\nRound 1:\nIdea Submission — a written abstract\n\nRound 2:\nDevelopment Phase — working demo submission + PPT \n\nRound 3:\nFinal Presentation — offline pitch to judges\n\nSelection:\nThe rulebook does not explicitly state how many teams advance from\nRound 1 to Round 2, or the selection criteria used at that stage.\n\nThe top 15 teams overall advance to Round 3."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "PROBLEM STATEMENT FORMAT",
+    "chunk_id": "ANT-004-PROBLEM_STATEMENT_FORMAT-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: PROBLEM STATEMENT FORMAT\n\nThemes:\n1. Agentic AI\n2. Blockchain / Web3\n3. Open Source\n\nRequirement:\nTeams are free to pick any problem within these themes and use any\ntools they like, including AI tools.\n\nOnly the idea submitted in Round 1 may be developed further in later\nrounds.\n\nThere is no fixed on-the-spot problem statement."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "ROUND 1 — IDEA SUBMISSION",
+    "chunk_id": "ANT-004-ROUND_1_IDEA_SUBMISSION-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: ROUND 1 — IDEA SUBMISSION\n\nRound Name:\nIdea Submission\n\nMode:\nOnline\n\nDeadline:\nNot fixed in the rulebook — will be shared with qualified teams.\n\nDescription:\nTeams submit an abstract within a 500-word limit.\n\nSubmission Requirements:\nThe abstract must cover:\n- The idea\n- The problem it solves, with real-world impact\n- Feasibility\n- Novelty\n- Architecture\n- Revenue model\n\nEvaluation Criteria:\nNot separately listed in the rulebook.\n\nThe required abstract components above are the closest stated basis\nfor assessment."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "ROUND 2 — DEVELOPMENT PHASE",
+    "chunk_id": "ANT-004-ROUND_2_DEVELOPMENT_PHASE-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: ROUND 2 — DEVELOPMENT PHASE\n\nRound Name:\nDevelopment Phase\n\nMode:\nOnline\n\nDate:\nNot fixed in the rulebook — will be shared with qualified teams.\n\nDescription:\nTeams build out their idea and submit a working demo.\n\nSubmission Requirements:\n- A working demo of the solution, submitted as a video shared through\n  a Google Drive link.\n- An accompanying presentation.\n- Teams must ensure the Drive link is accessible before submitting.\n\nEvaluation Criteria:\nNot specified in the rulebook.\n\nSelection:\nThe top 15 teams overall advance to Round 3."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "ROUND 3 — FINAL PRESENTATION",
+    "chunk_id": "ANT-004-ROUND_3_FINAL_PRESENTATION-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: ROUND 3 — FINAL PRESENTATION\n\nRound Name:\nFinal Presentation\n\nMode:\nOffline\n\nDate:\n9 October 2026\n\nLocation:\nPCCOE Campus, Pune\n\nDescription:\nThe top 15 teams pitch to the judges in person, presenting a working\ndemo along with their presentation.\n\nTeams must:\n- Present a working demo of their solution.\n- Present alongside their presentation deck.\n- Pitch live to the judging panel."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "JUDGING / EVALUATION CRITERIA",
+    "chunk_id": "ANT-004-JUDGING_EVALUATION_CRITERIA-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: JUDGING / EVALUATION CRITERIA\n\nRound 1:\nThe rulebook does not separately list evaluation criteria.\n\nThe stated abstract requirements are:\n- Idea\n- Problem / real-world impact\n- Feasibility\n- Novelty\n- Architecture\n- Revenue model\n\nRound 2:\nEvaluation criteria are not specified in the supplied rulebook.\n\nRound 3:\nThe final round consists of a live pitch to the judging panel with\na working demo and presentation.\n\nThe Round 1 abstract requirements are the closest stated indication\nof what is valued across the hackathon."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "GENERAL RULES & GUIDELINES",
+    "chunk_id": "ANT-004-GENERAL_RULES_GUIDELINES-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: GENERAL RULES & GUIDELINES\n\n- College students in second year and above are eligible.\n- Cross-branch teams are allowed.\n- Minimum 2, maximum 4 members per team; solo participation is not\n  allowed.\n- All members of a team must belong to the same college; cross-college\n  teams are not allowed.\n- One member registers as team leader and fills in the team details.\n- Any AI tools may be used.\n- Decisions of the organizing committee and judges are final.\n- Teams must strictly follow the given timeline.\n- Plagiarism will lead to immediate disqualification.\n- Only the idea submitted in Round 1 may be developed further.\n- All work must be done during the hackathon period.\n- One common GitHub repository is mandatory.\n- Any misconduct may result in disqualification."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "TOOLS & TECHNOLOGY",
+    "chunk_id": "ANT-004-TOOLS_TECHNOLOGY-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: TOOLS & TECHNOLOGY\n\nTeams may use any tools they like, including AI tools.\n\nPrimary themes:\n- Agentic AI\n- Blockchain / Web3\n- Open Source\n\nGitHub:\nOne common GitHub repository per team is mandatory."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "IMPORTANT DATES",
+    "chunk_id": "ANT-004-IMPORTANT_DATES-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: IMPORTANT DATES\n\nRegistrations Open:\n20 September 2026\n\nRegistrations Close:\n30 September 2026\n\nRound 1 Deadline:\nNot fixed in the rulebook — will be shared with qualified teams.\n\nRound 2 Deadline:\nNot fixed in the rulebook — will be shared with qualified teams.\n\nFinal Round:\n9 October 2026\n\nFinal Round Location:\nPCCOE Campus, Pune"
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "WINNER ANNOUNCEMENT",
+    "chunk_id": "ANT-004-WINNER_ANNOUNCEMENT-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: WINNER ANNOUNCEMENT\n\nWinner announcement details were not specified in the supplied\nrulebook."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "PRIZES & PARTICIPATION BENEFITS",
+    "chunk_id": "ANT-004-PRIZES_PARTICIPATION_BENEFITS-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: PRIZES & PARTICIPATION BENEFITS\n\nPrize Pool:\n₹20,000+ (\"₹20K+\")\n\nParticipant Benefits:\n- Goodies for top winners\n- Memberships for top winners\n- Certificates for all participants\n\nSpecific membership details were not named in the rulebook."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-004-RESOURCES_DOCUMENTS-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: RESOURCES & DOCUMENTS\n\nProblem Statement:\nTeams choose their own problem within the three themes:\nAgentic AI, Blockchain/Web3, and Open Source.\n\nThere is no fixed on-the-spot problem statement.\n\nProject / GitHub Link:\nA single common GitHub repository per team is mandatory.\n\nSpecific repository link:\nNot provided in the supplied event information.\n\nPPT / Presentation:\nAn accompanying presentation is required for Round 2 and a\npresentation deck is required for the final round."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-004-CONTACT-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: CONTACT\n\nStudent Coordinators:\n\nRohit Sonawane\nPhone: 8857011104\n\nMayuresh Mandalik\nPhone: 8799797880"
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-004-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: IMPORTANT LINKS\n\nRegistration Platform:\nGo to their specific portal of event\n\nRegistration URL:\nFor PCCOE Students :- https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform\n\n\nGoogle Drive Submission:\nTeams must submit the Round 2 working-demo video through a Google\nDrive link. No specific link is provided.\n\nGitHub Repository:\nA common GitHub repository is mandatory for each team.\nNo specific link is provided."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-004-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is DecentraHACK?\nA: DecentraHACK — Marvel Edition is a 3-round hackathon that takes\nteams from an idea, to a working demo, to a live pitch in front of\njudges, built around Agentic AI, Blockchain/Web3 and Open Source.\n\nQ: Who can participate?\nA: College students in second year and above. Cross-branch teams are\nallowed, but all team members must be from the same college.\n\nQ: How many members can be in a team?\nA: Teams must have a minimum of 2 and a maximum of 4 members. Solo\nparticipation is not allowed.\n\nQ: What are the three rounds?\nA: Round 1 is idea submission (a written abstract), Round 2 is the\ndevelopment phase (working demo), and Round 3 is the final in-person\npresentation."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-004-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is the Round 1 submission?\nA: A 500-word abstract covering the idea, the problem and its\nreal-world impact, feasibility, novelty, architecture, and revenue\nmodel.\n\nQ: When do Round 1 and Round 2 deadlines fall?\nA: They are not fixed in the rulebook; they will be shared with\nqualified teams in the official participant groups.\n\nQ: What does Round 2 require?\nA: A working demo submitted as a video via a Google Drive link, along\nwith a presentation. The link must be accessible before submission.\n\nQ: When and where is the final round?\nA: The final round is on 9 October 2026 at the PCCOE campus, Pune.\nThe top 15 teams pitch in person to the judges."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-004-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: FAQ / DIRECT ANSWERS\n\nQ: What themes can participants choose from?\nA: Agentic AI, Blockchain/Web3, and Open Source. Teams may pick any\nproblem within these themes and use any tools, including AI tools.\n\nQ: When do registrations open and close?\nA: Registrations open on 20 September 2026 and close on 30 September\n2026.\n\nQ: What is the registration fee?\nA: Not specified in the supplied rulebook.\n\nQ: What is the prize pool?\nA: The prize pool is ₹20,000+ (\"₹20K+\").\n\nQ: Do participants receive certificates?\nA: Yes, certificates are given to all participants. Goodies and\nmemberships go to top winners."
+  },
+  {
+    "event_id": "ANT-004",
+    "event_name": "DecentraHACK",
+    "source_file": "event_003_decentrahack_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-004-FAQ_DIRECT_ANSWERS-04",
+    "chunk_text": "Event: DecentraHACK (Anantya '26, ID: ANT-004) | Section: FAQ / DIRECT ANSWERS\n\nQ: What happens if a team violates the rules?\nA: Plagiarism or misconduct can lead to immediate disqualification.\nOnly the idea submitted in Round 1 may be developed further, and all\nwork must be done during the hackathon period.\n\nQ: Who makes the final decision?\nA: The decisions of the organizing committee and judges are final.\n\nQ: Who are the contact coordinators?\nA: Rohit Sonawane (8857011104) and Mayuresh Mandalik (8799797880)."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-005-EVENT_INFORMATION-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: EVENT INFORMATION\n\nEvent ID:\nANT-005\n\nEvent Name:\nMasterChef UI 2026\n\nEvent Edition:\n2026\n\nTheme:\nThe Ultimate UI Battle\n\nOrganized By:\nGoogle Developer Groups on Campus, PCCOE (GDGC PCCOE)\n\nPresented By:\nGDGC PCCOE\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE), Pune\n\nDepartment:\nDepartment of Computer Engineering\n\nEvent Type:\nHybrid, multi-stage UI/UX design competition with online qualification and offline final rounds, including an XP and MasterChef Coins strategy layer.\n\nOfficial Tagline:\nDesign. Solve. Cook.\n\nOfficial Event Message:\nDesign smart. Play strategic. Stay creative. Don't get cooked."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "EVENT OVERVIEW",
+    "chunk_id": "ANT-005-EVENT_OVERVIEW-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: EVENT OVERVIEW\n\nMasterChef UI is a competitive UI/UX design event that tests UI principles, observation, creativity, problem-solving, design execution and presentation.\n\nThe 2026 edition includes a strategy layer in which participants can earn XP through a pre-event campaign and convert XP into MasterChef Coins. Coins can be spent on permitted power-ups, defensive abilities, hints, strategic advantages and sabotages through the official event mechanism.\n\nThe competition consists of a Pre-Event Campaign followed by three official rounds:\n- Round 1 — The Taste Test\n- Round 2 — The Pressure Test\n- Round 3 — The Signature Dish"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ELIGIBILITY",
+    "chunk_id": "ANT-005-ELIGIBILITY-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ELIGIBILITY\n\nEligibility:\nThe supplied rulebook does not explicitly specify restrictions based on gender, college or academic year.\n\nTeam Size:\nMaximum 2 participants per team. The rulebook does not state a minimum team size.\n\nTeam Requirements:\n- Each team registers under a unique team name.\n- Team composition cannot normally be changed after the registration deadline without organizer approval.\n- All members are jointly responsible for their submission and conduct."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-005-REGISTRATION-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: REGISTRATION\n\nRegistration Fee:\n- FREE for PCCoE students.\n- ₹100 for students from other colleges.\n\nRegistration Period:\nNot specified in the supplied event information.\n\nRegistration Link — PCCoE Students:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor\n\nRegistration Link — Other Colleges:\nhttps://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge\n\nWhatsApp Group:\nhttps://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-005-EVENT_FORMAT-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: EVENT FORMAT\n\nThe competition consists of a Pre-Event Campaign followed by 3 official rounds.\n\nPre-Event Campaign:\nOnline campaign with challenges, clues and hidden content through which participants can earn XP.\n\nRound 1:\nThe Taste Test — Online Qualification Round.\n\nRound 2:\nThe Pressure Test — Offline UI Recreation Challenge.\n\nRound 3:\nThe Signature Dish — Offline Final Round."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "PRE-EVENT CAMPAIGN",
+    "chunk_id": "ANT-005-PREEVENT_CAMPAIGN-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: PRE-EVENT CAMPAIGN\n\nMode:\nOnline, before the competition.\n\nDescription:\nParticipants explore a campaign website containing challenges, clues and hidden content to earn XP.\n\nXP may be awarded for:\n- Completing challenges\n- Discovering hidden content\n- Solving puzzles\n- Finding Easter eggs\n- Completing specific objectives\n- Other activities announced by the organizers\n\nThe organizers determine the XP value of each activity. XP may contribute to a participant's or team's starting MasterChef Coin balance according to the announced conversion system."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "XP & MASTERCHEF COINS",
+    "chunk_id": "ANT-005-XP_MASTERCHEF_COINS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: XP & MASTERCHEF COINS\n\nXP System:\nParticipants earn XP by completing designated Pre-Event Campaign activities. XP can be converted into MasterChef Coins according to the conversion system announced by the organizers.\n\nMasterChef Coins:\nMasterChef Coins are the official in-event currency and may be spent on:\n- Power-ups\n- Defensive abilities\n- Hints\n- Strategic advantages\n- Permitted sabotages\n- Mystery items\n- Other mechanisms announced by the organizers"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "XP & MASTERCHEF COINS",
+    "chunk_id": "ANT-005-XP_MASTERCHEF_COINS-02",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: XP & MASTERCHEF COINS\n\nHints\n- Strategic advantages\n- Permitted sabotages\n- Mystery items\n- Other mechanisms announced by the organizers\n\nImportant Rules:\n- Coins do not determine the winner on their own.\n- Coins cannot be bought with real money.\n- Coins cannot be exchanged for cash.\n- Coins cannot be transferred between teams.\n- Coins cannot be gifted or traded between participants.\n- Coins can only be used through the official event mechanism.\n- Each team is responsible for managing its own coin balance.\n- A confirmed transaction normally cannot be reversed.\n- Unused coins have no monetary value after the competition."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "THE CHEF'S MARKET",
+    "chunk_id": "ANT-005-THE_CHEFS_MARKET-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: THE CHEF'S MARKET\n\nThe Chef's Market is the official place where teams spend MasterChef Coins.\n\nPower-Ups:\n- Hint — provides an additional clue or information about a challenge.\n- Time Boost — adds working time within organizer-defined limits.\n- Reroll — allows a team to request a new eligible prompt, element or challenge component.\n- Shield — protects the team from one eligible sabotage.\n- Mystery Box — provides a randomly selected advantage.\n\nSabotages:\n- Blackout — temporarily blocks a target team's access to a specified reference.\n- Time Tax — reduces the target team's working time by a specified amount.\n- Glitch — adds an extra design constraint for the target team.\n- Swap — requires the target team to exchange a specified eligible element.\n- Mystery Challenge — adds an extra challenge condition."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "THE CHEF'S MARKET",
+    "chunk_id": "ANT-005-THE_CHEFS_MARKET-02",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: THE CHEF'S MARKET\n\nthe target team to exchange a specified eligible element.\n- Mystery Challenge — adds an extra challenge condition.\n\nSabotage Rules:\n- Sabotages can only be activated during designated periods.\n- Each sabotage has defined effects and limits.\n- Teams receive a limited number of sabotage opportunities.\n- Teams cannot repeatedly target the same team beyond organizer-defined limits.\n- Sabotages cannot permanently prevent another team from completing a round.\n- Sabotages must not delete, damage, access or modify another team's files.\n- Organizers may cancel a sabotage that creates an unintended or unfair advantage."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ROUND 1 — THE TASTE TEST",
+    "chunk_id": "ANT-005-ROUND_1_THE_TASTE_TEST-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ROUND 1 — THE TASTE TEST\n\nMode:\nOnline Qualification Round\n\nDescription:\nTests participants' understanding of UI/UX fundamentals, observation, attention to detail and problem-solving.\n\nThe round may include:\n- Identifying UI errors\n- UI/UX knowledge\n- Visual analysis\n- Design principles\n- Typography\n- Colour and contrast\n- Layout and spacing\n- Visual hierarchy\n- Usability\n- Other UI-related challenges\n\nDate & Time:\nTo be announced by the organizers.\n\nQualification:\nThe number of teams qualifying for the offline rounds, qualification criteria and tie-breaking method will be announced before the round."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ROUND 2 — THE PRESSURE TEST",
+    "chunk_id": "ANT-005-ROUND_2_THE_PRESSURE_TEST-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ROUND 2 — THE PRESSURE TEST\n\nMode:\nOffline UI Recreation Challenge\n\nDescription:\nTeams receive a reference UI and must recreate it in Figma within the allotted time. The reference design can only be viewed during periods specified by the organizers.\n\nThe challenge may evaluate:\n- Layout accuracy\n- Spacing\n- Typography\n- Colours\n- Components\n- Visual hierarchy\n- Alignment\n- Attention to detail\n- Overall visual similarity\n- Time management\n\nPower-Ups & Sabotage:\nEligible power-ups and sabotages can be activated only during designated windows through the official event mechanism.\n\nDate & Time:\nNot specified in the supplied event information."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ROUND 3 — THE SIGNATURE DISH",
+    "chunk_id": "ANT-005-ROUND_3_THE_SIGNATURE_DISH-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ROUND 3 — THE SIGNATURE DISH\n\nMode:\nOffline Final Round\n\nDescription:\nTeams create an original digital product or interface using assigned domains, themes, requirements and design constraints.\n\nThe challenge may require teams to:\n- Combine unrelated concepts\n- Develop a coherent product\n- Create a complete UI\n- Solve a defined user problem\n- Incorporate assigned design elements\n- Work within time constraints\n- Present design decisions\n\nSecret Ingredient:\nTeams may receive an additional requirement that must be incorporated into the final product. This may involve a UI interaction, feature, design pattern, visual constraint, user requirement or interaction requirement."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ROUND 3 — THE SIGNATURE DISH",
+    "chunk_id": "ANT-005-ROUND_3_THE_SIGNATURE_DISH-02",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ROUND 3 — THE SIGNATURE DISH\n\nmay involve a UI interaction, feature, design pattern, visual constraint, user requirement or interaction requirement.\n\nFinal Presentation:\nTeams present their product to the judges within an organizer-announced presentation time. The presentation may cover:\n- Problem statement\n- Target users\n- Product concept\n- User flow\n- Design decisions\n- UI/UX choices\n- Assigned themes and domains\n- Secret Ingredient\n- Key features\n- Demonstration of the final product\n\nDate:\n9 October 2026\n\nVenue:\nPimpri Chinchwad College of Engineering (PCCOE), Pune"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "DESIGN PLATFORM & TOOLS",
+    "chunk_id": "ANT-005-DESIGN_PLATFORM_TOOLS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: DESIGN PLATFORM & TOOLS\n\nPrimary Design Platform:\nFigma\n\nCanva:\nCanva may be used only where the organizers specifically permit it for a given round.\n\nTool Restrictions:\nPermitted tools and resources will be announced before each round. Restrictions may apply to:\n- AI-generated designs\n- Pre-built templates\n- External UI kits\n- Previously created designs\n- Downloaded assets\n- External design systems\n- Other resources that could provide an unfair advantage\n\nAI Tools:\nThe supplied announcement states that the event is a UI/UX competition; specific AI-tool permissions are not otherwise detailed in the supplied rulebook. Follow the round-specific organizer instructions."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "JUDGING / EVALUATION CRITERIA",
+    "chunk_id": "ANT-005-JUDGING_EVALUATION_CRITERIA-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: JUDGING / EVALUATION CRITERIA\n\nFinal submissions may be judged on:\n- UI Design — quality, consistency and execution\n- UX — usability and user flow\n- Creativity — originality of the concept\n- Visual Design — typography, colour, hierarchy and composition\n- Problem Solving — quality of design decisions\n- Constraint Integration — effective use of assigned themes and requirements\n- Presentation — clarity and effectiveness of the pitch\n- Product Thinking — fit between problem, product and design\n\nThe final weightage of each criterion will be announced by the organizers."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ORIGINALITY & FAIR PLAY",
+    "chunk_id": "ANT-005-ORIGINALITY_FAIR_PLAY-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ORIGINALITY & FAIR PLAY\n\n- Every submission must be original work of the submitting team.\n- Organizers may request working files to verify originality.\n- Participants must not copy another team's work.\n- Unauthorized templates or pre-existing designs must not be used where prohibited.\n- Previously completed work must not be submitted where prohibited.\n- Participants must not claim another person's work as their own.\n- Unauthorized collaboration is prohibited.\n- Manipulating XP or leaderboard data is prohibited.\n- Creating multiple accounts for an unfair advantage is prohibited.\n- Exploiting unintended system vulnerabilities is prohibited.\n- Accessing another team's files is prohibited.\n- Sharing restricted challenge material is prohibited.\n- Tampering with another team's work is prohibited."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "PRE-EVENT WEBSITE SECURITY",
+    "chunk_id": "ANT-005-PREEVENT_WEBSITE_SECURITY-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: PRE-EVENT WEBSITE SECURITY\n\nThe pre-event campaign may use a cybersecurity-themed interface or fictional scenarios. Only interactions deliberately provided by the organizers are part of the competition.\n\nParticipants must not:\n- Attack the hosting infrastructure\n- Scan the actual server\n- Exploit vulnerabilities outside the intended challenge\n- Access restricted systems\n- Gain unauthorized database access\n- Modify or damage the website\n\nAttempts to compromise real infrastructure can lead to immediate disqualification."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "SUBMISSION RULES",
+    "chunk_id": "ANT-005-SUBMISSION_RULES-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: SUBMISSION RULES\n\n- All submissions must use the official submission mechanism.\n- Submissions must be made before the announced deadline.\n- Teams must ensure their submissions are accessible.\n- Teams may be asked to provide access to their working design files.\n- Changes after a deadline require organizer approval.\n- Organizers may check submissions for originality and compliance."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "DISQUALIFICATION",
+    "chunk_id": "ANT-005-DISQUALIFICATION-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: DISQUALIFICATION\n\nThe organizing committee may disqualify teams for:\n- Cheating\n- Plagiarism\n- Unauthorized collaboration\n- Manipulation of XP or coin systems\n- Unauthorized system access\n- Tampering with another team's work\n- Repeatedly breaking competition rules\n- Serious misconduct\n- Failure to follow organizer instructions\n\nFinal disqualification decisions rest with the organizing committee."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "IMPORTANT DATES",
+    "chunk_id": "ANT-005-IMPORTANT_DATES-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: IMPORTANT DATES\n\nEvent Date:\n9 October 2026\n\nRound 1 Date:\nTo be announced.\n\nRound 2 Date:\nNot specified in the supplied event information.\n\nRound 3 / Final:\n9 October 2026\n\nRegistration Deadline:\nNot specified in the supplied event information."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "PRIZES & CERTIFICATES",
+    "chunk_id": "ANT-005-PRIZES_CERTIFICATES-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: PRIZES & CERTIFICATES\n\nPrize Pool:\n₹12,000\n\nAdditional Benefits:\n- ACM Membership\n- Goodies\n- Swags"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "ORGANIZER'S RIGHTS",
+    "chunk_id": "ANT-005-ORGANIZERS_RIGHTS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: ORGANIZER'S RIGHTS\n\nThe organizing committee reserves the right to:\n- Change round timings\n- Change challenge formats\n- Adjust power-up availability\n- Adjust coin costs\n- Introduce or remove gameplay mechanics\n- Resolve unplanned situations\n- Change rules to maintain fairness\n- Disqualify teams that break the rules\n\nSignificant changes will be communicated to participants where reasonably possible before they affect the relevant round.\n\nThe decisions of the organizing committee and judging panel regarding results, disputes, penalties and disqualification are final."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-005-RESOURCES_DOCUMENTS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: RESOURCES & DOCUMENTS\n\nPrimary Design Platform:\nFigma\n\nRegistration — PCCoE Students:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor\n\nRegistration — Other Colleges:\nhttps://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge\n\nWhatsApp Group:\nhttps://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-005-CONTACT-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: CONTACT\n\nMayur Kharat:\n9960432698\n\nSamiksha Mote:\n7558726679"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-005-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: IMPORTANT LINKS\n\nPCCoE Student Registration:\nhttps://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor\n\nOther College Registration:\nhttps://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge\n\nWhatsApp Group:\nhttps://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk"
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-005-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is MasterChef UI 2026?\nA: A competitive UI/UX design event testing UI principles, observation, creativity, problem-solving, design execution and presentation, with an XP and MasterChef Coins strategy layer.\n\nQ: How many members can be in a team?\nA: Maximum 2 participants per team. The supplied rulebook does not state a minimum.\n\nQ: What are the stages of the competition?\nA: A Pre-Event Campaign followed by Round 1 — The Taste Test, Round 2 — The Pressure Test and Round 3 — The Signature Dish.\n\nQ: What is the Pre-Event Campaign?\nA: An online campaign where participants explore challenges and hidden content to earn XP, which may be converted into starting MasterChef Coins."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-005-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: FAQ / DIRECT ANSWERS\n\nQ: What are MasterChef Coins?\nA: The official in-event currency used for permitted power-ups, defensive abilities, hints, strategic advantages and sabotages. They cannot be bought with real money, exchanged for cash or transferred between teams.\n\nQ: What is The Taste Test?\nA: The online qualification round testing UI/UX knowledge, observation and problem-solving.\n\nQ: What is The Pressure Test?\nA: The offline UI recreation challenge where teams recreate a reference UI in Figma within the allotted time.\n\nQ: What is The Signature Dish?\nA: The offline final round where teams create an original UI/UX product using assigned themes, domains and constraints, followed by a presentation to judges."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-005-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: FAQ / DIRECT ANSWERS\n\nQ: What design platform is used?\nA: Figma is the primary platform. Canva may be used only when specifically permitted by the organizers.\n\nQ: When is the final?\nA: 9 October 2026 at PCCOE, Pune.\n\nQ: What is the registration fee?\nA: Registration is free for PCCoE students and ₹100 for students from other colleges.\n\nQ: What is the prize pool?\nA: ₹12,000, along with goodies, swags and ACM Membership.\n\nQ: What happens if a team breaks the rules?\nA: Cheating, plagiarism, unauthorized collaboration, XP/coin manipulation, unauthorized access, tampering and other serious rule violations can lead to disqualification.\n\nQ: Who makes the final decision?\nA: The organizing committee and judging panel have final authority over results, disputes, penalties and disqualification."
+  },
+  {
+    "event_id": "ANT-005",
+    "event_name": "MasterChef UI 2026",
+    "source_file": "event_004_masterchef_ui_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-005-FAQ_DIRECT_ANSWERS-04",
+    "chunk_text": "Event: MasterChef UI 2026 (Anantya '26, ID: ANT-005) | Section: FAQ / DIRECT ANSWERS\n\nQ: Whom should participants contact for queries?\nA: Mayur Kharat — 9960432698; Samiksha Mote — 7558726679."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-006-EVENT_INFORMATION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: EVENT INFORMATION\n\nEvent ID: ANT-006\n\nEvent Name:\nIoThrone 2026\n\nOrganized By:\nIoT Intelligence & Robotics Innovation Society(IIRIS), CESA, PCCOE\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE)\n\nDepartment:\nDepartment of Computer Engineering\n\nEvent Type:\nInnovation-driven hackathon\n\nParticipation:\nTeam (2 to 4 members)\n\nFormat:\n3 Rounds"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "EVENT OVERVIEW",
+    "chunk_id": "ANT-006-EVENT_OVERVIEW-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: EVENT OVERVIEW\n\nIoThrone 2026 is an innovation-driven hackathon that encourages\nparticipants to transform creative ideas into intelligent and\nfunctional prototypes using technologies such as AI, ML,\nComputer Vision, Edge AI, IoT, Robotics, and Hardware.\n\nThe event provides a hands-on platform to ideate, build, integrate,\nand demonstrate technology-based solutions to real-world problems.\n\nParticipants go beyond just presenting an idea by developing a\nworking prototype and showcasing its capabilities in a practical\nenvironment.\n\nThe hackathon follows a three-stage journey:\n\nConcept → Prototype → Real-Time Integration\n\nThe three stages test participants' innovation, technical skills,\nimplementation, problem-solving, and ability to create practical\nsolutions."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "ELIGIBILITY",
+    "chunk_id": "ANT-006-ELIGIBILITY-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: ELIGIBILITY\n\nEligibility details were not provided in the supplied event\ninformation.\n\n- Teams must consist of 2 to 4 members.\n- Participants must complete the registration process within the\n  given timeline."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-006-REGISTRATION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: REGISTRATION\n\nRegistration Platform:\nVisit specific event page.\n\n\nRegistration Deadline:\n27 September 2026\n\nRegistration Fee:\nVisit specific event page.\n\nRegistration Requirements:\nThe PPT must be submitted along with the registration for Round 1.\n\nRegistration Link:\nhttps://forms.gle/FKJYg5FCdXdSHWmW7"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "EVENT HIGHLIGHTS",
+    "chunk_id": "ANT-006-EVENT_HIGHLIGHTS-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: EVENT HIGHLIGHTS\n\nTeam Size:\n2 to 4 members\n\nTechnologies:\n- Artificial Intelligence (AI)\n- Machine Learning (ML)\n- Computer Vision\n- Edge AI\n- Internet of Things (IoT)\n- Robotics\n- Hardware"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-006-EVENT_FORMAT-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: EVENT FORMAT\n\nThe hackathon consists of 3 rounds:\n\nRound 1:\nOnline PPT Evaluation\n\nRound 2:\nOffline Prototype Demonstration\n\nRound 3:\nOffline Real-Time Implementation"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "ROUND 1 — PPT EVALUATION",
+    "chunk_id": "ANT-006-ROUND_1_PPT_EVALUATION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: ROUND 1 — PPT EVALUATION\n\nMode:\nOnline\n\nDescription:\nRound 1 focuses on evaluating the team's idea, innovation, and\ntechnical approach through a PowerPoint presentation.\n\nThe PPT must be submitted along with the event registration.\n\nTeams should cover:\n- Problem Statement – The real-world problem and its importance.\n- Proposed Solution – How the solution addresses the problem.\n- Innovation – Unique features and what makes the idea different.\n- Technology Stack – AI/ML, IoT, hardware, software, sensors,\n  and other technologies.\n- System Architecture – Overall working flow and interaction\n  between components.\n- Implementation Plan – Steps involved in developing the prototype.\n- Feasibility & Impact – Practicality, scalability, and expected\n  real-world benefits."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "ROUND 1 — PPT EVALUATION",
+    "chunk_id": "ANT-006-ROUND_1_PPT_EVALUATION-02",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: ROUND 1 — PPT EVALUATION\n\nin developing the prototype.\n- Feasibility & Impact – Practicality, scalability, and expected\n  real-world benefits.\n\nEvaluation will focus on:\n- Problem Understanding\n- Innovation\n- Technical Approach\n- Feasibility\n- Implementation Plan\n- Real-World Applicability"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "ROUND 2 — PROTOTYPE DEMONSTRATION",
+    "chunk_id": "ANT-006-ROUND_2_PROTOTYPE_DEMONSTRATION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: ROUND 2 — PROTOTYPE DEMONSTRATION\n\nMode:\nOffline\n\nDescription:\nRound 2 focuses on evaluating the team's working prototype,\ntechnical implementation, and practical applicability.\n\nSelected teams will demonstrate their prototype before an internal\njudging panel.\n\nThe demonstration will cover:\n- Technology\n- System Working\n- Innovation\n- Real-World Use\n- Performance\n- Scalability\n\nDate:\n9 October 2026\n\nTime:\n9:00 AM – 4:00 PM\n\nVenue:\n6206 LAB & 6218 LAB\n\nPresentation Slots:\nEach team will be assigned an individual slot within the given\ntime window.\n\nSlot Allocation:\nTeam-wise slots will be communicated before Round 2.\n\nEvaluation:\nThe prototype will be evaluated by the internal judging panel.\n\nSelection:\nThe Top 15 teams will advance to Round 3 —\nReal-Time Integration Challenge."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "ROUND 3 — REAL-TIME IMPLEMENTATION",
+    "chunk_id": "ANT-006-ROUND_3_REALTIME_IMPLEMENTATION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: ROUND 3 — REAL-TIME IMPLEMENTATION\n\nMode:\nOffline\n\nDescription:\nRound 3 focuses on evaluating the team's ability to adapt,\nintegrate, and implement their working prototype in a\nreal-time environment.\n\nThe Top 15 teams will work with the provided/assigned environment\nor system and demonstrate how effectively their solution can be\nintegrated and made functional under real-world conditions.\n\nDate:\n10 October 2026\n\nTime:\n10:00 AM – 2:00 PM\n\nVenue:\n6206 LAB & 6218 LAB\n\nParticipants:\nTop 15 teams from Round 2\n\nEvaluation:\nFinal evaluation will focus on:\n- Real-Time Integration\n- Functionality\n- Adaptability\n- Technical Implementation\n- Innovation\n- Demonstration"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "GENERAL RULES & REGULATIONS",
+    "chunk_id": "ANT-006-GENERAL_RULES_REGULATIONS-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: GENERAL RULES & REGULATIONS\n\n- Teams must consist of 2-4 members.\n- Participants must complete the registration process within the\n  given timeline.\n- The PPT must be submitted along with the registration for Round 1.\n- Teams must use original ideas and work. Plagiarism or copied\n  projects may lead to disqualification.\n- Participants are responsible for bringing the required hardware,\n  components, and development equipment for their prototype.\n- Teams must report to the venue according to their assigned\n  slot/timing.\n- Participants must follow the instructions given by the organizing\n  and judging panel throughout the event.\n- Teams must ensure their prototype is safe to operate and does not\n  cause damage to equipment or the venue.\n- The decision of the judging panel will be final.\n- Any changes in schedule, venue, or round requirements will be\n  communicated by the organizing team."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "HARDWARE & TECHNOLOGIES",
+    "chunk_id": "ANT-006-HARDWARE_TECHNOLOGIES-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: HARDWARE & TECHNOLOGIES\n\nParticipants are responsible for bringing the required hardware,\ncomponents, and development equipment for their prototype.\n\nTechnologies mentioned in the supplied event information:\n- Artificial Intelligence (AI)\n- Machine Learning (ML)\n- Computer Vision\n- Edge AI\n- Internet of Things (IoT)\n- Robotics\n- Hardware"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "JUDGING / EVALUATION CRITERIA",
+    "chunk_id": "ANT-006-JUDGING_EVALUATION_CRITERIA-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: JUDGING / EVALUATION CRITERIA\n\nRound 1:\n- Problem Understanding\n- Innovation\n- Technical Approach\n- Feasibility\n- Implementation Plan\n- Real-World Applicability\n\nRound 2:\n- Technology\n- System Working\n- Innovation\n- Real-World Use\n- Performance\n- Scalability\n\nRound 3:\n- Real-Time Integration\n- Functionality\n- Adaptability\n- Technical Implementation\n- Innovation\n- Demonstration"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "IMPORTANT DATES",
+    "chunk_id": "ANT-006-IMPORTANT_DATES-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: IMPORTANT DATES\n\nRound 2:\n9 October 2026\n\nRound 3:\n10 October 2026\n\nRound 1 Registration & PPT Submission Deadline:\n27 September 2026"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "PRIZE DISTRIBUTION",
+    "chunk_id": "ANT-006-PRIZE_DISTRIBUTION-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: PRIZE DISTRIBUTION\n\nPrize Pool:\n₹15,000+\n\nAdditional Benefits:\n- Exciting Goodies\n- ACM Chapter Membership"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "RESOURCES & DOCUMENTS",
+    "chunk_id": "ANT-006-RESOURCES_DOCUMENTS-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: RESOURCES & DOCUMENTS\n\nRulebook:\nSupplied event information refers to a rulebook extraction, but\nno separate readable rulebook content was provided.\n\nPPT Template:\nNot provided in the supplied event information.\n\nDrive Folder:\nhttps://drive.google.com/file/d/1GWTIgtFIbSpEH3tGjijOGVBm91hj7Xz6/view?usp=sharing\n\nOther Resources:\nNot provided in the supplied event information."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-006-CONTACT-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: CONTACT\n\nStudent/Organizer Contact:\n\nTejas Bankar\nPhone: 9850350084\n\nAditya Lodhi\nPhone: 7972496216"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-006-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: IMPORTANT LINKS\n\nRegistration Platform:\nGoogle Forms\n\nRegistration URL:\nhttps://forms.gle/FKJYg5FCdXdSHWmW7\n\nRulebook:\nNot provided as a separate readable document.\n\nPPT Template:\nNot provided in the supplied event information.\n\nDrive Folder:\nNot provided in the supplied event information.\n\nInstagram:\nhttps://www.instagram.com/iiris_pccoe?stkn=dzlhODhkZjdkZTYy\n\nWebsite:\nhttps://iiris.vercel.app/"
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-006-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is IoThrone 2026?\nA: IoThrone 2026 is an innovation-driven hackathon focused on\ntransforming creative ideas into intelligent and functional\nprototypes.\n\nQ: What is the team size?\nA: Teams must consist of 2 to 4 members.\n\nQ: What are the participation requirements?\nA: Teams should have original and innovative project ideas and must arrange their required hardware and components.\n\nQ: How many rounds are there?\nA: The hackathon consists of three rounds: Online PPT Evaluation,\nOffline Prototype Demonstration, and Offline Real-Time\nImplementation.\n\nQ: What technologies can be used?\nA: The supplied event information mentions AI, ML, Computer Vision,\nEdge AI, IoT, Robotics, and Hardware."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-006-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: FAQ / DIRECT ANSWERS\n\nQ: What happens in Round 1?\nA: Round 1 evaluates the team's idea, innovation, and technical\napproach through a PowerPoint presentation.\n\nQ: What happens in Round 2?\nA: Selected teams demonstrate their working prototype before an\ninternal judging panel.\n\nQ: What is the Round 1 submission deadline?\nA: Registration and PPT submission close on 27 September 2026.\n\nQ: When is Round 2?\nA: Round 2 is on 9 October 2026 from 9:00 AM to 4:00 PM at\n6206 LAB & 6218 LAB.\n\nQ: How many teams advance from Round 2?\nA: The Top 15 teams advance to Round 3.\n\nQ: What happens in Round 3?\nA: The Top 15 teams work with the provided or assigned environment\nor system and demonstrate real-time integration and functionality."
+  },
+  {
+    "event_id": "ANT-006",
+    "event_name": "IoThrone 2026",
+    "source_file": "IoThrone_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-006-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: IoThrone 2026 (Anantya '26, ID: ANT-006) | Section: FAQ / DIRECT ANSWERS\n\nQ: When is Round 3?\nA: Round 3 is on 10 October 2026 from 10:00 AM to 2:00 PM at\n6206 LAB & 6218 LAB.\n\nQ: What are the main evaluation areas in the final round?\nA: Real-Time Integration, Functionality, Adaptability, Technical\nImplementation, Innovation, and Demonstration.\n\nQ: Where can participants register?\nA: Registration is available through the official Google Forms link provided in the event announcement.\n\nQ: Where can participants find updates?\nA: Updates are available through the IIRIS Instagram page and website.\n\nQ: Who should participants contact?\nA: The supplied contact details are Tejas Bankar at 9850350084 and\nAditya Lodhi at 7972496216."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "EVENT INFORMATION",
+    "chunk_id": "ANT-007-EVENT_INFORMATION-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: EVENT INFORMATION\n\nEvent ID: ANT-007\nEvent Name:\nMake a Doodle\n\nEvent Edition:\nAnantya '26\n\nPresented By:\nComputer Department Art Circle, PCCOE\n\nInstitution:\nPimpri Chinchwad College of Engineering (PCCOE)\n\nEvent Type:\nCreative Digital Art Competition\n\nParticipation:\nIndividual\n\nMain Theme:\nMarvel\n\nSub-Theme:\nDoctor Strange and the Multiverse\n\nFormat:\n2 Rounds\n\nFinal Round:\n10 October 2026\n\nReporting Time:\n8:45 AM\n\nFinal Round Duration:\n2 Hours\n\nPrize Pool:\n₹13,000+\n\nCertificates:\nAll Participants"
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "EVENT OVERVIEW",
+    "chunk_id": "ANT-007-EVENT_OVERVIEW-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: EVENT OVERVIEW\n\nMake a Doodle is a creative digital art competition presented as\npart of Anantya '26 by the Computer Department Art Circle, PCCOE.\n\nThe event gives participants a platform to turn ideas into digital\nart and demonstrate creativity, visual storytelling, digital-art\nskills, technical execution, and adaptability.\n\nParticipants create digital doodles using permitted creative tools\nand respond to a live creative challenge in the final round.\n\nOfficial message:\nDON'T JUST DOODLE. DESIGN THE UNIMAGINABLE."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ELIGIBILITY",
+    "chunk_id": "ANT-007-ELIGIBILITY-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ELIGIBILITY\n\n- Open to B.Tech Second Year (SY), Third Year (TY), and Final Year\n  students.\n- Students from all recognized colleges/universities are eligible.\n- Participation is strictly individual.\n- Each participant must register individually.\n- Participants must provide correct academic and personal\n  information during registration."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "REGISTRATION",
+    "chunk_id": "ANT-007-REGISTRATION-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: REGISTRATION\n\nPCCOE Student Registration:\nFree\n\nOther College Registration:\n₹49 per participant\n\nRegistration Deadline:\n7 October 2026\n\nPCCOE Student Registration Form:\nhttps://docs.google.com/forms/d/e/1FAIpQLSdkCh0Buifs1sUP0H_YMUM85ESmcf5ogI_cSfghI5a29EOJOw/viewform\n\nUnstop Registration:\nhttps://unstop.com/p/make-a-doodle-pimpri-chinchwad-college-of-engineering-1760448\n\nRegistration requirements:\n- PCCOE students should register through the designated PCCOE\n  registration mechanism.\n- Other-college participants can register through the Unstop\n  platform.\n- Participants must provide accurate registration information."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "EVENT FORMAT",
+    "chunk_id": "ANT-007-EVENT_FORMAT-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: EVENT FORMAT\n\nThe competition consists of 2 rounds:\n\nRound 1:\nOnline Doodle Submission\n\nRound 2:\nFinal Live Digital Doodle"
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ROUND 1 — ONLINE DOODLE SUBMISSION",
+    "chunk_id": "ANT-007-ROUND_1_ONLINE_DOODLE_SUBMISSION-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ROUND 1 — ONLINE DOODLE SUBMISSION\n\nMode:\nOnline\n\nTheme:\nMarvel\n\nSubmission Deadline:\n7 October 2026, 11:59 PM\n\nResults:\n8 October 2026\n\nDescription:\nParticipants must create and submit a digital doodle based on the\nMarvel theme.\n\nParticipants may create their digital doodle using:\n- Canva\n- AI tools\n- Their own digital-art skills\n- Other permitted digital drawing/illustration tools\n\nSelection:\nOnly shortlisted participants will proceed to the Final Round."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ROUND 1 — RULES",
+    "chunk_id": "ANT-007-ROUND_1_RULES-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ROUND 1 — RULES\n\n- The submission must be the participant's own creative work.\n- The artwork must be relevant to Marvel.\n- The submission should demonstrate originality and creative\n  interpretation.\n- Digital drawing/illustration tools may be used.\n- AI tools may be used as part of the creative workflow.\n- Late submissions may not be considered.\n- Participants must provide accurate information while submitting\n  their artwork.\n- Any submission found to violate the competition guidelines may\n  be disqualified."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ROUND 2 — FINAL LIVE DIGITAL DOODLE",
+    "chunk_id": "ANT-007-ROUND_2_FINAL_LIVE_DIGITAL_DOODLE-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ROUND 2 — FINAL LIVE DIGITAL DOODLE\n\nDate:\n10 October 2026\n\nVenue:\nPCCOE\n\nReporting Time:\n8:45 AM\n\nDuration:\n2 Hours\n\nMode:\nOffline / Live\n\nTopic:\nRevealed on the spot\n\nDescription:\nShortlisted participants will compete in a live digital doodling\nchallenge. Participants must create their artwork digitally on a\ncomputer or other permitted device according to the topic and\ninstructions revealed during the round.\n\nParticipants may use:\n- Laptops\n- Tablets\n- Mobile phones\n- Digital drawing/illustration software\n- Other permitted digital tools\n- AI-assisted creative tools\n\nInternet:\nInternet access will be provided during the Final Round.\n\nParticipants should ensure that their required software, accounts,\nfiles, and other necessary resources are accessible on their device\nbefore the competition begins."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "LIVE MODIFICATION CHALLENGE",
+    "chunk_id": "ANT-007-LIVE_MODIFICATION_CHALLENGE-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: LIVE MODIFICATION CHALLENGE\n\nTwo live modifications will be introduced during the Final Round.\n\nParticipants must adapt their ongoing artwork according to the\nchanges announced by the organizers.\n\nThe challenge will evaluate:\n- Creative Adaptability\n- Quick Thinking\n- Ability to Incorporate New Ideas\n- Artistic Decision-Making\n- Execution Under Time Pressure\n\nSpecific modifications will be revealed during the Final Round."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "USE OF AI & DIGITAL TOOLS",
+    "chunk_id": "ANT-007-USE_OF_AI_DIGITAL_TOOLS-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: USE OF AI & DIGITAL TOOLS\n\nAI tools are permitted during the competition.\n\nParticipants may use AI tools as part of their creative workflow,\nsubject to the instructions provided by the organizers.\n\nParticipants remain responsible for:\n- The final artwork\n- Creative decisions made\n- Relevance of the artwork to the theme\n- Following all competition rules\n\nParticipants must use only permitted tools and resources and must\nfollow any additional instructions announced by the organizers."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "DEVICES & INTERNET",
+    "chunk_id": "ANT-007-DEVICES_INTERNET-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: DEVICES & INTERNET\n\nParticipants may use:\n- Laptops\n- Tablets\n- Mobile phones\n- Suitable digital-art or creative software/tools\n\nHigh-speed internet will be provided during the Final Round.\n\nParticipants should ensure that their required software, accounts,\nfiles, and other necessary resources are accessible on their device\nbefore the competition begins."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "TIME LIMIT",
+    "chunk_id": "ANT-007-TIME_LIMIT-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: TIME LIMIT\n\nFinal Round Duration:\n2 Hours\n\nParticipants must complete their artwork within the allotted time.\n\nOnce the competition time ends, participants must stop working and\nfollow the submission instructions given by the organizers."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "JUDGING / EVALUATION CRITERIA",
+    "chunk_id": "ANT-007-JUDGING_EVALUATION_CRITERIA-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: JUDGING / EVALUATION CRITERIA\n\nCreative Concept:\nOriginality and creativity of the idea presented.\n\nTheme Interpretation:\nHow effectively the participant incorporates the Marvel and\nDoctor Strange and the Multiverse concepts where applicable.\n\nVisual Design:\nComposition, aesthetics, visual balance, detailing, and overall\npresentation.\n\nDigital Art Skills:\nEffective use of digital drawing, illustration, design, and\nediting techniques.\n\nStorytelling:\nAbility of the doodle to communicate an idea, concept, or visual\nstory.\n\nAdaptability:\nAbility to respond creatively to the two live modifications\nintroduced during the Final Round.\n\nTool Utilization:\nEffective and appropriate use of available digital devices and\ncreative/AI tools."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ORIGINALITY & FAIR PLAY",
+    "chunk_id": "ANT-007-ORIGINALITY_FAIR_PLAY-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ORIGINALITY & FAIR PLAY\n\n- Participants are expected to submit/create work that represents\n  their own participation.\n- Participants must not intentionally submit another participant's\n  work as their own.\n- Any attempt to manipulate the competition process may result in\n  disqualification.\n- Participants must follow instructions given by the organizing\n  team throughout the competition.\n- Organizers reserve the right to review submissions where\n  originality or rule compliance is in question."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "PARTICIPANT CONDUCT",
+    "chunk_id": "ANT-007-PARTICIPANT_CONDUCT-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: PARTICIPANT CONDUCT\n\nParticipants are expected to:\n\n- Maintain appropriate conduct throughout the event.\n- Follow instructions given by the organizing team.\n- Respect fellow participants, judges, volunteers, and organizers.\n- Avoid disrupting the competition environment.\n- Follow designated reporting and submission procedures.\n\nAny behavior that significantly disrupts the event may result in\nremoval from the competition."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "DISQUALIFICATION",
+    "chunk_id": "ANT-007-DISQUALIFICATION-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: DISQUALIFICATION\n\nA participant may be disqualified for:\n\n- Violation of competition rules.\n- Submission after the specified deadline, where late submission\n  is not permitted.\n- Misrepresentation of registration or academic information.\n- Unfair practices or deliberate attempts to compromise the\n  competition.\n- Failure to follow instructions given by the organizers.\n- Any other conduct determined by the organizing team to be a\n  serious violation of the competition guidelines."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "IMPORTANT DATES",
+    "chunk_id": "ANT-007-IMPORTANT_DATES-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: IMPORTANT DATES\n\nRegistration Closes:\n7 October 2026\n\nRound 1 Submission Deadline:\n7 October 2026, 11:59 PM\n\nRound 1 Results:\n8 October 2026\n\nFinal Round:\n10 October 2026\n\nFinal Round Reporting:\n8:45 AM\n\nFinal Round Duration:\n2 Hours"
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "PRIZES & CERTIFICATES",
+    "chunk_id": "ANT-007-PRIZES_CERTIFICATES-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: PRIZES & CERTIFICATES\n\nPrize Pool:\n₹13,000+\n\nPrizes:\n- 1st Place\n- 2nd Place\n- 3rd Place\n\nCertificates:\nCertificates will be provided to all participants."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ORGANIZER'S RIGHTS",
+    "chunk_id": "ANT-007-ORGANIZERS_RIGHTS-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ORGANIZER'S RIGHTS\n\nThe organizing team reserves the right to:\n\n- Modify competition procedures when necessary.\n- Provide additional instructions during the competition.\n- Clarify or interpret rules where required.\n- Take appropriate action in cases of rule violations.\n- Make decisions regarding competition administration and\n  participant eligibility.\n\nAny important changes will be communicated through the official\ncommunication channels."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "FINAL NOTE",
+    "chunk_id": "ANT-007-FINAL_NOTE-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: FINAL NOTE\n\nMake a Doodle brings together:\n\n- Art\n- Technology\n- Imagination\n- Creativity\n- Adaptability\n\nYour idea. Your canvas. Your rules.\n\nRules, guidelines, schedule, format, or other competition details\nmay be modified or updated by the organizers.\n\nParticipants are advised to stay updated through the official\ncommunication channels of Make a Doodle."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "CONTACT",
+    "chunk_id": "ANT-007-CONTACT-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: CONTACT\n\nFor Queries:\n\nAryan Chavan:\n7385286894\n\nApurv Fating:\n8446392554"
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "IMPORTANT LINKS",
+    "chunk_id": "ANT-007-IMPORTANT_LINKS-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: IMPORTANT LINKS\n\nPCCOE Student Registration:\nhttps://docs.google.com/forms/d/e/1FAIpQLSdkCh0Buifs1sUP0H_YMUM85ESmcf5ogI_cSfghI5a29EOJOw/viewform\n\nUnstop Registration:\nhttps://unstop.com/p/make-a-doodle-pimpri-chinchwad-college-of-engineering-1760448"
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-007-FAQ_DIRECT_ANSWERS-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: FAQ / DIRECT ANSWERS\n\nQ: What is Make a Doodle?\nA: Make a Doodle is a creative digital art competition presented\n   as part of Anantya '26 by the Computer Department Art Circle,\n   PCCOE.\n\nQ: Is participation individual or team-based?\nA: Participation is strictly individual.\n\nQ: What is the theme?\nA: The main theme is Marvel. The supplied event information also\n   specifies Doctor Strange and the Multiverse as the sub-theme.\n\nQ: How many rounds are there?\nA: There are 2 rounds: an online doodle submission followed by a\n   final live digital doodle round.\n\nQ: When is the Round 1 deadline?\nA: 7 October 2026 at 11:59 PM.\n\nQ: When will Round 1 results be announced?\nA: 8 October 2026.\n\nQ: When is the Final Round?\nA: 10 October 2026 at PCCOE. Reporting time is 8:45 AM and the\n   duration is 2 hours."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-007-FAQ_DIRECT_ANSWERS-02",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: FAQ / DIRECT ANSWERS\n\nQ: What happens in the Final Round?\nA: Shortlisted participants create a digital doodle live. The topic\n   is revealed on the spot, and participants must adapt their work\n   to two live modifications announced during the round.\n\nQ: Can I use AI?\nA: Yes. AI-assisted creative tools are permitted, subject to the\n   organizers' instructions.\n\nQ: Which devices can I use?\nA: Participants may use laptops, tablets, mobile phones, and\n   suitable digital-art or creative software/tools.\n\nQ: Is internet available during the Final Round?\nA: Yes. Internet access will be provided during the Final Round.\n\nQ: What is the prize pool?\nA: ₹13,000+.\n\nQ: Are certificates provided?\nA: Yes. Certificates are provided to all participants."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "FAQ / DIRECT ANSWERS",
+    "chunk_id": "ANT-007-FAQ_DIRECT_ANSWERS-03",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: FAQ / DIRECT ANSWERS\n\nQ: Is registration free?\nA: PCCOE student registration is free. The supplied event\n   information states a ₹49 registration fee for students from\n   other colleges.\n\nQ: Where can I register?\nA: PCCOE students can use the official PCCOE registration form.\n   Other participants can use the Unstop registration page.\n\nQ: Who should I contact for queries?\nA: Aryan Chavan (7385286894) or Apurv Fating (8446392554)."
+  },
+  {
+    "event_id": "ANT-007",
+    "event_name": "Make a Doodle",
+    "source_file": "Make_a_Doodle_2026_standardized.txt",
+    "section": "ORGANIZER",
+    "chunk_id": "ANT-007-ORGANIZER-01",
+    "chunk_text": "Event: Make a Doodle (Anantya '26, ID: ANT-007) | Section: ORGANIZER\n\nComputer Department Art Circle, PCCOE"
+  }
+]

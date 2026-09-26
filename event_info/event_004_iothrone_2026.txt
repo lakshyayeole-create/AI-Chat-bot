@@ -1,0 +1,33 @@
+Event ID: ANT-004
+Event Name: IoThrone 2026
+
+# IoThrone 2026
+Organized by: PCET’s Pimpri Chinchwad College of Engineering / IIRIS
+Tagline: The Power Stone of Innovation! Think. Build. Integrate. Demonstrate.
+
+## Description
+Get ready to turn your innovative ideas into working prototypes at IoThrone 2026, an innovation-driven hackathon by PCET’s Pimpri Chinchwad College of Engineering.
+
+## Domains
+AI | ML | Computer Vision | Edge AI | IoT | Robotics | Hardware
+
+## The Journey / Rounds
+- Round 1 (PPT EVALUATION): Online. Registration & PPT submission closes: 27 September 2026. Selected teams move to Round 2.
+- Round 2 (PROTOTYPE SHOWCASE): 9 October 2026 (9:00 AM – 4:00 PM) at 6206 & 6218 Labs, 2nd Floor, Computer Engineering Department, PCCoE. Showcase your working prototype before the judging panel. Top 15 teams advance.
+- Round 3 (REAL-TIME INTEGRATION): 10 October 2026 (10:00 AM – 2:00 PM) at 6206 & 6218 Labs, 2nd Floor. Integrate your prototype with a provided/assigned environment or system and demonstrate its adaptability.
+
+## Event Details
+- Eligibility: Original and innovative project ideas
+- Team Size: 2–4 members per team
+- Hardware: Teams must arrange their required hardware/components.
+- Prize Pool: ₹15,000+ Prize Pool + Goodies
+- Perks: Exciting Goodies, ACM Chapter Membership
+
+## Links and Registration
+- Registration Link: https://forms.gle/FKJYg5FCdXdSHWmW7
+- Instagram: https://www.instagram.com/iiris_pccoe?stkn=dzlhODhkZjdkZTYy
+- Website: https://iiris.vercel.app/
+
+## Contact for Queries
+- Tejas Bankar: 9850350084
+- Aditya Lodhi: 7972496216

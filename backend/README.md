@@ -1,6 +1,6 @@
 # Anantya Chatbot — Backend
 
-Event information chatbot for Anantya '26. Uses RAG (Retrieval-Augmented Generation) with FAISS + sentence-transformers for retrieval and Groq (Llama 3.3 70B) for answer generation.
+Event information chatbot for Anantya '26. Uses RAG (Retrieval-Augmented Generation) with Qdrant + sentence-transformers for retrieval and Groq (Llama 3.3 70B) for answer generation.
 
 ## Quick Start
 
@@ -39,7 +39,7 @@ cd backend
 python scripts/ingest.py
 ```
 
-This will load all event files, chunk them, generate embeddings, and build the FAISS index.
+This will load all event files, chunk them, generate embeddings, and build the Qdrant collection.
 
 ### 5. Start the server
 
@@ -83,7 +83,7 @@ backend/
 │   │   ├── loader.py         # Load .txt files from event_info/
 │   │   ├── chunker.py        # Section-aware chunking
 │   │   ├── embeddings.py     # sentence-transformers wrapper
-│   │   ├── vector_store.py   # FAISS build/save/load/search
+│   │   ├── qdrant_store.py   # Qdrant client and search
 │   │   ├── retriever.py      # Semantic retrieval + threshold
 │   │   └── pipeline.py       # Full RAG orchestrator
 │   ├── llm/client.py         # Groq API abstraction
@@ -94,7 +94,7 @@ backend/
 │       └── system_prompt.txt  # LLM grounding prompt
 ├── scripts/ingest.py          # Document ingestion script
 ├── tests/                     # Automated tests
-├── vector_store/              # Generated FAISS index + metadata
+├── qdrant_data/               # Generated Qdrant storage
 ├── .env.example               # Environment template
 └── requirements.txt           # Python dependencies
 ```
@@ -106,7 +106,7 @@ backend/
 | Framework | FastAPI |
 | LLM | Groq (Llama 3.3 70B) |
 | Embeddings | sentence-transformers (all-MiniLM-L6-v2) |
-| Vector DB | FAISS |
+| Vector DB | Qdrant |
 | Validation | Pydantic v2 |
 
 ## Adding New Events

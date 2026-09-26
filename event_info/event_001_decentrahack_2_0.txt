@@ -1,0 +1,36 @@
+Event ID: ANT-001
+Event Name: DecentraHack 2.0
+
+# DecentraHack 2.0
+Organized by: LFDT Student Chapter, PCCOE
+Tagline: LEARN • BUILD • TRUST. DON'T JUST THINK IT. BUILD IT.
+
+## Description
+Ready to turn your ideas into something real? Step into DecentraHack 2.0, a 3-round hackathon where you ideate, build, demonstrate, and pitch your solution!
+
+## Tracks
+- Agentic AI
+- Blockchain / Web3
+- Open Source
+
+## The Journey / Rounds
+- Round 1 (Idea): Submit your abstract
+- Round 2 (Build): Working Demo + PPT
+- Round 3 (Pitch): Top 15 teams pitch at PCCOE
+
+## Event Details
+- Registration Dates: 20–30 September 2026
+- Registrations Close: 30th September 2026
+- Final Pitch Date: 9 October 2026
+- Venue: PCCOE, Pune
+- Team Size: 2–4 Members
+- Eligibility: College Students
+- Prize Pool: ₹15K+
+- Perks: Goodies + Memberships
+- Rules: AI Tools Allowed
+
+## Links and Registration
+- Register Now: https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform
+
+## Contact for Queries
+- Rohit Sonawane: +91 8857011104

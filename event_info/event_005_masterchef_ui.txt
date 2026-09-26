@@ -1,0 +1,28 @@
+Event ID: ANT-005
+Event Name: MasterChef UI
+
+# MasterChef UI
+Organized by: GDGC PCCoE x ACM x ACM-W x OWASP x IRIS x LFDT
+Tagline: Design. Solve. Cook.
+
+## Description
+GDGC PCCoE is back with yet another exciting event — MasterChef UI in Techfest Anantya 2026! A 3-round UI/UX design competition where your creativity gets plated, judged, and served under pressure.
+
+## The Journey / Rounds (The Menu)
+- Round 1: The Taste Test
+- Round 2: The Pressure Test
+- Round 3: The Cutthroat Finale
+
+## Event Details
+- Date: 9th October 2026
+- Team Size: 1-2 members
+- Prize Pool: ₹12,000 + Goodies, Swags & ACM Membership
+
+## Links and Registration
+- Registration (FREE for PCCoE Students): https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+- Registration (₹100 for other colleges on Unstop): https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+## Contact for Queries
+- Mayur Kharat: 99604 32698
+- Samiksha Mote: 75587 26679
+- WhatsApp Group: https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk

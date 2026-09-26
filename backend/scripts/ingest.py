@@ -7,10 +7,10 @@ This script:
 1. Loads all .txt files from the knowledge directory (event_info/)
 2. Splits them into semantic chunks with metadata
 3. Generates embeddings using sentence-transformers
-4. Builds a FAISS index
-5. Saves the index and metadata to vector_store/
+4. Builds a Qdrant collection
+5. Saves the points and metadata to Qdrant
 
-Safe to re-run — rebuilds the index from scratch each time.
+Safe to re-run — recreates the collection each time.
 """
 import sys
 from pathlib import Path
@@ -24,7 +24,7 @@ from app.core.logging_config import setup_logging, get_logger
 from app.rag.loader import load_documents
 from app.rag.chunker import chunk_documents
 from app.rag.embeddings import embed_texts, get_embedding_dimension
-from app.rag.vector_store import build_index, save_index, reset_cache
+from app.rag.qdrant_store import init_collection, upload_points
 
 logger = get_logger(__name__)
 
@@ -84,20 +84,15 @@ def main():
     print(f"  Vectors generated: {vectors.shape[0]}")
     print()
 
-    # Step 5: Build FAISS index
-    print("[5/6] Building FAISS index...")
-    # Reset any cached index
-    reset_cache()
-    index = build_index(vectors)
-    print(f"  FAISS index created: yes")
-    print(f"  Total vectors: {index.ntotal}")
+    # Step 5: Build Qdrant collection
+    print("[5/6] Building Qdrant collection...")
+    init_collection(dimension)
+    print(f"  Qdrant collection initialized.")
     print()
 
-    # Step 6: Save index and metadata
-    print("[6/6] Saving index and metadata...")
-    save_index(index, metadata)
-    print(f"  Index saved to: {settings.vector_store_path / 'index.faiss'}")
-    print(f"  Metadata saved to: {settings.vector_store_path / 'metadata.json'}")
+    # Step 6: Upload points
+    print("[6/6] Uploading vectors and metadata to Qdrant...")
+    upload_points(vectors, metadata)
     print()
 
     # Summary
@@ -108,8 +103,7 @@ def main():
     print(f"  Total chunks: {len(chunks)}")
     print(f"  Embedding model: {settings.embedding_model}")
     print(f"  Vector dimension: {dimension}")
-    print(f"  FAISS index created: yes")
-    print(f"  Metadata saved: yes")
+    print(f"  Qdrant ingestion: complete")
     print("=" * 60)
     print()
     print("Ingestion complete! You can now start the server:")

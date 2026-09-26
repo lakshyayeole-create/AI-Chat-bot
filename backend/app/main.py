@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.logging_config import setup_logging, get_logger
 from app.api.chat import router as chat_router
-from app.rag import vector_store
+from app.rag import qdrant_store
 
 logger = get_logger(__name__)
 
@@ -29,20 +29,18 @@ async def lifespan(app: FastAPI):
     logger.info("Anantya Chatbot Backend — Starting up")
     logger.info("=" * 60)
 
-    # Try to load the vector store
+    # Try to connect to Qdrant
     try:
-        vector_store.load_index()
-        app.state.vector_store_loaded = True
-        logger.info("Vector store loaded successfully.")
-    except FileNotFoundError as e:
-        app.state.vector_store_loaded = False
-        logger.warning(
-            "Vector store not found. Run: python scripts/ingest.py"
-        )
-        logger.warning("Details: %s", str(e))
+        is_connected = qdrant_store.check_connection()
+        if is_connected:
+            app.state.vector_store_loaded = True
+            logger.info("Qdrant collection loaded successfully.")
+        else:
+            app.state.vector_store_loaded = False
+            logger.warning("Qdrant collection not found. Run: python scripts/ingest.py")
     except Exception as e:
         app.state.vector_store_loaded = False
-        logger.error("Failed to load vector store: %s", str(e))
+        logger.error("Failed to connect to Qdrant: %s", str(e))
 
     logger.info("Server ready on %s:%d", settings.host, settings.port)
 

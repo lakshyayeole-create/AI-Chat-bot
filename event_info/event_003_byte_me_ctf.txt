@@ -1,0 +1,29 @@
+Event ID: ANT-003
+Event Name: Byte Me CTF 26
+
+# Byte Me CTF 26
+Organized by: OWASP PCCOE Student Chapter
+Tagline: Think. Hack. Capture the Flag.
+
+## Description
+Part of ANANTYA ’26. The hunt for the flags begins! Get ready for an action-packed Capture The Flag (CTF) where you’ll solve challenges, uncover hidden flags, and put your cybersecurity skills to the test.
+
+## Domains and Topics
+Explore challenges across Web, OSINT, Forensics, Cryptography, Networking, Linux & more!
+
+## Event Details
+- Date: 9th October 2026
+- Time: 9:00 AM – 6:00 PM
+- Venue: PCCOE
+- Team Size: 1–2 Members
+- Prize Pool: Worth ₹1.5 LAKH+
+
+## Links and Registration
+- PCCOE Students Registration: https://docs.google.com/forms/d/e/1FAIpQLSeNNQxkad7eF7f3E3-EGlQCk3rc1mNVHlkMxejbMDLQuA8PYQ/viewform?usp=publish-editor
+- Register on Unstop: https://unstop.com/p/byteme-ctf-26-pimpri-chinchwad-college-of-engineering-1760412
+- Website: https://bytemectf.owasppccoe.in/
+
+## Contact for Queries
+- Suyog Jadhav: +91 98813 92295
+- Sarthak Warale: +91 80103 60482
+- Kulbhushan Kumar: +91 98601 02147

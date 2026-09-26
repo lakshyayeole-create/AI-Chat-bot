@@ -17,12 +17,16 @@ class Settings(BaseSettings):
     # --- RAG ---
     chunk_size: int = 800
     chunk_overlap: int = 120
-    top_k: int = 6
-    similarity_threshold: float = 0.22
+    top_k: int = 5
+    retrieval_score_threshold: float = 0.70
+
+    # --- Qdrant ---
+    qdrant_url: str = ""
+    qdrant_api_key: str | None = None
+    qdrant_collection_name: str = "anantya_events"
 
     # --- Paths ---
     knowledge_dir: str = "../event_info"
-    vector_store_dir: str = "./vector_store"
 
     # --- CORS ---
     frontend_origin: str = "http://localhost:3000"
@@ -46,11 +50,7 @@ class Settings(BaseSettings):
         """Resolve knowledge directory relative to the backend root."""
         return Path(__file__).resolve().parent.parent.parent / self.knowledge_dir
 
-    @property
-    def vector_store_path(self) -> Path:
-        """Resolve vector store directory relative to the backend root."""
-        base = Path(__file__).resolve().parent.parent.parent
-        return base / self.vector_store_dir
+
 
 
 @lru_cache()

@@ -29,8 +29,9 @@ def build_context(results: list[RetrievalResult]) -> str:
     for result in results:
         event_name = result.metadata.get("event_name", "Unknown Event")
         section = result.metadata.get("section", "General")
+        source_file = result.metadata.get("source_file", "unknown source")
 
-        header = f"[Event: {event_name}]\n[Section: {section}]"
+        header = f"[Event: {event_name}]\n[Section: {section}]\n[Source: {source_file}]"
         context_parts.append(f"{header}\n{result.text}")
 
     return "CONTEXT:\n\n" + "\n\n---\n\n".join(context_parts)
