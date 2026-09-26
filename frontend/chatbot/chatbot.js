@@ -9,16 +9,20 @@
 
   // Configuration
   const CONFIG = {
-    apiUrl: "http://localhost:8000/api/chat",
-    healthUrl: "http://localhost:8000/health",
+    apiUrl: "http://localhost:8001/api/chat",
+    healthUrl: "http://localhost:8001/health",
     title: "ANANTYA '26 HUD",
     welcomeMessage:
-      "**SYSTEM ONLINE.** Greetings, operative! I am the **ANANTYA '26 Event Intelligence Assistant**.\n\nAsk me anything regarding **She Solves 3.0**, registration details, prize pools, eligibility, or event rules.",
+      "**SYSTEM ONLINE.** Greetings! I am the **ANANTYA '26 Technical Symposium Assistant**.\n\nI have complete information on all events:\n- **She Solves 3.0** (Flagship Hackathon)\n- **BYTEME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **DecentraHACK** (Web3 & Blockchain)\n- **MasterChef UI 2026** (UI/UX & Frontend)\n- **IoThrone 2026** (IoT Hackathon)\n- **Make a Doodle** (Creative Arts)\n\nAsk me about any event's rules, team size, registration fees, eligibility, or prize pool!",
     quickChips: [
+      "What events are in Anantya '26?",
+      "Tell me about BYTEME CTF",
+      "Tell me about Codigo 2026",
       "Tell me about She Solves 3.0",
-      "What is the registration fee?",
-      "What is the team size and eligibility?",
-      "What are the hackathon prizes?",
+      "Tell me about DecentraHACK",
+      "What is MasterChef UI?",
+      "Tell me about IoThrone",
+      "What is Make a Doodle?",
     ],
   };
 
@@ -203,7 +207,7 @@
     state.isOnline = false;
     dom.badge.classList.add("is-offline");
     dom.liveDot.classList.add("is-offline");
-    dom.statusText.textContent = "BACKEND OFFLINE (PORT 8000)";
+    dom.statusText.textContent = "BACKEND OFFLINE (PORT 8001)";
   }
 
   /**
@@ -264,7 +268,7 @@
         try {
           const errData = await response.json();
           if (errData.detail) errorDetail = errData.detail;
-        } catch (_) { }
+        } catch (_) {}
         throw new Error(errorDetail);
       }
 
@@ -279,10 +283,10 @@
       let errorMsg = `**TRANSMISSION FAILED**: ${err.message}`;
       if (isConnectionError) {
         errorMsg =
-          "**ERROR**: Unable to connect to FastAPI backend at `http://localhost:8000`.\n\n" +
+          "**ERROR**: Unable to connect to FastAPI backend at `http://localhost:8001`.\n\n" +
           "**Troubleshooting**:\n" +
           "1. Open your terminal in `backend/`\n" +
-          "2. Start server: `uvicorn app.main:app --reload --port 8000`\n" +
+          "2. Start server: `uvicorn app.main:app --reload --port 8001`\n" +
           "3. Verify vector store: `python scripts/ingest.py`";
       }
       addMessage("assistant", errorMsg);

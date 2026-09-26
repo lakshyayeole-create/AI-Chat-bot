@@ -76,7 +76,7 @@ USER QUESTION:
                 {"role": "user", "content": user_message},
             ],
             temperature=0.3,
-            max_tokens=1024,
+            max_tokens=800,
         )
 
         answer = response.choices[0].message.content.strip()
@@ -89,6 +89,4 @@ USER QUESTION:
 
     except Exception as e:
         logger.error("LLM request failed: %s", str(e))
-        raise RuntimeError(
-            "Failed to generate an answer. The LLM service may be temporarily unavailable."
-        ) from e
+        raise RuntimeError(f"LLM request failed: {type(e).__name__}: {str(e)}") from e
