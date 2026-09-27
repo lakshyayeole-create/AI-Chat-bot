@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import Transition, { ModelConfig, TransitionHandle } from './components/Transition';
 import Navbar from './components/Navbar';
-import IntroOverlay from './components/ui/IntroOverlay';
+import AvengersIntro from './components/ui/AvengersIntro';
 
 const ironManConfig: ModelConfig = {
   modelPath: 'assets/iron_man_detailed_web.glb',
@@ -54,8 +54,8 @@ export default function App() {
 
   return (
     <main style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
-      {/* Brand Logo & GSAP Intro Screen */}
-      {!hasEntered && <IntroOverlay onEnter={handleEnter} />}
+      {/* Avengers-Style Cinematic Brand Logo Intro */}
+      {!hasEntered && <AvengersIntro onComplete={handleEnter} />}
 
       {/* Top Center Compact Floating Navbar */}
       <Navbar />
