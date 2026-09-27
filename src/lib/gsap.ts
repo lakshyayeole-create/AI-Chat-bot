@@ -1,6 +1,6 @@
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
-gsap.registerPlugin(useGSAP)
+gsap.registerPlugin(useGSAP);
 
-export { gsap, useGSAP }
+export { gsap, useGSAP };

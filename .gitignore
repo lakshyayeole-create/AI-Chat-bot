@@ -7,9 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies
+node_modules/
+dist/
+dist-ssr/
 *.local
 
 # Editor directories and files
@@ -22,3 +23,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Large raw 3D files & video references (>50MB / GitHub 100MB limit)
+*.blend
+*.blend1
+assets/Iron_Man_detailed.glb
+assets/iron-man_mark_85__rigged_4k.glb
+assets/iron-man_mark_85__rigged.glb
+assets/iron-man_helmet_mk3.glb
+assets/*.mp4
+index1.html
+
+# Temp / Scratch build scripts
+scripts/
+
