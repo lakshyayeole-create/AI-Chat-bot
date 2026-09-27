@@ -1,33 +1,450 @@
-Event ID: ANT-004
-Event Name: IoThrone 2026
+EVENT_ID: ANANTYA-004
 
-# IoThrone 2026
-Organized by: PCET’s Pimpri Chinchwad College of Engineering / IIRIS
-Tagline: The Power Stone of Innovation! Think. Build. Integrate. Demonstrate.
+EVENT_NAME: IoThrone 2026
 
-## Description
-Get ready to turn your innovative ideas into working prototypes at IoThrone 2026, an innovation-driven hackathon by PCET’s Pimpri Chinchwad College of Engineering.
+EVENT_EDITION: ANANTYA '26
 
-## Domains
-AI | ML | Computer Vision | Edge AI | IoT | Robotics | Hardware
+EVENT_TYPE: Innovation-Driven Technical Hackathon
 
-## The Journey / Rounds
-- Round 1 (PPT EVALUATION): Online. Registration & PPT submission closes: 27 September 2026. Selected teams move to Round 2.
-- Round 2 (PROTOTYPE SHOWCASE): 9 October 2026 (9:00 AM – 4:00 PM) at 6206 & 6218 Labs, 2nd Floor, Computer Engineering Department, PCCoE. Showcase your working prototype before the judging panel. Top 15 teams advance.
-- Round 3 (REAL-TIME INTEGRATION): 10 October 2026 (10:00 AM – 2:00 PM) at 6206 & 6218 Labs, 2nd Floor. Integrate your prototype with a provided/assigned environment or system and demonstrate its adaptability.
+EVENT_THEME: The Power Stone of Innovation
 
-## Event Details
-- Eligibility: Original and innovative project ideas
-- Team Size: 2–4 members per team
-- Hardware: Teams must arrange their required hardware/components.
-- Prize Pool: ₹15,000+ Prize Pool + Goodies
-- Perks: Exciting Goodies, ACM Chapter Membership
+EVENT_TAGLINE: Think. Build. Integrate. Demonstrate.
 
-## Links and Registration
-- Registration Link: https://forms.gle/FKJYg5FCdXdSHWmW7
-- Instagram: https://www.instagram.com/iiris_pccoe?stkn=dzlhODhkZjdkZTYy
-- Website: https://iiris.vercel.app/
+INSTITUTION: PCET's Pimpri Chinchwad College of Engineering (PCCOE)
 
-## Contact for Queries
-- Tejas Bankar: 9850350084
-- Aditya Lodhi: 7972496216
+DEPARTMENT: Department of Computer Engineering
+
+ORGANIZING_CLUB: IIRIS
+
+VENUE: PCCOE, Pune
+
+====================
+EVENT OVERVIEW
+==============
+
+IoThrone 2026 is an innovation-driven hackathon organized by IIRIS at PCET's Pimpri Chinchwad College of Engineering.
+
+The hackathon encourages participants to transform creative ideas into intelligent and functional prototypes using technologies such as:
+
+* Artificial Intelligence (AI)
+* Machine Learning (ML)
+* Computer Vision
+* Edge AI
+* Internet of Things (IoT)
+* Robotics
+* Hardware
+
+The event provides a hands-on platform to ideate, build, integrate, and demonstrate technology-based solutions to real-world problems.
+
+Participants are expected to go beyond presenting an idea by developing a working prototype and demonstrating its capabilities in a practical environment.
+
+The official hackathon journey is:
+
+CONCEPT → PROTOTYPE → REAL-TIME INTEGRATION
+
+The overall workflow can also be described as:
+
+IDEATE → BUILD → INTEGRATE → DEMONSTRATE
+
+====================
+DOMAINS / TECHNOLOGIES
+======================
+
+The hackathon supports projects involving:
+
+* AI
+* ML
+* Computer Vision
+* Edge AI
+* IoT
+* Robotics
+* Hardware
+
+Teams may combine multiple technologies according to their proposed solution.
+
+====================
+TEAM SIZE
+=========
+
+Minimum team size:
+2 members
+
+Maximum team size:
+4 members
+
+Team Size:
+2–4 Members
+
+====================
+PARTICIPATION REQUIREMENTS
+==========================
+
+Participants must:
+
+* Have an original and innovative project idea.
+* Complete registration within the given timeline.
+* Submit the required PPT along with registration for Round 1.
+* Arrange the hardware, components, and development equipment required for their prototype.
+* Report to the venue according to their assigned slot or timing.
+* Follow instructions given by the organizing and judging panels.
+* Ensure that their prototype is safe to operate.
+
+====================
+ROUNDS
+======
+
+ROUND 1 — PPT EVALUATION
+
+Mode:
+Online
+
+Round 1 focuses on evaluating the team's idea, innovation, and technical approach through a PowerPoint presentation.
+
+PPT Submission:
+The PPT must be submitted along with event registration.
+
+Registration & PPT Submission Deadline:
+27 September 2026
+
+Teams selected in Round 1 advance to Round 2.
+
+ROUND 1 — PPT CONTENT REQUIREMENTS
+
+The PPT should cover:
+
+1. Problem Statement
+   The real-world problem being addressed and its importance.
+
+2. Proposed Solution
+   How the proposed solution addresses the problem.
+
+3. Innovation
+   Unique features and what makes the idea different.
+
+4. Technology Stack
+   Technologies used, including AI/ML, IoT, hardware, software, sensors, and other relevant technologies.
+
+5. System Architecture
+   Overall working flow and interaction between system components.
+
+6. Implementation Plan
+   Steps involved in developing the prototype.
+
+7. Feasibility & Impact
+   Practicality, scalability, and expected real-world benefits.
+
+ROUND 1 — EVALUATION CRITERIA
+
+Evaluation focuses on:
+
+* Problem Understanding
+* Innovation
+* Technical Approach
+* Feasibility
+* Implementation Plan
+* Real-World Applicability
+
+====================
+ROUND 2 — PROTOTYPE SHOWCASE
+============================
+
+Mode:
+Offline
+
+Purpose:
+Prototype Demonstration
+
+Round 2 focuses on evaluating the team's working prototype, technical implementation, and practical applicability.
+
+Selected teams demonstrate their prototype before an internal judging panel.
+
+The demonstration covers aspects such as:
+
+* Technology
+* System Working
+* Innovation
+* Real-World Use
+* Performance
+* Scalability
+
+DATE:
+9 October 2026
+
+TIME:
+9:00 AM – 4:00 PM
+
+VENUE:
+6206 LAB & 6218 LAB
+
+LOCATION DETAILS:
+2nd Floor, Computer Engineering Department, PCCoE
+
+PRESENTATION SLOTS:
+Each team receives an individual presentation slot within the given time window.
+
+SLOT ALLOCATION:
+Team-wise slots are communicated before Round 2.
+
+EVALUATION:
+The prototype is evaluated by the internal judging panel.
+
+SELECTION:
+Top 15 teams advance to Round 3.
+
+====================
+ROUND 3 — REAL-TIME INTEGRATION
+===============================
+
+Mode:
+Offline
+
+Purpose:
+Real-Time Implementation
+
+Round 3 evaluates the team's ability to adapt, integrate, and implement their working prototype in a real-time environment.
+
+The Top 15 teams work with a provided or assigned environment/system and demonstrate how effectively their solution can be integrated and made functional under real-world conditions.
+
+DATE:
+10 October 2026
+
+TIME:
+10:00 AM – 2:00 PM
+
+VENUE:
+6206 LAB & 6218 LAB
+
+LOCATION DETAILS:
+2nd Floor, Computer Engineering Department, PCCoE
+
+PARTICIPANTS:
+Top 15 teams from Round 2
+
+ROUND 3 — EVALUATION CRITERIA
+
+Final evaluation focuses on:
+
+* Real-Time Integration
+* Functionality
+* Adaptability
+* Technical Implementation
+* Innovation
+* Demonstration
+
+====================
+RULES & REGULATIONS
+===================
+
+REGISTRATION:
+Teams must complete the registration process within the given timeline.
+
+PPT SUBMISSION:
+The PPT must be submitted along with registration for Round 1.
+
+ORIGINALITY:
+Teams must use original ideas and work.
+
+PLAGIARISM:
+Plagiarism or copied projects may lead to disqualification.
+
+HARDWARE:
+Participants are responsible for bringing the required hardware, components, and development equipment for their prototype.
+
+VENUE & SLOT:
+Teams must report according to their assigned slot and timing.
+
+ORGANIZER INSTRUCTIONS:
+Participants must follow instructions given by the organizing and judging panels throughout the event.
+
+PROTOTYPE SAFETY:
+Teams must ensure that their prototype is safe to operate and does not cause damage to equipment or the venue.
+
+JUDGING:
+The decision of the judging panel will be final.
+
+EVENT CHANGES:
+Any changes in schedule, venue, or round requirements will be communicated by the organizing team.
+
+====================
+PRIZES & BENEFITS
+=================
+
+Prize Pool:
+₹15,000+
+
+Additional benefits:
+
+* Goodies
+* ACM Chapter Membership
+
+====================
+REGISTRATION
+============
+
+Registration Link:
+https://forms.gle/FKJYg5FCdXdSHWmW7
+
+Unstop Registration:
+No Unstop registration link was provided for IoThrone 2026.
+
+====================
+OFFICIAL RESOURCES
+==================
+
+Event Website:
+https://iiris.vercel.app/
+
+Instagram:
+https://www.instagram.com/iiris_pccoe?stkn=dzlhODhkZjdkZTYy
+
+Official Rule Book:
+https://drive.google.com/file/d/1GWTIgtFIbSpEH3tGjijOGVBm91hj7Xz6/view?usp=sharing
+
+====================
+IMPORTANT DATES
+===============
+
+ROUND 1 — REGISTRATION & PPT SUBMISSION DEADLINE:
+27 September 2026
+
+ROUND 2 — PROTOTYPE SHOWCASE:
+9 October 2026
+
+ROUND 2 TIME:
+9:00 AM – 4:00 PM
+
+ROUND 3 — REAL-TIME INTEGRATION:
+10 October 2026
+
+ROUND 3 TIME:
+10:00 AM – 2:00 PM
+
+====================
+EVENT CONTACTS
+==============
+
+Tejas Bankar
+Phone: 9850350084
+
+Aditya Lodhi
+Phone: 7972496216
+
+====================
+QUICK FACTS
+===========
+
+Event:
+IoThrone 2026
+
+Event ID:
+ANANTYA-004
+
+Theme:
+The Power Stone of Innovation
+
+Tagline:
+Think. Build. Integrate. Demonstrate.
+
+Organizer:
+IIRIS
+
+Institution:
+PCET's Pimpri Chinchwad College of Engineering (PCCOE)
+
+Department:
+Department of Computer Engineering
+
+Type:
+Innovation-Driven Technical Hackathon
+
+Team Size:
+2–4 Members
+
+Domains:
+AI, ML, Computer Vision, Edge AI, IoT, Robotics, Hardware
+
+Number of Rounds:
+3
+
+Round 1:
+Online PPT Evaluation
+
+Round 2:
+Offline Prototype Demonstration
+
+Round 3:
+Offline Real-Time Integration
+
+Round 1 Deadline:
+27 September 2026
+
+Round 2:
+9 October 2026, 9:00 AM – 4:00 PM
+
+Round 3:
+10 October 2026, 10:00 AM – 2:00 PM
+
+Round 2 Venue:
+6206 LAB & 6218 LAB
+
+Round 3 Venue:
+6206 LAB & 6218 LAB
+
+Top 15:
+Teams from Round 2 advance to Round 3
+
+Prize Pool:
+₹15,000+
+
+Benefits:
+Goodies + ACM Chapter Membership
+
+Registration:
+https://forms.gle/FKJYg5FCdXdSHWmW7
+
+Website:
+https://iiris.vercel.app/
+
+====================
+SOURCE METADATA
+===============
+
+SOURCE_FILE:
+event_004_iothrone_2026.txt
+
+SOURCE_TYPE:
+Event information and official IoThrone 2026 Rule Book
+
+KNOWLEDGE_SCOPE:
+This document contains the IoThrone 2026 event information supplied for the ANANTYA '26 chatbot knowledge base, supplemented by the uploaded official Rule Book.
+
+GROUNDING_INSTRUCTION:
+When answering questions about IoThrone 2026, use only the information contained in this event document and the official IoThrone 2026 Rule Book.
+
+Do not invent:
+
+* Dates
+* Times
+* Venues
+* Registration deadlines
+* Fees
+* Team requirements
+* Round requirements
+* Evaluation criteria
+* Prize details
+* Hardware requirements
+* Eligibility conditions
+* Registration links
+* Resource links
+* Contact details
+* Unstop links
+
+If the requested information is not present in the available IoThrone 2026 information, state that the information is not available in the provided event details.
+
+Preserve all URLs exactly as provided.
+
+IMPORTANT:
+There is no Unstop registration link provided for IoThrone 2026. Do not invent or infer an Unstop URL.
+
+OFFICIAL RULE BOOK:
+The uploaded Rule Book confirms the event overview, rules and regulations, Round 1 PPT evaluation, Round 2 prototype demonstration, Round 3 real-time implementation, and contact information.

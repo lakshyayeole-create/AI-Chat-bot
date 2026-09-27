@@ -1,290 +1,450 @@
 ==================================================
-EVENT INFORMATION
-==================================================
+ANANTYA '26 — GENERAL INFORMATION
+=================================
+EVENT NAME:
+Anantya '26 - Flagship Technical Symposium
 
-Event ID: ANT-000
-
-Event Name: Anantya '26 - Flagship Technical Symposium
-
-Event Edition: ANANTYA '26
-
-Host Institution:
+HOST INSTITUTION:
 Pimpri Chinchwad College of Engineering (PCCOE), Pune
 
-Department:
+DEPARTMENT:
 Department of Computer Engineering
 
-Campus Location & Address:
+CAMPUS LOCATION:
 Sector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044, India
 
-Symposium Theme:
+SYMPOSIUM THEME:
 Technology, Innovation, and Interdisciplinary Excellence
 
-Overview:
-Anantya is the premier annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune. Anantya brings together brilliant students, developers, designers, coders, ethical hackers, and innovators from colleges and universities across the country. It features a diverse lineup of high-impact technical and creative competitions, spanning competitive programming, cybersecurity, full-stack hackathons, AI & Web3, IoT & robotics, UI/UX design, and digital art.
+==================================================
+OVERVIEW
+========
 
+Anantya is the premier annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune.
+
+Anantya '26 brings together students, developers, designers, competitive programmers, cybersecurity enthusiasts, innovators, and creators from colleges and universities.
+
+The symposium features a diverse set of technical and creative competitions covering competitive programming, cybersecurity, hackathons, AI/Web3, IoT and robotics, UI/UX design, and digital art.
+
+Anantya '26 consists of 7 distinct events.
 
 ==================================================
-TOTAL EVENTS SUMMARY & QUICK FACTS
-==================================================
+TOTAL EVENTS
+============
 
-Total Number of Events:
-There are a total of 7 distinct events hosted under Anantya '26:
+There are 7 events under Anantya '26:
 
-1. BYTEME CTF '26 (Event ID: ANT-001) — Cybersecurity Capture The Flag (CTF)
-2. Codigo 2026 (Event ID: ANT-002) — Competitive Programming Contest (ICPC Simulation)
-3. She Solves 3.0 (Event ID: ANT-003) — Multi-Stage Women-Oriented Hackathon
-4. DecentraHACK (Event ID: ANT-004) — Web3, Blockchain, Agentic AI & Open Source Hackathon
-5. MasterChef UI 2026 (Event ID: ANT-005) — UI/UX Design & Frontend Battle
-6. IoThrone 2026 (Event ID: ANT-006) — IoT & Robotics Innovation Hackathon
-7. Make a Doodle (Event ID: ANT-007) — Creative Digital Art Competition
+1. BYTE ME CTF '26
+   Domain: Cybersecurity / Capture The Flag
 
-Total Prize Pool:
-Over ₹2.2 Lakhs+ in cash prizes, goodies, vouchers, and rewards across all 7 events.
+2. Codigo 2026
+   Domain: Competitive Programming / DSA
 
-Organizing Bodies:
-Anantya '26 is powered by the student clubs and professional chapters of the Department of Computer Engineering at PCCOE:
-- CESA (Computer Engineering Students Association)
-- PCCOE ACM Student Chapter
-- PCCOE ACM-W Student Chapter
-- OWASP PCCOE Student Chapter
-- GDGC PCCOE (Google Developer Groups on Campus)
-- IIRIS (IoT Intelligence & Robotics Innovation Society)
-- Computer Department Art Circle
-- Linux Foundation Decentralized Trust (Partner)
+3. SHE SOLVES 3.0
+   Domain: Women-Oriented Hackathon
 
+4. DECENTRAHACK 2.0
+   Domain: Web3 / Blockchain / Agentic AI / Open Source Hackathon
+
+5. MasterChef UI
+   Domain: UI/UX and Frontend Design
+
+6. IoThrone 2026
+   Domain: IoT / AI / Robotics / Hardware Innovation
+
+7. MAKE A DOODLE! 2026
+   Domain: Digital Art / Creative Design
 
 ==================================================
-EVENTS BY CATEGORY & DOMAIN
-==================================================
+EVENTS BY DOMAIN
+================
 
-Participants can choose events based on their domain of interest:
+1. HACKATHONS AND BUILD COMPETITIONS
 
-1. Hackathons & Build Competitions:
-   - She Solves 3.0 (ANT-003): Women-focused multi-stage hackathon tackling real-world problem statements (Theme: Time Stone – Ideas Beyond Time).
-   - DecentraHACK (ANT-004): 24-hour hybrid hackathon focusing on Agentic AI, Blockchain/Web3, and Open Source (Theme: Marvel Edition).
-   - IoThrone 2026 (ANT-006): Hardware and software innovation hackathon focusing on IoT, smart automation, and robotics.
+SHE SOLVES 3.0:
+A multi-stage women-oriented hackathon focused on solving real-world problems through technology.
 
-2. Coding & Competitive Programming:
-   - Codigo 2026 (ANT-002): 3-round intense competitive programming contest simulating the ICPC contest environment, testing DSA, problem-solving, and speed.
+DECENTRAHACK 2.0:
+A hackathon involving Web3, blockchain, agentic AI, and open-source technologies.
 
-3. Cybersecurity & Ethical Hacking:
-   - BYTEME CTF '26 (ANT-001): Jeopardy-style CTF covering Web Exploitation, Reverse Engineering, Cryptography, Forensics, and OSINT.
+IoThrone 2026:
+An innovation-focused hackathon involving IoT, AI/ML, computer vision, edge AI, robotics, and hardware/software prototyping.
 
-4. UI/UX & Frontend Design:
-   - MasterChef UI 2026 (ANT-005): Rapid design challenge testing wireframing, user experience, aesthetic polish, and frontend prototype creation.
+2. COMPETITIVE PROGRAMMING
 
-5. Digital Art & Creative Design:
-   - Make a Doodle (ANT-007): Digital illustration and art competition themed on Marvel, evaluated on creativity, technique, and visual storytelling.
+Codigo 2026:
+A 3-round competitive programming contest involving DSA and competitive programming problems, with an ICPC-style offline final.
 
+3. CYBERSECURITY
 
-==================================================
-COMPLETE DIRECTORY OF ALL 7 ANANTYA EVENTS
-==================================================
+BYTE ME CTF '26:
+A Capture The Flag cybersecurity competition involving areas such as web security, OSINT, forensics, cryptography, networking, Linux, and related security challenges.
 
----
-EVENT 1: BYTEME CTF '26
-- Event ID: ANT-001
-- Domain: Cybersecurity / Ethical Hacking / Capture The Flag
-- Organized By: OWASP PCCOE Student Chapter
-- Format: Online Jeopardy-style CTF
-- Team Size: 1 to 2 members
-- Registration Fee: ₹0 for PCCOE students | ₹100 per team for non-PCCOE students
-- Prize Pool: ₹1.5 Lakh+ worth of prizes, cash rewards, and perks
-- Key Areas: Web Exploitation, Reverse Engineering, Binary Exploitation, Cryptography, Forensics, OSINT
-- Who Should Join: Cybersecurity enthusiasts, ethical hackers, bug hunters, security learners
+4. UI/UX AND FRONTEND
 
----
-EVENT 2: Codigo 2026
-- Event ID: ANT-002
-- Domain: Competitive Programming & DSA
-- Organized By: Team CESA-SDW & PCCOE ACM Student Chapter
-- Format: 3 Rounds (Qualifier -> Semi-Final -> Lab-based Offline ICPC Final)
-- Team Size: Exactly 3 members per team (strictly teams of 3)
-- Registration Fee: ₹0 for PCCOE students | ₹100 per team for non-PCCOE students
-- Prize Pool: ₹18,000 cash prizes
-- Who Should Join: Competitive coders, DSA solvers, algorithmic problem solvers
+MasterChef UI:
+A UI/UX and frontend design competition involving interface design, user experience, visual design, and frontend-oriented challenges.
 
----
-EVENT 3: She Solves 3.0
-- Event ID: ANT-003
-- Domain: Women-in-Tech Multi-Stage Hackathon
-- Organized By: PCCOE ACM-W Student Chapter
-- Theme: Time Stone – Ideas Beyond Time
-- Format: 3 Rounds (Round 1: Online Abstract & PPT submission -> Round 2: Online Prototype & Viva -> Round 3: Offline 8-Hour Hackathon at PCCOE)
-- Team Size: 2 to 4 female students (All-women teams only)
-- Registration Fee: ₹0 for PCCOE students | ₹100 per team for outside colleges
-- Prize Pool: ₹16,000 (Winner: ₹10,000, Runner-up: ₹6,000)
-- Who Should Join: Women coders, female engineering/diploma students passionate about building impactful tech solutions
+5. DIGITAL ART AND CREATIVE DESIGN
 
----
-EVENT 4: DecentraHACK
-- Event ID: ANT-004
-- Domain: Blockchain, Web3, Agentic AI & Open Source Hackathon
-- Organized By: Linux Foundation Decentralized Trust & CESA PCCOE
-- Theme: Marvel Edition
-- Format: Multi-stage (Online Phase 1 screening -> 24-hour Offline Hackathon at PCCOE campus)
-- Team Size: 2 to 4 members
-- Registration Fee: ₹0 for PCCOE students | refer official event link for outside colleges
-- Prize Pool: ₹20,000+ cash prizes, bounties, and developer credits
-- Who Should Join: Web3 developers, AI enthusiasts, smart contract developers, full-stack hackers
-
----
-EVENT 5: MasterChef UI 2026
-- Event ID: ANT-005
-- Domain: UI/UX & Frontend Design Battle
-- Organized By: Google Developer Groups on Campus (GDGC PCCOE)
-- Theme: The Ultimate UI Battle
-- Format: Hybrid (Online qualification -> Offline live design sprint at PCCOE)
-- Team Size: 1 to 2 members
-- Registration Fee: ₹0 for PCCOE students | ₹100 per team for outside colleges
-- Prize Pool: Cash prizes, Google developer goodies, certificates
-- Who Should Join: UI/UX designers, Figma artists, product designers, frontend developers
-
----
-EVENT 6: IoThrone 2026
-- Event ID: ANT-006
-- Domain: IoT, Embedded Systems & Robotics Hackathon
-- Organized By: IoT Intelligence & Robotics Innovation Society (IIRIS), CESA PCCOE
-- Format: Multi-stage (Online Ideation & Proposal -> Hardware/Software Prototyping -> Offline Final Demonstration)
-- Team Size: 2 to 4 members
-- Registration Fee: ₹0 for PCCOE students | refer event registration portal for others
-- Prize Pool: Cash awards, project funding opportunities, IoT hardware kits, certificates
-- Who Should Join: IoT developers, hardware tinkerers, robotics enthusiasts, embedded systems builders
-
----
-EVENT 7: Make a Doodle
-- Event ID: ANT-007
-- Domain: Creative Digital Art & Graphic Illustration
-- Organized By: Computer Department Art Circle, PCCOE
-- Theme: Marvel Universe
-- Format: Online digital submission followed by live display and evaluation
-- Team Size: Individual participation (1 person only)
-- Registration Fee: ₹0 for PCCOE students | ₹50 to ₹100 for non-PCCOE students
-- Prize Pool: ₹13,000+ in cash prizes and gift hampers
-- Who Should Join: Digital artists, illustrators, graphic designers, Marvel fans
-
+MAKE A DOODLE! 2026:
+A digital doodling and creative-art competition involving digital illustration and theme-based artwork.
 
 ==================================================
-REGISTRATION RULES & PRICING
+ORGANIZING BODIES
+=================
+
+Anantya '26 is organized through student clubs, chapters, and societies associated with the Department of Computer Engineering at PCCOE.
+
+Organizing bodies associated with the symposium include:
+
+* CESA
+  Computer Engineering Students Association
+
+* PCCOE ACM Student Chapter
+
+* PCCOE ACM-W Student Chapter
+
+* OWASP PCCOE Student Chapter
+
+* GDGC PCCOE
+  Google Developer Groups on Campus
+
+* IIRIS
+  IoT Intelligence & Robotics Innovation Society
+
+* Computer Department Art Circle
+
+* Linux Foundation Decentralized Trust
+  Partner organization
+
 ==================================================
+PARTICIPATION
+=============
 
-1. Pricing Structure:
-   - PCCOE Students: Registration is 100% FREE (₹0) for all Anantya events. Valid PCCOE ID proof is required.
-   - Non-PCCOE Students: A nominal entry fee is charged per team/individual (typically ₹100 per team for technical events, hackathons, and CTF; ₹50 to ₹100 for solo/art competitions).
+Anantya includes events with different participation requirements.
 
-2. Cross-Event Participation:
-   - Yes, students can register and participate in multiple Anantya events as long as the offline round timings do not overlap.
-   - For team events, all team members must meet the respective event's eligibility criteria (e.g. She Solves requires all female members; Codigo requires exactly 3 members).
+Team sizes and eligibility depend on the individual event.
 
-3. Team Formation Rules:
-   - BYTEME CTF '26: 1 to 2 members.
-   - Codigo 2026: Strictly 3 members.
-   - She Solves 3.0: 2 to 4 female members (all women).
-   - DecentraHACK: 2 to 4 members.
-   - MasterChef UI 2026: 1 to 2 members.
-   - IoThrone 2026: 2 to 4 members.
-   - Make a Doodle: 1 member (solo).
+Examples:
 
+* BYTE ME CTF '26: Teams of 1–2
+* Codigo 2026: Exactly 3 members
+* SHE SOLVES 3.0: Teams of 2–4 female participants
+* DECENTRAHACK 2.0: Teams of 2–4
+* MasterChef UI: Teams of 1–2
+* IoThrone 2026: Teams of 2–4
+* MAKE A DOODLE! 2026: Individual participation
+
+IMPORTANT:
+These rules are event-specific. The chatbot must use the relevant event file when answering questions about eligibility or team composition.
 
 ==================================================
-VENUE & ACCESSIBILITY
-==================================================
+CROSS-EVENT PARTICIPATION
+=========================
 
-Venue Address:
+Participants may participate in multiple Anantya events when permitted by the respective event rules and provided that their schedules do not conflict.
+
+For team-based events, every member of the team must satisfy that event's eligibility requirements.
+
+Do not assume that registration for one event automatically registers a participant for another event.
+
+==================================================
+REGISTRATION
+============
+
+Registration is handled separately for each event.
+
+Each event may have its own:
+
+* Registration form
+* Unstop page
+* Rulebook
+* Registration fee
+* Eligibility requirements
+* Deadline
+* Team-size requirements
+
+The chatbot must provide the registration link belonging to the specific event being discussed.
+
+Registration URLs must be preserved exactly as supplied in the event-specific source files.
+
+Do not invent or modify registration links.
+
+==================================================
+VENUE
+=====
+
+GENERAL VENUE:
+
 Pimpri Chinchwad College of Engineering (PCCOE)
+
 Department of Computer Engineering
-Sector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044
 
-How to Reach PCCOE:
-- By Train: Nearest railway station is Akurdi Railway Station (approx. 1 km from campus). Pune Junction is approx. 20 km away.
-- By Metro: PCMC Metro Station on the Pune Metro Purple Line is the closest major metro connectivity.
-- By Bus: Nigdi Bus Stand and Akurdi Railway Station bus stops have frequent PMPML buses connecting across Pune and Pimpri-Chinchwad.
+Sector 26, Pradhikaran, Nigdi,
+Pune, Maharashtra 411044, India
 
-Facilities Provided:
-- High-speed campus Wi-Fi for registered offline participants.
-- Dedicated computer laboratories with development tools.
-- Power outlets for personal laptops during hackathons.
-- Water and refreshments as per event schedules.
+Many Anantya events contain online preliminary rounds followed by offline rounds at PCCOE.
 
+Exact venue, laboratory, department, room, date, and timing information must always be taken from the relevant event-specific information.
 
 ==================================================
-AWARDS & CERTIFICATES
+ACCESSIBILITY / CAMPUS INFORMATION
+==================================
+
+The PCCOE campus is located in Nigdi, Pune.
+
+Nearby transportation mentioned in the general event information includes:
+
+* Akurdi Railway Station
+* PCMC Metro Station
+* Nigdi Bus Stand
+* PMPML bus connectivity
+
+Exact transportation details are general campus information and should not be presented as event-specific arrangements unless the relevant event information confirms them.
+
 ==================================================
+CERTIFICATES AND AWARDS
+=======================
 
-1. Participation Certificates:
-   - Every registered participant who attends and submits their work will receive an official digital Certificate of Participation from PCCOE Anantya '26.
+Anantya events may provide:
 
-2. Winners & Runners-Up:
-   - Cash prizes, winner trophies, official merit certificates, and exclusive sponsor goodies/vouchers will be awarded to top-ranking teams in each event.
+* Certificates of Participation
+* Merit certificates
+* Winner certificates
+* Cash prizes
+* Trophies
+* Goodies
+* Vouchers
+* Sponsor rewards
+* Event-specific benefits
 
-3. Total Symposium Prize Pool:
-   - Exceeds ₹2,20,000+ across all 7 competitions.
+Certificate and prize eligibility may vary by event.
 
+The chatbot should use the individual event source when answering questions about a particular event's prizes or certificates.
 
 ==================================================
-FREQUENTLY ASKED QUESTIONS / FAQ
+EVENT SCHEDULE
+==============
+
+The Anantya '26 events are scheduled across different dates.
+
+The supplied event information contains competitions primarily taking place between:
+
+6 October 2026
+and
+10 October 2026
+
+Important:
+
+Different events have different schedules.
+
+For exact dates, timings, round schedules, deadlines, and venues, always use the corresponding event-specific file.
+
+Do not infer an event's schedule from another event.
+
 ==================================================
+CHATBOT INFORMATION RULES
+=========================
+
+1. GENERAL QUESTIONS
+
+For questions such as:
+
+"What is Anantya?"
+"How many events are there?"
+"What events are there in Anantya?"
+"What domains are covered?"
+"Who organizes Anantya?"
+"Where is Anantya held?"
+
+Use this general Anantya information.
+
+2. EVENT-SPECIFIC QUESTIONS
+
+For questions about:
+
+* Registration
+* Registration fee
+* Eligibility
+* Team size
+* Round details
+* Dates
+* Timings
+* Venue
+* Prize pool
+* Rules
+* Contacts
+* Registration links
+* Unstop links
+* Rulebooks
+
+Use the relevant event-specific file.
+
+3. DO NOT MIX EVENTS
+
+Never transfer information from one event to another.
+
+For example:
+
+Do not use Codigo's team size when answering a question about IoThrone.
+
+Do not use BYTE ME CTF's registration fee when answering about MasterChef UI.
+
+Do not use IoThrone's round schedule when answering about DECENTRAHACK.
+
+4. SOURCE ACCURACY
+
+Use the official event information provided in the knowledge base.
+
+If two sources contain different information, prefer the more specific official source for that event and avoid silently combining conflicting information.
+
+5. MISSING INFORMATION
+
+If a requested detail is not available in the relevant event information, say:
+
+"The information is not provided in the available Anantya event details."
+
+Do not guess.
+
+6. URL SAFETY
+
+Preserve URLs exactly as provided.
+
+Do not:
+
+* Invent URLs
+* Modify URLs
+* Shorten URLs
+* Replace official links with guessed links
+* Generate registration links
+
+7. EVENT COMPARISONS
+
+If the user explicitly asks to compare events, information from multiple event files may be used.
+
+Clearly identify which information belongs to which event.
+
+==================================================
+QUICK EVENT DIRECTORY
+=====================
+
+BYTE ME CTF '26
+Cybersecurity / Capture The Flag
+Organizer: OWASP PCCOE Student Chapter
+
+Codigo 2026
+Competitive Programming / DSA
+Organizer: Team CESA-SDW and PCCOE ACM Student Chapter
+
+SHE SOLVES 3.0
+Women-Oriented Hackathon
+Organizer: PCCOE ACM-W Student Chapter
+
+DECENTRAHACK 2.0
+Web3 / Blockchain / Agentic AI / Open Source Hackathon
+Organizer: Linux Foundation Decentralized Trust Student Chapter
+
+MasterChef UI
+UI/UX and Frontend Design
+Organizers: GDGC PCCOE and associated PCCOE technical chapters
+
+IoThrone 2026
+IoT / AI / ML / Robotics / Hardware Innovation
+Organizer: IIRIS PCCOE
+
+MAKE A DOODLE! 2026
+Digital Art / Creative Design
+Organizer: Computer Department Art Circle
+
+==================================================
+FAQ
+===
 
 Q: What is Anantya?
-A: Anantya is the premier annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune. It hosts 7 flagship competitions spanning hackathons, competitive programming, cybersecurity CTF, Web3, IoT, UI/UX, and digital art.
 
-Q: How many total events are there in Anantya?
-A: There are a total of 7 events under Anantya '26:
-1. BYTEME CTF '26 (Cybersecurity CTF)
-2. Codigo 2026 (Competitive Programming)
-3. She Solves 3.0 (Women's Hackathon)
-4. DecentraHACK (Web3 & AI Hackathon)
-5. MasterChef UI 2026 (UI/UX Design)
-6. IoThrone 2026 (IoT & Robotics Hackathon)
-7. Make a Doodle (Digital Art Competition)
+A:
+Anantya '26 is the annual national-level technical symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering (PCCOE), Nigdi, Pune. It brings together students and innovators through 7 technical and creative competitions.
 
-Q: What types of events are included in Anantya?
-A: Anantya '26 covers 5 major domains:
-- Hackathons: She Solves 3.0, DecentraHACK, IoThrone 2026
-- Competitive Programming: Codigo 2026
-- Cybersecurity: BYTEME CTF '26
-- UI/UX & Frontend: MasterChef UI 2026
-- Creative Arts: Make a Doodle
+Q: How many events are there in Anantya '26?
 
-Q: Can I participate in more than one event?
-A: Yes! You are welcome to register for multiple events, provided that the offline schedules of the selected events do not conflict.
+A:
+There are 7 events under Anantya '26.
 
-Q: Is registration free for PCCOE students?
-A: Yes, registration is completely free (₹0) for all students of Pimpri Chinchwad College of Engineering (PCCOE) across all Anantya events upon producing a valid college ID.
+Q: What types of events are included?
 
-Q: What is the registration fee for outside college students?
-A: For participants from other colleges, registration fees are nominal—generally ₹100 per team for technical events (BYTEME CTF, Codigo, She Solves, MasterChef UI) and ₹50 to ₹100 for solo/art competitions like Make a Doodle.
+A:
+Anantya '26 includes:
 
-Q: Which event in Anantya is exclusively for women?
-A: She Solves 3.0 (Event ID: ANT-003) is a hackathon organized by the PCCOE ACM-W Student Chapter exclusively for female participants (teams of 2 to 4 female students).
+* Hackathons
+* Competitive Programming
+* Cybersecurity / CTF
+* Web3 and Blockchain
+* AI/ML and Innovation
+* IoT and Robotics
+* UI/UX and Frontend Design
+* Digital Art
 
-Q: Which event in Anantya is for competitive programming or DSA?
-A: Codigo 2026 (Event ID: ANT-002) is a 3-round ICPC-simulation competitive programming contest organized by Team CESA-SDW and the PCCOE ACM Student Chapter for teams of exactly 3 members.
+Q: Can I participate in multiple events?
 
-Q: Which event in Anantya is for cybersecurity or hacking?
-A: BYTEME CTF '26 (Event ID: ANT-001) is a Jeopardy-style Capture The Flag competition organized by the OWASP PCCOE Student Chapter covering web exploitation, reverse engineering, cryptography, forensics, and OSINT.
+A:
+Participants may participate in multiple events if permitted by the respective event rules and if their schedules do not conflict.
 
-Q: Which event in Anantya is for UI/UX designers?
-A: MasterChef UI 2026 (Event ID: ANT-005) is organized by GDGC PCCOE for UI/UX designers and frontend creators competing in wireframing, UX logic, and live design prototyping.
+Q: Which event is for competitive programming?
 
-Q: Which event in Anantya is for IoT and hardware builders?
-A: IoThrone 2026 (Event ID: ANT-006) is an innovation hackathon organized by IIRIS and CESA PCCOE focusing on Internet of Things (IoT), smart embedded systems, and robotics.
+A:
+Codigo 2026.
 
-Q: Which event in Anantya is for digital artists?
-A: Make a Doodle (Event ID: ANT-007) is a Marvel-themed digital art and graphic design competition organized by the Computer Department Art Circle of PCCOE.
+Q: Which event is for cybersecurity?
 
-Q: Who can participate in Anantya?
-A: Undergraduate and diploma engineering students from all recognized colleges and universities across India are eligible to participate.
+A:
+BYTE ME CTF '26.
 
-Q: Will all participants receive a certificate?
-A: Yes, all registered participants who submit their work or attend the rounds will receive an official digital Certificate of Participation from PCCOE Anantya '26.
+Q: Which event is for women participants?
 
-Q: Where does Anantya take place?
-A: Anantya is hosted at Pimpri Chinchwad College of Engineering (PCCOE), Sector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044. Initial rounds for many events are online, while the final rounds are hosted offline on campus.
+A:
+SHE SOLVES 3.0.
 
-Q: What is the total prize pool across Anantya?
-A: The total prize pool across all 7 events is over ₹2.2 Lakhs+, including cash prizes, sponsor bounties, goodies, and vouchers.
+Q: Which event is for Web3 and blockchain?
 
-Q: Who organizes Anantya?
-A: Anantya is organized by the Department of Computer Engineering at PCCOE in collaboration with its student bodies: CESA, ACM, ACM-W, OWASP, GDGC, IIRIS, Art Circle, and Linux Foundation Decentralized Trust.
+A:
+DECENTRAHACK 2.0.
+
+Q: Which event is for IoT and robotics?
+
+A:
+IoThrone 2026.
+
+Q: Which event is for UI/UX?
+
+A:
+MasterChef UI.
+
+Q: Which event is for digital art?
+
+A:
+MAKE A DOODLE! 2026.
+
+Q: Where is Anantya held?
+
+A:
+Anantya is hosted by PCCOE at Sector 26, Pradhikaran, Nigdi, Pune, Maharashtra 411044. Specific rounds may be conducted online or at different locations on the PCCOE campus depending on the event.
+
+==================================================
+SOURCE PRIORITY
+===============
+
+For answering chatbot queries, use the following priority:
+
+1. Official event rulebook
+2. Official event information supplied by the organizers
+3. Event-specific TXT file
+4. General Anantya information file
+
+The general Anantya file provides symposium-level information.
+
+The individual event files are the authoritative source for event-specific details.
+
+==================================================
+END OF GENERAL ANANTYA INFORMATION
+==================================
