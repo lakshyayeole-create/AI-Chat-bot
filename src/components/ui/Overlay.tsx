@@ -1,17 +1,17 @@
-import { useRef } from 'react'
-import { gsap, useGSAP } from '../../lib/gsap'
+import { useRef } from 'react';
+import { gsap, useGSAP } from '../../lib/gsap';
 
 interface OverlayProps {
-  onAnimateCube?: () => void
+  onAnimateCube?: () => void;
+  onEnterExperience?: () => void;
 }
 
-export function Overlay({ onAnimateCube }: OverlayProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+export function Overlay({ onAnimateCube, onEnterExperience }: OverlayProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      // Intro timeline animation
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.from('.badge', {
         y: -20,
@@ -46,10 +46,10 @@ export function Overlay({ onAnimateCube }: OverlayProps) {
             stagger: 0.15,
           },
           '-=0.5',
-        )
+        );
     },
     { scope: containerRef },
-  )
+  );
 
   const handlePulse = () => {
     gsap.to('.action-btn', {
@@ -58,9 +58,9 @@ export function Overlay({ onAnimateCube }: OverlayProps) {
       repeat: 1,
       duration: 0.2,
       ease: 'power2.inOut',
-    })
-    onAnimateCube?.()
-  }
+    });
+    onAnimateCube?.();
+  };
 
   return (
     <div ref={containerRef} className="overlay">
@@ -73,36 +73,21 @@ export function Overlay({ onAnimateCube }: OverlayProps) {
           Modern 3D & Animation <br /> Boilerplate
         </h1>
         <p className="description">
-          A lightweight, high-performance foundation built with React 19, Vite,
-          Three.js (R3F & Drei), and GSAP for fluid web experiences.
+          A lightweight, high-performance foundation built with React, Three.js, and GSAP for fluid web experiences.
         </p>
 
         <div className="button-group">
-          <button type="button" className="action-btn primary" onClick={handlePulse}>
-            Trigger GSAP Pulse
+          <button type="button" className="action-btn primary" onClick={onEnterExperience || handlePulse}>
+            {onEnterExperience ? 'Enter 3D Experience' : 'Trigger GSAP Pulse'}
           </button>
-          <a
-            href="https://threejs.org"
-            target="_blank"
-            rel="noreferrer"
-            className="action-btn secondary"
-          >
-            Three.js Docs
-          </a>
-          <a
-            href="https://gsap.com"
-            target="_blank"
-            rel="noreferrer"
-            className="action-btn secondary"
-          >
-            GSAP Docs
-          </a>
         </div>
       </main>
 
       <footer className="overlay-footer">
-        <p>Drag to rotate the 3D scene • Built for creative web development</p>
+        <p>Interactive 3D • Built for creative web development</p>
       </footer>
     </div>
-  )
+  );
 }
+
+export default Overlay;
