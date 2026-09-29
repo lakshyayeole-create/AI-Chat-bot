@@ -1,49 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-/**
- * ============================================================================
- * NAVBAR CUSTOMIZATION VARIABLES
- * You can edit all these values directly here to customize the navbar!
- * ============================================================================
- */
 export const NAVBAR_CONFIG = {
-  // --- Position & Dimensions ---
-  top: '24px',                             // Distance from top of screen
-  minHeight: '96px',                       // Height of the navbar (frames the 80px logo)
-  minWidth: '820px',                       // Width of the navbar
-  padding: '10px 36px',                    // Inner padding: vertical horizontal
-  gap: '24px',                             // Spacing between nav items
+  top: '20px',
+  minHeight: '68px',
+  padding: '8px 24px',
+  gap: '18px',
 
-  // --- Background & Glassmorphism ---
-  background: 'rgba(8, 14, 26, 0.78)',     // Frosted glass background
-  backdropBlur: '20px',                    // Glass blur radius
-  borderColor: 'rgba(255, 255, 255, 0.14)',// Border color
-  borderWidth: '1px',                      // Border width
-  borderRadius: '9999px',                  // Capsule rounded corners
+  background: 'rgba(8, 14, 26, 0.85)',
+  backdropBlur: '20px',
+  borderColor: 'rgba(255, 255, 255, 0.14)',
+  borderWidth: '1px',
+  borderRadius: '9999px',
   boxShadow: '0 16px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
 
-  // --- Anantya Logo ---
-  logoHeight: '80px',                      // Logo image height
-  logoMaxHeight: '200px',                  // Logo maximum height
-  logoFilter: 'none',                      // No glow filter
+  logoHeightFinal: 48,
+  logoHeightInitial: 110,
 
-  // --- Divider between Logo and Links ---
-  showDivider: true,                       // Set to false to hide divider
-  dividerWidth: '1.5px',                   // Divider thickness
-  dividerHeight: '46px',                   // Divider vertical height
-  dividerColor: 'rgba(255, 255, 255, 0.18)',// Divider color
-  dividerMargin: '0 12px',                 // Divider horizontal margin
+  showDivider: true,
+  dividerWidth: '1.5px',
+  dividerHeight: '32px',
+  dividerColor: 'rgba(255, 255, 255, 0.18)',
+  dividerMargin: '0 10px',
 
-  // --- Nav Items: Typography & Colors ---
-  fontSize: '1.25rem',                     // Constant font size (~20px)
-  fontWeight: 600,                         // Font weight
-  letterSpacing: '1.8px',                  // Letter spacing
-  itemPadding: '10px 18px',                // Padding per item
+  fontSize: '0.92rem',
+  fontWeight: 600,
+  letterSpacing: '1.5px',
+  itemPadding: '8px 16px',
 
-  // Colors (no glow, just clean color change)
-  textColor: '#9ca3af',                    // Inactive text color (grey)
-  activeTextColor: '#ffffff',              // Active text color (white)
-  hoverTextColor: '#e5e7eb',               // Hover text color (light grey)
+  textColor: '#9ca3af',
+  activeTextColor: '#38bdf8',
+  hoverTextColor: '#ffffff',
 };
 
 export interface NavItem {
@@ -53,16 +39,18 @@ export interface NavItem {
 }
 
 export interface NavbarProps {
-  /** Optional logo image source (defaults to 'assets/ANANTYA.png') */
+  /** Optional logo image source */
   logoSrc?: string;
-  /** Active item id (defaults to 'home') */
+  /** Active item id */
   activeId?: string;
+  /** Navigation items list */
+  items?: NavItem[];
   /** Callback when an item is clicked */
   onSelect?: (id: string) => void;
+  /** Morph progress: 0.0 = center large logo, 1.0 = top compact navigation bar */
+  morphProgress?: number;
   /** Optional custom class name */
   className?: string;
-  /** Optional config overrides */
-  configOverrides?: Partial<typeof NAVBAR_CONFIG>;
 }
 
 const defaultItems: NavItem[] = [
@@ -74,14 +62,21 @@ const defaultItems: NavItem[] = [
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
-  logoSrc = 'assets/ANANTYA.png',
+  logoSrc = '/assets/ANANTYA.png',
   activeId = 'home',
+  items = defaultItems,
   onSelect,
+  morphProgress = 1.0,
   className = '',
-  configOverrides = {},
 }) => {
   const [selectedId, setSelectedId] = useState<string>(activeId);
-  const cfg = { ...NAVBAR_CONFIG, ...configOverrides };
+  const cfg = NAVBAR_CONFIG;
+
+  const p = Math.max(0, Math.min(1, morphProgress));
+
+  useEffect(() => {
+    setSelectedId(activeId);
+  }, [activeId]);
 
   const handleItemClick = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -91,16 +86,29 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  // Interpolated values based on morphProgress
+  // At p = 0: centered vertically at 50%
+  // At p = 1: locked at 20px from top
+  const topPosition = `calc(50% * (1 - ${p}) + ${cfg.top} * ${p})`;
+  const transformY = `calc(-50% * (1 - ${p}))`;
+
+  // Logo height interpolates from 110px down to 48px
+  const currentLogoHeight = cfg.logoHeightInitial * (1 - p) + cfg.logoHeightFinal * p;
+
+  // Nav links & divider emerge as logo reaches the top
+  const linksProgress = p < 0.25 ? 0 : (p - 0.25) / 0.75;
+
   return (
     <header
-      className={className}
+      className={`navbar-morph-container ${className}`}
       style={{
         position: 'fixed',
-        top: cfg.top,
+        top: topPosition,
         left: '50%',
-        transform: 'translateX(-50%)',
+        transform: `translate(-50%, ${transformY})`,
         zIndex: 100,
-        pointerEvents: 'auto',
+        pointerEvents: p >= 0.85 ? 'auto' : 'none',
+        transition: 'none', // Controlled directly by scroll scrub
       }}
     >
       <nav
@@ -109,105 +117,104 @@ export const Navbar: React.FC<NavbarProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: cfg.gap,
-          minHeight: cfg.minHeight,
-          minWidth: cfg.minWidth,
-          background: cfg.background,
-          backdropFilter: `blur(${cfg.backdropBlur})`,
-          WebkitBackdropFilter: `blur(${cfg.backdropBlur})`,
-          padding: cfg.padding,
+          background: `rgba(8, 14, 26, ${0.85 * p})`,
+          backdropFilter: `blur(${20 * p}px)`,
+          WebkitBackdropFilter: `blur(${20 * p}px)`,
+          border: `${p > 0.05 ? cfg.borderWidth : '0px'} solid rgba(255, 255, 255, ${0.14 * p})`,
           borderRadius: cfg.borderRadius,
-          border: `${cfg.borderWidth} solid ${cfg.borderColor}`,
-          boxShadow: cfg.boxShadow,
-          boxSizing: 'border-box',
+          boxShadow: `0 ${16 * p}px ${48 * p}px rgba(0, 0, 0, ${0.65 * p}), inset 0 1px 0 rgba(255, 255, 255, ${0.12 * p})`,
+          padding: `calc(4px * (1 - ${p}) + 8px * ${p}) calc(12px * (1 - ${p}) + 24px * ${p})`,
+          transition: 'none',
         }}
       >
-        {/* 1) Anantya Logo */}
+        {/* Anantya Brand Logo */}
         <a
           href="#home"
           onClick={(e) => handleItemClick('home', e)}
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '2px 8px',
             textDecoration: 'none',
-            cursor: 'pointer',
+            flexShrink: 0,
+            cursor: p >= 0.85 ? 'pointer' : 'default',
           }}
-          title="Anantya"
         >
           <img
             src={logoSrc}
             alt="Anantya Logo"
             style={{
-              height: cfg.logoHeight,
+              height: `${currentLogoHeight}px`,
               width: 'auto',
-              maxHeight: cfg.logoMaxHeight,
               objectFit: 'contain',
               display: 'block',
-              filter: cfg.logoFilter || 'none',
-              transform: 'none',
+              filter: `drop-shadow(0 0 ${25 * (1 - p)}px rgba(134, 59, 255, ${0.75 * (1 - p)}))`,
+              transition: 'none',
             }}
           />
         </a>
 
-        {/* Divider line */}
-        {cfg.showDivider && (
-          <div
-            style={{
-              width: cfg.dividerWidth,
-              height: cfg.dividerHeight,
-              background: cfg.dividerColor,
-              margin: cfg.dividerMargin,
-            }}
-          />
-        )}
+        {/* Divider line between Logo and Navigation Links */}
+        <div
+          style={{
+            width: cfg.dividerWidth,
+            height: cfg.dividerHeight,
+            background: cfg.dividerColor,
+            margin: cfg.dividerMargin,
+            opacity: linksProgress,
+            transform: `scaleY(${linksProgress})`,
+            transition: 'none',
+          }}
+        />
 
-        {/* 2) Home, 3) Events, 4) Contact, 5) Gallery */}
-        {defaultItems.map((item) => {
-          const isActive = selectedId === item.id;
-          return (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => handleItemClick(item.id, e)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: cfg.itemPadding,
-                fontSize: cfg.fontSize,
-                fontWeight: cfg.fontWeight,
-                letterSpacing: cfg.letterSpacing,
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                color: isActive ? cfg.activeTextColor : cfg.textColor,
-                textShadow: 'none',
-                background: 'transparent',
-                border: 'none',
-                boxShadow: 'none',
-                transition: 'color 0.2s ease',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.color = cfg.hoverTextColor;
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.color = cfg.textColor;
-                }
-              }}
-            >
-              {item.label}
-            </a>
-          );
-        })}
+        {/* Navigation Items (Emerge smoothly as navbar forms) */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            opacity: linksProgress,
+            maxWidth: `${linksProgress * 550}px`,
+            overflow: 'hidden',
+            pointerEvents: p >= 0.95 ? 'auto' : 'none',
+            whiteSpace: 'nowrap',
+            transition: 'none',
+          }}
+        >
+          {items.map((item) => {
+            const isActive = selectedId === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleItemClick(item.id, e)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: cfg.itemPadding,
+                  fontSize: cfg.fontSize,
+                  fontWeight: cfg.fontWeight,
+                  letterSpacing: cfg.letterSpacing,
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  color: isActive ? cfg.activeTextColor : cfg.textColor,
+                  background: isActive ? 'rgba(56, 189, 248, 0.12)' : 'transparent',
+                  borderRadius: '9999px',
+                  border: isActive ? '1px solid rgba(56, 189, 248, 0.3)' : '1px solid transparent',
+                  boxShadow: isActive ? '0 0 15px rgba(56, 189, 248, 0.25)' : 'none',
+                  transition: 'color 0.2s ease, background 0.2s ease',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {item.label}
+              </a>
+            );
+          })}
+        </div>
       </nav>
     </header>
   );
 };
 
 export default Navbar;
-

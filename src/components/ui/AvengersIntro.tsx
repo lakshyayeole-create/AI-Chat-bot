@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
-import anantyaLogo from '../../../assets/ANANTYA.png';
+const anantyaLogo = '/assets/ANANTYA.png';
 
 interface AvengersIntroProps {
   onComplete: () => void;
@@ -12,6 +12,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
   const flareRef = useRef<HTMLDivElement>(null);
   const shockwaveRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const bgLayersRef = useRef<HTMLDivElement>(null);
 
   // Background floating embers / particles
   useEffect(() => {
@@ -87,15 +88,39 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
     const tl = gsap.timeline({
       defaults: { ease: 'power3.out' },
       onComplete: () => {
-        // Dramatic fade out to reveal helmet
-        gsap.to(containerRef.current, {
+        // Phase 2: Logo-to-Navbar handoff
+        // Fade out all background decorations first
+        gsap.to(bgLayersRef.current, {
           opacity: 0,
-          scale: 1.08,
-          filter: 'blur(10px)',
-          duration: 0.9,
+          duration: 0.6,
           ease: 'power2.inOut',
+        });
+
+        // Also dissolve the dark background color of the container itself
+        gsap.to(containerRef.current, {
+          backgroundColor: 'rgba(3, 4, 8, 0)',
+          duration: 0.65,
+          ease: 'power2.inOut',
+        });
+
+        // Logo shrinks toward the navbar's initial centered state
+        // Navbar at morphProgress=0: logo is 110px tall, centered on screen
+        // Our cinematic logo is min(85vw, 680px) wide — scale to ~0.16 gives ≈109px height
+        gsap.to(logoRef.current, {
+          scale: 0.16,
+          filter: 'blur(0px) brightness(1.0) drop-shadow(0 0 12px rgba(134, 59, 255, 0.5))',
+          duration: 1.0,
+          ease: 'power3.inOut',
           onComplete: () => {
-            onComplete();
+            // Fade the entire intro container out quickly
+            gsap.to(containerRef.current, {
+              opacity: 0,
+              duration: 0.3,
+              ease: 'power1.in',
+              onComplete: () => {
+                onComplete();
+              },
+            });
           },
         });
       },
@@ -216,15 +241,18 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
 
   return (
     <div ref={containerRef} className="avengers-intro-root">
-      {/* Background Canvas for Cosmic Floating Embers */}
-      <canvas ref={canvasRef} className="avengers-bg-canvas" />
+      {/* All decorative BG layers grouped so they can be faded out independently */}
+      <div ref={bgLayersRef} className="avengers-bg-layers">
+        {/* Background Canvas for Cosmic Floating Embers */}
+        <canvas ref={canvasRef} className="avengers-bg-canvas" />
 
-      {/* Atmospheric Vignette & Radial Reactor Glow */}
-      <div className="avengers-radial-glow" />
-      <div className="avengers-vignette" />
+        {/* Atmospheric Vignette & Radial Reactor Glow */}
+        <div className="avengers-radial-glow" />
+        <div className="avengers-vignette" />
 
-      {/* Shockwave Ring */}
-      <div ref={shockwaveRef} className="avengers-shockwave" />
+        {/* Shockwave Ring */}
+        <div ref={shockwaveRef} className="avengers-shockwave" />
+      </div>
 
       {/* Center 3D Logo Container */}
       <div className="avengers-logo-stage">
@@ -259,6 +287,13 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           pointer-events: auto;
         }
 
+        /* Wrapper for all decorative BG elements so they can be faded as a group */
+        .avengers-bg-layers {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
         .avengers-bg-canvas {
           position: absolute;
           inset: 0;
@@ -272,6 +307,9 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           position: absolute;
           width: 800px;
           height: 800px;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
           background: radial-gradient(circle at center, rgba(124, 58, 237, 0.28) 0%, rgba(56, 189, 248, 0.12) 40%, transparent 70%);
           filter: blur(80px);
           pointer-events: none;
@@ -280,8 +318,8 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         }
 
         @keyframes corePulse {
-          0% { transform: scale(0.85); opacity: 0.6; }
-          100% { transform: scale(1.15); opacity: 1; }
+          0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
+          100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
 
         .avengers-vignette {
@@ -296,6 +334,9 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           position: absolute;
           width: 380px;
           height: 380px;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
           border-radius: 50%;
           border: 2px solid rgba(56, 189, 248, 0.8);
           box-shadow: 0 0 40px rgba(134, 59, 255, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.5);

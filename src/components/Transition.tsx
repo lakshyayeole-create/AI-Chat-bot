@@ -8,7 +8,9 @@ import React, {
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { createAssemblySystem, AssemblyController } from '../utils/assemblyAnimation';
+import { createAssemblySystem, AssemblyController, AssemblyStatus } from '../utils/assemblyAnimation';
+
+export type { AssemblyStatus } from '../utils/assemblyAnimation';
 
 export interface ModelLightingConfig {
   ambientColor?: number;
@@ -32,34 +34,33 @@ export interface ModelConfig {
   rotationX?: number;
   /** Normalized target height in world units (defaults to 1.5) */
   targetHeight?: number;
-  /** Custom mesh traversal callback (e.g. tuning roughness, emissive properties, visibility) */
+  /** Custom mesh traversal callback */
   onMeshTraverse?: (mesh: THREE.Mesh) => void;
   /** Optional lighting overrides */
   lighting?: ModelLightingConfig;
   /** Enable dynamic piece-by-piece suit-up assembly on load */
   assemblyAnimation?: boolean;
-  /** Whether assembly automatically begins on load. Set false to wait for triggerAssembly() */
+  /** Whether assembly automatically begins on load. Set false to wait for scroll trigger */
   autoStartAssembly?: boolean;
 }
 
 export interface TransitionHandle {
-  /**
-   * Programmatically animate transition to target progress (0.0 = fromModel, 1.0 = toModel)
-   * @param progress Target progress (0.0 to 1.0)
-   * @param durationMs Animation duration in ms (defaults to 800)
-   */
+  /** Programmatically animate transition to target progress (0.0 = fromModel, 1.0 = toModel) */
   transitionTo: (progress: number, durationMs?: number) => void;
-  /**
-   * Toggle between the two models smoothly
-   * @param durationMs Animation duration in ms (defaults to 800)
-   */
+  /** Toggle between the two models smoothly */
   toggle: (durationMs?: number) => void;
   /** Set rotation directly along Y axis in radians */
   setRotationY: (radians: number) => void;
   /** Get current transition progress (0.0 to 1.0) */
   getProgress: () => number;
-  /** Programmatically trigger the piece-by-piece suit-up assembly sequence */
+  /** Programmatically trigger the suit-up assembly */
   triggerAssembly: () => void;
+  /** Set assembly progress explicitly for scroll-scrubbing (0.0 to 1.0) */
+  setAssemblyProgress: (progress: number) => void;
+  /** Get current assembly progress */
+  getAssemblyProgress: () => number;
+  /** Set transition progress directly (0.0 to 1.0) */
+  setTransitionProgress: (progress: number) => void;
 }
 
 export interface TransitionProps {
@@ -69,7 +70,13 @@ export interface TransitionProps {
   toModel: ModelConfig;
   /** Initial progress from 0.0 to 1.0 (default 0.0) */
   initialProgress?: number;
-  /** Enable mouse wheel / trackpad scroll interaction (default true) */
+  /** Assembly progress explicitly controlled by parent scroll (0.0 to 1.0) */
+  assemblyProgress?: number;
+  /** Transition progress explicitly controlled by parent scroll (0.0 to 1.0) */
+  transitionProgress?: number;
+  /** Model rotation Y controlled by parent scroll */
+  rotationY?: number;
+  /** Enable internal mouse wheel / trackpad scroll interaction (default false when using Lenis) */
   enableScroll?: boolean;
   /** Transition sensitivity per scroll delta (default 0.0009) */
   scrollSensitivity?: number;
@@ -80,7 +87,7 @@ export interface TransitionProps {
   /** Optional callback fired when assembly animation completes */
   onAssemblyComplete?: () => void;
   /** Optional callback fired during assembly status changes */
-  onAssemblyStatus?: (status: { progress: number; text: string; isComplete: boolean }) => void;
+  onAssemblyStatus?: (status: AssemblyStatus) => void;
   /** Optional container CSS class */
   className?: string;
   /** Optional container style */
@@ -93,7 +100,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromModel,
       toModel,
       initialProgress = 0,
-      enableScroll = true,
+      assemblyProgress,
+      transitionProgress,
+      rotationY,
+      enableScroll = false,
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
       onProgressChange,
@@ -109,7 +119,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const backCanvasContainerRef = useRef<HTMLDivElement>(null);
     const diagonalLineRef = useRef<HTMLDivElement>(null);
 
-    // Keep onProgressChange ref stable to prevent re-renders
+    // Keep callback refs stable to prevent re-renders
     const onProgressChangeRef = useRef(onProgressChange);
     onProgressChangeRef.current = onProgressChange;
 
@@ -122,13 +132,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const assemblyControllerRef = useRef<AssemblyController | null>(null);
     const pendingAssemblyStartRef = useRef<boolean>(false);
     const baseYCamRef = useRef<number>(0);
+    const baseCameraDistRef = useRef<number>(3.95);
 
     // State refs for animation loops and programmatic controls
-    const targetProgressRef = useRef<number>(initialProgress);
-    const currentProgressRef = useRef<number>(initialProgress);
+    const targetProgressRef = useRef<number>(transitionProgress ?? initialProgress);
+    const currentProgressRef = useRef<number>(transitionProgress ?? initialProgress);
 
-    const targetRotationYRef = useRef<number>(0);
-    const currentRotationYRef = useRef<number>(0);
+    const targetAssemblyProgressRef = useRef<number>(assemblyProgress ?? 0);
+    const currentAssemblyProgressRef = useRef<number>(assemblyProgress ?? 0);
+
+    const targetRotationYRef = useRef<number>(rotationY ?? 0);
+    const currentRotationYRef = useRef<number>(rotationY ?? 0);
 
     // Three.js instances refs
     const fromGroupRef = useRef<THREE.Group | null>(null);
@@ -151,6 +165,25 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       targetVal: number;
       active: boolean;
     } | null>(null);
+
+    // Sync external props with refs
+    useEffect(() => {
+      if (assemblyProgress !== undefined) {
+        targetAssemblyProgressRef.current = Math.max(0, Math.min(1, assemblyProgress));
+      }
+    }, [assemblyProgress]);
+
+    useEffect(() => {
+      if (transitionProgress !== undefined) {
+        targetProgressRef.current = Math.max(0, Math.min(1, transitionProgress));
+      }
+    }, [transitionProgress]);
+
+    useEffect(() => {
+      if (rotationY !== undefined) {
+        targetRotationYRef.current = rotationY;
+      }
+    }, [rotationY]);
 
     // Imperative API implementation
     const transitionTo = useCallback((progress: number, durationMs = 800) => {
@@ -181,6 +214,16 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
     const getProgress = useCallback(() => currentProgressRef.current, []);
 
+    const setAssemblyProgress = useCallback((prog: number) => {
+      targetAssemblyProgressRef.current = Math.max(0, Math.min(1, prog));
+    }, []);
+
+    const getAssemblyProgress = useCallback(() => currentAssemblyProgressRef.current, []);
+
+    const setTransitionProgress = useCallback((prog: number) => {
+      targetProgressRef.current = Math.max(0, Math.min(1, prog));
+    }, []);
+
     const triggerAssembly = useCallback(() => {
       if (assemblyControllerRef.current) {
         assemblyControllerRef.current.start();
@@ -196,9 +239,12 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         toggle,
         setRotationY,
         getProgress,
-        triggerAssembly
+        triggerAssembly,
+        setAssemblyProgress,
+        getAssemblyProgress,
+        setTransitionProgress
       }),
-      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly]
+      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress]
     );
 
     // Stable configs
@@ -254,6 +300,26 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromScene.environment = pmremGen1.fromScene(roomEnv1, 0.04).texture;
       roomEnv1.dispose();
 
+      // Atmospheric cybernetic floating particles
+      const particleCount = 140;
+      const particleGeo = new THREE.BufferGeometry();
+      const particlePos = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        particlePos[i] = (Math.random() - 0.5) * 8;
+        particlePos[i + 1] = (Math.random() - 0.5) * 6;
+        particlePos[i + 2] = (Math.random() - 0.5) * 4;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+      const particleMat = new THREE.PointsMaterial({
+        size: 0.035,
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
+      });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      fromScene.add(particles);
+
       // Lighting Rig 1
       const light1 = fromModel.lighting || {};
       const fromAmb = new THREE.AmbientLight(light1.ambientColor ?? 0xd5e6ff, light1.ambientIntensity ?? 0.8);
@@ -297,7 +363,6 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         const vFov = (fromCamera.fov * Math.PI) / 180;
         const planeH = 2 * dist * Math.tan(vFov / 2);
         const planeW = planeH * fromCamera.aspect;
-        // 1.6x coverage ensures full edge-to-edge background with no bottom gaps
         fromBgPlane.scale.set((planeW * 1.6) / 24, (planeH * 1.6) / 16, 1);
       };
       updateFromBgPlaneRef.current = updateFromBgPlane;
@@ -415,7 +480,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
                     if (matName.includes('eye') || matName.includes('lens')) {
                       stdMat.emissive = new THREE.Color(0x00e5ff);
                       if (!fromModel.assemblyAnimation) {
-                        stdMat.emissiveIntensity = 2.5;
+                        stdMat.emissiveIntensity = 3.5;
+                      } else {
+                        stdMat.emissiveIntensity = 0;
                       }
                     } else if (matName.includes('emissive')) {
                       stdMat.emissive = new THREE.Color(0x000000);
@@ -449,8 +516,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
           const cameraDist = (scaledSize.y / 0.4773) / (2 * Math.tan(fovRad / 2));
-          const yCam = 0; // Center camera directly at the floating helmet
+          const yCam = 0;
           baseYCamRef.current = yCam;
+          baseCameraDistRef.current = cameraDist;
 
           fromCamera.position.set(0, yCam, cameraDist);
           fromCamera.lookAt(0, 0, 0);
@@ -473,19 +541,20 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
               }
             });
             assemblyControllerRef.current = controller;
-            if (fromModel.autoStartAssembly !== false || pendingAssemblyStartRef.current) {
+
+            // Initialize at target progress
+            controller.setProgress(
+              currentAssemblyProgressRef.current,
+              fromCamera,
+              fromGroup,
+              cameraDist,
+              yCam
+            );
+
+            if (fromModel.autoStartAssembly || pendingAssemblyStartRef.current) {
               controller.start();
               pendingAssemblyStartRef.current = false;
             }
-
-            // Unlock audio on first user gesture if browser blocked initial autoplay
-            const unlockAudio = () => {
-              if (controller.audioElement && controller.audioElement.paused && controller.active) {
-                controller.audioElement.play().catch(() => {});
-              }
-              window.removeEventListener('pointerdown', unlockAudio);
-            };
-            window.addEventListener('pointerdown', unlockAudio, { once: true });
           }
         },
         undefined,
@@ -560,16 +629,15 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       const handleWheel = (e: WheelEvent) => {
         if (!enableScroll) return;
-        // Rotate models
         targetRotationYRef.current += e.deltaY * rotationSensitivity;
-        // Adjust transition progress diagonally
         targetProgressRef.current = Math.max(0, Math.min(1, targetProgressRef.current + e.deltaY * scrollSensitivity));
-        // Reset any programmatic tween
         if (tweenRef.current) tweenRef.current.active = false;
       };
-      window.addEventListener('wheel', handleWheel, { passive: true });
+      if (enableScroll) {
+        window.addEventListener('wheel', handleWheel, { passive: true });
+      }
 
-      // Apply initial mask immediately (without blinking)
+      // Initial diagonal mask
       const initialPct = -10 + currentProgressRef.current * 120;
       frontContainer.style.webkitMaskImage = `linear-gradient(to top right, transparent 0%, transparent ${initialPct}%, #000 calc(${initialPct}% + 1.5px), #000 100%)`;
       frontContainer.style.maskImage = `linear-gradient(to top right, transparent 0%, transparent ${initialPct}%, #000 calc(${initialPct}% + 1.5px), #000 100%)`;
@@ -580,66 +648,73 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const animate = (now: number) => {
         animationFrameId = requestAnimationFrame(animate);
 
-        // Handle programmatic smooth tween
+        // Ambient particles rotation
+        particles.rotation.y += 0.0008;
+        particles.rotation.x += 0.0004;
+
+        // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
           const { startTime, duration, startVal, targetVal } = tweenRef.current;
           const elapsed = now - startTime;
           const t = Math.min(1, elapsed / duration);
-          // Ease in-out cubic
           const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
           currentProgressRef.current = startVal + (targetVal - startVal) * ease;
           targetProgressRef.current = currentProgressRef.current;
-
-          if (t >= 1) {
-            tweenRef.current.active = false;
-          }
+          if (t >= 1) tweenRef.current.active = false;
         } else {
-          // Smooth inertia on scroll
-          currentProgressRef.current += (targetProgressRef.current - currentProgressRef.current) * 0.09;
+          currentProgressRef.current += (targetProgressRef.current - currentProgressRef.current) * 0.1;
         }
+
+        // Smooth assembly progress lerp
+        currentAssemblyProgressRef.current += (targetAssemblyProgressRef.current - currentAssemblyProgressRef.current) * 0.12;
 
         currentRotationYRef.current += (targetRotationYRef.current - currentRotationYRef.current) * 0.09;
 
-        // Update component assembly animation if active
-        if (assemblyControllerRef.current && assemblyControllerRef.current.active) {
-          const res = assemblyControllerRef.current.update(
-            now,
-            fromCamera,
+        // Scrub assembly formation across 3D space
+        if (assemblyControllerRef.current && fromGroupRef.current && fromCameraRef.current) {
+          const res = assemblyControllerRef.current.setProgress(
+            currentAssemblyProgressRef.current,
+            fromCameraRef.current,
+            fromGroupRef.current,
+            baseCameraDistRef.current,
             baseYCamRef.current
           );
 
           if (onAssemblyStatusRef.current) {
-            onAssemblyStatusRef.current({
-              progress: res.progress,
-              text: res.statusText,
-              isComplete: res.isComplete,
-            });
+            onAssemblyStatusRef.current(res);
           }
         }
 
         const currentProgress = currentProgressRef.current;
         const currentRotationY = currentRotationYRef.current;
 
-        // Synchronize rotation
-        fromGroup.rotation.y = currentRotationY;
-        toGroup.rotation.y = currentRotationY;
+        // Apply group visibility and Y-axis rotation
+        if (fromGroupRef.current) {
+          if (currentAssemblyProgressRef.current <= 0.001) {
+            fromGroupRef.current.visible = false;
+          } else {
+            fromGroupRef.current.visible = true;
+            fromGroupRef.current.rotation.y += currentRotationY;
+          }
+        }
+        if (toGroupRef.current) {
+          toGroupRef.current.rotation.y = currentRotationY;
+        }
 
-        // Safe callback without triggering React re-renders on every frame
         if (onProgressChangeRef.current) {
           onProgressChangeRef.current(currentProgress);
         }
 
-        // CONTINUOUS DIAGONAL MASK (Never sets 'none' or toggles opacity, eliminating blinking completely)
+        // Continuous diagonal laser seam
         const pct = -10 + currentProgress * 120;
         const mask = `linear-gradient(to top right, transparent 0%, transparent ${pct}%, #000 calc(${pct}% + 1.5px), #000 100%)`;
         frontContainer.style.webkitMaskImage = mask;
         frontContainer.style.maskImage = mask;
 
-        // Seamless laser line fade-in/out
         if (diagonalLine) {
           if (currentProgress > 0.01 && currentProgress < 0.99) {
             diagonalLine.style.opacity = '1';
-            diagonalLine.style.background = `linear-gradient(to top right, transparent calc(${pct}% - 2px), rgba(0, 240, 255, 0.75) calc(${pct}% - 0.5px), #ffffff ${pct}%, rgba(255, 40, 70, 0.75) calc(${pct}% + 0.5px), transparent calc(${pct}% + 2px))`;
+            diagonalLine.style.background = `linear-gradient(to top right, transparent calc(${pct}% - 2.5px), rgba(0, 240, 255, 0.85) calc(${pct}% - 0.5px), #ffffff ${pct}%, rgba(255, 40, 70, 0.85) calc(${pct}% + 0.5px), transparent calc(${pct}% + 2.5px))`;
           } else {
             diagonalLine.style.opacity = '0';
           }
@@ -651,12 +726,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       animationFrameId = requestAnimationFrame(animate);
 
-      // Cleanup on unmount
       return () => {
         isMounted = false;
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener('resize', handleResize);
-        window.removeEventListener('wheel', handleWheel);
+        if (enableScroll) {
+          window.removeEventListener('wheel', handleWheel);
+        }
 
         fromRenderer.dispose();
         toRenderer.dispose();
@@ -694,11 +770,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           width: '100%',
           height: '100%',
           overflow: 'hidden',
-          cursor: 'default',
           ...style
         }}
       >
-        {/* Layer 1: Back Canvas (toModel) */}
+        {/* Layer 1: Back Canvas (Ant-Man) */}
         <div
           ref={backCanvasContainerRef}
           style={{
@@ -711,7 +786,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }}
         />
 
-        {/* Layer 2: Front Canvas with Diagonal Mask (fromModel) */}
+        {/* Layer 2: Front Canvas with Diagonal Mask (Iron Man) */}
         <div
           ref={frontCanvasContainerRef}
           style={{
