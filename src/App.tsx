@@ -47,8 +47,6 @@ const antManConfig: ModelConfig = {
 export default function App() {
   const transitionRef = useRef<TransitionHandle>(null);
   const lenisRef = useRef<Lenis | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const [hasEntered, setHasEntered] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [morphProgress, setMorphProgress] = useState(0);
@@ -56,26 +54,6 @@ export default function App() {
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [assemblyPhaseProgress, setAssemblyPhaseProgress] = useState(0);
   const [rotationY, setRotationY] = useState(0);
-
-  // Sound FX setup
-  useEffect(() => {
-    try {
-      const audio = new Audio('/iron_man_assembly.mp3');
-      audio.volume = 0.75;
-      audio.preload = 'auto';
-      audioRef.current = audio;
-    } catch (e) {
-      console.warn('Audio initialization deferred:', e);
-    }
-
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, []);
-
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
@@ -159,10 +137,6 @@ export default function App() {
           setTransitionProgress(0);
           setRotationY(0);
 
-          // Trigger suit-up sound FX when mask assembly begins
-          if (maskP > 0.02 && audioRef.current && audioRef.current.paused) {
-            audioRef.current.play().catch(() => {});
-          }
         } else {
           // Phase 3 & 4 — Mask Assembled: Rotate on Y axis + Diagonal Wipe
           setAssemblyProgress(1);

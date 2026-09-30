@@ -96,7 +96,6 @@ export interface AssemblyController {
   currentProgress: number;
   tracks: TrajectoryTrack[];
   eyeMaterial: THREE.MeshStandardMaterial | null;
-  audioElement: HTMLAudioElement | null;
   start: () => void;
   /** Set progress explicitly (0.0 to 1.0) for scroll-scrubbing */
   setProgress: (
@@ -127,16 +126,6 @@ export function createAssemblySystem(
   let eyeMaterial: THREE.MeshStandardMaterial | null = null;
   const targetZero = new THREE.Vector3(0, 0, 0);
   const targetOne = new THREE.Vector3(1, 1, 1);
-
-  // Audio track setup
-  let audioElement: HTMLAudioElement | null = null;
-  try {
-    audioElement = new Audio('/helmet_assembly.mp3');
-    audioElement.volume = 0.85;
-    audioElement.preload = 'auto';
-  } catch (e) {
-    console.warn('Audio deferred:', e);
-  }
 
   model.traverse((child) => {
     if (!(child as THREE.Mesh).isMesh) return;
@@ -377,15 +366,10 @@ export function createAssemblySystem(
     currentProgress: 0,
     tracks,
     eyeMaterial,
-    audioElement,
 
     start: () => {
       controller.active = true;
       controller.startTime = performance.now();
-      if (controller.audioElement) {
-        controller.audioElement.currentTime = 0;
-        controller.audioElement.play().catch(() => {});
-      }
     },
 
     setProgress: (progress, camera, fromGroup, baseCameraDist, baseYCam) => {
@@ -435,10 +419,6 @@ export function createAssemblySystem(
     },
 
     dispose: () => {
-      if (controller.audioElement) {
-        controller.audioElement.pause();
-        controller.audioElement = null;
-      }
     }
   };
 
