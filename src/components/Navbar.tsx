@@ -55,10 +55,10 @@ export interface NavbarProps {
 
 const defaultItems: NavItem[] = [
   { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
   { id: 'events', label: 'Events' },
-  { id: 'contact', label: 'Contact' },
   { id: 'gallery', label: 'Gallery' },
-  { id: 'admin', label: 'Login' }
+  { id: 'contact', label: 'Contact' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               width: 'auto',
               objectFit: 'contain',
               display: 'block',
-              filter: `drop-shadow(0 0 ${25 * (1 - p)}px rgba(134, 59, 255, ${0.75 * (1 - p)}))`,
+              filter: `drop-shadow(0 0 ${25 * (1 - p)}px rgba(255, 90, 0, ${0.75 * (1 - p)}))`,
               transition: 'none',
             }}
           />
