@@ -204,7 +204,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         repeat: 1,
         ease: 'power2.inOut',
         filter:
-          'brightness(1.3) contrast(1.1) drop-shadow(0 0 50px rgba(255, 120, 0, 0.95)) drop-shadow(0 0 80px rgba(134, 59, 255, 0.8))',
+          'brightness(1.3) contrast(1.1) drop-shadow(0 0 50px rgba(255, 120, 0, 0.95)) drop-shadow(0 0 80px rgba(255, 60, 0, 0.75))',
       });
     }, 2.8 * 1000);
 
@@ -391,7 +391,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           background: radial-gradient(
             circle at center,
             rgba(255, 85, 0, 0.22) 0%,
-            rgba(134, 59, 255, 0.14) 45%,
+            rgba(255, 150, 0, 0.12) 45%,
             transparent 75%
           );
           filter: blur(85px);
@@ -445,7 +445,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           transform: translateZ(0);
           filter: brightness(1.12) contrast(1.06)
                   drop-shadow(0 0 35px rgba(255, 85, 0, 0.75))
-                  drop-shadow(0 0 70px rgba(134, 59, 255, 0.45));
+                  drop-shadow(0 0 70px rgba(255, 50, 0, 0.45));
           z-index: 1;
         }
 
@@ -498,10 +498,10 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
 
         .avengers-skip-btn:hover {
           color: #ffffff;
-          background: rgba(134, 59, 255, 0.25);
-          border-color: rgba(167, 139, 250, 0.5);
+          background: rgba(255, 100, 0, 0.25);
+          border-color: rgba(255, 160, 0, 0.5);
           transform: translateY(-2px);
-          box-shadow: 0 0 15px rgba(134, 59, 255, 0.4);
+          box-shadow: 0 0 15px rgba(255, 100, 0, 0.4);
         }
       `}</style>
     </div>
