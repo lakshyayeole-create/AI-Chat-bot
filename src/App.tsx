@@ -44,6 +44,13 @@ const antManConfig: ModelConfig = {
   },
 };
 
+if (typeof window !== 'undefined') {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+}
+
 export default function App() {
   const transitionRef = useRef<TransitionHandle>(null);
   const lenisRef = useRef<Lenis | null>(null);
@@ -55,8 +62,41 @@ export default function App() {
   const [rotationY, setRotationY] = useState(0);
   const [positionX, setPositionX] = useState(0);
   const [heroInfoOpacity, setHeroInfoOpacity] = useState(0);
-  // Initialize Lenis Smooth Scroll
+
+  // Lock document scroll while introduction is playing to prevent reload jumps or wheel scroll
   useEffect(() => {
+    if (!hasEntered) {
+      window.scrollTo(0, 0);
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [hasEntered]);
+
+  // Reset scroll on beforeunload so the browser always sees (0,0) as last known position
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  // Initialize Lenis Smooth Scroll once on mount
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     const lenis = new Lenis({
       duration: 1.25,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -67,6 +107,10 @@ export default function App() {
 
     lenisRef.current = lenis;
 
+    // Immediately halt scroll and anchor to top
+    lenis.scrollTo(0, { immediate: true });
+    lenis.stop();
+
     lenis.on('scroll', ScrollTrigger.update);
 
     const updateTicker = (time: number) => {
@@ -76,24 +120,37 @@ export default function App() {
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
 
-    // Lock scrolling while introduction is playing
-    if (!hasEntered) {
-      lenis.stop();
-    }
-
     return () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
       lenisRef.current = null;
     };
-  }, [hasEntered]);
+  }, []);
 
-  // Handle Intro Completion
+  // Handle Intro Completion: unlock scroll and smoothly start from top
   const handleEnter = useCallback(() => {
-    setHasEntered(true);
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
     if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
       lenisRef.current.start();
     }
+
+    setHasEntered(true);
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
+      ScrollTrigger.clearScrollMemory?.('manual');
+      ScrollTrigger.refresh();
+    });
   }, []);
 
   // Configure ScrollTrigger — sequential phases:
@@ -103,6 +160,12 @@ export default function App() {
   // Phase 4 (0.72 -> 1.00): Transition towards next model.
   useEffect(() => {
     if (!hasEntered) return;
+
+    window.scrollTo(0, 0);
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    ScrollTrigger.clearScrollMemory?.('manual');
 
     const track = document.getElementById('scroll-track');
     if (!track) return;
