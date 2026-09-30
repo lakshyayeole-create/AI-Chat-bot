@@ -7,7 +7,7 @@ import AvengersIntro from './components/ui/AvengersIntro';
 
 const ironManConfig: ModelConfig = {
   modelPath: '/assets/iron_man_detailed_web.glb',
-  bgImagePath: '/assets/iron_man_background.jpeg',
+  bgImagePath: '/assets/iron_man_hud_bg.jpg',
   rotationX: 0,
   targetHeight: 1.5,
   assemblyAnimation: true,
