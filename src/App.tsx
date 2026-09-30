@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import * as THREE from 'three';
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from './lib/gsap';
 import Transition, { ModelConfig, TransitionHandle } from './components/Transition';
@@ -26,21 +27,43 @@ const ironManConfig: ModelConfig = {
   },
 };
 
-const antManConfig: ModelConfig = {
-  modelPath: '/assets/marvel_ant-man_helmet.glb',
+const starLordConfig: ModelConfig = {
+  modelPath: '/assets/starlord.glb',
   bgImagePath: '/assets/ant_man_bg.jpeg',
-  targetHeight: 1.5,
+  targetHeight: 1.20,
+  offsetY: -0.06,
   lighting: {
     ambientColor: 0xd5e6ff,
-    ambientIntensity: 0.8,
+    ambientIntensity: 0.85,
     keyColor: 0xfff7e6,
-    keyIntensity: 1.8,
-    rimColor: 0xff2244,
-    rimIntensity: 1.5,
+    keyIntensity: 1.9,
+    rimColor: 0xff1a35,
+    rimIntensity: 1.8,
     fillColor: 0x00f0ff,
     fillIntensity: 0.9,
     topColor: 0xffffff,
     topIntensity: 0.8,
+  },
+  onMeshTraverse: (mesh: THREE.Mesh) => {
+    if (mesh.material) {
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      mats.forEach((mat) => {
+        const stdMat = mat as THREE.MeshStandardMaterial;
+        const matName = (stdMat.name || '').toLowerCase();
+        if (
+          matName.includes('001') ||
+          matName.includes('002') ||
+          matName.includes('eye') ||
+          matName.includes('lens')
+        ) {
+          stdMat.emissive = new THREE.Color(0xff1122);
+          stdMat.emissiveIntensity = 2.8;
+        } else {
+          if (stdMat.roughness !== undefined) stdMat.roughness = Math.max(0.15, stdMat.roughness * 0.85);
+          if (stdMat.metalness !== undefined) stdMat.metalness = Math.min(0.98, Math.max(0.7, stdMat.metalness * 1.2));
+        }
+      });
+    }
   },
 };
 
@@ -97,8 +120,8 @@ export default function App() {
   // Configure ScrollTrigger — sequential phases:
   // Phase 1 (0.00 -> 0.20): Logo morphs to top Navigation Bar (Mask hidden).
   // Phase 2 (0.20 -> 0.50): Iron Man mask assembles piece-by-piece on scroll.
-  // Phase 3 (0.50 -> 0.82): Mask rotates along Y axis while diagonal laser seam wipes to Ant-Man.
-  // Phase 4 (0.82 -> 1.00): Ant-Man mask fully revealed with smooth rotation.
+  // Phase 3 (0.50 -> 0.82): Mask rotates along Y axis while diagonal laser seam wipes to Star-Lord.
+  // Phase 4 (0.82 -> 1.00): Star-Lord mask fully revealed with smooth rotation.
   useEffect(() => {
     if (!hasEntered) return;
 
@@ -171,7 +194,7 @@ export default function App() {
         <Transition
           ref={transitionRef}
           fromModel={ironManConfig}
-          toModel={antManConfig}
+          toModel={starLordConfig}
           assemblyProgress={assemblyProgress}
           transitionProgress={transitionProgress}
           rotationY={rotationY}
@@ -226,7 +249,7 @@ export default function App() {
           pointer-events: none;
         }
 
-        /* 700vh: navbar morph → Iron Man assembly → diagonal wipe → Ant-Man */
+        /* 700vh: navbar morph → Iron Man assembly → diagonal wipe → Star-Lord */
         .scroll-track-container {
           width: 100%;
           height: 700vh;

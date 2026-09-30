@@ -34,6 +34,8 @@ export interface ModelConfig {
   rotationX?: number;
   /** Normalized target height in world units (defaults to 1.5) */
   targetHeight?: number;
+  /** Optional vertical position offset in world units */
+  offsetY?: number;
   /** Custom mesh traversal callback */
   onMeshTraverse?: (mesh: THREE.Mesh) => void;
   /** Optional lighting overrides */
@@ -492,6 +494,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           const finalBox = new THREE.Box3().setFromObject(fromGroup);
           const finalCenter = finalBox.getCenter(new THREE.Vector3());
           fromGroup.position.sub(finalCenter);
+          if (fromModel.offsetY !== undefined) {
+            fromGroup.position.y += fromModel.offsetY;
+          }
 
           // Calibrate camera to frame mask prominently (~78% vertical coverage)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
@@ -581,6 +586,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           const finalBox = new THREE.Box3().setFromObject(toGroup);
           const finalCenter = finalBox.getCenter(new THREE.Vector3());
           toGroup.position.sub(finalCenter);
+          if (toModel.offsetY !== undefined) {
+            toGroup.position.y += toModel.offsetY;
+          }
         },
         undefined,
         (err) => console.error('Failed to load toModel:', err)
@@ -751,7 +759,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           ...style
         }}
       >
-        {/* Layer 1: Back Canvas (Ant-Man) */}
+        {/* Layer 1: Back Canvas (Star-Lord) */}
         <div
           ref={backCanvasContainerRef}
           style={{
