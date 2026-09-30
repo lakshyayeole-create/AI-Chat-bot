@@ -283,21 +283,22 @@ export function createAssemblySystem(
 
     // ── 3. Dynamic Camera Swoop Choreography ──
     let cx = 0, cy = baseYCam, cz = baseCameraDist;
+    const swoopScale = 0.55;
 
     if (pClamped < 0.3) {
       const t = pClamped / 0.3;
-      cx = THREE.MathUtils.lerp(0.40, -0.32, t);
-      cy = baseYCam + THREE.MathUtils.lerp(0.22, -0.08, t);
+      cx = THREE.MathUtils.lerp(0.40, -0.32, t) * swoopScale;
+      cy = baseYCam + THREE.MathUtils.lerp(0.22, -0.08, t) * swoopScale;
       cz = baseCameraDist * THREE.MathUtils.lerp(1.15, 1.04, t);
     } else if (pClamped < 0.7) {
       const t = (pClamped - 0.3) / 0.4;
-      cx = THREE.MathUtils.lerp(-0.32, 0.28, t);
-      cy = baseYCam + THREE.MathUtils.lerp(-0.08, 0.26, t);
+      cx = THREE.MathUtils.lerp(-0.32, 0.28, t) * swoopScale;
+      cy = baseYCam + THREE.MathUtils.lerp(-0.08, 0.26, t) * swoopScale;
       cz = baseCameraDist * THREE.MathUtils.lerp(1.04, 1.08, t);
     } else {
       const t = (pClamped - 0.7) / 0.3;
-      cx = THREE.MathUtils.lerp(0.28, 0, t);
-      cy = baseYCam + THREE.MathUtils.lerp(0.26, 0, t);
+      cx = THREE.MathUtils.lerp(0.28, 0, t) * swoopScale;
+      cy = baseYCam + THREE.MathUtils.lerp(0.26, 0, t) * swoopScale;
       cz = baseCameraDist * THREE.MathUtils.lerp(1.08, 1.0, t);
     }
 

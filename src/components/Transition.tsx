@@ -493,10 +493,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           const finalCenter = finalBox.getCenter(new THREE.Vector3());
           fromGroup.position.sub(finalCenter);
 
-          // Calibrate camera
+          // Calibrate camera to frame mask prominently (~78% vertical coverage)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
-          const cameraDist = (scaledSize.y / 0.4773) / (2 * Math.tan(fovRad / 2));
+          const cameraDist = (scaledSize.y / 0.78) / (2 * Math.tan(fovRad / 2));
           const yCam = 0;
           baseYCamRef.current = yCam;
           baseCameraDistRef.current = cameraDist;

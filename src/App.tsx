@@ -13,16 +13,16 @@ const ironManConfig: ModelConfig = {
   assemblyAnimation: true,
   autoStartAssembly: false, // Driven strictly by scroll
   lighting: {
-    ambientColor: 0xd5e6ff,
-    ambientIntensity: 0.8,
+    ambientColor: 0xffffff,
+    ambientIntensity: 1.15,
     keyColor: 0xfff7e6,
-    keyIntensity: 1.8,
+    keyIntensity: 2.0,
     rimColor: 0x00f0ff,
     rimIntensity: 1.5,
-    fillColor: 0xff2244,
-    fillIntensity: 0.9,
+    fillColor: 0xff4455,
+    fillIntensity: 1.25,
     topColor: 0xffffff,
-    topIntensity: 0.8,
+    topIntensity: 0.9,
   },
 };
 
@@ -52,7 +52,6 @@ export default function App() {
   const [morphProgress, setMorphProgress] = useState(0);
   const [assemblyProgress, setAssemblyProgress] = useState(0);
   const [transitionProgress, setTransitionProgress] = useState(0);
-  const [assemblyPhaseProgress, setAssemblyPhaseProgress] = useState(0);
   const [rotationY, setRotationY] = useState(0);
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
@@ -126,21 +125,18 @@ export default function App() {
         // Phase 2 — Iron Man Assembly
         if (p <= NAV_END) {
           setAssemblyProgress(0);
-          setAssemblyPhaseProgress(0);
           setTransitionProgress(0);
           setRotationY(0);
         } else if (p <= IRON_END) {
           const maskP = (p - NAV_END) / (IRON_END - NAV_END);
           const clampedMaskP = Math.min(1, Math.max(0, maskP));
           setAssemblyProgress(clampedMaskP);
-          setAssemblyPhaseProgress(clampedMaskP);
           setTransitionProgress(0);
           setRotationY(0);
 
         } else {
           // Phase 3 & 4 — Mask Assembled: Rotate on Y axis + Diagonal Wipe
           setAssemblyProgress(1);
-          setAssemblyPhaseProgress(1);
 
           // Smooth Y-axis rotation as user continues scrolling
           const rotP = (p - IRON_END) / (1.0 - IRON_END);
@@ -183,22 +179,6 @@ export default function App() {
         />
       </div>
 
-      {/* ── Cinematic Atmospheric Overlays (assembly phase only) ────────────── */}
-
-      {/* Vignette intensifier: deepens during mask assembly for dramatic focus */}
-      <div
-        className="assembly-vignette"
-        style={{
-          opacity: assemblyPhaseProgress < 0.05
-            ? 0
-            : assemblyPhaseProgress < 0.15
-              ? (assemblyPhaseProgress - 0.05) / 0.1
-              : assemblyPhaseProgress > 0.9
-                ? 1 - (assemblyPhaseProgress - 0.9) / 0.1
-                : 1,
-          pointerEvents: 'none',
-        }}
-      />
 
 
       {/* Bottom Scroll Prompt (Only visible right after intro, fades out as user scrolls) */}
@@ -254,19 +234,7 @@ export default function App() {
           pointer-events: none;
         }
 
-        /* ── Atmospheric Vignette (deepens during assembly) ── */
-        .assembly-vignette {
-          position: fixed;
-          inset: 0;
-          z-index: 2;
-          background: radial-gradient(
-            ellipse 70% 60% at 50% 50%,
-            transparent 30%,
-            rgba(3, 5, 12, 0.55) 70%,
-            rgba(3, 5, 12, 0.85) 100%
-          );
-          transition: opacity 0.3s ease;
-        }
+
 
 
         /* Bottom Scroll Indicator */
