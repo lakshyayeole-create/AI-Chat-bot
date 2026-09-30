@@ -1,22 +1,22 @@
 """RAG pipeline orchestrator.
 
-Coordinates the full flow: retrieve → build context → call LLM → format response.
+Coordinates the full flow:
+embed query ONCE → semantic cache check → retrieve from Qdrant → build context → call Gemini → cache save.
 Designed to be transport-independent (reusable for future voice endpoint).
-
-Supports three query intents:
-- GENERAL:      no specific event → unfiltered retrieval.
-- SINGLE_EVENT: one event detected → filtered retrieval (original behaviour).
-- MULTI_EVENT:  two+ events detected (comparison) → per-event retrieval,
-                clearly labelled context, and a comparison-aware LLM hint.
 """
+import re
+import numpy as np
 from app.core.logging_config import get_logger
 from app.rag.retriever import (
     retrieve,
     retrieve_multi_event,
     classify_intent,
+    normalize_query,
     QueryIntent,
     RetrievalResult,
 )
+from app.rag import embeddings
+from app.rag.semantic_cache import get_cached_response, save_cached_response
 from app.llm.client import generate_answer
 
 logger = get_logger(__name__)
@@ -25,6 +25,16 @@ logger = get_logger(__name__)
 # ---------------------------------------------------------------------------
 # Context builders
 # ---------------------------------------------------------------------------
+
+def _clean_context_text(text: str) -> str:
+    """Clean internal technical markers and database IDs from chunk text."""
+    text = re.sub(r"\(Anantya\s+'?26,\s*ID:\s*ANANTYA-\d{3}\)", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\(ID:\s*ANANTYA-\d{3}\)", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bEVENT[_ ]ID:\s*ANANTYA-\d{3}\b", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bEVENT_000_ANANTYA_OVERALL_INFO\b", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s*\|\s*Section:", " | Section:", text)
+    return text.strip()
+
 
 def build_context(results: list[RetrievalResult]) -> str:
     """Build a clean, labeled context block from retrieved chunks.
@@ -48,7 +58,7 @@ def build_context(results: list[RetrievalResult]) -> str:
         source_file = result.metadata.get("source_file", "unknown source")
 
         header = f"[Event: {event_name}]\n[Section: {section}]\n[Source: {source_file}]"
-        context_parts.append(f"{header}\n{result.text}")
+        context_parts.append(f"{header}\n{_clean_context_text(result.text)}")
 
     return "CONTEXT:\n\n" + "\n\n---\n\n".join(context_parts)
 
@@ -60,13 +70,12 @@ def build_comparison_context(
     """Build a context block optimised for comparison / multi-event queries.
 
     Chunks are grouped by event so the LLM can clearly see which facts
-    belong to which event.  Events that had zero matching chunks are
+    belong to which event. Events that had zero matching chunks are
     flagged explicitly so the LLM can state that information is missing
     rather than hallucinating.
 
     Args:
-        results: Combined RetrievalResult list from
-            :func:`retrieve_multi_event`.
+        results: Combined RetrievalResult list from retrieve_multi_event.
         event_ids: The canonical ANANTYA-xxx IDs that were requested.
 
     Returns:
@@ -92,11 +101,11 @@ def build_comparison_context(
             continue
 
         event_name = chunks[0].metadata.get("event_name", eid)
-        event_header = f"=== EVENT: {event_name} (ID: {eid}) ==="
+        event_header = f"=== EVENT: {event_name} ==="
         chunk_texts = []
         for c in chunks:
             section = c.metadata.get("section", "General")
-            chunk_texts.append(f"[Section: {section}]\n{c.text}")
+            chunk_texts.append(f"[Section: {section}]\n{_clean_context_text(c.text)}")
 
         parts.append(event_header + "\n\n" + "\n\n---\n\n".join(chunk_texts))
 
@@ -140,19 +149,23 @@ def extract_sources(results: list[RetrievalResult]) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Main pipeline entry point
+# Synchronous / Direct processing pipeline
 # ---------------------------------------------------------------------------
 
 async def process_chat(message: str) -> dict:
-    """Process a chat message through the full RAG pipeline.
+    """Process a chat message with single query embedding and semantic cache.
 
-    This is the main entry point for the chatbot — used by the API layer.
-    Designed to be transport-independent for future voice support.
-
-    Handles three intents:
-    - GENERAL:      unfiltered retrieval.
-    - SINGLE_EVENT: retrieval filtered to one event.
-    - MULTI_EVENT:  per-event retrieval + comparison-aware context.
+    Steps:
+    1. Normalize query and classify intent.
+    2. Generate query embedding ONCE.
+    3. Check semantic cache BEFORE Qdrant / queue.
+       - If HIT: return cached response immediately.
+    4. If MISS:
+       - Retrieve from Qdrant using the same query_vector.
+       - Build grounded context.
+       - Call Gemini.
+       - Save to semantic cache.
+       - Return response.
 
     Args:
         message: User's question text (already validated).
@@ -162,31 +175,70 @@ async def process_chat(message: str) -> dict:
     """
     logger.info("Processing chat: '%s'", message[:80])
 
-    # Step 1: Classify intent
+    # Step 1: Normalize query and classify intent
+    clean_query = normalize_query(message)
     intent, event_ids = classify_intent(message)
     logger.info("Query intent: %s, events: %s", intent.value, event_ids)
 
-    # Step 2: Retrieve chunks based on intent
+    # Step 2: Generate query embedding ONCE
+    query_vector = embeddings.embed_text(clean_query)
+
+    # Step 3: Semantic Cache lookup
+    cached = await get_cached_response(
+        query=message,
+        query_embedding=query_vector,
+        event_ids=event_ids,
+    )
+    if cached is not None:
+        logger.info("Returning cached response directly (cache hit)")
+        return {
+            "answer": cached["answer"],
+            "sources": cached["sources"],
+            "cache_hit": True,
+        }
+
+    # Step 4: Qdrant retrieval reusing query_vector
     if intent == QueryIntent.MULTI_EVENT:
-        results = retrieve_multi_event(message, event_ids)
+        results = retrieve_multi_event(
+            query=message,
+            event_ids=event_ids,
+            query_vector=query_vector,
+        )
         context = build_comparison_context(results, event_ids)
     else:
-        # GENERAL and SINGLE_EVENT both go through the original retrieve()
-        # which handles event filtering internally.
-        results = retrieve(message)
+        results = retrieve(
+            query=message,
+            query_vector=query_vector,
+        )
         context = build_context(results)
 
     logger.info("Context built from %d chunks (intent=%s)", len(results), intent.value)
 
-    # Step 3: Extract source metadata
+    # Step 5: Extract source metadata
     sources = extract_sources(results)
 
-    # Step 4: Generate answer using LLM
+    # Step 6: Generate answer using LLM
     answer = await generate_answer(question=message, context=context)
 
-    logger.info("Answer generated. Sources: %s", [s["event_id"] for s in sources])
+    # Step 7: Cache the successful response
+    chunk_ids = [r.metadata.get("chunk_id", "") for r in results if r.metadata.get("chunk_id")]
+    event_names = list({r.metadata.get("event_name", "") for r in results if r.metadata.get("event_name")})
+
+    try:
+        await save_cached_response(
+            query=message,
+            query_embedding=query_vector,
+            answer=answer,
+            sources=sources,
+            event_ids=event_ids,
+            event_names=event_names,
+            retrieved_chunk_ids=chunk_ids,
+        )
+    except Exception as e:
+        logger.error("Failed to save response to cache (non-fatal): %s", e)
 
     return {
         "answer": answer,
         "sources": sources,
+        "cache_hit": False,
     }

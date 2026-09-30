@@ -26,3 +26,13 @@ qdrant_data/
 
 # Test cache
 .pytest_cache/
+
+# Local cache & data
+backend/data/
+data/
+cache.json
+*.lock
+
+# Local benchmarks & test question files
+*test_questions*.txt
+

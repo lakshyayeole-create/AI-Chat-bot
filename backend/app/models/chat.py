@@ -42,9 +42,34 @@ class SourceInfo(BaseModel):
 class ChatResponse(BaseModel):
     """Response body for POST /api/chat.
 
+    Supports both immediate cache hits and queued cache misses.
+
     Attributes:
-        answer: LLM-generated answer grounded in event context.
+        status: Status string ("completed", "queued", "processing", "failed").
+        job_id: Unique job ID if queued.
+        answer: LLM-generated answer grounded in event context (if completed).
         sources: List of source events used to generate the answer.
+        error: Error message if failed.
     """
-    answer: str
+    status: str | None = None
+    job_id: str | None = None
+    answer: str | None = None
     sources: list[SourceInfo] = []
+    error: str | None = None
+
+
+class JobStatusResponse(BaseModel):
+    """Response body for GET /api/chat/status/{job_id}.
+
+    Attributes:
+        status: "queued", "processing", "completed", or "failed".
+        job_id: Unique job identifier.
+        answer: Completed answer if available.
+        sources: Sources used if available.
+        error: Error description if failed.
+    """
+    status: str
+    job_id: str
+    answer: str | None = None
+    sources: list[SourceInfo] = []
+    error: str | None = None

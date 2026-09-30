@@ -7,9 +7,25 @@ from functools import lru_cache
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # --- LLM ---
+    # --- Gemini LLM (3 API Keys) ---
+    gemini_api_key_1: str = ""
+    gemini_api_key_2: str = ""
+    gemini_api_key_3: str = ""
+    gemini_api_key: str = ""  # Optional single-key fallback
+    gemini_model: str = "gemini-2.5-flash"
+
+    # --- Optional Legacy LLM ---
     groq_api_key: str = ""
     llm_model: str = "qwen/qwen3.8-27b"
+
+    # --- Semantic Cache ---
+    semantic_cache_enabled: bool = True
+    semantic_cache_threshold: float = 0.92
+    semantic_cache_ttl: int = 3600
+    cache_file_path: str = "data/cache.json"
+
+    # --- Workers & Queue ---
+    num_workers: int = 3
 
     # --- Embeddings ---
     embedding_model: str = "all-MiniLM-L6-v2"
@@ -18,7 +34,7 @@ class Settings(BaseSettings):
     chunk_size: int = 800
     chunk_overlap: int = 120
     top_k: int = 5
-    retrieval_score_threshold: float = 0.70
+    retrieval_score_threshold: float = 0.35
 
     # --- Qdrant ---
     qdrant_url: str = ""
@@ -50,7 +66,10 @@ class Settings(BaseSettings):
         """Resolve knowledge directory relative to the backend root."""
         return Path(__file__).resolve().parent.parent.parent / self.knowledge_dir
 
-
+    @property
+    def resolved_cache_path(self) -> Path:
+        """Resolve cache file path relative to the backend root."""
+        return Path(__file__).resolve().parent.parent.parent / self.cache_file_path
 
 
 @lru_cache()

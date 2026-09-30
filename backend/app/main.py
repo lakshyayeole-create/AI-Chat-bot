@@ -14,6 +14,8 @@ from app.core.logging_config import setup_logging, get_logger
 from app.api.chat import router as chat_router
 from app.rag import qdrant_store
 
+from app.rag.queue_manager import get_queue_manager
+
 logger = get_logger(__name__)
 
 
@@ -42,11 +44,17 @@ async def lifespan(app: FastAPI):
         app.state.vector_store_loaded = False
         logger.error("Failed to connect to Qdrant: %s", str(e))
 
+    # Start request queue workers
+    queue_mgr = get_queue_manager()
+    queue_mgr.start_workers(settings.num_workers)
+    logger.info("Request queue workers initialized.")
+
     logger.info("Server ready on %s:%d", settings.host, settings.port)
 
     yield
 
     # Shutdown
+    await queue_mgr.stop_workers()
     logger.info("Anantya Chatbot Backend — Shutting down")
 
 
