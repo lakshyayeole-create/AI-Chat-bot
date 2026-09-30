@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
+import { ANANTYA_LOGO_PATHS } from './anantyaLogoPaths';
+
 const anantyaLogo = '/assets/ANANTYA.png';
 
 interface AvengersIntroProps {
@@ -8,13 +10,14 @@ interface AvengersIntroProps {
 
 export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const flareRef = useRef<HTMLDivElement>(null);
-  const shockwaveRef = useRef<HTMLDivElement>(null);
+  const logoWrapperRef = useRef<HTMLDivElement>(null);
+  const pngLogoRef = useRef<HTMLImageElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgLayersRef = useRef<HTMLDivElement>(null);
+  const isFinishedRef = useRef(false);
 
-  // Background floating embers / particles
+  // Background floating cosmic embers / particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -41,22 +44,22 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       hue: number;
     }> = [];
 
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < 55; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
         size: Math.random() * 2.2 + 0.6,
-        speedY: -(Math.random() * 0.7 + 0.3),
+        speedY: -(Math.random() * 0.8 + 0.3),
         speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.7 + 0.2,
-        hue: Math.random() > 0.5 ? 270 : 190, // Cyan & Purple
+        opacity: Math.random() * 0.75 + 0.2,
+        hue: Math.random() > 0.4 ? 35 : 210, // Warm Gold & Cosmic Cyan
       });
     }
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      for (let p of particles) {
+      for (const p of particles) {
         p.y += p.speedY;
         p.x += p.speedX;
         if (p.y < -10) {
@@ -67,8 +70,8 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.opacity})`;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.8)`;
-        ctx.shadowBlur = 10;
+        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
+        ctx.shadowBlur = 8;
         ctx.fill();
       }
 
@@ -83,152 +86,188 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
     };
   }, []);
 
-  // Avengers-style Cinematic Logo Timeline
+  // ═══════════════════════════════════════════════════════════════════
+  // 470-Path Vector Stroke Drawing -> Reveal PNG -> Handoff to Navbar
+  // ═══════════════════════════════════════════════════════════════════
   useEffect(() => {
-    const tl = gsap.timeline({
-      defaults: { ease: 'power3.out' },
-      onComplete: () => {
-        // Phase 2: Logo-to-Navbar handoff
-        // Fade out all background decorations first
+    const svgEl = svgRef.current;
+    const pngEl = pngLogoRef.current;
+    const wrapperEl = logoWrapperRef.current;
+    if (!svgEl || !pngEl || !wrapperEl) return;
+
+    // Timing constants
+    const DRAW_DURATION = 1.9;    // seconds each path takes to draw
+    const MAX_STAGGER = 1.3;      // max stagger spread (left-to-right)
+    const PNG_FADE_START = 1.6;   // when PNG starts fading in
+    const BORDER_FADE_START = 2.2; // when SVG borders fade out
+    const BORDER_FADE_DUR = 0.9;
+    const GLOW_APPLY_AT = (DRAW_DURATION + MAX_STAGGER) * 1000 + 60;
+    const HANDOFF_START = 3.3;    // when to start handoff transition to main page
+
+    // 1. Initial 3D state
+    gsap.set(wrapperEl, {
+      scale: 1.25,
+      rotateY: -12,
+      rotateX: 6,
+      transformPerspective: 1200,
+      filter: 'drop-shadow(0 0 20px rgba(255, 68, 0, 0.4)) brightness(0.9)',
+      transformOrigin: 'center center',
+    });
+
+    gsap.set(pngEl, { opacity: 0 });
+
+    // 2. Measure & setup stroke dashes on all 470 paths
+    const allPaths = svgEl.querySelectorAll<SVGPathElement>('.logo-trace-path');
+    const pathData: Array<{ el: SVGPathElement; length: number; tx: number }> = [];
+    let minTx = Infinity;
+    let maxTx = -Infinity;
+
+    allPaths.forEach((path) => {
+      let length: number;
+      try {
+        length = path.getTotalLength();
+      } catch (_) {
+        length = 500;
+      }
+      const tx = parseFloat(path.dataset.tx || '0');
+      if (tx < minTx) minTx = tx;
+      if (tx > maxTx) maxTx = tx;
+
+      path.style.strokeDasharray = String(length);
+      path.style.strokeDashoffset = String(length);
+      path.style.willChange = 'stroke-dashoffset';
+
+      pathData.push({ el: path, length, tx });
+    });
+
+    if (!isFinite(minTx)) minTx = 0;
+    if (!isFinite(maxTx)) maxTx = 0;
+
+    // 3. Assign each path a CSS transition delay based on horizontal position
+    const range = maxTx - minTx;
+    pathData.forEach((pd) => {
+      const ratio = range > 0 ? (pd.tx - minTx) / range : 0;
+      const delay = ratio * MAX_STAGGER;
+      pd.el.style.transition = `stroke-dashoffset ${DRAW_DURATION}s cubic-bezier(.4,0,.2,1) ${delay.toFixed(3)}s`;
+    });
+
+    // 4. Force reflow, then trigger stroke draw
+    svgEl.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+      pathData.forEach((pd) => {
+        pd.el.style.strokeDashoffset = '0';
+      });
+    });
+
+    // 5. 3D Camera Drift to level eye-line
+    gsap.to(wrapperEl, {
+      scale: 1.0,
+      rotateY: 0,
+      rotateX: 0,
+      duration: 2.2,
+      ease: 'power3.out',
+    });
+
+    // 6. Apply neon glow after stroke drawing finishes
+    const glowTimer = setTimeout(() => {
+      pathData.forEach((pd) => {
+        pd.el.style.filter = 'url(#neon-glow)';
+        pd.el.style.willChange = 'auto';
+      });
+    }, GLOW_APPLY_AT);
+
+    // 7. Fade in PNG logo (full illumination)
+    const pngTimer = setTimeout(() => {
+      gsap.to(pngEl, {
+        opacity: 1,
+        duration: 1.1,
+        ease: 'power2.out',
+      });
+    }, PNG_FADE_START * 1000);
+
+    // 8. Fade out SVG borders
+    const borderFadeTimer = setTimeout(() => {
+      gsap.to(svgEl, {
+        opacity: 0,
+        duration: BORDER_FADE_DUR,
+        ease: 'power2.inOut',
+      });
+    }, BORDER_FADE_START * 1000);
+
+    // 9. Reactor Energy Surge pulse on the fully lit emblem
+    const surgeTimer = setTimeout(() => {
+      gsap.to(wrapperEl, {
+        scale: 1.05,
+        duration: 0.35,
+        yoyo: true,
+        repeat: 1,
+        ease: 'power2.inOut',
+        filter:
+          'brightness(1.3) contrast(1.1) drop-shadow(0 0 50px rgba(255, 120, 0, 0.95)) drop-shadow(0 0 80px rgba(134, 59, 255, 0.8))',
+      });
+    }, 2.8 * 1000);
+
+    // 10. Seamless handoff to main page's centered Navbar state
+    const handoffTimer = setTimeout(() => {
+      if (isFinishedRef.current) return;
+
+      // Dissolve dark intro background to reveal the main 3D canvas and navbar behind it
+      if (bgLayersRef.current) {
         gsap.to(bgLayersRef.current, {
           opacity: 0,
           duration: 0.6,
           ease: 'power2.inOut',
         });
+      }
 
-        // Also dissolve the dark background color of the container itself
+      if (containerRef.current) {
         gsap.to(containerRef.current, {
           backgroundColor: 'rgba(3, 4, 8, 0)',
           duration: 0.65,
           ease: 'power2.inOut',
         });
+      }
 
-        // Logo shrinks toward the navbar's initial centered state
-        // Navbar at morphProgress=0: logo is 110px tall, centered on screen
-        // Our cinematic logo is min(85vw, 680px) wide — scale to ~0.16 gives ≈109px height
-        gsap.to(logoRef.current, {
-          scale: 0.16,
-          filter: 'blur(0px) brightness(1.0) drop-shadow(0 0 12px rgba(134, 59, 255, 0.5))',
-          duration: 1.0,
-          ease: 'power3.inOut',
-          onComplete: () => {
-            // Fade the entire intro container out quickly
+      // Smoothly morph logo size to match the Navbar's centered logo size (height ~110px)
+      gsap.to(wrapperEl, {
+        scale: 0.32,
+        duration: 0.85,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          if (containerRef.current && !isFinishedRef.current) {
             gsap.to(containerRef.current, {
               opacity: 0,
-              duration: 0.3,
-              ease: 'power1.in',
+              duration: 0.35,
+              ease: 'power2.out',
               onComplete: () => {
+                isFinishedRef.current = true;
                 onComplete();
               },
             });
-          },
-        });
-      },
-    });
-
-    // 1. Initial State: Deep in cinematic shadows, tilted in 3D perspective
-    gsap.set(logoRef.current, {
-      scale: 1.55,
-      opacity: 0,
-      filter: 'blur(20px) brightness(0.2)',
-      rotateX: 18,
-      rotateY: -12,
-      transformPerspective: 1200,
-    });
-
-    gsap.set(shockwaveRef.current, {
-      scale: 0.2,
-      opacity: 0,
-    });
-
-    gsap.set(flareRef.current, {
-      xPercent: -150,
-      opacity: 0,
-    });
-
-    // 2. Cinematic Entrance: Camera slow pushback, logo emerging from darkness
-    tl.to(
-      logoRef.current,
-      {
-        opacity: 0.85,
-        filter: 'blur(6px) brightness(0.8)',
-        duration: 1.4,
-        ease: 'power2.out',
-      },
-      '+=0.2',
-    )
-      // Metallic Gleam / Specular Flare sweep across the emblem
-      .to(
-        flareRef.current,
-        {
-          xPercent: 180,
-          opacity: 0.95,
-          duration: 1.2,
-          ease: 'power1.inOut',
+          }
         },
-        '-=0.8',
-      )
-      // 3. Final Snap & Perspective Lock-In (Avengers impact)
-      .to(
-        logoRef.current,
-        {
-          scale: 1.0,
-          rotateX: 0,
-          rotateY: 0,
-          opacity: 1,
-          filter: 'blur(0px) brightness(1.25) drop-shadow(0 0 35px rgba(134, 59, 255, 0.9))',
-          duration: 1.2,
-          ease: 'expo.out',
-        },
-        '-=0.4',
-      )
-      // Shockwave burst on lock-in
-      .to(
-        shockwaveRef.current,
-        {
-          scale: 2.2,
-          opacity: 0.8,
-          duration: 0.6,
-          ease: 'power2.out',
-        },
-        '-=1.0',
-      )
-      .to(
-        shockwaveRef.current,
-        {
-          opacity: 0,
-          scale: 3.0,
-          duration: 0.6,
-          ease: 'power2.in',
-        },
-        '-=0.4',
-      )
-      // Dramatic pulse / reactor flash
-      .to(
-        logoRef.current,
-        {
-          filter: 'blur(0px) brightness(1.6) drop-shadow(0 0 60px rgba(56, 189, 248, 1))',
-          duration: 0.25,
-          yoyo: true,
-          repeat: 1,
-          ease: 'power2.inOut',
-        },
-        '-=0.3',
-      )
-      // Hold for dramatic awe
-      .to({}, { duration: 1.0 });
+      });
+    }, HANDOFF_START * 1000);
 
     return () => {
-      tl.kill();
+      clearTimeout(glowTimer);
+      clearTimeout(pngTimer);
+      clearTimeout(borderFadeTimer);
+      clearTimeout(surgeTimer);
+      clearTimeout(handoffTimer);
     };
   }, [onComplete]);
 
+  // Fast-forward on Skip button click
   const handleSkip = () => {
+    if (isFinishedRef.current) return;
+    isFinishedRef.current = true;
+
     if (containerRef.current) {
       gsap.to(containerRef.current, {
         opacity: 0,
-        scale: 1.05,
-        duration: 0.5,
+        duration: 0.4,
         ease: 'power2.inOut',
         onComplete: () => {
           onComplete();
@@ -241,30 +280,70 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
 
   return (
     <div ref={containerRef} className="avengers-intro-root">
-      {/* All decorative BG layers grouped so they can be faded out independently */}
+      {/* Decorative background layers */}
       <div ref={bgLayersRef} className="avengers-bg-layers">
-        {/* Background Canvas for Cosmic Floating Embers */}
+        {/* Floating cosmic particles canvas */}
         <canvas ref={canvasRef} className="avengers-bg-canvas" />
 
-        {/* Atmospheric Vignette & Radial Reactor Glow */}
-        <div className="avengers-radial-glow" />
+        {/* Reactor Core Radial Glow */}
+        <div className="avengers-radial-core" />
         <div className="avengers-vignette" />
-
-        {/* Shockwave Ring */}
-        <div ref={shockwaveRef} className="avengers-shockwave" />
       </div>
 
-      {/* Center 3D Logo Container */}
+      {/* Center 3D Logo Stage */}
       <div className="avengers-logo-stage">
-        <div ref={logoRef} className="avengers-logo-wrap">
-          <img src={anantyaLogo} alt="ANANTYA" className="avengers-logo-img" />
+        <div ref={logoWrapperRef} className="avengers-logo-wrapper">
+          {/* Layer 1: High-Resolution Full-Color Official PNG Logo */}
+          <img
+            ref={pngLogoRef}
+            src={anantyaLogo}
+            alt="ANANTYA"
+            className="avengers-png-logo"
+          />
 
-          {/* Diagonal Metallic Shimmer Flare Overlay */}
-          <div ref={flareRef} className="avengers-specular-flare" />
+          {/* Layer 2: 470-Path Vector Laser Tracing SVG Overlay */}
+          <div className="avengers-svg-overlay">
+            <svg
+              ref={svgRef}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 707 353"
+              preserveAspectRatio="none"
+              className="avengers-laser-svg"
+            >
+              <defs>
+                {/* Vibrant Cyberpunk Laser Gradient */}
+                <linearGradient id="logo-laser-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#ffea00" />
+                  <stop offset="50%" stopColor="#ff5500" />
+                  <stop offset="100%" stopColor="#ff0055" />
+                </linearGradient>
+
+                {/* Neon Glow Filter */}
+                <filter id="neon-glow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* All 470 ANANTYA logo vector paths */}
+              {ANANTYA_LOGO_PATHS.map((p, i) => (
+                <path
+                  key={i}
+                  className="logo-trace-path"
+                  d={p.d}
+                  data-tx={String(p.tx)}
+                  transform={p.transform}
+                />
+              ))}
+            </svg>
+          </div>
         </div>
       </div>
 
-      {/* Skip Button in Bottom Corner */}
+      {/* Skip Button */}
       <button type="button" className="avengers-skip-btn" onClick={handleSkip}>
         <span>SKIP INTRO</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -287,7 +366,6 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           pointer-events: auto;
         }
 
-        /* Wrapper for all decorative BG elements so they can be faded as a group */
         .avengers-bg-layers {
           position: absolute;
           inset: 0;
@@ -303,45 +381,36 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           z-index: 1;
         }
 
-        .avengers-radial-glow {
+        .avengers-radial-core {
           position: absolute;
-          width: 800px;
-          height: 800px;
+          width: 900px;
+          height: 900px;
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%);
-          background: radial-gradient(circle at center, rgba(124, 58, 237, 0.28) 0%, rgba(56, 189, 248, 0.12) 40%, transparent 70%);
-          filter: blur(80px);
+          background: radial-gradient(
+            circle at center,
+            rgba(255, 85, 0, 0.22) 0%,
+            rgba(134, 59, 255, 0.14) 45%,
+            transparent 75%
+          );
+          filter: blur(85px);
           pointer-events: none;
           z-index: 2;
           animation: corePulse 5s ease-in-out infinite alternate;
         }
 
         @keyframes corePulse {
-          0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
+          0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
           100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
         }
 
         .avengers-vignette {
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+          background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0.85) 100%);
           pointer-events: none;
           z-index: 3;
-        }
-
-        .avengers-shockwave {
-          position: absolute;
-          width: 380px;
-          height: 380px;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          border: 2px solid rgba(56, 189, 248, 0.8);
-          box-shadow: 0 0 40px rgba(134, 59, 255, 0.7), inset 0 0 20px rgba(56, 189, 248, 0.5);
-          pointer-events: none;
-          z-index: 4;
         }
 
         .avengers-logo-stage {
@@ -351,62 +420,76 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           align-items: center;
           justify-content: center;
           perspective: 1200px;
+          width: min(85vw, 680px);
         }
 
-        .avengers-logo-wrap {
+        .avengers-logo-wrapper {
           position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
           transform-style: preserve-3d;
-          overflow: hidden;
-          border-radius: 12px;
-          padding: 1rem;
+          width: 100%;
+          aspect-ratio: 1774 / 887;
+          will-change: transform, filter;
         }
 
-        .avengers-logo-img {
-          width: min(85vw, 680px);
-          height: auto;
-          display: block;
-          object-fit: contain;
-          filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.9));
-        }
-
-        /* Metallic shine sweep across the logo */
-        .avengers-specular-flare {
+        .avengers-png-logo {
           position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: linear-gradient(
-            115deg,
-            transparent 35%,
-            rgba(255, 255, 255, 0.45) 48%,
-            rgba(165, 243, 252, 0.95) 50%,
-            rgba(255, 255, 255, 0.45) 52%,
-            transparent 65%
-          );
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: fill;
+          opacity: 0;
+          will-change: opacity, filter;
+          transform: translateZ(0);
+          filter: brightness(1.12) contrast(1.06)
+                  drop-shadow(0 0 35px rgba(255, 85, 0, 0.75))
+                  drop-shadow(0 0 70px rgba(134, 59, 255, 0.45));
+          z-index: 1;
+        }
+
+        .avengers-svg-overlay {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 2;
           pointer-events: none;
-          mix-blend-mode: color-dodge;
+          transform: translateZ(0);
+        }
+
+        .avengers-laser-svg {
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        /* 470 vector stroke paths */
+        .logo-trace-path {
+          fill: none;
+          stroke: url(#logo-laser-gradient);
+          stroke-width: 1.0;
+          stroke-linecap: round;
+          stroke-linejoin: round;
         }
 
         .avengers-skip-btn {
           position: absolute;
           bottom: 2.2rem;
           right: 2.5rem;
-          z-index: 10;
+          z-index: 20;
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          background: rgba(255, 255, 255, 0.05);
+          background: rgba(8, 14, 26, 0.65);
           border: 1px solid rgba(255, 255, 255, 0.15);
           color: #94a3b8;
           font-family: inherit;
           font-size: 0.78rem;
           font-weight: 700;
           letter-spacing: 0.15em;
-          padding: 0.55rem 1.1rem;
+          padding: 0.55rem 1.15rem;
           border-radius: 9999px;
           cursor: pointer;
           backdrop-filter: blur(10px);
