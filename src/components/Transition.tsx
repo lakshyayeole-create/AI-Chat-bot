@@ -300,25 +300,6 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromScene.environment = pmremGen1.fromScene(roomEnv1, 0.04).texture;
       roomEnv1.dispose();
 
-      // Atmospheric cybernetic floating particles
-      const particleCount = 140;
-      const particleGeo = new THREE.BufferGeometry();
-      const particlePos = new Float32Array(particleCount * 3);
-      for (let i = 0; i < particleCount * 3; i += 3) {
-        particlePos[i] = (Math.random() - 0.5) * 8;
-        particlePos[i + 1] = (Math.random() - 0.5) * 6;
-        particlePos[i + 2] = (Math.random() - 0.5) * 4;
-      }
-      particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-      const particleMat = new THREE.PointsMaterial({
-        size: 0.035,
-        color: 0x38bdf8,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending
-      });
-      const particles = new THREE.Points(particleGeo, particleMat);
-      fromScene.add(particles);
 
       // Lighting Rig 1
       const light1 = fromModel.lighting || {};
@@ -648,9 +629,6 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const animate = (now: number) => {
         animationFrameId = requestAnimationFrame(animate);
 
-        // Ambient particles rotation
-        particles.rotation.y += 0.0008;
-        particles.rotation.x += 0.0004;
 
         // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
