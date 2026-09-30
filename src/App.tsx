@@ -28,7 +28,7 @@ const ironManConfig: ModelConfig = {
 
 const antManConfig: ModelConfig = {
   modelPath: '/assets/marvel_ant-man_helmet.glb',
-  bgImagePath: '/assets/ant_man_bg.jpeg',
+  bgImagePath: '/assets/outer-space-background-sparkling-universe-glowing-in-the-dark-vector.jpg',
   targetHeight: 1.5,
   lighting: {
     ambientColor: 0xd5e6ff,
@@ -59,9 +59,13 @@ export default function App() {
   const [morphProgress, setMorphProgress] = useState(0);
   const [assemblyProgress, setAssemblyProgress] = useState(0);
   const [transitionProgress, setTransitionProgress] = useState(0);
-  const [rotationY, setRotationY] = useState(0);
-  const [positionX, setPositionX] = useState(0);
+  const [fromPositionX, setFromPositionX] = useState(0);
+  const [toPositionX, setToPositionX] = useState(0);
+  const [fromRotationY, setFromRotationY] = useState(0);
+  const [toRotationY, setToRotationY] = useState(0);
   const [heroInfoOpacity, setHeroInfoOpacity] = useState(0);
+  const [aboutInfoOpacity, setAboutInfoOpacity] = useState(0);
+  const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
 
   // Lock document scroll while introduction is playing to prevent reload jumps or wheel scroll
   useEffect(() => {
@@ -154,10 +158,12 @@ export default function App() {
   }, []);
 
   // Configure ScrollTrigger — sequential phases:
-  // Phase 1 (0.00 -> 0.18): Logo morphs to top Navigation Bar (Mask hidden).
-  // Phase 2 (0.18 -> 0.44): Iron Man mask assembles piece-by-piece; as it finishes, glides to left & looks right.
-  // Phase 3 (0.44 -> 0.72): HOME PAGE HERO SECTION in full display (Helmet on left looking right, Info on right).
-  // Phase 4 (0.72 -> 1.00): Transition towards next model.
+  // Phase 1 (0.00 -> 0.12): Logo morphs to top Navigation Bar (Mask hidden).
+  // Phase 2 (0.12 -> 0.32): Iron Man mask assembles; glides to left & looks right.
+  // Phase 3 (0.32 -> 0.48): HOME PAGE HERO SECTION (Iron Man on left looking right, Info on right).
+  // Phase 4 (0.48 -> 0.68): TRANSITION / WIPE: Home info fades out, diagonal wipe progresses, Ant-Man glides to right looking left.
+  // Phase 5 (0.68 -> 0.90): ABOUT US SECTION (Ant-Man on right looking left, About Us info on left).
+  // Phase 6 (0.90 -> 1.00): Settle / buffer.
   useEffect(() => {
     if (!hasEntered) return;
 
@@ -170,10 +176,12 @@ export default function App() {
     const track = document.getElementById('scroll-track');
     if (!track) return;
 
-    const NAV_END      = 0.18;  // navbar fully formed
-    const IRON_END     = 0.44;  // Iron Man fully assembled
-    const HERO_HOLD    = 0.72;  // Home page hero section in full focus
-    const WIPE_END     = 0.94;  // diagonal laser wipe complete
+    const NAV_END      = 0.12;  // navbar fully formed
+    const IRON_END     = 0.30;  // Iron Man fully assembled and in hero position on left
+    const HOME_HOLD    = 0.44;  // Home page hero section in full focus
+    const CENTER_END   = 0.50;  // Iron Man smoothly returns to center facing forward
+    const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Ant-Man with full 3D rotation
+    const ABOUT_HOLD   = 0.76;  // Ant-Man glides to right, turns left, About Us panel in full focus
 
     const st = ScrollTrigger.create({
       trigger: track,
@@ -185,53 +193,127 @@ export default function App() {
         setScrollProgress(p);
 
         const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-        const targetX = isMobile ? 0 : -0.65;
-        const targetRot = isMobile ? 0 : 0.38;
-
-        // Phase 1 — Logo-to-Navbar Morph
-        const navP = Math.min(1, p / NAV_END);
-        setMorphProgress(navP);
+        const targetLeftX = isMobile ? 0 : -0.65;
+        const targetRightX = isMobile ? 0 : 0.65;
+        const targetRightRot = isMobile ? 0 : 0.38;   // looks towards the right
+        const targetLeftRot = isMobile ? 0 : -0.38;   // looks towards the left
 
         if (p <= NAV_END) {
+          // Phase 1 — Logo-to-Navbar Morph
+          const navP = Math.min(1, p / NAV_END);
+          setMorphProgress(navP);
           setAssemblyProgress(0);
           setTransitionProgress(0);
-          setPositionX(0);
-          setRotationY(0);
+          setFromPositionX(0);
+          setFromRotationY(0);
+          setToPositionX(0);
+          setToRotationY(0);
           setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
+          setActiveNavSection('home');
         } else if (p <= IRON_END) {
+          // Phase 2 — Iron Man Assembly & Glide to Left
+          setMorphProgress(1);
           const maskP = (p - NAV_END) / (IRON_END - NAV_END);
           const clampedMaskP = Math.min(1, Math.max(0, maskP));
           setAssemblyProgress(clampedMaskP);
           setTransitionProgress(0);
+          setToPositionX(0);
+          setToRotationY(0);
+          setAboutInfoOpacity(0);
+          setActiveNavSection('home');
 
-          // As assembly reaches completion, smoothly glide to the left and turn gaze to the right
-          if (clampedMaskP > 0.60) {
-            const slideT = (clampedMaskP - 0.60) / 0.40;
-            setPositionX(targetX * slideT);
-            setRotationY(targetRot * slideT);
+          if (clampedMaskP > 0.55) {
+            const slideT = (clampedMaskP - 0.55) / 0.45;
+            setFromPositionX(targetLeftX * slideT);
+            setFromRotationY(targetRightRot * slideT);
             setHeroInfoOpacity(slideT);
           } else {
-            setPositionX(0);
-            setRotationY(0);
+            setFromPositionX(0);
+            setFromRotationY(0);
             setHeroInfoOpacity(0);
           }
-        } else if (p <= HERO_HOLD) {
-          // Home Page Hero Section in full focus
+        } else if (p <= HOME_HOLD) {
+          // Phase 3 — Home Page Hero Section in full focus (Iron Man on left looking right)
+          setMorphProgress(1);
           setAssemblyProgress(1);
           setTransitionProgress(0);
-          setPositionX(targetX);
-          setRotationY(targetRot);
+          setFromPositionX(targetLeftX);
+          setFromRotationY(targetRightRot);
+          setToPositionX(0);
+          setToRotationY(0);
           setHeroInfoOpacity(1);
-        } else {
-          // Phase 4 — Transition to next phase
+          setAboutInfoOpacity(0);
+          setActiveNavSection('home');
+        } else if (p <= CENTER_END) {
+          // Phase 4a — Re-center helmet to prepare for the seamless laser wipe
+          setMorphProgress(1);
           setAssemblyProgress(1);
-          const exitT = (p - HERO_HOLD) / (1.0 - HERO_HOLD);
-          setHeroInfoOpacity(Math.max(0, 1 - exitT * 2.5));
-          setPositionX(targetX * Math.max(0, 1 - exitT * 1.5));
-          setRotationY(targetRot + exitT * Math.PI * 1.5);
+          setTransitionProgress(0);
 
-          const wipeP = (p - 0.78) / (WIPE_END - 0.78);
-          setTransitionProgress(Math.min(1, Math.max(0, wipeP)));
+          const centerT = (p - HOME_HOLD) / (CENTER_END - HOME_HOLD);
+          setFromPositionX(targetLeftX * (1 - centerT));
+          setFromRotationY(targetRightRot * (1 - centerT));
+          setHeroInfoOpacity(Math.max(0, 1 - centerT * 2.2));
+
+          setToPositionX(0);
+          setToRotationY(0);
+          setAboutInfoOpacity(0);
+          setActiveNavSection('home');
+        } else if (p <= WIPE_END) {
+          // Phase 4b — Seamless Diagonal Laser Seam Wipe in the CENTER (Exact smooth transition like before)
+          setMorphProgress(1);
+          setAssemblyProgress(1);
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
+
+          const wipeNorm = (p - CENTER_END) / (WIPE_END - CENTER_END);
+          const wipeT = Math.min(1, Math.max(0, wipeNorm));
+          setTransitionProgress(wipeT);
+
+          // Both models are aligned in the exact same center position
+          setFromPositionX(0);
+          setToPositionX(0);
+
+          // Synchronous full 360-degree rotation across the diagonal laser seam
+          const sharedRotY = wipeT * Math.PI * 2;
+          setFromRotationY(sharedRotY);
+          setToRotationY(sharedRotY);
+
+          setActiveNavSection(wipeT >= 0.5 ? 'about' : 'home');
+        } else if (p <= ABOUT_HOLD) {
+          // Phase 4c — Wipe complete: Ant-Man glides to the right and turns left, About Us panel fades in
+          setMorphProgress(1);
+          setAssemblyProgress(1);
+          setTransitionProgress(1);
+          setHeroInfoOpacity(0);
+
+          setFromPositionX(0);
+          setFromRotationY(Math.PI * 2);
+
+          const glideNorm = (p - WIPE_END) / (ABOUT_HOLD - WIPE_END);
+          const glideT = Math.min(1, Math.max(0, glideNorm));
+          const posEase = Math.sin((glideT * Math.PI) / 2);
+          const rotEase = 1 - Math.pow(1 - glideT, 2.5);
+
+          setToPositionX(targetRightX * posEase);
+          setToRotationY(Math.PI * 2 + targetLeftRot * rotEase);
+          setAboutInfoOpacity(glideT);
+
+          setActiveNavSection('about');
+        } else {
+          // Phase 5 & 6 — About Us Section in full focus (Ant-Man on right looking left, About panel on left)
+          setMorphProgress(1);
+          setAssemblyProgress(1);
+          setTransitionProgress(1);
+          setFromPositionX(0);
+          setFromRotationY(Math.PI * 2);
+
+          setToPositionX(targetRightX);
+          setToRotationY(Math.PI * 2 + targetLeftRot);
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(1);
+          setActiveNavSection('about');
         }
       },
     });
@@ -241,6 +323,34 @@ export default function App() {
     };
   }, [hasEntered]);
 
+  // Smooth programmatic scroll navigation when clicking Navbar links or buttons
+  const handleNavSelect = useCallback((id: string) => {
+    const track = document.getElementById('scroll-track');
+    const scrollHeight = document.documentElement.scrollHeight || (track ? track.scrollHeight : 0);
+    const maxScroll = scrollHeight - window.innerHeight;
+    if (maxScroll <= 0) return;
+
+    let targetProgress = 0.36; // Default to Home section (Iron Man hero stance on left, Info on right)
+    if (id === 'home') {
+      targetProgress = 0.36;
+    } else if (id === 'about') {
+      targetProgress = 0.80; // About Us section (Ant-Man hero stance on right, Info on left)
+    } else {
+      targetProgress = 0.80;
+    }
+
+    const targetScrollY = targetProgress * maxScroll;
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(targetScrollY, {
+        duration: 1.6,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+    } else {
+      window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+    }
+  }, []);
+
   return (
     <main className="app-main-root">
       {/* Cinematic Logo Introduction */}
@@ -249,6 +359,8 @@ export default function App() {
       {/* Floating Navigation Bar with Scroll Morphing Animation */}
       <Navbar
         logoSrc="/assets/ANANTYA.png"
+        activeId={activeNavSection}
+        onSelect={handleNavSelect}
         morphProgress={morphProgress}
       />
 
@@ -260,8 +372,10 @@ export default function App() {
           toModel={antManConfig}
           assemblyProgress={assemblyProgress}
           transitionProgress={transitionProgress}
-          rotationY={rotationY}
-          positionX={positionX}
+          fromPositionX={fromPositionX}
+          toPositionX={toPositionX}
+          fromRotationY={fromRotationY}
+          toRotationY={toRotationY}
           enableScroll={false}
         />
       </div>
@@ -323,7 +437,72 @@ export default function App() {
         </div>
       </section>
 
+      {/* About Us Info Panel (Left Side: displays About information while Ant-Man helmet gazes from the right) */}
+      <section
+        id="about"
+        className="about-info-panel"
+        style={{
+          opacity: aboutInfoOpacity,
+          transform: `translateY(-50%) translateX(${(1 - aboutInfoOpacity) * -35}px)`,
+          pointerEvents: aboutInfoOpacity > 0.4 ? 'auto' : 'none',
+        }}
+      >
+        <div className="about-cyber-badge">
+          <span className="about-pulse-dot" />
+          <span className="about-badge-text">QUANTUM ARCHIVE • ABOUT ANANTYA</span>
+        </div>
 
+        <h2 className="about-main-title">
+          BEYOND <span className="about-title-highlight">LIMITS</span>
+        </h2>
+
+        <div className="about-tagline-pill">
+          <span className="about-tagline-gem" />
+          <span>INNOVATION • CULTURE • TRANSCENDENCE</span>
+        </div>
+
+        <p className="about-description">
+          Anantya is PCCOE's premier annual techno-cultural symposium. Channeling the power of the Marvel Multiverse, it provides a high-stakes arena for brilliant minds to conquer national hackathons, competitive gaming, quantum robotics, and theatrical showcases.
+        </p>
+
+        {/* About Feature Points */}
+        <div className="about-features-list">
+          <div className="about-feature-item">
+            <span className="about-feature-num">01</span>
+            <div className="about-feature-content">
+              <h4>Techno-Innovation</h4>
+              <p>Hackathons, AI research showdowns, and autonomous robotics leagues.</p>
+            </div>
+          </div>
+          <div className="about-feature-item">
+            <span className="about-feature-num">02</span>
+            <div className="about-feature-content">
+              <h4>Cultural Extravaganza</h4>
+              <p>Battle of the Bands, street dancing, theatrical drama, and pro-night concerts.</p>
+            </div>
+          </div>
+          <div className="about-feature-item">
+            <span className="about-feature-num">03</span>
+            <div className="about-feature-content">
+              <h4>National Arena</h4>
+              <p>5,000+ collegiate innovators and tech enthusiasts across 50+ institutes.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Button Row */}
+        <div className="hero-btn-row">
+          <a href="#events" className="hero-btn primary-btn about-primary-btn">
+            <span>DISCOVER EVENTS</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+          <a href="#gallery" className="hero-btn secondary-btn">
+            <span>PAST HIGHLIGHTS</span>
+          </a>
+        </div>
+      </section>
 
       {/* Bottom Scroll Prompt (Only visible right after intro, fades out as user scrolls) */}
       <div
@@ -350,7 +529,7 @@ export default function App() {
         </svg>
       </div>
 
-      {/* Scroll track providing smooth scrolling space (No cards, no clutter) */}
+      {/* Scroll track providing smooth scrolling space (850vh across Home & About sections) */}
       <div id="scroll-track" className="scroll-track-container" />
 
       <style>{`
@@ -370,10 +549,10 @@ export default function App() {
           pointer-events: none;
         }
 
-        /* 700vh: navbar morph → Iron Man assembly → diagonal wipe → Ant-Man */
+        /* 850vh: navbar morph → Iron Man hero → diagonal wipe → Ant-Man About */
         .scroll-track-container {
           width: 100%;
-          height: 700vh;
+          height: 850vh;
           position: relative;
           pointer-events: none;
         }
@@ -618,9 +797,159 @@ export default function App() {
           transform: translateY(-2px);
         }
 
+        /* About Us Info Panel (Left Side, faced by Ant-Man from right) */
+        .about-info-panel {
+          position: fixed;
+          top: 50%;
+          left: 6%;
+          max-width: 520px;
+          z-index: 40;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.15rem;
+          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          background: radial-gradient(130% 100% at 100% 0%, rgba(15, 23, 42, 0.78) 0%, rgba(8, 14, 26, 0.68) 100%);
+          border: 1px solid rgba(244, 63, 94, 0.28);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 35px rgba(244, 63, 94, 0.16);
+          border-radius: 18px;
+          padding: 2.2rem 2.4rem;
+          font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .about-cyber-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          padding: 0.35rem 0.85rem;
+          background: rgba(244, 63, 94, 0.12);
+          border: 1px solid rgba(244, 63, 94, 0.35);
+          border-radius: 9999px;
+        }
+
+        .about-pulse-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #f43f5e;
+          box-shadow: 0 0 10px #f43f5e;
+          animation: badgePulse 2s infinite ease-in-out;
+        }
+
+        .about-badge-text {
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          color: #fda4af;
+          text-transform: uppercase;
+        }
+
+        .about-main-title {
+          font-size: clamp(2.4rem, 4vw, 3.5rem);
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          color: #ffffff;
+          line-height: 1.05;
+          margin: 0;
+          text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(244, 63, 94, 0.35);
+        }
+
+        .about-title-highlight {
+          background: linear-gradient(135deg, #fb7185 0%, #e11d48 60%, #be123c 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 0 18px rgba(225, 29, 72, 0.45));
+        }
+
+        .about-tagline-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.76rem;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          color: #cbd5e1;
+        }
+
+        .about-tagline-gem {
+          width: 8px;
+          height: 8px;
+          transform: rotate(45deg);
+          background: linear-gradient(135deg, #f43f5e, #fb7185);
+          box-shadow: 0 0 10px #f43f5e;
+        }
+
+        .about-description {
+          font-size: 0.94rem;
+          line-height: 1.6;
+          color: #94a3b8;
+          margin: 0;
+        }
+
+        .about-features-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.65rem;
+          width: 100%;
+          margin-top: 0.2rem;
+        }
+
+        .about-feature-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.85rem;
+          padding: 0.6rem 0.85rem;
+          background: rgba(15, 23, 42, 0.6);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          border-radius: 10px;
+        }
+
+        .about-feature-num {
+          font-size: 0.75rem;
+          font-weight: 800;
+          color: #f43f5e;
+          font-family: monospace;
+          letter-spacing: 0.1em;
+          padding-top: 0.1rem;
+        }
+
+        .about-feature-content h4 {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #f1f5f9;
+          margin: 0 0 0.15rem 0;
+          letter-spacing: 0.04em;
+        }
+
+        .about-feature-content p {
+          font-size: 0.72rem;
+          color: #94a3b8;
+          margin: 0;
+          line-height: 1.38;
+        }
+
+        .about-primary-btn {
+          background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
+          border: 1px solid rgba(244, 63, 94, 0.6);
+          box-shadow: 0 4px 18px rgba(225, 29, 72, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .about-primary-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(225, 29, 72, 0.55);
+          border-color: #fb7185;
+        }
+
         @media (max-width: 900px) {
           .home-hero-panel {
             right: 4%;
+            max-width: 440px;
+            padding: 1.6rem 1.8rem;
+          }
+          .about-info-panel {
+            left: 4%;
             max-width: 440px;
             padding: 1.6rem 1.8rem;
           }
@@ -639,6 +968,22 @@ export default function App() {
             gap: 0.75rem;
             text-align: center;
             align-items: center;
+          }
+          .about-info-panel {
+            top: auto !important;
+            bottom: 4rem;
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: 92%;
+            max-width: 420px;
+            padding: 1.25rem 1.4rem;
+            gap: 0.75rem;
+            text-align: center;
+            align-items: center;
+          }
+          .about-features-list {
+            display: none;
           }
           .hero-stats-grid {
             gap: 0.5rem;

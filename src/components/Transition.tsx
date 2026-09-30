@@ -74,10 +74,18 @@ export interface TransitionProps {
   assemblyProgress?: number;
   /** Transition progress explicitly controlled by parent scroll (0.0 to 1.0) */
   transitionProgress?: number;
-  /** Model rotation Y controlled by parent scroll */
+  /** Model rotation Y controlled by parent scroll (fallback if fromRotationY / toRotationY not provided) */
   rotationY?: number;
-  /** Model position X offset controlled by parent scroll (negative = move left) */
+  /** Specific rotation Y for fromModel (Iron Man) */
+  fromRotationY?: number;
+  /** Specific rotation Y for toModel (Ant-Man) */
+  toRotationY?: number;
+  /** Model position X offset controlled by parent scroll (fallback if fromPositionX / toPositionX not provided) */
   positionX?: number;
+  /** Specific position X for fromModel (Iron Man, negative = left) */
+  fromPositionX?: number;
+  /** Specific position X for toModel (Ant-Man, positive = right) */
+  toPositionX?: number;
   /** Enable internal mouse wheel / trackpad scroll interaction (default false when using Lenis) */
   enableScroll?: boolean;
   /** Transition sensitivity per scroll delta (default 0.0009) */
@@ -105,7 +113,11 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       assemblyProgress,
       transitionProgress,
       rotationY,
+      fromRotationY,
+      toRotationY,
       positionX,
+      fromPositionX,
+      toPositionX,
       enableScroll = false,
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
@@ -144,11 +156,15 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const targetAssemblyProgressRef = useRef<number>(assemblyProgress ?? 0);
     const currentAssemblyProgressRef = useRef<number>(assemblyProgress ?? 0);
 
-    const targetRotationYRef = useRef<number>(rotationY ?? 0);
-    const currentRotationYRef = useRef<number>(rotationY ?? 0);
+    const targetFromRotationYRef = useRef<number>(fromRotationY ?? rotationY ?? 0);
+    const currentFromRotationYRef = useRef<number>(fromRotationY ?? rotationY ?? 0);
+    const targetToRotationYRef = useRef<number>(toRotationY ?? rotationY ?? 0);
+    const currentToRotationYRef = useRef<number>(toRotationY ?? rotationY ?? 0);
 
-    const targetPositionXRef = useRef<number>(positionX ?? 0);
-    const currentPositionXRef = useRef<number>(positionX ?? 0);
+    const targetFromPositionXRef = useRef<number>(fromPositionX ?? positionX ?? 0);
+    const currentFromPositionXRef = useRef<number>(fromPositionX ?? positionX ?? 0);
+    const targetToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
+    const currentToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
 
     // Three.js instances refs
     const fromGroupRef = useRef<THREE.Group | null>(null);
@@ -186,16 +202,26 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     }, [transitionProgress]);
 
     useEffect(() => {
-      if (rotationY !== undefined) {
-        targetRotationYRef.current = rotationY;
+      const fromY = fromRotationY ?? rotationY;
+      if (fromY !== undefined) {
+        targetFromRotationYRef.current = fromY;
       }
-    }, [rotationY]);
+      const toY = toRotationY ?? rotationY;
+      if (toY !== undefined) {
+        targetToRotationYRef.current = toY;
+      }
+    }, [fromRotationY, toRotationY, rotationY]);
 
     useEffect(() => {
-      if (positionX !== undefined) {
-        targetPositionXRef.current = positionX;
+      const fromX = fromPositionX ?? positionX;
+      if (fromX !== undefined) {
+        targetFromPositionXRef.current = fromX;
       }
-    }, [positionX]);
+      const toX = toPositionX ?? positionX;
+      if (toX !== undefined) {
+        targetToPositionXRef.current = toX;
+      }
+    }, [fromPositionX, toPositionX, positionX]);
 
     // Imperative API implementation
     const transitionTo = useCallback((progress: number, durationMs = 800) => {
@@ -220,8 +246,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     }, [transitionTo]);
 
     const setRotationY = useCallback((rad: number) => {
-      targetRotationYRef.current = rad;
-      currentRotationYRef.current = rad;
+      targetFromRotationYRef.current = rad;
+      currentFromRotationYRef.current = rad;
+      targetToRotationYRef.current = rad;
+      currentToRotationYRef.current = rad;
     }, []);
 
     const getProgress = useCallback(() => currentProgressRef.current, []);
@@ -622,7 +650,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       const handleWheel = (e: WheelEvent) => {
         if (!enableScroll) return;
-        targetRotationYRef.current += e.deltaY * rotationSensitivity;
+        targetFromRotationYRef.current += e.deltaY * rotationSensitivity;
+        targetToRotationYRef.current += e.deltaY * rotationSensitivity;
         targetProgressRef.current = Math.max(0, Math.min(1, targetProgressRef.current + e.deltaY * scrollSensitivity));
         if (tweenRef.current) tweenRef.current.active = false;
       };
@@ -658,7 +687,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         // Smooth assembly progress lerp
         currentAssemblyProgressRef.current += (targetAssemblyProgressRef.current - currentAssemblyProgressRef.current) * 0.12;
 
-        currentRotationYRef.current += (targetRotationYRef.current - currentRotationYRef.current) * 0.09;
+        currentFromRotationYRef.current += (targetFromRotationYRef.current - currentFromRotationYRef.current) * 0.09;
+        currentToRotationYRef.current += (targetToRotationYRef.current - currentToRotationYRef.current) * 0.09;
 
         // Scrub assembly formation across 3D space
         if (assemblyControllerRef.current && fromGroupRef.current && fromCameraRef.current) {
@@ -676,23 +706,32 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         }
 
         const currentProgress = currentProgressRef.current;
-        const currentRotationY = currentRotationYRef.current;
-        currentPositionXRef.current += (targetPositionXRef.current - currentPositionXRef.current) * 0.12;
-        const curPosX = currentPositionXRef.current;
+        currentFromPositionXRef.current += (targetFromPositionXRef.current - currentFromPositionXRef.current) * 0.12;
+        currentToPositionXRef.current += (targetToPositionXRef.current - currentToPositionXRef.current) * 0.12;
 
-        // Apply group visibility, position X, and Y-axis rotation
+        const curFromPosX = currentFromPositionXRef.current;
+        const curToPosX = currentToPositionXRef.current;
+        const curFromRotY = currentFromRotationYRef.current;
+        const curToRotY = currentToRotationYRef.current;
+
+        // Apply group visibility, position X, and Y-axis rotation independently
         if (fromGroupRef.current) {
-          if (currentAssemblyProgressRef.current <= 0.001) {
+          if (currentAssemblyProgressRef.current <= 0.001 || currentProgress >= 0.999) {
             fromGroupRef.current.visible = false;
           } else {
             fromGroupRef.current.visible = true;
-            fromGroupRef.current.position.x += curPosX;
-            fromGroupRef.current.rotation.y += currentRotationY;
+            fromGroupRef.current.position.x += curFromPosX;
+            fromGroupRef.current.rotation.y += curFromRotY;
           }
         }
         if (toGroupRef.current) {
-          toGroupRef.current.position.x = curPosX;
-          toGroupRef.current.rotation.y = currentRotationY;
+          if (currentProgress <= 0.001) {
+            toGroupRef.current.visible = false;
+          } else {
+            toGroupRef.current.visible = true;
+            toGroupRef.current.position.x = curToPosX;
+            toGroupRef.current.rotation.y = curToRotY;
+          }
         }
 
         if (onProgressChangeRef.current) {
