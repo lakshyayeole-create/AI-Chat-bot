@@ -76,6 +76,8 @@ export interface TransitionProps {
   transitionProgress?: number;
   /** Model rotation Y controlled by parent scroll */
   rotationY?: number;
+  /** Model position X offset controlled by parent scroll (negative = move left) */
+  positionX?: number;
   /** Enable internal mouse wheel / trackpad scroll interaction (default false when using Lenis) */
   enableScroll?: boolean;
   /** Transition sensitivity per scroll delta (default 0.0009) */
@@ -103,6 +105,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       assemblyProgress,
       transitionProgress,
       rotationY,
+      positionX,
       enableScroll = false,
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
@@ -144,6 +147,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const targetRotationYRef = useRef<number>(rotationY ?? 0);
     const currentRotationYRef = useRef<number>(rotationY ?? 0);
 
+    const targetPositionXRef = useRef<number>(positionX ?? 0);
+    const currentPositionXRef = useRef<number>(positionX ?? 0);
+
     // Three.js instances refs
     const fromGroupRef = useRef<THREE.Group | null>(null);
     const toGroupRef = useRef<THREE.Group | null>(null);
@@ -184,6 +190,12 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         targetRotationYRef.current = rotationY;
       }
     }, [rotationY]);
+
+    useEffect(() => {
+      if (positionX !== undefined) {
+        targetPositionXRef.current = positionX;
+      }
+    }, [positionX]);
 
     // Imperative API implementation
     const transitionTo = useCallback((progress: number, durationMs = 800) => {
@@ -665,17 +677,21 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
         const currentProgress = currentProgressRef.current;
         const currentRotationY = currentRotationYRef.current;
+        currentPositionXRef.current += (targetPositionXRef.current - currentPositionXRef.current) * 0.12;
+        const curPosX = currentPositionXRef.current;
 
-        // Apply group visibility and Y-axis rotation
+        // Apply group visibility, position X, and Y-axis rotation
         if (fromGroupRef.current) {
           if (currentAssemblyProgressRef.current <= 0.001) {
             fromGroupRef.current.visible = false;
           } else {
             fromGroupRef.current.visible = true;
+            fromGroupRef.current.position.x += curPosX;
             fromGroupRef.current.rotation.y += currentRotationY;
           }
         }
         if (toGroupRef.current) {
+          toGroupRef.current.position.x = curPosX;
           toGroupRef.current.rotation.y = currentRotationY;
         }
 
