@@ -146,11 +146,21 @@ export default function App() {
   const [transitionProgress, setTransitionProgress] = useState(0);
   const [fromPositionX, setFromPositionX] = useState(0);
   const [toPositionX, setToPositionX] = useState(0);
+  const [fromPositionY, setFromPositionY] = useState(0);
+  const [toPositionY, setToPositionY] = useState(0);
   const [fromRotationY, setFromRotationY] = useState(0);
   const [toRotationY, setToRotationY] = useState(0);
   const [heroInfoOpacity, setHeroInfoOpacity] = useState(0);
   const [aboutInfoOpacity, setAboutInfoOpacity] = useState(0);
   const [canvasOpacity, setCanvasOpacity] = useState(1);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  // Responsive mobile listener
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [eventsTimelineProgress, setEventsTimelineProgress] = useState(0);
   const eventsStRef = useRef<ScrollTrigger | null>(null);
   const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
@@ -282,11 +292,12 @@ export default function App() {
         const p = self.progress; // 0.0 to 1.0
         setScrollProgress(p);
 
-        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-        const targetLeftX = isMobile ? 0 : -0.65;
-        const targetRightX = isMobile ? 0 : 0.65;
-        const targetRightRot = isMobile ? 0 : 0.38;   // looks towards the right
-        const targetLeftRot = isMobile ? 0 : -0.38;   // looks towards the left
+        const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+        const targetLeftX = isMobileScreen ? 0 : -0.65;
+        const targetRightX = isMobileScreen ? 0 : 0.65;
+        const targetY = isMobileScreen ? 0.38 : 0;
+        const targetRightRot = isMobileScreen ? 0 : 0.38;   // looks towards the right
+        const targetLeftRot = isMobileScreen ? 0 : -0.38;   // looks towards the left
 
         if (p <= NAV_END) {
           // Phase 1 — Logo-to-Navbar Morph
@@ -296,14 +307,16 @@ export default function App() {
           setTransitionProgress(0);
           setCanvasOpacity(1);
           setFromPositionX(0);
+          setFromPositionY(0);
           setFromRotationY(0);
           setToPositionX(0);
+          setToPositionY(0);
           setToRotationY(0);
           setHeroInfoOpacity(0);
           setAboutInfoOpacity(0);
           setActiveNavSection('home');
         } else if (p <= IRON_END) {
-          // Phase 2 — Iron Man Assembly & Glide to Left
+          // Phase 2 — Iron Man Assembly & Glide to Left (and upwards on mobile)
           setMorphProgress(1);
           const maskP = (p - NAV_END) / (IRON_END - NAV_END);
           const clampedMaskP = Math.min(1, Math.max(0, maskP));
@@ -311,6 +324,7 @@ export default function App() {
           setTransitionProgress(0);
           setCanvasOpacity(1);
           setToPositionX(0);
+          setToPositionY(0);
           setToRotationY(0);
           setAboutInfoOpacity(0);
           setActiveNavSection('home');
@@ -318,22 +332,26 @@ export default function App() {
           if (clampedMaskP > 0.55) {
             const slideT = (clampedMaskP - 0.55) / 0.45;
             setFromPositionX(targetLeftX * slideT);
+            setFromPositionY(targetY * slideT);
             setFromRotationY(targetRightRot * slideT);
             setHeroInfoOpacity(slideT);
           } else {
             setFromPositionX(0);
+            setFromPositionY(0);
             setFromRotationY(0);
             setHeroInfoOpacity(0);
           }
         } else if (p <= HOME_HOLD) {
-          // Phase 3 — Home Page Hero Section in full focus (Iron Man on left looking right)
+          // Phase 3 — Home Page Hero Section in full focus (Iron Man on left or top looking right)
           setMorphProgress(1);
           setAssemblyProgress(1);
           setTransitionProgress(0);
           setCanvasOpacity(1);
           setFromPositionX(targetLeftX);
+          setFromPositionY(targetY);
           setFromRotationY(targetRightRot);
           setToPositionX(0);
+          setToPositionY(0);
           setToRotationY(0);
           setHeroInfoOpacity(1);
           setAboutInfoOpacity(0);
@@ -347,10 +365,12 @@ export default function App() {
 
           const centerT = (p - HOME_HOLD) / (CENTER_END - HOME_HOLD);
           setFromPositionX(targetLeftX * (1 - centerT));
+          setFromPositionY(targetY);
           setFromRotationY(targetRightRot * (1 - centerT));
           setHeroInfoOpacity(Math.max(0, 1 - centerT * 2.2));
 
           setToPositionX(0);
+          setToPositionY(targetY * centerT);
           setToRotationY(0);
           setAboutInfoOpacity(0);
           setActiveNavSection('home');
@@ -366,9 +386,11 @@ export default function App() {
           const wipeT = Math.min(1, Math.max(0, wipeNorm));
           setTransitionProgress(wipeT);
 
-          // Both models are aligned in the exact same center position
+          // Both models are aligned in the exact same position (elevated on mobile)
           setFromPositionX(0);
           setToPositionX(0);
+          setFromPositionY(targetY);
+          setToPositionY(targetY);
 
           // Synchronous full 360-degree rotation across the diagonal laser seam
           const sharedRotY = wipeT * Math.PI * 2;
@@ -385,6 +407,7 @@ export default function App() {
           setHeroInfoOpacity(0);
 
           setFromPositionX(0);
+          setFromPositionY(0);
           setFromRotationY(Math.PI * 2);
 
           const glideNorm = (p - WIPE_END) / (ABOUT_HOLD - WIPE_END);
@@ -393,27 +416,29 @@ export default function App() {
           const rotEase = 1 - Math.pow(1 - glideT, 2.5);
 
           setToPositionX(targetRightX * posEase);
+          setToPositionY(targetY);
           setToRotationY(Math.PI * 2 + targetLeftRot * rotEase);
           setAboutInfoOpacity(glideT);
 
           setActiveNavSection('about');
         } else if (p <= 0.84) {
-          // Phase 5a — About Us Section in full focus (Star-Lord on right looking left, About panel on left)
+          // Phase 5a — About Us Section in full focus (Star-Lord on right or top looking left, About panel on bottom)
           setMorphProgress(1);
           setAssemblyProgress(1);
           setTransitionProgress(1);
           setCanvasOpacity(1);
           setFromPositionX(0);
+          setFromPositionY(0);
           setFromRotationY(Math.PI * 2);
 
           setToPositionX(targetRightX);
+          setToPositionY(targetY);
           setToRotationY(Math.PI * 2 + targetLeftRot);
           setHeroInfoOpacity(0);
           setAboutInfoOpacity(1);
           setActiveNavSection('about');
         } else {
           // Phase 5b — Re-center Star-Lord helmet for transition into Thanos Infinity Gauntlet
-          // As requested: "during end of about section bring starlord helmet at center of screen again for transition"
           const recenterNorm = (p - 0.84) / (1.0 - 0.84);
           const recenterT = Math.min(1, Math.max(0, recenterNorm));
           const easedRecenter = recenterT * recenterT * (3 - 2 * recenterT);
@@ -423,10 +448,12 @@ export default function App() {
           setTransitionProgress(1);
           setCanvasOpacity(1);
           setFromPositionX(0);
+          setFromPositionY(0);
           setFromRotationY(Math.PI * 2);
 
-          // Smoothly glide Star-Lord from targetRightX (0.65) back to 0.0 (center)
+          // Smoothly glide Star-Lord from targetRightX back to 0.0 (center)
           setToPositionX(targetRightX * (1 - easedRecenter));
+          setToPositionY(targetY * (1 - easedRecenter));
           // Smoothly turn Star-Lord to face straight forward (Math.PI * 2)
           setToRotationY(Math.PI * 2 + targetLeftRot * (1 - easedRecenter));
 
@@ -703,6 +730,8 @@ export default function App() {
                 transitionProgress={transitionProgress}
                 fromPositionX={fromPositionX}
                 toPositionX={toPositionX}
+                fromPositionY={fromPositionY}
+                toPositionY={toPositionY}
                 fromRotationY={fromRotationY}
                 toRotationY={toRotationY}
                 enableScroll={false}
@@ -734,7 +763,9 @@ export default function App() {
         className="home-hero-panel"
         style={{
           opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : heroInfoOpacity,
-          transform: `translateY(-50%) translateX(${(1 - heroInfoOpacity) * 35}px)`,
+          transform: isMobile
+            ? `translate(-50%, ${(1 - heroInfoOpacity) * 25}px)`
+            : `translateY(-50%) translateX(${(1 - heroInfoOpacity) * 35}px)`,
           pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.4) ? 'none' : 'auto',
           visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.01) ? 'hidden' : 'visible',
         }}
@@ -800,7 +831,9 @@ export default function App() {
         className="about-info-panel"
         style={{
           opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : aboutInfoOpacity,
-          transform: `translateY(-50%) translateX(${(1 - aboutInfoOpacity) * -35}px)`,
+          transform: isMobile
+            ? `translate(-50%, ${(1 - aboutInfoOpacity) * 25}px)`
+            : `translateY(-50%) translateX(${(1 - aboutInfoOpacity) * -35}px)`,
           pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.4) ? 'none' : 'auto',
           visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.01) ? 'hidden' : 'visible',
         }}
@@ -1355,40 +1388,66 @@ export default function App() {
         }
 
         @media (max-width: 768px) {
-          .home-hero-panel {
-            top: auto !important;
-            bottom: 4rem;
-            left: 50% !important;
-            right: auto !important;
-            transform: translateX(-50%) !important;
-            width: 92%;
-            max-width: 420px;
-            padding: 1.25rem 1.4rem;
-            gap: 0.75rem;
-            text-align: center;
-            align-items: center;
-          }
+          .home-hero-panel,
           .about-info-panel {
             top: auto !important;
-            bottom: 4rem;
+            bottom: 1.25rem !important;
             left: 50% !important;
             right: auto !important;
-            transform: translateX(-50%) !important;
-            width: 92%;
-            max-width: 420px;
-            padding: 1.25rem 1.4rem;
-            gap: 0.75rem;
-            text-align: center;
-            align-items: center;
+            width: calc(100% - 28px) !important;
+            max-width: 410px !important;
+            max-height: 46vh !important;
+            overflow-y: auto !important;
+            padding: 1.15rem 1.3rem !important;
+            gap: 0.65rem !important;
+            text-align: center !important;
+            align-items: center !important;
+            border-radius: 16px !important;
+            background: radial-gradient(130% 100% at 50% 0%, rgba(15, 23, 42, 0.90) 0%, rgba(8, 14, 26, 0.88) 100%) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(56, 189, 248, 0.15) !important;
           }
-          .about-features-list {
-            display: none;
+          .about-info-panel {
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(244, 63, 94, 0.15) !important;
+          }
+          .home-hero-panel .hero-main-title,
+          .about-info-panel .about-main-title {
+            font-size: clamp(1.75rem, 5.5vw, 2.2rem) !important;
+            letter-spacing: 0.05em !important;
+          }
+          .home-hero-panel .hero-description,
+          .about-info-panel .about-description {
+            font-size: 0.82rem !important;
+            line-height: 1.45 !important;
           }
           .hero-stats-grid {
-            gap: 0.5rem;
+            gap: 0.5rem !important;
+            margin-top: 0.1rem !important;
+          }
+          .stat-card {
+            padding: 0.45rem 0.6rem !important;
+          }
+          .stat-val {
+            font-size: 1.15rem !important;
+          }
+          .stat-label {
+            font-size: 0.62rem !important;
           }
           .hero-btn-row {
-            justify-content: center;
+            justify-content: center !important;
+            gap: 0.75rem !important;
+            margin-top: 0.2rem !important;
+          }
+          .hero-btn {
+            padding: 0.65rem 1.15rem !important;
+            font-size: 0.75rem !important;
+          }
+          .about-features-list {
+            display: none !important;
+          }
+          .bottom-scroll-prompt {
+            display: none !important;
           }
         }
       `}</style>

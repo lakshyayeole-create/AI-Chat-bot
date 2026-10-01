@@ -88,6 +88,12 @@ export interface TransitionProps {
   fromPositionX?: number;
   /** Specific position X for toModel (Ant-Man, positive = right) */
   toPositionX?: number;
+  /** Model position Y offset controlled by parent scroll (fallback if fromPositionY / toPositionY not provided) */
+  positionY?: number;
+  /** Specific position Y for fromModel (Iron Man, positive = up) */
+  fromPositionY?: number;
+  /** Specific position Y for toModel (Star-Lord, positive = up) */
+  toPositionY?: number;
   /** Enable internal mouse wheel / trackpad scroll interaction (default false when using Lenis) */
   enableScroll?: boolean;
   /** Transition sensitivity per scroll delta (default 0.0009) */
@@ -120,6 +126,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       positionX,
       fromPositionX,
       toPositionX,
+      positionY,
+      fromPositionY,
+      toPositionY,
       enableScroll = false,
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
@@ -167,6 +176,14 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const currentFromPositionXRef = useRef<number>(fromPositionX ?? positionX ?? 0);
     const targetToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
     const currentToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
+
+    const targetFromPositionYRef = useRef<number>(fromPositionY ?? positionY ?? 0);
+    const currentFromPositionYRef = useRef<number>(fromPositionY ?? positionY ?? 0);
+    const targetToPositionYRef = useRef<number>(toPositionY ?? positionY ?? 0);
+    const currentToPositionYRef = useRef<number>(toPositionY ?? positionY ?? 0);
+
+    const baseFromPosYRef = useRef<number>(fromModel.offsetY ?? 0);
+    const baseToPosYRef = useRef<number>(toModel.offsetY ?? 0);
 
     // Three.js instances refs
     const fromGroupRef = useRef<THREE.Group | null>(null);
@@ -224,6 +241,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         targetToPositionXRef.current = toX;
       }
     }, [fromPositionX, toPositionX, positionX]);
+
+    useEffect(() => {
+      const fromY = fromPositionY ?? positionY;
+      if (fromY !== undefined) {
+        targetFromPositionYRef.current = fromY;
+      }
+      const toY = toPositionY ?? positionY;
+      if (toY !== undefined) {
+        targetToPositionYRef.current = toY;
+      }
+    }, [fromPositionY, toPositionY, positionY]);
 
     // Imperative API implementation
     const transitionTo = useCallback((progress: number, durationMs = 800) => {
@@ -541,6 +569,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (fromModel.offsetY !== undefined) {
             fromGroup.position.y += fromModel.offsetY;
           }
+          baseFromPosYRef.current = fromGroup.position.y;
 
           // Calibrate camera to frame mask prominently (~78% vertical coverage)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
@@ -633,6 +662,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (toModel.offsetY !== undefined) {
             toGroup.position.y += toModel.offsetY;
           }
+          baseToPosYRef.current = toGroup.position.y;
         },
         undefined,
         (err) => {
@@ -656,6 +686,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
               if (toModel.offsetY !== undefined) {
                 toGroup.position.y += toModel.offsetY;
               }
+              baseToPosYRef.current = toGroup.position.y;
             });
           }
         }
@@ -743,20 +774,25 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         const currentProgress = currentProgressRef.current;
         currentFromPositionXRef.current += (targetFromPositionXRef.current - currentFromPositionXRef.current) * 0.12;
         currentToPositionXRef.current += (targetToPositionXRef.current - currentToPositionXRef.current) * 0.12;
+        currentFromPositionYRef.current += (targetFromPositionYRef.current - currentFromPositionYRef.current) * 0.12;
+        currentToPositionYRef.current += (targetToPositionYRef.current - currentToPositionYRef.current) * 0.12;
 
         const curFromPosX = currentFromPositionXRef.current;
         const curToPosX = currentToPositionXRef.current;
+        const curFromPosY = currentFromPositionYRef.current;
+        const curToPosY = currentToPositionYRef.current;
         const curFromRotY = currentFromRotationYRef.current;
         const curToRotY = currentToRotationYRef.current;
 
-        // Apply group visibility, position X, and Y-axis rotation independently
+        // Apply group visibility, position X, Y, and Y-axis rotation independently
         if (fromGroupRef.current) {
           if (currentAssemblyProgressRef.current <= 0.001 || currentProgress >= 0.999) {
             fromGroupRef.current.visible = false;
           } else {
             fromGroupRef.current.visible = true;
-            fromGroupRef.current.position.x += curFromPosX;
-            fromGroupRef.current.rotation.y += curFromRotY;
+            fromGroupRef.current.position.x = curFromPosX;
+            fromGroupRef.current.position.y = baseFromPosYRef.current + curFromPosY;
+            fromGroupRef.current.rotation.y = curFromRotY;
           }
         }
         if (toGroupRef.current) {
@@ -765,6 +801,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           } else {
             toGroupRef.current.visible = true;
             toGroupRef.current.position.x = curToPosX;
+            toGroupRef.current.position.y = baseToPosYRef.current + curToPosY;
             toGroupRef.current.rotation.y = curToRotY;
           }
         }
