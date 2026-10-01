@@ -119,7 +119,7 @@ export const GallerySection: React.FC = () => {
         {filteredItems.map((item) => (
           <div key={item.id} className="gallery-card">
             <div className="gallery-card-img-wrap">
-              <img src={item.image} alt={item.title} className="gallery-card-img" loading="lazy" />
+              <img src={item.image} alt={item.title} className="gallery-card-img" loading="lazy" decoding="async" />
               <div className="gallery-card-overlay" />
               <div className="gallery-tag-pill">{item.tag}</div>
               <div className="gallery-year-badge">{item.year}</div>

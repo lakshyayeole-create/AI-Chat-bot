@@ -106,6 +106,8 @@ export interface TransitionProps {
   onAssemblyComplete?: () => void;
   /** Optional callback fired during assembly status changes */
   onAssemblyStatus?: (status: AssemblyStatus) => void;
+  /** Pause rendering and RAF updates when component is out of viewport or hidden */
+  isPaused?: boolean;
   /** Optional container CSS class */
   className?: string;
   /** Optional container style */
@@ -135,6 +137,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       onProgressChange,
       onAssemblyComplete,
       onAssemblyStatus,
+      isPaused = false,
       className,
       style
     },
@@ -154,6 +157,11 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
     const onAssemblyStatusRef = useRef(onAssemblyStatus);
     onAssemblyStatusRef.current = onAssemblyStatus;
+
+    const isPausedRef = useRef<boolean>(isPaused);
+    useEffect(() => {
+      isPausedRef.current = isPaused;
+    }, [isPaused]);
 
     const assemblyControllerRef = useRef<AssemblyController | null>(null);
     const pendingAssemblyStartRef = useRef<boolean>(false);
@@ -342,10 +350,15 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const loader = new GLTFLoader();
       const textureLoader = new THREE.TextureLoader();
 
+      const getDevicePixelRatio = () => {
+        const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+        return isMobile ? Math.min(window.devicePixelRatio, 1.25) : Math.min(window.devicePixelRatio, 1.75);
+      };
+
       const width = window.innerWidth;
       const height = window.innerHeight;
       const aspect = width / height;
-      const pixelRatio = Math.min(window.devicePixelRatio, 2);
+      const pixelRatio = getDevicePixelRatio();
 
       // ==========================================
       // 1. FRONT MODEL SCENE (fromModel)
@@ -705,7 +718,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const handleResize = () => {
         const w = window.innerWidth;
         const h = window.innerHeight;
-        const pr = Math.min(window.devicePixelRatio, 2);
+        const pr = getDevicePixelRatio();
 
         fromCamera.aspect = w / h;
         fromCamera.updateProjectionMatrix();
@@ -763,6 +776,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const animate = (now: number) => {
         animationFrameId = requestAnimationFrame(animate);
 
+        // When paused (canvas is hidden or offscreen), skip expensive calculations and rendering
+        if (isPausedRef.current) {
+          return;
+        }
 
         // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
@@ -852,8 +869,16 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
         }
 
-        fromRenderer.render(fromScene, fromCamera);
-        toRenderer.render(toScene, toCamera);
+        // Selective rendering: only render scene if its group is visible or in active transition
+        const shouldRenderFrom = fromGroupRef.current?.visible || currentProgress < 0.999;
+        const shouldRenderTo = toGroupRef.current?.visible || currentProgress > 0.001;
+
+        if (shouldRenderFrom) {
+          fromRenderer.render(fromScene, fromCamera);
+        }
+        if (shouldRenderTo) {
+          toRenderer.render(toScene, toCamera);
+        }
       };
 
       animationFrameId = requestAnimationFrame(animate);

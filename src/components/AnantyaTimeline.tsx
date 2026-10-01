@@ -217,6 +217,7 @@ interface OrbitSceneProps {
   gauntletClenchProgress?: number;
   /** Intro stone emergence and flight progress (0.0 = docked in hand, 1.0 = in orbit) */
   introFlightProgress?: number;
+  isMobile?: boolean;
 }
 
 /**
@@ -237,6 +238,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
   gauntletOpenProgress = 0,
   gauntletClenchProgress = 0,
   introFlightProgress,
+  isMobile = false,
 }) => {
   const { gl, scene, camera } = useThree();
 
@@ -579,12 +581,12 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
       )}
 
       {/* ── UnrealBloom & Vignette Post-Processing Glow (Tight radius ensures stones glow vibrantly without spilling on gauntlet) ── */}
-      <EffectComposer>
+      <EffectComposer multisampling={isMobile ? 0 : 4}>
         <Bloom
           intensity={0.78}
           luminanceThreshold={cfg.bloom_threshold ?? 1.00}
           luminanceSmoothing={0.12}
-          radius={0.30}
+          radius={isMobile ? 0.22 : 0.30}
           mipmapBlur
         />
         <Vignette eskil={false} offset={0.2} darkness={1.12} />
@@ -789,7 +791,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
     >
       {/* ── 1. Fullscreen R3F Canvas with Responsive Camera & Viewport Clamping ── */}
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={isMobile ? [1, 1.25] : [1, 1.5]}
         camera={{
           position: [0, TIMELINE_CONFIG.camera_y, TIMELINE_CONFIG.camera_z],
           fov: TIMELINE_CONFIG.camera_fov,
@@ -820,6 +822,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
             gauntletOpenProgress={gauntletOpenProgress}
             gauntletClenchProgress={gauntletClenchProgress}
             introFlightProgress={introFlightProgress}
+            isMobile={isMobile}
           />
         </Suspense>
       </Canvas>

@@ -44,7 +44,10 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       hue: number;
     }> = [];
 
-    for (let i = 0; i < 55; i++) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const particleCount = isMobile ? 22 : 55;
+
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -70,8 +73,10 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.opacity})`;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
-        ctx.shadowBlur = 8;
+        if (!isMobile) {
+          ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
+          ctx.shadowBlur = 8;
+        }
         ctx.fill();
       }
 

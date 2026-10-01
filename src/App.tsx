@@ -738,6 +738,7 @@ export default function App() {
                 fromRotationY={fromRotationY}
                 toRotationY={toRotationY}
                 enableScroll={false}
+                isPaused={canvasOpacity <= 0.005 || gauntletWipeProgress >= 0.999}
               />
             </div>
 
