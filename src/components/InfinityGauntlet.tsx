@@ -17,11 +17,12 @@ interface InfinityGauntletProps {
   clippingPlanes?: THREE.Plane[];
   /**
    * Fist-opening / unfurl progress (0.0 = fully closed fist, 1.0 = wide open palm).
-   * Used for the pre-Event 1 intro animation. Thumb unfurls first, Pinky last.
-   * When this is > 0 and convergenceProgress == 0, the gauntlet starts as a closed fist
-   * and progressively opens across the sequence: Thumb → Index → Middle → Ring → Pinky.
    */
   openProgress?: number;
+  /**
+   * Direct hand clench progress (0.0 = wide open palm, 1.0 = clenched fist from pinky to thumb).
+   */
+  clenchProgress?: number;
 }
 
 export type FingerType = 'pinky' | 'ring' | 'middle' | 'index' | 'thumb';
@@ -49,6 +50,7 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
   energyPulse = 1.0,
   clippingPlanes,
   openProgress = 0,
+  clenchProgress,
 }) => {
   const gauntletGroupRef = useRef<THREE.Group>(null);
   const coreLightRef = useRef<THREE.PointLight>(null);
@@ -79,21 +81,21 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
         m.receiveShadow = true;
 
         const lowerName = m.name.toLowerCase();
-        if (lowerName.includes('gauntlet')) {
+        if (lowerName.includes('stone')) {
+          // Hide built-in placeholder stones on raw model so the sockets are empty recesses!
+          m.visible = false;
+        } else {
           const mat = new THREE.MeshStandardMaterial({
             color: new THREE.Color(GAUNTLET_CONFIG.color),
             metalness: GAUNTLET_CONFIG.metalness,
             roughness: GAUNTLET_CONFIG.roughness,
-            emissive: new THREE.Color(GAUNTLET_CONFIG.emissive_color),
-            emissiveIntensity: GAUNTLET_CONFIG.emissive_intensity,
+            emissive: new THREE.Color(0x000000),
+            emissiveIntensity: 0.0,
             side: THREE.DoubleSide,
             clippingPlanes: clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined,
           });
           m.material = mat;
           gauntletMaterialRef.current = mat;
-        } else if (lowerName.includes('stone')) {
-          // Hide built-in placeholder stones on raw model so the sockets are empty recesses!
-          m.visible = false;
         }
       } else if ((child as THREE.Bone).isBone) {
         const name = child.name;
@@ -205,7 +207,11 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
     }
 
     fingerBones.forEach(({ bone, baseRotX, curlAmount, fingerType }) => {
-      if (openProgress !== undefined && openProgress > 0 && convergenceProgress <= 0) {
+      if (clenchProgress !== undefined) {
+        // ── Intro Closing: Clench from pinky finger to thumb (0.0 = wide open palm, 1.0 = clenched fist) ──
+        const easedCurl = getFingerCurlEased(fingerType, clenchProgress);
+        bone.rotation.x = THREE.MathUtils.lerp(baseRotX, baseRotX + curlAmount, easedCurl);
+      } else if (openProgress !== undefined && openProgress > 0 && convergenceProgress <= 0) {
         // ── Pre-Event 1 Opening: Fist unfurls into open palm (Thumb → Index → Middle → Ring → Pinky) ──
         // openProgress=0: fully clenched fist; openProgress=1: wide open palm
         const closedCurlEased = 1.0; // Start fully closed
@@ -223,23 +229,13 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
 
   return (
     <group ref={gauntletGroupRef} position={position} rotation={rotation} scale={scale}>
-      {/* ── Soft Balanced Cinematic Illumination (Tuned to eliminate excessive glare) ── */}
+      {/* ── Soft Balanced Illumination (Zero bloom glare, matte metallic gauntlet finish) ── */}
       <ambientLight intensity={GAUNTLET_CONFIG.ambient_light} color="#ffffff" />
       <directionalLight position={[0, 6, 8]} intensity={GAUNTLET_CONFIG.key_light} color="#fffbeb" />
       <directionalLight position={[-6, 2, 4]} intensity={GAUNTLET_CONFIG.fill_light_left} color="#fed7aa" />
       <directionalLight position={[6, -2, 4]} intensity={GAUNTLET_CONFIG.fill_light_right} color="#fef08a" />
-      <pointLight position={[0, 0, 2.5]} intensity={GAUNTLET_CONFIG.point_light} color="#fbbf24" distance={8} />
 
       <primitive object={gauntletModel} />
-
-      {/* Central Pulsing Nexus Point Light */}
-      <pointLight
-        ref={coreLightRef}
-        position={[0.02, 0.0, 0.25]}
-        color="#ffd600"
-        intensity={Math.max(0, convergenceProgress * GAUNTLET_CONFIG.nexus_pulse_intensity * energyPulse)}
-        distance={4.5}
-      />
     </group>
   );
 };

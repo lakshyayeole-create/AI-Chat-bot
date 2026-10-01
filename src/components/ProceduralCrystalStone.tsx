@@ -86,9 +86,13 @@ export interface ProceduralCrystalStoneProps {
   onSelect: (index: number) => void;
   textureUrl?: string;
   convergenceProgress?: number;
+  introFlightProgress?: number;
+  introGauntletY?: number;
   gauntletPosition?: [number, number, number];
   gauntletScale?: number;
   stoneGeometry?: THREE.BufferGeometry;
+  clippingPlanes?: THREE.Plane[];
+  lokiTransitionProgress?: number;
 }
 
 /**
@@ -123,9 +127,13 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   onSelect,
   textureUrl = '/assets/amber-crystal-surface.png',
   convergenceProgress = 0,
+  introFlightProgress,
+  introGauntletY,
   gauntletPosition = [0, -0.2, 0],
   gauntletScale = 1.75,
   stoneGeometry,
+  clippingPlanes,
+  lokiTransitionProgress = 0,
 }) => {
   const activeGeometry = stoneGeometry || sharedGeometry;
   const groupRef = useRef<THREE.Group>(null);
@@ -276,6 +284,120 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   useFrame((state, delta) => {
     if (!groupRef.current || !rotGroupRef.current) return;
 
+    // ── 0. INTRO FLIGHT SEQUENCE (Stones emerge from clenched gauntlet, fly high above, arc into orbit) ──
+    if (introFlightProgress !== undefined && introFlightProgress < 1.0 && convergenceProgress < 0.001) {
+      const pFlight = Math.max(0, Math.min(1, introFlightProgress));
+      const socketData = (GAUNTLET_SOCKETS as Record<string, GauntletSocket>)[stone.id] || GAUNTLET_SOCKETS['mind'];
+
+      // World position of gauntlet socket
+      const gauntletY = introGauntletY ?? gauntletPosition[1];
+      const dockedX = gauntletPosition[0] + socketData.position[0] * gauntletScale;
+      const dockedY = gauntletY + socketData.position[1] * gauntletScale;
+      const dockedZ = gauntletPosition[2] + socketData.position[2] * gauntletScale;
+
+      // Apex high in the air above the gauntlet
+      const spreadNorm = (index - (numStones - 1) / 2) / ((numStones - 1) / 2);
+      const apexX = spreadNorm * 2.2;
+      const apexY = 2.8 + Math.sin((index / numStones) * Math.PI) * 0.7; // ~2.8 to 3.5 world units high (well above Y = -0.32)
+      const apexZ = 0.8 + Math.cos(index * 1.3) * 0.4;
+
+      let curX: number, curY: number, curZ: number, curScale: number;
+
+      if (pFlight <= 0.40) {
+        // Phase 1: Burst out and rocket vertically upwards above the gauntlet
+        const t1 = pFlight / 0.40;
+        const ease1 = 1 - Math.pow(1 - t1, 2.5); // Fast launch upwards
+        curX = THREE.MathUtils.lerp(dockedX, apexX, ease1);
+        curY = THREE.MathUtils.lerp(dockedY, apexY, ease1);
+        curZ = THREE.MathUtils.lerp(dockedZ, apexZ, ease1);
+        curScale = THREE.MathUtils.lerp(socketData.scale, targetScale * 0.85, ease1);
+
+        // Dynamic rotation from socket angle to upward hover spin
+        rotGroupRef.current.rotation.x = THREE.MathUtils.lerp(socketData.rotation[0], 0.15, ease1);
+        rotGroupRef.current.rotation.y = THREE.MathUtils.lerp(socketData.rotation[1], THREE.MathUtils.degToRad(index * 45) + (state.clock.elapsedTime * 0.5), ease1);
+        rotGroupRef.current.rotation.z = THREE.MathUtils.lerp(socketData.rotation[2], 0, ease1);
+      } else {
+        // Phase 2: Parabolic curved arc into orbital station
+        const t2 = (pFlight - 0.40) / 0.60;
+        const ease2 = t2 * t2 * (3 - 2 * t2); // Smooth easeInOut
+        const arcLift = Math.sin(t2 * Math.PI) * 0.6; // Dramatic arcing curve
+        curX = THREE.MathUtils.lerp(apexX, targetX, ease2);
+        curY = THREE.MathUtils.lerp(apexY, targetY, ease2) + arcLift * 0.3;
+        curZ = THREE.MathUtils.lerp(apexZ, targetZ, ease2) - arcLift * 0.5;
+        curScale = THREE.MathUtils.lerp(targetScale * 0.85, targetScale, ease2);
+
+        rotGroupRef.current.rotation.x = THREE.MathUtils.lerp(0.15, targetRotation.current.x, ease2);
+        rotGroupRef.current.rotation.y = THREE.MathUtils.lerp(THREE.MathUtils.degToRad(index * 45), targetRotation.current.y, ease2);
+        rotGroupRef.current.rotation.z = THREE.MathUtils.lerp(0, targetRotation.current.z, ease2);
+      }
+
+      groupRef.current.position.set(curX, curY, curZ);
+      groupRef.current.scale.set(curScale, curScale, curScale);
+
+      // ── Inner Core Breathing Pulse ──
+      if (innerCoreRef.current) {
+        const pulse = 0.94 + 0.06 * Math.sin(2.05 * state.clock.elapsedTime);
+        innerCoreRef.current.scale.setScalar(pulse * 0.54);
+      }
+
+      // Stones in gauntlet glow with vibrant crystal energy directly from within
+      let curShellEmissive: number;
+      let curCoreEmissive: number;
+      let curSparkEmissive: number;
+
+      const socketRadius = GAUNTLET_CONFIG.socket_light_radius ?? 0.65;
+      const socketIntensity = (GAUNTLET_CONFIG.socket_light_intensity ?? 2.6) * luminanceFactor * (stoneGlow / 1.0);
+
+      if (pFlight < 0.28) {
+        // Docked in gauntlet after Star-Lord transition: stones glow vibrantly
+        curShellEmissive = 1.25 * luminanceFactor * (stoneGlow / 1.0);
+        curCoreEmissive = 2.20 * luminanceFactor * (stoneGlow / 1.0);
+        curSparkEmissive = 2.60 * luminanceFactor * (stoneGlow / 1.0);
+
+        // Emit light in a small, tight radius immediately on the gauntlet socket
+        if (centerLightRef.current) {
+          centerLightRef.current.distance = socketRadius;
+          centerLightRef.current.decay = 2.0;
+          centerLightRef.current.intensity = socketIntensity;
+        }
+        if (offsetLightRef.current) {
+          offsetLightRef.current.distance = socketRadius * 0.70;
+          offsetLightRef.current.decay = 2.0;
+          offsetLightRef.current.intensity = socketIntensity * 0.55;
+        }
+      } else {
+        // Bursting and flying up: dramatic launch flare, expanding light radius as stones rise
+        const flare = 1.0 + Math.sin(((pFlight - 0.28) / 0.72) * Math.PI) * 0.55;
+        curShellEmissive = 1.25 * luminanceFactor * (stoneGlow / 1.0) * flare;
+        curCoreEmissive = 2.30 * luminanceFactor * (stoneGlow / 1.0) * flare;
+        curSparkEmissive = 2.70 * luminanceFactor * (stoneGlow / 1.0) * flare;
+
+        const flightT = (pFlight - 0.28) / 0.72;
+        const curDist = THREE.MathUtils.lerp(socketRadius, 5 * stonesSize, flightT);
+        if (centerLightRef.current) {
+          centerLightRef.current.distance = curDist;
+          centerLightRef.current.decay = 2.0;
+          centerLightRef.current.intensity = THREE.MathUtils.lerp(socketIntensity, pointLightIntensity * 0.5, flightT);
+        }
+        if (offsetLightRef.current) {
+          offsetLightRef.current.distance = curDist * 0.70;
+          offsetLightRef.current.decay = 2.0;
+          offsetLightRef.current.intensity = THREE.MathUtils.lerp(socketIntensity * 0.55, pointLightIntensity * 0.3, flightT);
+        }
+      }
+
+      if (shellMaterialRef.current) {
+        shellMaterialRef.current.emissiveIntensity = curShellEmissive;
+      }
+      if (coreMaterialRef.current) {
+        coreMaterialRef.current.emissiveIntensity = curCoreEmissive;
+      }
+      if (sparkMaterialRef.current) {
+        sparkMaterialRef.current.emissiveIntensity = curSparkEmissive;
+      }
+      return;
+    }
+
     // Calculate individual stone arrival progress based on GAUNTLET_CONFIG.stone_timings
     const timing = (GAUNTLET_CONFIG.stone_timings as Record<string, { start: number; end: number }>)[stone.id] || { start: 0.1, end: 0.7 };
     const stoneRawT = THREE.MathUtils.clamp((convergenceProgress - timing.start) / (timing.end - timing.start || 1), 0, 1);
@@ -342,11 +464,21 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
       innerCoreRef.current.scale.setScalar(pulse * 0.54);
     }
 
-    // Extinguish internal point lights when docked to eliminate blinding glare!
-    const dockLightDim = THREE.MathUtils.clamp(1.0 - stoneRawT * 1.5, 0, 1);
-    const targetLight1 = (isActive ? pointLightIntensity * 1.25 : pointLightIntensity * 0.5 * depthFactor) * (stoneGlow / 1.25) * luminanceFactor * dockLightDim;
-    const targetLight2 = (isActive ? pointLightIntensity * 0.65 : pointLightIntensity * 0.3 * depthFactor) * (stoneGlow / 1.25) * luminanceFactor * dockLightDim;
+    // Internal point lights: broad radius in orbit, small tight radius when docked in gauntlet
+    const socketRadius = GAUNTLET_CONFIG.socket_light_radius ?? 0.65;
+    const socketIntensity = (GAUNTLET_CONFIG.socket_light_intensity ?? 2.6) * luminanceFactor * (stoneGlow / 1.0);
+
+    const orbitLight1 = (isActive ? pointLightIntensity * 1.25 : pointLightIntensity * 0.5 * depthFactor) * (stoneGlow / 1.0) * luminanceFactor;
+    const orbitLight2 = (isActive ? pointLightIntensity * 0.65 : pointLightIntensity * 0.3 * depthFactor) * (stoneGlow / 1.0) * luminanceFactor;
+
+    // As stone docks into gauntlet, distance tightens to small radius (socketRadius) and intensity settles to socketIntensity
+    const targetDistance = THREE.MathUtils.lerp(5 * stonesSize, socketRadius, stoneT);
+    const targetLight1 = THREE.MathUtils.lerp(orbitLight1, socketIntensity, stoneT);
+    const targetLight2 = THREE.MathUtils.lerp(orbitLight2, socketIntensity * 0.55, stoneT);
+
     if (centerLightRef.current) {
+      centerLightRef.current.distance = targetDistance;
+      centerLightRef.current.decay = 2.0;
       centerLightRef.current.intensity = THREE.MathUtils.lerp(
         centerLightRef.current.intensity,
         targetLight1,
@@ -354,6 +486,8 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
       );
     }
     if (offsetLightRef.current) {
+      offsetLightRef.current.distance = targetDistance * 0.70;
+      offsetLightRef.current.decay = 2.0;
       offsetLightRef.current.intensity = THREE.MathUtils.lerp(
         offsetLightRef.current.intensity,
         targetLight2,
@@ -361,21 +495,44 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
       );
     }
 
-    // Dim stone emissive intensity during docking so faceted crystal geometry remains crisp & visible
-    const dockEmissiveFactor = THREE.MathUtils.clamp(1.0 - stoneRawT * 0.72, 0.28, 1.0);
+    // Stones maintain a vibrant crystal glow when docked in gauntlet, without casting light onto gauntlet metal
+    const dockShellEmissive = (1.05 + stoneRawT * 0.15) * luminanceFactor * (stoneGlow / 1.0);
+    const dockCoreEmissive = (isActive ? 1.85 : 2.05) * luminanceFactor * (stoneGlow / 1.0);
+    const dockSparkEmissive = (isActive ? 2.25 : 2.45) * luminanceFactor * (stoneGlow / 1.0);
+
     if (shellMaterialRef.current) {
-      shellMaterialRef.current.emissiveIntensity = baseEmissiveIntensity * dockEmissiveFactor;
+      shellMaterialRef.current.emissiveIntensity = dockShellEmissive;
     }
     if (coreMaterialRef.current) {
-      coreMaterialRef.current.emissiveIntensity = (isActive ? 1.3 : 0.75) * luminanceFactor * (stoneGlow / 1.25) * dockEmissiveFactor;
+      coreMaterialRef.current.emissiveIntensity = dockCoreEmissive;
     }
     if (sparkMaterialRef.current) {
-      sparkMaterialRef.current.emissiveIntensity = (isActive ? 1.5 : 0.85) * luminanceFactor * (stoneGlow / 1.25) * dockEmissiveFactor;
+      sparkMaterialRef.current.emissiveIntensity = dockSparkEmissive;
+    }
+
+    // ── Remove stone with gauntlet during Loki transition ──
+    if (lokiTransitionProgress !== undefined && lokiTransitionProgress >= 0.999) {
+      groupRef.current.visible = false;
+      return;
+    } else {
+      groupRef.current.visible = true;
+    }
+
+    // If transitioning to Loki and stone is behind clipping plane, extinguish its point lights
+    if (clippingPlanes && clippingPlanes.length > 0 && groupRef.current) {
+      const plane = clippingPlanes[0];
+      const worldPos = new THREE.Vector3();
+      groupRef.current.getWorldPosition(worldPos);
+      const dist = plane.distanceToPoint(worldPos);
+      if (dist < 0.0) {
+        if (centerLightRef.current) centerLightRef.current.intensity = 0;
+        if (offsetLightRef.current) offsetLightRef.current.intensity = 0;
+      }
     }
   });
 
   // Balanced emissive intensity using unified luminance factor and depth attenuation
-  const baseEmissiveIntensity = (isActive ? 1.35 : 0.72 * depthFactor) * (stoneGlow / 1.25) * luminanceFactor;
+  const baseEmissiveIntensity = (isActive ? 1.45 : 1.05 * depthFactor) * (stoneGlow / 1.0) * luminanceFactor;
 
   return (
     <group
@@ -418,6 +575,7 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             transparent
             opacity={0.92}
             flatShading={true} // Razor-sharp crystalline facet gleams
+            clippingPlanes={clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined}
           />
         </mesh>
 
@@ -428,6 +586,7 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             wireframe
             transparent
             opacity={(isActive ? 0.045 : 0.025) * luminanceFactor}
+            clippingPlanes={clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined}
           />
         </mesh>
 
@@ -437,10 +596,11 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             ref={coreMaterialRef}
             color={coreEmissive}
             emissive={coreEmissive}
-            emissiveIntensity={(isActive ? 1.3 : 0.75) * luminanceFactor * (stoneGlow / 1.25)}
+            emissiveIntensity={(isActive ? 2.2 : 1.85) * luminanceFactor * (stoneGlow / 1.0)}
             roughness={0.25}
             transparent
             opacity={isActive ? 0.85 : 0.72}
+            clippingPlanes={clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined}
           />
         </mesh>
 
@@ -454,10 +614,11 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             ref={sparkMaterialRef}
             color={sparkColor}
             emissive={sparkColor}
-            emissiveIntensity={(isActive ? 1.5 : 0.85) * luminanceFactor * (stoneGlow / 1.25)}
+            emissiveIntensity={(isActive ? 2.6 : 2.25) * luminanceFactor * (stoneGlow / 1.0)}
             roughness={0.2}
             transparent
             opacity={0.85}
+            clippingPlanes={clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined}
           />
         </mesh>
 
@@ -465,15 +626,15 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
         <pointLight
           ref={centerLightRef}
           color={coreEmissive}
-          intensity={pointLightIntensity * (stoneGlow / 1.25) * luminanceFactor}
-          distance={7 * stonesSize}
+          intensity={0}
+          distance={5 * stonesSize}
           decay={2}
         />
         <pointLight
           ref={offsetLightRef}
           color={sparkColor}
-          intensity={(pointLightIntensity * 0.5) * (stoneGlow / 1.25) * luminanceFactor}
-          distance={4 * stonesSize}
+          intensity={0}
+          distance={3 * stonesSize}
           decay={2}
           position={[0.05, -0.05, 0.32]}
         />
