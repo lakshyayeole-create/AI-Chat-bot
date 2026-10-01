@@ -147,6 +147,9 @@ export default function App() {
   const timelineRef = useRef<AnantyaTimelineHandle>(null);
   const lenisRef = useRef<Lenis | null>(null);
 
+  const [activeAboutCard, setActiveAboutCard] = useState(0);
+  const scrollSyncedAboutCardRef = useRef(0);
+
   const heroInfoPanelRef = useRef<HTMLElement>(null);
   const aboutInfoPanelRef = useRef<HTMLElement>(null);
   const eventsSectionRef = useRef<HTMLElement>(null);
@@ -407,6 +410,12 @@ export default function App() {
   }, [syncDOM]);
 
   // Configure ScrollTrigger — sequential phases:
+  // Phase 1 (0.00 -> 0.12): Logo morphs to top Navigation Bar (Mask hidden).
+  // Phase 2 (0.12 -> 0.32): Iron Man mask assembles; glides to left & looks right.
+  // Phase 3 (0.32 -> 0.48): HOME PAGE HERO SECTION (Iron Man on left looking right, Info on right).
+  // Phase 4 (0.48 -> 0.68): TRANSITION / WIPE: Home info fades out, diagonal wipe progresses, Star-Lord glides to right looking left.
+  // Phase 5 (0.68 -> 0.90): ABOUT US SECTION (Star-Lord on right looking left, About Us info on left).
+  // Phase 6 (0.90 -> 1.00): Settle / buffer.
   useEffect(() => {
     if (!hasEntered) return;
 
@@ -436,6 +445,12 @@ export default function App() {
       onUpdate: (self) => {
         const p = self.progress; // 0.0 to 1.0
         scrollProgressRef.current = p;
+        const aboutCardProgress = THREE.MathUtils.clamp((p - 0.66) / 0.18, 0, 0.999);
+        const scrollSyncedAboutCard = Math.min(2, Math.floor(aboutCardProgress * 3));
+        if (scrollSyncedAboutCard !== scrollSyncedAboutCardRef.current) {
+          scrollSyncedAboutCardRef.current = scrollSyncedAboutCard;
+          setActiveAboutCard(scrollSyncedAboutCard);
+        }
 
         const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
         const targetLeftX = isMobileScreen ? 0 : -0.65;
@@ -445,7 +460,7 @@ export default function App() {
         const targetLeftRot = isMobileScreen ? 0 : -0.38;   // looks towards the left
 
         if (p <= NAV_END) {
-          // Phase 1 — Logo-to-Navbar Morph
+          // Phase 1 â€” Logo-to-Navbar Morph
           const navP = Math.min(1, p / NAV_END);
           morphProgressRef.current = navP;
           assemblyProgressRef.current = 0;
@@ -582,6 +597,7 @@ export default function App() {
           updateActiveNav('about');
         } else {
           // Phase 5b — Re-center Star-Lord helmet for transition into Thanos Infinity Gauntlet
+          // As requested: "during end of about section bring starlord helmet at center of screen again for transition"
           const recenterNorm = (p - 0.84) / (1.0 - 0.84);
           const recenterT = Math.min(1, Math.max(0, recenterNorm));
           const easedRecenter = recenterT * recenterT * (3 - 2 * recenterT);
@@ -924,6 +940,10 @@ export default function App() {
     }
   }, [syncDOM, updateActiveNav]);
 
+  const goToAboutCard = (index: number) => {
+    setActiveAboutCard(Math.max(0, Math.min(2, index)));
+  };
+
   return (
     <main className="app-main-root">
       {/* Cinematic Logo Introduction */}
@@ -957,7 +977,7 @@ export default function App() {
         />
       </div>
 
-      {/* Diagonal Laser Seam Line (Star-Lord -> Thanos Infinity Gauntlet) */}
+      {/* Diagonal laser seam controlled by the pinned events timeline */}
       <div
         ref={gauntletLaserRef}
         className="gauntlet-laser-wipe-line"
@@ -984,75 +1004,9 @@ export default function App() {
           visibility: 'hidden',
         }}
       >
-        {/* Geometric Clipped Background Plate */}
-        <div className="cyber-bg-plate" aria-hidden="true" />
-
-        {/* Cybernetic Frame Armor Overlays & SVG HUD Accents */}
-        <div className="cyber-frame-armor" aria-hidden="true">
-          <svg className="cyber-frame-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="cyberBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#38bdf8" />
-                <stop offset="50%" stopColor="#00e5ff" />
-                <stop offset="100%" stopColor="#0284c7" />
-              </linearGradient>
-            </defs>
-
-            {/* Outer Glowing Cyber Perimeter */}
-            <path
-              className="cyber-svg-outer-path"
-              d="M 6.5,0.6 
-                 L 41,0.6 L 43.5,2.4 L 56.5,2.4 L 59,0.6 L 93.5,0.6 
-                 L 99.4,6.5 
-                 L 99.4,43.5 L 97.9,45.5 L 97.9,54.5 L 99.4,56.5 L 99.4,93.5 
-                 L 93.5,99.4 
-                 L 59,99.4 L 56.5,97.6 L 43.5,97.6 L 41,99.4 L 6.5,99.4 
-                 L 0.6,93.5 
-                 L 0.6,56.5 L 2.1,54.5 L 2.1,45.5 L 0.6,43.5 L 0.6,6.5 
-                 Z"
-              vectorEffect="non-scaling-stroke"
-            />
-
-            {/* Inner Keyline Frame */}
-            <path
-              className="cyber-svg-inner-path"
-              d="M 8.5,3.2 
-                 L 91.5,3.2 
-                 L 96.8,8.5 
-                 L 96.8,91.5 
-                 L 91.5,96.8 
-                 L 8.5,96.8 
-                 L 3.2,91.5 
-                 L 3.2,8.5 
-                 Z"
-              vectorEffect="non-scaling-stroke"
-            />
-
-            {/* Corner Hardware Brackets */}
-            <path className="cyber-bracket" d="M 2.4,12 L 2.4,6.5 L 6.5,2.4 L 12,2.4" vectorEffect="non-scaling-stroke" />
-            <path className="cyber-bracket" d="M 88,2.4 L 93.5,2.4 L 97.6,6.5 L 97.6,12" vectorEffect="non-scaling-stroke" />
-            <path className="cyber-bracket" d="M 2.4,88 L 2.4,93.5 L 6.5,97.6 L 12,97.6" vectorEffect="non-scaling-stroke" />
-            <path className="cyber-bracket" d="M 88,97.6 L 93.5,97.6 L 97.6,93.5 L 97.6,88" vectorEffect="non-scaling-stroke" />
-
-            {/* Side Vent Lines (Left) */}
-            <line className="cyber-vent-line" x1="1.4" y1="47" x2="1.4" y2="49" vectorEffect="non-scaling-stroke" />
-            <line className="cyber-vent-line" x1="1.4" y1="50" x2="1.4" y2="52" vectorEffect="non-scaling-stroke" />
-            <line className="cyber-vent-line" x1="1.4" y1="53" x2="1.4" y2="55" vectorEffect="non-scaling-stroke" />
-
-            {/* Side Vent Lines (Right) */}
-            <line className="cyber-vent-line" x1="98.6" y1="47" x2="98.6" y2="49" vectorEffect="non-scaling-stroke" />
-            <line className="cyber-vent-line" x1="98.6" y1="50" x2="98.6" y2="52" vectorEffect="non-scaling-stroke" />
-            <line className="cyber-vent-line" x1="98.6" y1="53" x2="98.6" y2="55" vectorEffect="non-scaling-stroke" />
-
-            {/* Top Center Rail */}
-            <line className="cyber-notch-accent" x1="46" y1="1.6" x2="54" y2="1.6" vectorEffect="non-scaling-stroke" />
-          </svg>
-
-          <div className="cyber-grid-overlay" />
-          <div className="cyber-corner-glow tl" />
-          <div className="cyber-corner-glow tr" />
-          <div className="cyber-corner-glow bl" />
-          <div className="cyber-corner-glow br" />
+        <div className="hero-cyber-badge">
+          <span className="hero-pulse-dot" />
+          <span className="hero-badge-text">PCCOE PRESENTS • MARCH 2026</span>
         </div>
 
         {/* Card Main Body Content */}
@@ -1063,23 +1017,30 @@ export default function App() {
 
           <CountdownTimer />
 
-          {/* Quick Highlights / Stats Capsule Container */}
-          <div className="hero-stats-capsule">
-            <div className="stat-capsule-item">
-              <span className="stat-val">08+</span>
-              <span className="stat-label">Club Arenas</span>
-            </div>
-            <div className="stat-capsule-divider" />
-            <div className="stat-capsule-item">
-              <span className="stat-val">02</span>
-              <span className="stat-label">Epic Days</span>
-            </div>
-            <div className="stat-capsule-divider" />
-            <div className="stat-capsule-item">
-              <span className="stat-val">₹2L+</span>
-              <span className="stat-label">Prize Pool</span>
-            </div>
+        <div className="hero-tagline-pill">
+          <span className="tagline-gem" />
+          <span>SEVEN CRYSTALS • ONE SYSTEM</span>
+        </div>
+
+        <p className="hero-description">
+          Welcome to PCCOE's premier national techno-cultural extravaganza. Step into the high-tech Marvel dimension where speed coding warfare, autonomous robotics, CTF cybersecurity, and cultural brilliance converge.
+        </p>
+
+        {/* Quick Highlights / Stats Grid */}
+        <div className="hero-stats-grid">
+          <div className="stat-card">
+            <span className="stat-val">8+</span>
+            <span className="stat-label">Club Arenas</span>
           </div>
+          <div className="stat-card">
+            <span className="stat-val">3</span>
+            <span className="stat-label">Epic Days</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-val">₹2L+</span>
+            <span className="stat-label">Prize Pool</span>
+          </div>
+        </div>
 
           {/* Action Button Row */}
           <div className="hero-btn-row">
@@ -1115,67 +1076,113 @@ export default function App() {
           visibility: 'hidden',
         }}
       >
-        <div className="about-cyber-badge">
-          <span className="about-pulse-dot" />
-          <span className="about-badge-text">QUANTUM ARCHIVE • ABOUT ANANTYA</span>
-        </div>
-
-        <h2 className="about-main-title">
-          BEYOND <span className="about-title-highlight">LIMITS</span>
-        </h2>
-
-        <div className="about-tagline-pill">
-          <span className="about-tagline-gem" />
-          <span>INNOVATION • CULTURE • TRANSCENDENCE</span>
-        </div>
-
-        <p className="about-description">
-          Anantya is PCCOE's premier annual techno-cultural symposium. Channeling the power of the Marvel Multiverse, it provides a high-stakes arena for brilliant minds to conquer national hackathons, competitive gaming, quantum robotics, and theatrical showcases.
-        </p>
-
-        {/* About Feature Points */}
-        <div className="about-features-list">
-          <div className="about-feature-item">
-            <span className="about-feature-num">01</span>
-            <div className="about-feature-content">
-              <h4>Techno-Innovation</h4>
-              <p>Hackathons, AI research showdowns, and autonomous robotics leagues.</p>
-            </div>
+        <div className="about-panel-header">
+          <div className="about-panel-emblem">
+            <span className="about-panel-emblem-core" />
           </div>
-          <div className="about-feature-item">
-            <span className="about-feature-num">02</span>
-            <div className="about-feature-content">
-              <h4>Cultural Extravaganza</h4>
-              <p>Battle of the Bands, street dancing, theatrical drama, and pro-night concerts.</p>
-            </div>
-          </div>
-          <div className="about-feature-item">
-            <span className="about-feature-num">03</span>
-            <div className="about-feature-content">
-              <h4>National Arena</h4>
-              <p>5,000+ collegiate innovators and tech enthusiasts across 50+ institutes.</p>
-            </div>
-          </div>
+          <span className="about-panel-brand">ANANTYA 2026</span>
+          <span className="about-panel-status">
+            <span className="about-panel-status-dot" />
+            MISSION ACTIVE
+          </span>
         </div>
-
-        {/* Action Button Row */}
-        <div className="hero-btn-row">
-          <a
-            href="#events"
-            className="hero-btn primary-btn about-primary-btn"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavSelect('events');
-            }}
+        <div className="about-horizontal-viewport">
+          <div
+            className="about-horizontal-track"
+            style={{ transform: `translateX(-${activeAboutCard * 33.333333}%)` }}
           >
-            <span>DISCOVER EVENTS</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
+            <article className="about-story-card about-intro-card">
+              <div className="about-cyber-badge">
+                <span className="about-pulse-dot" />
+                <span className="about-badge-text">ORIGIN ARCHIVE â€¢ ABOUT ANANTYA</span>
+              </div>
+              <h2 className="about-main-title">ANANTYA</h2>
+              <blockquote className="about-story-quote">
+                "A chronicle of innovation, forged in the fires of intellect and tempered by time."
+              </blockquote>
+              <div className="about-intro-copy">
+                <p>Anantya was founded at Pimpri Chinchwad College of Engineering to bridge academic learning with real-world technical innovation. What began as a local gathering has grown into a grand convergence of minds, where creativity and technology drive progress.</p>
+              </div>
+            </article>
+            <article className="about-story-card">
+              <div className="about-section-label">THE FOUNDATIONS OF OUR REALM</div>
+              <h2 className="about-section-title">THE FOUR PILLARS</h2>
+              <div className="about-pillar-grid">
+                <div className="about-pillar-card">
+                  <h3>INNOVATION</h3>
+                  <p>Forging new paths where ideas become reality.</p>
+                </div>
+                <div className="about-pillar-card">
+                  <h3>TECHNOLOGY</h3>
+                  <p>The steel of our realm, tempered through logic and code.</p>
+                </div>
+                <div className="about-pillar-card">
+                  <h3>CREATIVITY</h3>
+                  <p>The magic that breathes life into machines and screens.</p>
+                </div>
+                <div className="about-pillar-card">
+                  <h3>COMMUNITY</h3>
+                  <p>The banners under which we unite, stronger together.</p>
+                </div>
+              </div>
+            </article>
+
+
+
+            <article className="about-story-card about-finale-card">
+              <div className="about-section-label">THE NEXT CHAPTER IS YOURS</div>
+              <h2 className="about-finale-title">WRITE YOUR CHAPTER</h2>
+              <blockquote className="about-story-quote">
+                "The future is not written in the stars, but in the code we forge and the dreams we dare to build."
+              </blockquote>
+              <a
+                href="#events"
+                className="hero-btn primary-btn about-primary-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavSelect('events');
+                }}
+              >
+                <span>BECOME PART OF THE UNIVERSE</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </article>
+          </div>
+        </div>
+        <div className="about-card-navigation">
+          <button
+            type="button"
+            className="about-arrow-btn"
+            onClick={() => goToAboutCard(activeAboutCard - 1)}
+            disabled={activeAboutCard === 0}
+            aria-label="Previous About card"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
             </svg>
-          </a>
-          <a href="#gallery" className="hero-btn secondary-btn">
-            <span>PAST HIGHLIGHTS</span>
-          </a>
+          </button>
+          <button
+            type="button"
+            className="about-arrow-btn"
+            onClick={() => goToAboutCard(activeAboutCard + 1)}
+            disabled={activeAboutCard === 2}
+            aria-label="Next About card"
+          >
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+        <div className="about-card-indicator" role="group" aria-label={`About story card ${activeAboutCard + 1} of 3`}>
+          {[0, 1, 2].map((cardIndex) => (
+            <span
+              key={cardIndex}
+              className={cardIndex === activeAboutCard ? 'about-card-indicator-item is-active' : 'about-card-indicator-item'}
+              aria-hidden="true"
+            />
+          ))}
         </div>
       </section>
 
@@ -1271,7 +1278,7 @@ export default function App() {
           will-change: opacity, visibility;
         }
 
-        /* 600vh: navbar morph → Iron Man hero → diagonal wipe → Star-Lord About */
+        /* 600vh: navbar morph â†’ Iron Man hero â†’ diagonal wipe â†’ Star-Lord About */
         .scroll-track-container {
           width: 100%;
           height: 600vh;
@@ -1522,11 +1529,20 @@ export default function App() {
 
         /* About Us Info Panel (Left Side, faced by Ant-Man from right) */
         .about-info-panel {
+          --about-accent: #ff6b8f;
+          --about-accent-strong: #d93d6d;
+          --about-accent-soft: #ffb3c8;
+          --about-accent-glow: rgba(255, 107, 143, 0.28);
+
           position: fixed;
           top: 50%;
           left: 6%;
+          width: min(520px, 44vw);
           max-width: 520px;
-          z-index: 45;
+          height: min(650px, calc(100vh - 220px));
+          box-sizing: border-box;
+          overflow: hidden;
+          z-index: 50;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -1535,21 +1551,121 @@ export default function App() {
           transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
-          background: radial-gradient(130% 100% at 100% 0%, rgba(15, 23, 42, 0.78) 0%, rgba(8, 14, 26, 0.68) 100%);
-          border: 1px solid rgba(244, 63, 94, 0.28);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 35px rgba(244, 63, 94, 0.16);
+          background: radial-gradient(130% 100% at 100% 0%, rgba(14, 27, 52, 0.82) 0%, rgba(8, 14, 26, 0.72) 100%);
+          border: 2px solid rgba(59, 130, 246, 0.85);
+          box-shadow: 0 0 0 1px rgba(255, 106, 148, 0.65), 0 0 30px rgba(59, 130, 246, 0.22), 0 0 40px rgba(255, 106, 148, 0.18), 0 20px 50px rgba(0, 0, 0, 0.65);
           border-radius: 18px;
-          padding: 2.2rem 2.4rem;
+          padding: 1rem 1.15rem 1.2rem;
           font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .about-panel-header {
+          display: grid;
+          grid-template-columns: 52px 1fr auto;
+          align-items: center;
+          gap: 0.65rem;
+          min-height: 46px;
+          padding: 0.1rem 0.2rem 0.25rem;
+          border-bottom: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .about-panel-emblem {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: grid;
+          place-items: center;
+          border: 2px solid rgba(255, 255, 255, 0.7);
+          background: rgba(11, 20, 38, 0.9);
+          box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.08), 0 0 18px rgba(59, 130, 246, 0.26);
+        }
+
+        .about-panel-emblem-core {
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          display: block;
+          background: linear-gradient(135deg, #f5f8ff, #dbeafe);
+          box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+        }
+
+        .about-panel-brand,
+        .about-panel-status {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.75rem;
+          font-weight: 800;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .about-panel-brand {
+          color: rgba(226, 232, 240, 0.9);
+          justify-self: center;
+          font-size: 1.05rem;
+          letter-spacing: 0.12em;
+        }
+
+        .about-panel-status {
+          gap: 0.5rem;
+          white-space: nowrap;
+          color: #f7d9e4;
+          justify-self: end;
+        }
+
+        .about-panel-status-dot {
+          width: 9px;
+          height: 9px;
+          border-radius: 50%;
+          background: var(--about-accent);
+          box-shadow: 0 0 12px rgba(255, 107, 143, 0.8);
+        }
+
+        .about-horizontal-viewport {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: hidden;
+        }
+
+        .about-horizontal-track {
+          display: flex;
+          width: 300%;
+          height: 100%;
+          transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform;
+        }
+
+        .about-story-card {
+          flex: 0 0 33.333333%;
+          width: 33.333333%;
+          min-width: 0;
+          height: 100%;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 12px;
+          padding: 14px 18px 10px;
+        }
+
+        .about-intro-card {
+          gap: 8px;
         }
 
         .about-cyber-badge {
           display: inline-flex;
           align-items: center;
+          align-self: flex-start;
           gap: 0.6rem;
           padding: 0.35rem 0.85rem;
-          background: rgba(244, 63, 94, 0.12);
-          border: 1px solid rgba(244, 63, 94, 0.35);
+          background: rgba(255, 107, 143, 0.08);
+          border: 1px solid rgba(255, 107, 143, 0.3);
           border-radius: 9999px;
         }
 
@@ -1557,113 +1673,268 @@ export default function App() {
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: #f43f5e;
-          box-shadow: 0 0 10px #f43f5e;
+          background: var(--about-accent);
+          box-shadow: 0 0 10px var(--about-accent);
           animation: badgePulse 2s infinite ease-in-out;
         }
 
         .about-badge-text {
-          font-size: 0.68rem;
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.22em;
-          color: #fda4af;
+          letter-spacing: 0.15em;
+          color: #ffe2eb;
           text-transform: uppercase;
         }
 
-        .about-main-title {
-          font-size: clamp(2.4rem, 4vw, 3.5rem);
+        .about-main-title,
+        .about-finale-title {
+          font-size: clamp(42px, 3.8vw, 76px);
           font-weight: 900;
-          letter-spacing: 0.08em;
           color: #ffffff;
-          line-height: 1.05;
+          line-height: 0.9;
           margin: 0;
-          text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(244, 63, 94, 0.35);
+          letter-spacing: -0.08em;
+          text-transform: uppercase;
+          text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 107, 143, 0.25);
         }
 
-        .about-title-highlight {
-          background: linear-gradient(135deg, #fb7185 0%, #e11d48 60%, #be123c 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 18px rgba(225, 29, 72, 0.45));
-        }
-
-        .about-tagline-pill {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          font-size: 0.76rem;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          color: #cbd5e1;
-        }
-
-        .about-tagline-gem {
-          width: 8px;
-          height: 8px;
-          transform: rotate(45deg);
-          background: linear-gradient(135deg, #f43f5e, #fb7185);
-          box-shadow: 0 0 10px #f43f5e;
-        }
-
-        .about-description {
-          font-size: 0.94rem;
-          line-height: 1.6;
-          color: #94a3b8;
+        .about-story-quote {
           margin: 0;
+          padding-left: 0.9rem;
+          border-left: 2px solid var(--about-accent);
+          color: #fff0f5;
+          font-size: clamp(16px, 1.2vw, 20px);
+          line-height: 1.45;
+          font-weight: 500;
+          font-style: italic;
         }
 
-        .about-features-list {
+        .about-intro-copy,
+        .about-legacy-copy {
           display: flex;
           flex-direction: column;
           gap: 0.65rem;
-          width: 100%;
-          margin-top: 0.2rem;
         }
 
-        .about-feature-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.85rem;
-          padding: 0.6rem 0.85rem;
-          background: rgba(15, 23, 42, 0.6);
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          border-radius: 10px;
-        }
-
-        .about-feature-num {
-          font-size: 0.75rem;
-          font-weight: 800;
-          color: #f43f5e;
-          font-family: monospace;
-          letter-spacing: 0.1em;
-          padding-top: 0.1rem;
-        }
-
-        .about-feature-content h4 {
-          font-size: 0.82rem;
-          font-weight: 700;
-          color: #f1f5f9;
-          margin: 0 0 0.15rem 0;
-          letter-spacing: 0.04em;
-        }
-
-        .about-feature-content p {
-          font-size: 0.72rem;
-          color: #94a3b8;
+        .about-intro-copy p,
+        .about-legacy-copy p {
           margin: 0;
-          line-height: 1.38;
+          color: #edf3ff;
+          font-size: clamp(14px, 0.95vw, 16px);
+          line-height: 1.55;
+        }
+
+        .about-section-label {
+          color: #ffbfd0;
+          font-size: 11px;
+          letter-spacing: 0.18em;
+          font-weight: 800;
+        }
+
+        .about-section-title {
+          margin: 0;
+          color: #fff;
+          font-size: clamp(26px, 2.4vw, 56px);
+          line-height: 0.92;
+          font-weight: 900;
+          letter-spacing: -0.05em;
+          text-transform: uppercase;
+        }
+
+        .about-chapter-grid,
+        .about-pillar-grid {
+          flex: 1;
+          min-height: 0;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+        }
+
+        .about-chapter-card,
+        .about-pillar-card {
+          min-width: 0;
+          min-height: 0;
+          padding: 14px 14px 12px;
+          border: 1px solid rgba(255, 108, 161, 0.58);
+          border-radius: 12px;
+          background: linear-gradient(145deg, rgba(20, 25, 35, 0.82), rgba(8, 12, 20, 0.72));
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px rgba(255, 108, 161, 0.18), 0 0 18px rgba(255, 108, 161, 0.08);
+        }
+
+        .about-chapter-meta {
+          display: flex;
+          justify-content: space-between;
+          gap: 0.3rem;
+          color: var(--about-accent);
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+        }
+
+        .about-chapter-meta span:last-child {
+          color: #94a3b8;
+          font-size: 12px;
+        }
+
+        .about-chapter-card h3,
+        .about-pillar-card h3 {
+          margin: 0.4rem 0 0.3rem;
+          color: #fff;
+          font-size: 16px;
+          line-height: 1.2;
+          font-weight: 800;
+        }
+
+        .about-chapter-card p,
+        .about-pillar-card p {
+          margin: 0;
+          color: #ebf2ff;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .about-pillar-number {
+          color: #ffc6d9;
+          font-size: 0.7rem;
+          font-weight: 800;
+        }
+
+        .about-pillar-card h3 {
+          margin-top: 0.55rem;
+          font-size: 16px;
+        }
+
+        .about-legacy-copy p {
+          font-size: clamp(14px, 1vw, 17px);
+        }
+
+        .about-legacy-stats {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.55rem;
+          margin-top: 0.4rem;
+        }
+
+        .about-legacy-stat {
+          min-width: 0;
+          padding: 0.8rem 0.35rem;
+          text-align: center;
+          border: 1px solid rgba(255, 107, 143, 0.22);
+          border-radius: 8px;
+          background: rgba(12, 16, 24, 0.7);
+        }
+
+        .about-legacy-stat strong,
+        .about-legacy-stat span {
+          display: block;
+        }
+
+        .about-legacy-stat strong {
+          color: #fff;
+          font-size: clamp(34px, 3vw, 50px);
+          line-height: 1;
+          font-weight: 900;
+        }
+
+        .about-legacy-stat span {
+          margin-top: 0.4rem;
+          color: var(--about-accent);
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+        }
+
+        .about-finale-card {
+          align-items: flex-start;
         }
 
         .about-primary-btn {
-          background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%);
-          border: 1px solid rgba(244, 63, 94, 0.6);
-          box-shadow: 0 4px 18px rgba(225, 29, 72, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          margin-top: 0.35rem;
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          background: linear-gradient(135deg, #ff89ae, #ff5d8b 48%, #ef4579);
+          color: #fff9fb;
+          border: 1px solid rgba(255, 213, 227, 0.9);
+          box-shadow: 0 4px 18px rgba(239, 69, 121, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
         }
 
         .about-primary-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(225, 29, 72, 0.55);
-          border-color: #fb7185;
+          border-color: var(--about-accent-soft);
+          box-shadow: 0 8px 24px rgba(217, 61, 109, 0.45);
+        }
+
+        .about-card-navigation {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          transform: translateY(-50%);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 12px;
+          z-index: 100;
+          pointer-events: none;
+        }
+
+        .about-arrow-btn {
+          width: 54px;
+          height: 54px;
+          display: flex;
+          flex: 0 0 auto;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 107, 143, 0.55);
+          background: rgba(5, 7, 12, 0.88);
+          color: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(14px);
+          cursor: pointer;
+          pointer-events: auto;
+          transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .about-arrow-btn:hover:not(:disabled) {
+          transform: scale(1.12);
+          color: var(--about-accent);
+          border-color: var(--about-accent);
+          background: rgba(255, 107, 143, 0.12);
+          box-shadow: 0 0 25px rgba(255, 107, 143, 0.35);
+        }
+
+        .about-arrow-btn:active:not(:disabled) {
+          transform: scale(0.96);
+        }
+
+        .about-arrow-btn:disabled {
+          opacity: 0.25;
+          cursor: not-allowed;
+        }
+
+        .about-card-indicator {
+          display: flex;
+          flex: 0 0 auto;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          min-height: 10px;
+          padding-top: 0.8rem;
+        }
+
+        .about-card-indicator-item {
+          width: 7px;
+          height: 7px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.3);
+          transition: width 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .about-card-indicator-item.is-active {
+          width: 25px;
+          background: var(--about-accent);
+          box-shadow: 0 0 12px rgba(255, 107, 143, 0.55);
         }
 
         @media (max-width: 900px) {
@@ -1674,52 +1945,123 @@ export default function App() {
           }
           .about-info-panel {
             left: 4%;
+            width: min(440px, 88vw);
             max-width: 440px;
             padding: 1.6rem 1.8rem;
+          }
+          .about-arrow-btn {
+            width: 46px;
+            height: 46px;
           }
         }
 
         @media (max-width: 768px) {
           .about-info-panel {
             top: auto !important;
-            bottom: clamp(4.0rem, 7.5vh, 4.8rem) !important;
+            bottom: clamp(3.5rem, 6vh, 4.2rem) !important;
             left: 50% !important;
             right: auto !important;
-            width: min(92vw, 355px) !important;
-            max-width: 355px !important;
-            max-height: 36vh !important;
-            overflow-y: auto !important;
-            padding: 0.68rem 0.85rem 0.62rem !important;
-            gap: 0.28rem !important;
+            transform: translateX(-50%) !important;
+            width: min(94vw, 420px) !important;
+            max-width: 420px !important;
+            height: min(620px, calc(100vh - 7rem)) !important;
+            padding: 1.25rem 1rem !important;
+            gap: 0.75rem !important;
             text-align: center !important;
             align-items: center !important;
-            border-radius: 18px !important;
-            background: linear-gradient(180deg, rgba(28, 10, 20, 0.88) 0%, rgba(14, 5, 12, 0.94) 100%) !important;
-            border: 1px solid rgba(244, 63, 94, 0.28) !important;
-            backdrop-filter: blur(14px) !important;
-            -webkit-backdrop-filter: blur(14px) !important;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 24px rgba(244, 63, 94, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
           }
-          .hero-cyber-badge,
+          .about-story-card {
+            gap: 0.65rem;
+            min-height: 520px;
+            padding: 18px 20px;
+          }
           .about-cyber-badge {
+            align-self: center;
+            max-width: 100%;
+          }
+          .about-badge-text {
+            font-size: 0.52rem;
+            letter-spacing: 0.1em;
+          }
+          .about-main-title,
+          .about-finale-title {
+            font-size: 40px;
+          }
+          .about-story-quote {
+            font-size: 16px;
+            line-height: 1.45;
+            text-align: left;
+          }
+          .about-intro-copy,
+          .about-legacy-copy {
+            gap: 0.45rem;
+          }
+          .about-intro-copy p,
+          .about-legacy-copy p {
+            font-size: 13px;
+            line-height: 1.4;
+            text-align: left;
+          }
+          .about-section-label {
+            font-size: 0.55rem;
+            text-align: center;
+          }
+          .about-section-title {
+            font-size: 28px;
+            text-align: center;
+          }
+          .about-chapter-grid,
+          .about-pillar-grid {
+            gap: 10px;
+          }
+          .about-chapter-card,
+          .about-pillar-card {
+            padding: 9px;
+            text-align: left;
+          }
+          .about-chapter-meta {
+            font-size: 10px;
+          }
+          .about-chapter-card h3,
+          .about-pillar-card h3 {
+            font-size: 16px;
+          }
+          .about-chapter-card p,
+          .about-pillar-card p {
+            font-size: 12px;
+            line-height: 1.35;
+          }
+          .about-legacy-stat {
+            padding: 0.65rem 0.2rem;
+          }
+          .about-legacy-stat strong {
+            font-size: 32px;
+          }
+          .about-legacy-stat span {
+            font-size: 12px;
+          }
+          .about-card-indicator {
+            padding-top: 0.25rem;
+          }
+          .about-finale-card {
+            align-items: center;
+          }
+          .hero-cyber-badge {
             padding: 2px 8px !important;
             font-size: 0.60rem !important;
             letter-spacing: 1px !important;
           }
-          .home-hero-panel .hero-main-title,
-          .about-info-panel .about-main-title {
+          .home-hero-panel .hero-main-title {
             font-size: clamp(1.45rem, 5vw, 1.85rem) !important;
             letter-spacing: 0.05em !important;
             line-height: 1.1 !important;
           }
-          .hero-tagline-pill,
-          .about-tagline-pill {
+          .hero-tagline-pill {
             font-size: 0.62rem !important;
             padding: 2px 7px !important;
             letter-spacing: 0.8px !important;
           }
-          .home-hero-panel .hero-description,
-          .about-info-panel .about-description {
+          .home-hero-panel .hero-description {
             font-size: 0.75rem !important;
             line-height: 1.35 !important;
             margin: 0 !important;
@@ -1769,6 +2111,17 @@ export default function App() {
           }
           .scroll-track-container {
             height: 380vh !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .about-arrow-btn {
+            width: 42px;
+            height: 42px;
+          }
+
+          .about-card-navigation {
+            padding: 0 6px;
           }
         }
       `}</style>
