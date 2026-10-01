@@ -29,13 +29,6 @@ const ironManConfig: ModelConfig = {
   },
 };
 
-<<<<<<< Updated upstream
-const starLordConfig: ModelConfig = {
-  modelPath: '/assets/starlord.glb',
-  bgImagePath: '/assets/star_lord_bg.webp',
-  targetHeight: 1.20,
-  offsetY: -0.06,
-=======
 let cachedEyeGlowTexture: THREE.CanvasTexture | null = null;
 function getEyeGlowTexture(): THREE.CanvasTexture {
   if (cachedEyeGlowTexture) return cachedEyeGlowTexture;
@@ -63,7 +56,6 @@ const starLordConfig: ModelConfig = {
   bgImagePath: '/assets/star_lord_bg.webp',
   targetHeight: 1.32,
   offsetY: -0.08,
->>>>>>> Stashed changes
   lighting: {
     ambientColor: 0xd5e6ff,
     ambientIntensity: 0.85,
@@ -276,13 +268,8 @@ export default function App() {
     const IRON_END     = 0.30;  // Iron Man fully assembled and in hero position on left
     const HOME_HOLD    = 0.44;  // Home page hero section in full focus
     const CENTER_END   = 0.50;  // Iron Man smoothly returns to center facing forward
-<<<<<<< Updated upstream
-    const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Ant-Man with full 3D rotation
-    const ABOUT_HOLD   = 0.78;  // Ant-Man glides to right, turns left, About Us panel in full focus
-=======
     const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Star-Lord with full 3D rotation
     const ABOUT_HOLD   = 0.76;  // Star-Lord glides to right, turns left, About Us panel in full focus
->>>>>>> Stashed changes
 
     const st = ScrollTrigger.create({
       trigger: track,
