@@ -293,9 +293,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const fromPath = fromModel.modelPath;
     const fromBgPath = fromModel.bgImagePath;
     const fromRotX = fromModel.rotationX;
+    const fromTargetHeight = fromModel.targetHeight;
+    const fromOffsetY = fromModel.offsetY;
     const toPath = toModel.modelPath;
     const toBgPath = toModel.bgImagePath;
     const toRotX = toModel.rotationX;
+    const toTargetHeight = toModel.targetHeight;
+    const toOffsetY = toModel.offsetY;
 
     // Setup Three.js scenes, models, and render loops
     useEffect(() => {
@@ -817,9 +821,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromPath,
       fromBgPath,
       fromRotX,
+      fromTargetHeight,
+      fromOffsetY,
       toPath,
       toBgPath,
       toRotX,
+      toTargetHeight,
+      toOffsetY,
       enableScroll,
       scrollSensitivity,
       rotationSensitivity

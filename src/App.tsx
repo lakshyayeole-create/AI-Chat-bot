@@ -29,11 +29,41 @@ const ironManConfig: ModelConfig = {
   },
 };
 
+<<<<<<< Updated upstream
 const starLordConfig: ModelConfig = {
   modelPath: '/assets/starlord.glb',
   bgImagePath: '/assets/star_lord_bg.webp',
   targetHeight: 1.20,
   offsetY: -0.06,
+=======
+let cachedEyeGlowTexture: THREE.CanvasTexture | null = null;
+function getEyeGlowTexture(): THREE.CanvasTexture {
+  if (cachedEyeGlowTexture) return cachedEyeGlowTexture;
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, 'rgba(255, 60, 80, 1)');
+    grad.addColorStop(0.25, 'rgba(255, 15, 35, 0.85)');
+    grad.addColorStop(0.55, 'rgba(255, 0, 20, 0.35)');
+    grad.addColorStop(0.8, 'rgba(220, 0, 20, 0.08)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 128, 128);
+  }
+  cachedEyeGlowTexture = new THREE.CanvasTexture(canvas);
+  cachedEyeGlowTexture.colorSpace = THREE.SRGBColorSpace;
+  return cachedEyeGlowTexture;
+}
+
+const starLordConfig: ModelConfig = {
+  modelPath: '/assets/starlord.glb',
+  bgImagePath: '/assets/star_lord_bg.webp',
+  targetHeight: 1.32,
+  offsetY: -0.08,
+>>>>>>> Stashed changes
   lighting: {
     ambientColor: 0xd5e6ff,
     ambientIntensity: 0.85,
@@ -47,24 +77,61 @@ const starLordConfig: ModelConfig = {
     topIntensity: 0.8,
   },
   onMeshTraverse: (mesh: THREE.Mesh) => {
+    const meshName = (mesh.name || '').toLowerCase();
+    const isEyeMesh =
+      meshName.includes('002_7') ||
+      meshName.includes('002_8') ||
+      meshName.includes('eye') ||
+      meshName.includes('lens');
+
     if (mesh.material) {
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
       mats.forEach((mat) => {
         const stdMat = mat as THREE.MeshStandardMaterial;
         const matName = (stdMat.name || '').toLowerCase();
-        if (
-          matName.includes('001') ||
-          matName.includes('002') ||
+        const isEyeMat =
+          isEyeMesh ||
+          matName.includes('017') ||
+          matName.includes('018') ||
           matName.includes('eye') ||
-          matName.includes('lens')
-        ) {
-          stdMat.emissive = new THREE.Color(0xff1122);
-          stdMat.emissiveIntensity = 2.8;
+          matName.includes('lens');
+
+        if (isEyeMat) {
+          stdMat.color = new THREE.Color(0xff1122);
+          stdMat.emissive = new THREE.Color(0xff0022);
+          stdMat.emissiveIntensity = 8.0;
+          stdMat.toneMapped = false;
+          stdMat.roughness = 0.05;
+          stdMat.metalness = 0.1;
         } else {
           if (stdMat.roughness !== undefined) stdMat.roughness = Math.max(0.15, stdMat.roughness * 0.85);
           if (stdMat.metalness !== undefined) stdMat.metalness = Math.min(0.98, Math.max(0.7, stdMat.metalness * 1.2));
         }
       });
+    }
+
+    // Confine red emission glow strictly to the eye lenses without casting light onto the face
+    if (isEyeMesh && !mesh.getObjectByName('eyeGlow_' + mesh.name)) {
+      mesh.geometry.computeBoundingBox();
+      const b = mesh.geometry.boundingBox;
+      const centerX = b ? (b.min.x + b.max.x) / 2 : 0;
+      const centerY = b ? (b.min.y + b.max.y) / 2 : 0;
+      const frontZ = b ? b.max.z + 1.0 : 108;
+
+      // Additive optical glow flare sprite directly over the lens surface
+      const glowMat = new THREE.SpriteMaterial({
+        map: getEyeGlowTexture(),
+        color: 0xff0033,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        toneMapped: false,
+      });
+      const glowSprite = new THREE.Sprite(glowMat);
+      glowSprite.name = 'eyeGlow_' + mesh.name;
+      glowSprite.scale.set(30, 30, 1);
+      glowSprite.position.set(centerX, centerY, frontZ);
+      mesh.add(glowSprite);
     }
   },
 };
@@ -191,8 +258,8 @@ export default function App() {
   // Phase 1 (0.00 -> 0.12): Logo morphs to top Navigation Bar (Mask hidden).
   // Phase 2 (0.12 -> 0.32): Iron Man mask assembles; glides to left & looks right.
   // Phase 3 (0.32 -> 0.48): HOME PAGE HERO SECTION (Iron Man on left looking right, Info on right).
-  // Phase 4 (0.48 -> 0.68): TRANSITION / WIPE: Home info fades out, diagonal wipe progresses, Ant-Man glides to right looking left.
-  // Phase 5 (0.68 -> 0.90): ABOUT US SECTION (Ant-Man on right looking left, About Us info on left).
+  // Phase 4 (0.48 -> 0.68): TRANSITION / WIPE: Home info fades out, diagonal wipe progresses, Star-Lord glides to right looking left.
+  // Phase 5 (0.68 -> 0.90): ABOUT US SECTION (Star-Lord on right looking left, About Us info on left).
   // Phase 6 (0.90 -> 1.00): Settle / buffer.
   useEffect(() => {
     if (!hasEntered) return;
@@ -209,8 +276,13 @@ export default function App() {
     const IRON_END     = 0.30;  // Iron Man fully assembled and in hero position on left
     const HOME_HOLD    = 0.44;  // Home page hero section in full focus
     const CENTER_END   = 0.50;  // Iron Man smoothly returns to center facing forward
+<<<<<<< Updated upstream
     const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Ant-Man with full 3D rotation
     const ABOUT_HOLD   = 0.78;  // Ant-Man glides to right, turns left, About Us panel in full focus
+=======
+    const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Star-Lord with full 3D rotation
+    const ABOUT_HOLD   = 0.76;  // Star-Lord glides to right, turns left, About Us panel in full focus
+>>>>>>> Stashed changes
 
     const st = ScrollTrigger.create({
       trigger: track,
