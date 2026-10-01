@@ -244,7 +244,7 @@ export const GallerySection: React.FC = () => {
 
         .gallery-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
           gap: 1.8rem;
         }
 
@@ -334,6 +334,29 @@ export const GallerySection: React.FC = () => {
           font-size: 0.78rem;
           color: #64748b;
           font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+          .gallery-inner-container {
+            padding: 3.5rem 1.1rem 5rem;
+          }
+          .gallery-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+          }
+          .gallery-card-img-wrap {
+            height: 195px;
+          }
+          .gallery-title {
+            font-size: clamp(1.85rem, 6.5vw, 2.5rem);
+          }
+          .gallery-filter-bar {
+            gap: 0.45rem;
+          }
+          .gallery-filter-btn {
+            padding: 0.45rem 0.85rem;
+            font-size: 0.70rem;
+          }
         }
       `}</style>
     </div>

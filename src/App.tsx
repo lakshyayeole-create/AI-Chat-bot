@@ -470,10 +470,11 @@ export default function App() {
     const eventsEl = document.getElementById('events');
     let eventsSt: ScrollTrigger | null = null;
     if (eventsEl) {
+      const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
       eventsSt = ScrollTrigger.create({
         trigger: eventsEl,
         start: 'top top',
-        end: '+=9200', // Dedicated scrub space: 8 stones + Gauntlet Convergence + Gauntlet->Loki 360 wipe
+        end: isMobileScreen ? '+=4800' : '+=9200', // Responsive scrub space: 4800px on mobile, 9200px on desktop
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
@@ -1448,6 +1449,9 @@ export default function App() {
           }
           .bottom-scroll-prompt {
             display: none !important;
+          }
+          .scroll-track-container {
+            height: 380vh !important;
           }
         }
       `}</style>

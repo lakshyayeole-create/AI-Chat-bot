@@ -503,6 +503,22 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           transform: translateY(-2px);
           box-shadow: 0 0 15px rgba(255, 100, 0, 0.4);
         }
+
+        @media (max-width: 768px) {
+          .avengers-skip-btn {
+            bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+            right: 1.25rem;
+            padding: 0.5rem 0.95rem;
+            font-size: 0.72rem;
+          }
+          .avengers-radial-core {
+            width: 85vw;
+            height: 85vw;
+          }
+          .avengers-logo-stage {
+            width: 88vw;
+          }
+        }
       `}</style>
     </div>
   );

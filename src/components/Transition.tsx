@@ -571,10 +571,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
           baseFromPosYRef.current = fromGroup.position.y;
 
-          // Calibrate camera to frame mask prominently (~78% vertical coverage)
+          // Calibrate camera to frame mask prominently (~78% vertical coverage on desktop, adaptive on mobile)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
-          const cameraDist = (scaledSize.y / 0.78) / (2 * Math.tan(fovRad / 2));
+          const currentAspect = window.innerWidth / Math.max(1, window.innerHeight);
+          const coverage = currentAspect < 1.0 ? 0.58 : 0.78;
+          let cameraDist = (scaledSize.y / coverage) / (2 * Math.tan(fovRad / 2));
+          if (currentAspect < 1.0) {
+            // Guard against horizontal clipping on narrow mobile screens
+            const horizDist = (scaledSize.x / (0.78 * currentAspect)) / (2 * Math.tan(fovRad / 2));
+            cameraDist = Math.max(cameraDist, horizDist);
+          }
           const yCam = 0;
           baseYCamRef.current = yCam;
           baseCameraDistRef.current = cameraDist;
@@ -704,12 +711,32 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         fromCamera.updateProjectionMatrix();
         fromRenderer.setSize(w, h);
         fromRenderer.setPixelRatio(pr);
-        updateFromBgPlane();
 
         toCamera.aspect = w / h;
         toCamera.updateProjectionMatrix();
         toRenderer.setSize(w, h);
         toRenderer.setPixelRatio(pr);
+
+        // Recalculate camera distance for updated aspect ratio
+        if (fromGroupRef.current) {
+          const b = new THREE.Box3().setFromObject(fromGroupRef.current);
+          const sz = b.getSize(new THREE.Vector3());
+          if (sz.y > 0.01) {
+            const fovR = (fromCamera.fov * Math.PI) / 180;
+            const aspect = w / Math.max(1, h);
+            const cov = aspect < 1.0 ? 0.58 : 0.78;
+            let cDist = (sz.y / cov) / (2 * Math.tan(fovR / 2));
+            if (aspect < 1.0) {
+              const hDist = (sz.x / (0.78 * aspect)) / (2 * Math.tan(fovR / 2));
+              cDist = Math.max(cDist, hDist);
+            }
+            baseCameraDistRef.current = cDist;
+            fromCamera.position.z = cDist;
+            toCamera.position.z = cDist;
+          }
+        }
+
+        updateFromBgPlane();
         updateToBgPlane();
       };
       window.addEventListener('resize', handleResize);
