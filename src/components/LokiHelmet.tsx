@@ -15,7 +15,7 @@ export const LokiHelmet: React.FC<LokiHelmetProps> = ({
   scale = 1.0,
   clippingPlanes,
 }) => {
-  const { scene } = useGLTF('/assets/loki_helmet.glb');
+  const { scene } = useGLTF('/assets/loki_main.glb');
 
   const model = useMemo(() => {
     const clone = scene.clone(true);
@@ -64,5 +64,5 @@ export const LokiHelmet: React.FC<LokiHelmetProps> = ({
   );
 };
 
-useGLTF.preload('/assets/loki_helmet.glb');
+useGLTF.preload('/assets/loki_main.glb');
 export default LokiHelmet;

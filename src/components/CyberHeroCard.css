@@ -329,7 +329,7 @@
 @media (max-width: 900px) {
   .home-hero-panel.cyber-hud-card {
     top: auto !important;
-    bottom: clamp(3.0rem, 6vh, 3.8rem) !important;
+    bottom: clamp(4.2rem, 8vh, 5.0rem) !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%);
@@ -369,7 +369,7 @@
 
 @media (max-width: 480px) {
   .home-hero-panel.cyber-hud-card {
-    bottom: clamp(2.8rem, 5.5vh, 3.4rem) !important;
+    bottom: clamp(4.0rem, 7.5vh, 4.8rem) !important;
     width: min(92vw, 355px) !important;
     max-width: 355px !important;
     padding: 0.68rem 0.85rem 0.62rem !important;

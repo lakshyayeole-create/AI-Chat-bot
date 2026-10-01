@@ -18,8 +18,8 @@ const ironManConfig: ModelConfig = {
   mobileBgImagePath: '/assets/iron_man_hud_bg_mobile.webp',
   rotationX: 0,
   targetHeight: 1.5,
-  assemblyAnimation: true,
-  autoStartAssembly: false, // Driven strictly by scroll
+  assemblyAnimation: typeof window !== 'undefined' && window.innerWidth >= 768,
+  autoStartAssembly: false,
   lighting: {
     ambientColor: 0xffffff,
     ambientIntensity: 1.15,
@@ -149,6 +149,7 @@ export default function App() {
 
   const heroInfoPanelRef = useRef<HTMLElement>(null);
   const aboutInfoPanelRef = useRef<HTMLElement>(null);
+  const eventsSectionRef = useRef<HTMLElement>(null);
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const gauntletLaserRef = useRef<HTMLDivElement>(null);
   const bottomScrollPromptRef = useRef<HTMLDivElement>(null);
@@ -228,8 +229,7 @@ export default function App() {
       transitionRef.current.setToPositionY(toPositionYRef.current);
       transitionRef.current.setFromRotationY(fromRotationYRef.current);
       transitionRef.current.setToRotationY(toRotationYRef.current);
-      const isTransitionPaused = canvasOpacityRef.current <= 0.005 || gauntletWipeProgressRef.current >= 0.999;
-      transitionRef.current.setPaused(isTransitionPaused);
+      transitionRef.current.setPaused(false);
     }
 
     // 2. Update Navbar morph imperatively
@@ -241,14 +241,21 @@ export default function App() {
     const gwp = gauntletWipeProgressRef.current;
     const co = canvasOpacityRef.current;
     const isWipingToGauntlet = gwp > 0.001 && gwp < 0.999;
+    const isMobileMode = isMobileRef.current;
     const wipePct = -10 + gwp * 120;
-    const wipeMask = isWipingToGauntlet
+
+    // On mobile, bypass the sharp diagonal mask slice; use smooth cosmic dissolve
+    const wipeMask = (!isMobileMode && isWipingToGauntlet)
       ? `linear-gradient(to top right, transparent 0%, transparent ${wipePct}%, #000 calc(${wipePct}% + 1.5px), #000 100%)`
       : '';
 
     if (canvasWrapRef.current) {
-      canvasWrapRef.current.style.opacity = String(gwp >= 0.999 ? 0 : co);
-      canvasWrapRef.current.style.visibility = (co <= 0.005 || gwp >= 0.999) ? 'hidden' : 'visible';
+      const mobileDissolveOp = Math.max(0, 1 - gwp * 1.35) * co;
+      const targetOp = isMobileMode
+        ? (gwp >= 0.999 ? 0 : mobileDissolveOp)
+        : (gwp >= 0.999 ? 0 : co);
+      canvasWrapRef.current.style.opacity = String(targetOp);
+      canvasWrapRef.current.style.visibility = (targetOp <= 0.005) ? 'hidden' : 'visible';
       canvasWrapRef.current.style.transition = isWipingToGauntlet ? 'none' : 'opacity 0.2s linear';
       canvasWrapRef.current.style.zIndex = (scrollProgressRef.current > 0.82 && gwp < 0.999) ? '42' : '1';
       canvasWrapRef.current.style.webkitMaskImage = wipeMask;
@@ -258,7 +265,19 @@ export default function App() {
     if (gauntletLaserRef.current) {
       if (isWipingToGauntlet) {
         gauntletLaserRef.current.style.display = 'block';
-        gauntletLaserRef.current.style.background = `linear-gradient(to top right, transparent calc(${wipePct}% - 3.5px), rgba(255, 215, 0, 0.9) calc(${wipePct}% - 1px), #ffffff ${wipePct}%, rgba(168, 85, 247, 0.95) calc(${wipePct}% + 1px), transparent calc(${wipePct}% + 3.5px))`;
+        if (isMobileMode) {
+          // Cosmic Quantum Energy Burst: smooth golden/purple radial flare centered on helmet
+          const flarePulse = Math.sin(gwp * Math.PI); // peaks at mid-transition
+          const flareSize = 35 + gwp * 35; // expands smoothly
+          gauntletLaserRef.current.style.transform = 'none';
+          gauntletLaserRef.current.style.filter = `drop-shadow(0 0 ${25 * flarePulse}px rgba(255, 215, 0, 0.9))`;
+          gauntletLaserRef.current.style.background = `radial-gradient(circle at 50% 42%, rgba(255, 215, 0, ${flarePulse * 0.55}) 0%, rgba(168, 85, 247, ${flarePulse * 0.40}) ${flareSize * 0.55}%, rgba(0, 229, 255, ${flarePulse * 0.25}) ${flareSize}%, transparent ${flareSize + 15}%)`;
+        } else {
+          // Desktop: Diagonal laser seam line
+          gauntletLaserRef.current.style.transform = 'none';
+          gauntletLaserRef.current.style.filter = 'drop-shadow(0 0 16px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 32px rgba(168, 85, 247, 0.65))';
+          gauntletLaserRef.current.style.background = `linear-gradient(to top right, transparent calc(${wipePct}% - 3.5px), rgba(255, 215, 0, 0.9) calc(${wipePct}% - 1px), #ffffff ${wipePct}%, rgba(168, 85, 247, 0.95) calc(${wipePct}% + 1px), transparent calc(${wipePct}% + 3.5px))`;
+        }
       } else {
         gauntletLaserRef.current.style.display = 'none';
       }
@@ -298,11 +317,20 @@ export default function App() {
       bottomScrollPromptRef.current.style.visibility = promptOp <= 0.005 ? 'hidden' : 'visible';
     }
 
-    // 7. Update AnantyaTimeline component imperatively
+    // 7. Update Events Section visibility (prevents black background box from sliding up over Star-Lord & About card)
+    if (eventsSectionRef.current) {
+      const isEventsInView = scrollProgressRef.current >= 0.98 || gauntletWipeProgressRef.current > 0.001 || eventsTimelineProgressRef.current > 0.001;
+      eventsSectionRef.current.style.opacity = isEventsInView ? '1' : '0';
+      eventsSectionRef.current.style.visibility = isEventsInView ? 'visible' : 'hidden';
+      eventsSectionRef.current.style.pointerEvents = isEventsInView ? 'auto' : 'none';
+    }
+
+    // 8. Update AnantyaTimeline component imperatively
     if (timelineRef.current) {
       timelineRef.current.setTimelineProgress(eventsTimelineProgressRef.current);
       timelineRef.current.setGauntletClenchProgress(gauntletClenchProgressRef.current);
       timelineRef.current.setIntroFlightProgress(introFlightProgressRef.current);
+      timelineRef.current.setGauntletWipeProgress(gauntletWipeProgressRef.current);
     }
   }, []);
 
@@ -587,68 +615,132 @@ export default function App() {
       eventsSt = ScrollTrigger.create({
         trigger: eventsEl,
         start: 'top top',
-        end: isMobileScreen ? '+=4800' : '+=9200',
+        end: isMobileScreen ? '+=3000' : '+=9200',
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress;
 
-          if (p <= 0.14) {
-            const wipeT = p / 0.14;
-            gauntletWipeProgressRef.current = wipeT;
-            gauntletClenchProgressRef.current = 0;
-            introFlightProgressRef.current = 0;
-            eventsTimelineProgressRef.current = 0;
-            canvasOpacityRef.current = 1;
-            updateActiveNav('events');
-          } else if (p <= 0.24) {
-            const clenchT = (p - 0.14) / (0.24 - 0.14);
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = clenchT;
-            introFlightProgressRef.current = 0;
-            eventsTimelineProgressRef.current = 0;
-            canvasOpacityRef.current = 0;
-            updateActiveNav('events');
-          } else if (p <= 0.36) {
-            const flightT = (p - 0.24) / (0.36 - 0.24);
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = 1;
-            introFlightProgressRef.current = flightT;
-            eventsTimelineProgressRef.current = 0;
-            canvasOpacityRef.current = 0;
-            updateActiveNav('events');
-          } else if (p <= 0.76) {
-            const timeT = (p - 0.36) / (0.76 - 0.36);
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = 1;
-            introFlightProgressRef.current = 1;
-            eventsTimelineProgressRef.current = timeT * 7.0;
-            canvasOpacityRef.current = 0;
-            updateActiveNav('events');
-          } else if (p <= 0.80) {
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = 1;
-            introFlightProgressRef.current = 1;
-            eventsTimelineProgressRef.current = 7.15;
-            canvasOpacityRef.current = 0;
-            updateActiveNav('events');
-          } else if (p <= 0.90) {
-            const convT = (p - 0.80) / (0.90 - 0.80);
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = 1;
-            introFlightProgressRef.current = 1;
-            eventsTimelineProgressRef.current = 7.25 + convT * 1.0;
-            canvasOpacityRef.current = 0;
-            updateActiveNav('events');
+          if (isMobileScreen) {
+            // Snappy, responsive transition on mobile so the gauntlet doesn't linger behind the card
+            if (p <= 0.08) {
+              const wipeT = p / 0.08;
+              gauntletWipeProgressRef.current = wipeT;
+              gauntletClenchProgressRef.current = 0;
+              introFlightProgressRef.current = 0;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 1;
+              toRotationYRef.current = Math.PI * 2 + wipeT * Math.PI * 2;
+              updateActiveNav('events');
+            } else if (p <= 0.14) {
+              const clenchT = (p - 0.08) / (0.14 - 0.08);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = clenchT;
+              introFlightProgressRef.current = 0;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.22) {
+              const flightT = (p - 0.14) / (0.22 - 0.14);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = flightT;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.78) {
+              const timeT = (p - 0.22) / (0.78 - 0.22);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = timeT * 7.0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.83) {
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 7.15;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.92) {
+              const convT = (p - 0.83) / (0.92 - 0.83);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 7.25 + convT * 1.0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else {
+              const lokiT = (p - 0.92) / (1.00 - 0.92);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 8.25 + lokiT * 0.85;
+              canvasOpacityRef.current = 0;
+              updateActiveNav(lokiT >= 0.5 ? 'gallery' : 'events');
+            }
           } else {
-            const lokiT = (p - 0.90) / (1.00 - 0.90);
-            gauntletWipeProgressRef.current = 1;
-            gauntletClenchProgressRef.current = 1;
-            introFlightProgressRef.current = 1;
-            eventsTimelineProgressRef.current = 8.25 + lokiT * 0.85;
-            canvasOpacityRef.current = 0;
-            updateActiveNav(lokiT >= 0.5 ? 'gallery' : 'events');
+            // Desktop: Full cinematic widescreen scroll pacing
+            if (p <= 0.14) {
+              const wipeT = p / 0.14;
+              gauntletWipeProgressRef.current = wipeT;
+              gauntletClenchProgressRef.current = 0;
+              introFlightProgressRef.current = 0;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 1;
+              // Rotate Star-Lord 360° during diagonal laser wipe (syncs with gauntlet behind)
+              toRotationYRef.current = Math.PI * 2 + wipeT * Math.PI * 2;
+              updateActiveNav('events');
+            } else if (p <= 0.24) {
+              const clenchT = (p - 0.14) / (0.24 - 0.14);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = clenchT;
+              introFlightProgressRef.current = 0;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.36) {
+              const flightT = (p - 0.24) / (0.36 - 0.24);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = flightT;
+              eventsTimelineProgressRef.current = 0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.76) {
+              const timeT = (p - 0.36) / (0.76 - 0.36);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = timeT * 7.0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.80) {
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 7.15;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else if (p <= 0.90) {
+              const convT = (p - 0.80) / (0.90 - 0.80);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 7.25 + convT * 1.0;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('events');
+            } else {
+              const lokiT = (p - 0.90) / (1.00 - 0.90);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 8.25 + lokiT * 0.85;
+              canvasOpacityRef.current = 0;
+              updateActiveNav(lokiT >= 0.5 ? 'gallery' : 'events');
+            }
           }
 
           syncDOM();
@@ -672,6 +764,8 @@ export default function App() {
           gauntletWipeProgressRef.current = 0;
           gauntletClenchProgressRef.current = 0;
           introFlightProgressRef.current = 0;
+          // Reset Star-Lord rotation back to pre-wipe state
+          toRotationYRef.current = Math.PI * 2;
           syncDOM();
         },
       });
@@ -733,6 +827,10 @@ export default function App() {
   // Handler to smoothly scroll to any specific stone in the pinned timeline
   const handleSelectStone = useCallback((index: number) => {
     if (!eventsStRef.current) return;
+    if (isMobileRef.current) {
+      // On mobile, stones are navigated directly via the Left/Right controls without page jumping
+      return;
+    }
     const targetNorm = 0.36 + (index / 7.0) * 0.40;
     const targetScrollY = eventsStRef.current.start + targetNorm * (eventsStRef.current.end - eventsStRef.current.start);
     if (lenisRef.current) {
@@ -856,7 +954,6 @@ export default function App() {
           fromModel={ironManConfig}
           toModel={starLordConfig}
           enableScroll={false}
-          isPaused={activeNavSection !== 'home' && activeNavSection !== 'about'}
         />
       </div>
 
@@ -1119,11 +1216,10 @@ export default function App() {
       <div id="scroll-track" className="scroll-track-container" />
 
       {/* Events 3D Orbit Timeline Section (Pinned via ScrollTrigger for full-screen immersion) */}
-      <section id="events" className="events-timeline-section">
+      <section id="events" ref={eventsSectionRef} className="events-timeline-section">
         <AnantyaTimeline
           ref={timelineRef}
           onSelectStone={handleSelectStone}
-          isPaused={activeNavSection !== 'events'}
         />
       </section>
 
@@ -1148,8 +1244,9 @@ export default function App() {
           width: 100%;
           height: 100vh;
           z-index: 40;
-          background-color: #040711;
-          box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.95);
+          background-color: transparent;
+          box-shadow: none;
+          transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         .gallery-main-section {
@@ -1429,7 +1526,7 @@ export default function App() {
           top: 50%;
           left: 6%;
           max-width: 520px;
-          z-index: 30;
+          z-index: 45;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -1585,12 +1682,12 @@ export default function App() {
         @media (max-width: 768px) {
           .about-info-panel {
             top: auto !important;
-            bottom: clamp(2.8rem, 5.5vh, 3.4rem) !important;
+            bottom: clamp(4.0rem, 7.5vh, 4.8rem) !important;
             left: 50% !important;
             right: auto !important;
             width: min(92vw, 355px) !important;
             max-width: 355px !important;
-            max-height: 32vh !important;
+            max-height: 36vh !important;
             overflow-y: auto !important;
             padding: 0.68rem 0.85rem 0.62rem !important;
             gap: 0.28rem !important;

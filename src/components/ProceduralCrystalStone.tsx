@@ -218,9 +218,29 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   orbitVector.applyEuler(new THREE.Euler(orbitTiltX, orbitTiltY, orbitTiltZ, 'XYZ'));
 
   // Exact coordinates relative to orbit center (clean original scale, naturally in front of text at z = -0.7)
-  const targetX = orbitCenterX + orbitVector.x;
-  const targetY = orbitCenterY + orbitVector.y + (isActive ? 0.08 : 0);
-  const targetZ = orbitCenterZ + orbitVector.z + (isActive ? 0.38 : 0);
+  let targetX = orbitCenterX + orbitVector.x;
+  let targetY = orbitCenterY + orbitVector.y + (isActive ? 0.08 : 0);
+  let targetZ = orbitCenterZ + orbitVector.z + (isActive ? 0.38 : 0);
+
+  if (isMobile) {
+    // ── Improved Mobile Celestial Planetary Orbit ──
+    // All 8 stones form an elegant 3D celestial ring clearly visible on mobile
+    const rx = 1.85; // Width radius fits comfortably inside mobile viewport
+    const rz = 2.2;  // Depth into 3D space
+    const ringCenterY = 1.38;
+
+    if (isActive) {
+      // Hero showcase stone: brought forward, centered, and elevated
+      targetX = 0.0;
+      targetY = 1.42;
+      targetZ = 0.70;
+    } else {
+      // Inactive stones arrayed along a tilted 3D cosmic planetary ring
+      targetX = Math.cos(angle) * rx;
+      targetY = ringCenterY - Math.sin(angle) * 0.24;
+      targetZ = Math.sin(angle) * rz - 0.45;
+    }
+  }
 
   // Front-facing factor: +1.0 at front, -1.0 at back
   const frontFactor = orbitVector.z / (orbitRadius || 1);
@@ -228,9 +248,10 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   // Subtle depth attenuation factor for stones in the background
   const depthFactor = THREE.MathUtils.clamp((frontFactor + 1) / 2, 0.42, 1.0);
 
-  // Original stone size preserved
-  const baseScale = isCreation ? stonesSize * 1.08 : stonesSize;
-  const targetScale = isActive ? baseScale * 1.2 : baseScale;
+  // Responsive stone sizing: sleek crystal gem on mobile without overpowering narrow phone width
+  const mobileScaleFactor = isMobile ? (isActive ? 0.72 : 0.42) : 1.0;
+  const baseScale = (isCreation ? stonesSize * 1.08 : stonesSize) * mobileScaleFactor;
+  const targetScale = isActive ? baseScale * (isMobile ? 1.15 : 1.2) : baseScale;
 
   // Interactive Drag & Inertia Physics (Euler lerp)
   const targetRotation = useRef(new THREE.Euler(0.08, -0.35, 0));
@@ -300,11 +321,15 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
       const dockedY = gauntletY + socketData.position[1] * gauntletScale;
       const dockedZ = gauntletPosition[2] + socketData.position[2] * gauntletScale;
 
-      // Apex high in the air above the gauntlet
+      // Apex high in the air above the gauntlet (stay inside screen on mobile)
       const spreadNorm = (index - (numStones - 1) / 2) / ((numStones - 1) / 2);
-      const apexX = spreadNorm * 2.2;
-      const apexY = 2.8 + Math.sin((index / numStones) * Math.PI) * 0.7; // ~2.8 to 3.5 world units high (well above Y = -0.32)
-      const apexZ = 0.8 + Math.cos(index * 1.3) * 0.4;
+      const apexX = isMobile ? spreadNorm * 0.75 : spreadNorm * 2.2;
+      const apexY = isMobile
+        ? 1.7 + Math.sin((index / numStones) * Math.PI) * 0.4
+        : 2.8 + Math.sin((index / numStones) * Math.PI) * 0.7;
+      const apexZ = isMobile
+        ? 0.4 + Math.cos(index * 1.3) * 0.25
+        : 0.8 + Math.cos(index * 1.3) * 0.4;
 
       let curX: number, curY: number, curZ: number, curScale: number;
 
@@ -315,7 +340,8 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
         curX = THREE.MathUtils.lerp(dockedX, apexX, ease1);
         curY = THREE.MathUtils.lerp(dockedY, apexY, ease1);
         curZ = THREE.MathUtils.lerp(dockedZ, apexZ, ease1);
-        curScale = THREE.MathUtils.lerp(socketData.scale, targetScale * 0.85, ease1);
+        const dockedScale = isMobile ? socketData.scale * 0.72 : socketData.scale;
+        curScale = THREE.MathUtils.lerp(dockedScale, targetScale * 0.85, ease1);
 
         // Dynamic rotation from socket angle to upward hover spin
         rotGroupRef.current.rotation.x = THREE.MathUtils.lerp(socketData.rotation[0], 0.15, ease1);
@@ -659,19 +685,6 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
         )}
       </group>
 
-      {/* ── Prismatic Diamond Aura (Subtle accent on active stone only) ── */}
-      {isActive && convergenceProgress < 0.02 && (
-        <mesh scale={1.22}>
-          <sphereGeometry args={[0.55, 16, 16]} />
-          <meshBasicMaterial
-            color={coreEmissive}
-            transparent
-            opacity={0.09 * luminanceFactor}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
     </group>
   );
 };

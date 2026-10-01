@@ -81,9 +81,9 @@
   flex-direction: column;
   position: relative;
   padding: 2px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 80%, var(--accent-color) 100%);
-  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent-color) 50%, transparent));
+  background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 70%, #ffffff) 15%, rgba(255, 255, 255, 0.15) 30%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.15) 70%, color-mix(in srgb, var(--accent-color) 70%, #ffffff) 85%, var(--accent-color) 100%);
+  clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+  filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px color-mix(in srgb, var(--accent-color) 40%, transparent));
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
   height: auto;
 }
@@ -99,19 +99,20 @@
 
 .event-card-wrapper:hover {
   transform: translateY(-6px);
-  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--accent-color) 80%, transparent));
+  filter: drop-shadow(0 24px 56px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 28px color-mix(in srgb, var(--accent-color) 70%, transparent));
 }
 
 .event-card {
-  background: linear-gradient(180deg, rgba(8, 11, 18, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(180deg, rgba(12, 17, 30, 0.95) 0%, rgba(8, 12, 22, 0.96) 50%, rgba(5, 8, 15, 0.98) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  clip-path: polygon(17px 0, 100% 0, 100% calc(100% - 17px), calc(100% - 17px) 100%, 0 100%, 0 17px);
+  clip-path: polygon(19px 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%, 0 19px);
   position: relative;
   height: auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .events-grid .event-card {
@@ -127,7 +128,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center top, color-mix(in srgb, var(--accent-color) 15%, transparent) 0%, transparent 60%);
+  background: radial-gradient(circle at center top, color-mix(in srgb, var(--accent-color) 20%, transparent) 0%, transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
@@ -137,26 +138,26 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 17px;
+  left: 19px;
   /* Start after the top-left cut */
   right: 0;
   height: 2px;
-  background: var(--accent-color);
-  box-shadow: 0 0 10px var(--accent-color);
-  opacity: 0.9;
+  background: linear-gradient(90deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color) 70%, #ffffff) 50%, var(--accent-color) 100%);
+  box-shadow: 0 0 12px var(--accent-color), 0 0 24px color-mix(in srgb, var(--accent-color) 60%, transparent);
+  opacity: 0.95;
   z-index: 5;
 }
 
 /* Logo Area */
 .event-logo-area {
-  height: 84px;
+  height: 78px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.45);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.35) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.6rem 1.4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.5rem 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -169,22 +170,42 @@
   transform: translate(-50%, -50%);
   width: 150%;
   height: 150%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color) 20%, transparent) 0%, transparent 60%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color) 25%, transparent) 0%, transparent 60%);
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
 .event-card-wrapper:hover .logo-glow {
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color) 35%, transparent) 0%, transparent 60%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color) 40%, transparent) 0%, transparent 60%);
+}
+
+.event-logo-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 45%, rgba(255, 255, 255, 0.12));
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--accent-color) 20%, transparent), 0 4px 16px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+  transition: all 0.25s ease;
+}
+
+.event-card-wrapper:hover .event-logo-container {
+  border-color: color-mix(in srgb, var(--accent-color) 70%, rgba(255, 255, 255, 0.25));
+  box-shadow: inset 0 0 18px color-mix(in srgb, var(--accent-color) 35%, transparent), 0 4px 20px color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .event-logo {
   max-width: 100%;
-  max-height: 58px;
+  max-height: 52px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.65));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 10px color-mix(in srgb, var(--accent-color) 35%, transparent));
   position: relative;
   z-index: 1;
+  transition: opacity 0.12s ease;
 }
 
 .event-logo-placeholder {
@@ -214,7 +235,7 @@
 
 /* Card Content */
 .event-card-content {
-  padding: 1.4rem 1.8rem 1.6rem;
+  padding: 1.3rem 1.8rem 1.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -236,7 +257,8 @@
   height: 12px;
   border-top: 1.5px solid var(--accent-color);
   border-right: 1.5px solid var(--accent-color);
-  opacity: 0.5;
+  opacity: 0.7;
+  box-shadow: 0 0 6px var(--accent-color);
   pointer-events: none;
 }
 
@@ -249,7 +271,8 @@
   height: 12px;
   border-bottom: 1.5px solid var(--accent-color);
   border-left: 1.5px solid var(--accent-color);
-  opacity: 0.5;
+  opacity: 0.7;
+  box-shadow: 0 0 6px var(--accent-color);
   pointer-events: none;
 }
 
@@ -261,23 +284,24 @@
 }
 
 .event-category {
-  font-size: 0.80rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--accent-color);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   white-space: nowrap;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent-color) 50%, transparent);
 }
 
 .category-line {
   height: 1px;
   flex-grow: 1;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 60%, transparent), transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 70%, transparent) 0%, rgba(255, 255, 255, 0.08) 80%, transparent 100%);
 }
 
 .event-organizer-row {
   display: flex;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
 }
 
 .organizer-badge {
@@ -285,92 +309,107 @@
   align-items: center;
   font-size: 0.72rem;
   font-weight: 800;
-  color: #cbd5e1;
+  color: #e2e8f0;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 3px 9px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+  padding: 3px 10px;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-left: 2.5px solid var(--accent-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
 }
 
 .event-name {
-  font-size: 1.75rem;
+  font-size: 1.7rem;
   font-weight: 800;
   color: #ffffff;
-  line-height: 1.2;
-  margin-bottom: 0.55rem;
-  letter-spacing: 0.03em;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  line-height: 1.22;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.25), 0 0 32px color-mix(in srgb, var(--accent-color) 35%, transparent);
 }
 
 .event-card-desc {
-  font-size: 1.0rem;
+  font-size: 0.95rem;
   color: #cbd5e1;
-  line-height: 1.6;
+  line-height: 1.55;
   margin-bottom: 0;
 }
 
 .event-divider {
   width: 100%;
   height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 1.1rem 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.12) 20%, color-mix(in srgb, var(--accent-color) 60%, #fff) 50%, rgba(255, 255, 255, 0.12) 80%, transparent 100%);
+  margin: 1.0rem 0;
 }
 
 /* Details Grid */
 .event-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  row-gap: 0.95rem;
-  column-gap: 1.5rem;
+  row-gap: 0.75rem;
+  column-gap: 1.0rem;
 }
 
 .detail-item {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.55rem 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.detail-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: color-mix(in srgb, var(--accent-color) 40%, rgba(255, 255, 255, 0.12));
 }
 
 .detail-item.full-width {
   grid-column: 1 / -1;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 16%, transparent) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 40%, rgba(255, 255, 255, 0.1));
+  border-left: 3px solid var(--accent-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 .detail-label {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.76rem;
+  font-size: 0.70rem;
   font-weight: 700;
   color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
 }
 
 .detail-label svg {
   color: var(--accent-color);
-  opacity: 0.85;
+  filter: drop-shadow(0 0 6px var(--accent-color));
 }
 
 .detail-value {
-  font-size: 1.02rem;
+  font-size: 0.95rem;
   color: #f8fafc;
   font-weight: 600;
-  padding-left: 1.55rem;
-  /* Align with text after icon */
+  padding-left: 0;
 }
 
 .detail-value.accent-text {
   color: var(--accent-color);
   font-weight: 800;
-  font-size: 1.28rem;
-  text-shadow: 0 0 12px color-mix(in srgb, var(--accent-color) 45%, transparent);
+  font-size: 1.32rem;
+  text-shadow: 0 0 16px color-mix(in srgb, var(--accent-color) 60%, transparent);
 }
 
 /* Card Footer & Button */
 .event-card-footer {
-  margin-top: 1.3rem;
+  margin-top: 1.15rem;
   width: 100%;
 }
 
@@ -383,19 +422,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.55rem;
+  gap: 0.6rem;
   width: 100%;
   padding: 0.85rem 1.4rem;
-  background: rgba(0, 0, 0, 0.35);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 25%, transparent) 0%, color-mix(in srgb, var(--accent-color) 12%, transparent) 100%);
   border: 1px solid var(--accent-color);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent-color) 30%, transparent), inset 0 0 10px color-mix(in srgb, var(--accent-color) 15%, transparent);
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   color: #ffffff;
   font-weight: 700;
   font-size: 0.92rem;
   letter-spacing: 0.14em;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
+  cursor: pointer;
 }
 
 .explore-btn::before {
@@ -406,7 +447,7 @@
   width: 100%;
   height: 100%;
   background: var(--accent-color);
-  opacity: 0.1;
+  opacity: 0.12;
   transition: opacity 0.3s ease;
   z-index: 0;
 }
@@ -417,13 +458,18 @@
 }
 
 .explore-btn:hover {
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-color) 40%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-color) 45%, transparent) 0%, color-mix(in srgb, var(--accent-color) 25%, transparent) 100%);
+  box-shadow: 0 0 25px color-mix(in srgb, var(--accent-color) 60%, transparent);
   color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.explore-btn:active {
+  transform: translateY(1px);
 }
 
 .explore-btn:hover::before {
-  opacity: 0.25;
+  opacity: 0.28;
 }
 
 .explore-btn .arrow {
@@ -461,75 +507,81 @@
    ========================================================================== */
 @media (max-width: 768px) {
   .events-timeline-section .event-card-wrapper {
-    max-width: 380px !important;
-    width: calc(100% - 28px) !important;
+    max-width: 375px !important;
+    width: min(92vw, 375px) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 24px color-mix(in srgb, var(--accent-color) 30%, transparent) !important;
   }
   .events-timeline-section .event-logo-area {
-    height: 56px !important;
-    padding: 0.35rem 0.9rem !important;
+    height: 52px !important;
+    padding: 0.25rem 0.8rem !important;
+  }
+  .events-timeline-section .event-logo-container {
+    padding: 3px 12px !important;
+    border-radius: 6px !important;
   }
   .events-timeline-section .event-logo {
-    max-height: 42px !important;
+    max-height: 38px !important;
   }
   .events-timeline-section .event-card-content {
-    padding: 0.75rem 1rem 0.85rem !important;
+    padding: 0.65rem 0.95rem 0.75rem !important;
   }
   .events-timeline-section .event-category-row {
-    margin-bottom: 0.2rem !important;
+    margin-bottom: 0.18rem !important;
   }
   .events-timeline-section .event-category {
     font-size: 0.58rem !important;
     letter-spacing: 0.12em !important;
   }
   .events-timeline-section .organizer-badge {
-    font-size: 0.55rem !important;
-    padding: 1px 6px !important;
+    font-size: 0.54rem !important;
+    padding: 2px 7px !important;
   }
   .events-timeline-section .event-name {
-    font-size: 1.25rem !important;
-    margin-bottom: 0.25rem !important;
-    line-height: 1.15 !important;
+    font-size: 1.20rem !important;
+    margin-bottom: 0.20rem !important;
+    line-height: 1.18 !important;
   }
   .events-timeline-section .event-card-desc {
     font-size: 0.74rem !important;
-    line-height: 1.32 !important;
-    margin-bottom: 0.4rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.35rem !important;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .events-timeline-section .event-divider {
-    margin: 0.35rem 0 0.5rem !important;
+    margin: 0.30rem 0 0.40rem !important;
   }
   .events-timeline-section .event-details {
-    gap: 0.4rem !important;
+    gap: 0.40rem !important;
   }
   .events-timeline-section .detail-item {
-    gap: 0.15rem !important;
+    padding: 0.35rem 0.60rem !important;
+    gap: 0.12rem !important;
   }
   .events-timeline-section .detail-label {
-    font-size: 0.62rem !important;
-    gap: 0.3rem !important;
+    font-size: 0.58rem !important;
+    gap: 0.25rem !important;
   }
   .events-timeline-section .detail-label svg {
     width: 12px !important;
     height: 12px !important;
   }
   .events-timeline-section .detail-value {
-    font-size: 0.74rem !important;
-    padding-left: 1.1rem !important;
+    font-size: 0.76rem !important;
+    padding-left: 0 !important;
   }
   .events-timeline-section .detail-value.accent-text {
     font-size: 1.05rem !important;
   }
   .events-timeline-section .event-card-footer {
-    margin-top: 0.6rem !important;
+    margin-top: 0.50rem !important;
   }
   .events-timeline-section .explore-btn {
-    padding: 0.55rem 0.9rem !important;
-    font-size: 0.75rem !important;
-    min-height: 36px !important;
-    letter-spacing: 0.1em !important;
+    padding: 0.50rem 0.95rem !important;
+    font-size: 0.76rem !important;
+    min-height: 38px !important;
+    letter-spacing: 0.10em !important;
   }
 }
