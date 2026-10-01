@@ -387,6 +387,9 @@ export default function App() {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
     ScrollTrigger.clearScrollMemory?.('manual');
+    ScrollTrigger.config({
+      ignoreMobileResize: true,
+    });
 
     const track = document.getElementById('scroll-track');
     if (!track) return;
@@ -1164,6 +1167,8 @@ export default function App() {
           inset: 0;
           width: 100vw;
           height: 100vh;
+          height: 100lvh;
+          min-height: 100%;
           z-index: 1;
           pointer-events: none;
           will-change: opacity, visibility;

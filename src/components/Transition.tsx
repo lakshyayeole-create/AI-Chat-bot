@@ -806,12 +806,27 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         }
       );
 
+      let lastWidth = window.innerWidth;
+      let lastHeight = window.innerHeight;
+
       // ==========================================
       // EVENT LISTENERS
       // ==========================================
       const handleResize = () => {
         const w = window.innerWidth;
         const h = window.innerHeight;
+        const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+        const widthChanged = Math.abs(w - lastWidth) > 6;
+        const heightDelta = Math.abs(h - lastHeight);
+
+        // On mobile devices, ignore vertical-only resize caused by address bar toggling
+        if (isMobile && !widthChanged && heightDelta < 160) {
+          return;
+        }
+
+        lastWidth = w;
+        lastHeight = h;
+
         const pr = getDevicePixelRatio();
 
         fromCamera.aspect = w / h;

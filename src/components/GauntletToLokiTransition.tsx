@@ -218,10 +218,19 @@ export const GauntletToLokiTransition: React.FC<GauntletToLokiTransitionProps> =
       (err) => console.error('Failed to load loki_helmet.glb:', err)
     );
 
+    let lastW = window.innerWidth;
+    let lastH = window.innerHeight;
+
     // Resize handler
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+      if (isMobile && Math.abs(w - lastW) < 6 && Math.abs(h - lastH) < 160) {
+        return;
+      }
+      lastW = w;
+      lastH = h;
       if (cameraRef.current) {
         cameraRef.current.aspect = w / h;
         cameraRef.current.updateProjectionMatrix();
