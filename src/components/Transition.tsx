@@ -631,7 +631,30 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
         },
         undefined,
-        (err) => console.error('Failed to load toModel:', err)
+        (err) => {
+          console.error('Failed to load toModel:', err);
+          if (toModel.modelPath !== '/assets/marvel_ant-man_helmet.glb') {
+            console.warn('Attempting fallback to /assets/marvel_ant-man_helmet.glb while starlord.glb is being placed');
+            loader.load('/assets/marvel_ant-man_helmet.glb', (fallbackGltf) => {
+              const model = fallbackGltf.scene;
+              const box = new THREE.Box3().setFromObject(model);
+              const center = box.getCenter(new THREE.Vector3());
+              model.position.sub(center);
+              toGroup.add(model);
+
+              const size = box.getSize(new THREE.Vector3());
+              const targetHeight = toModel.targetHeight ?? 1.5;
+              toGroup.scale.setScalar(targetHeight / size.y);
+
+              const finalBox = new THREE.Box3().setFromObject(toGroup);
+              const finalCenter = finalBox.getCenter(new THREE.Vector3());
+              toGroup.position.sub(finalCenter);
+              if (toModel.offsetY !== undefined) {
+                toGroup.position.y += toModel.offsetY;
+              }
+            });
+          }
+        }
       );
 
       // ==========================================
