@@ -154,7 +154,9 @@ export default function App() {
   const [eventsTimelineProgress, setEventsTimelineProgress] = useState(0);
   const eventsStRef = useRef<ScrollTrigger | null>(null);
   const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
-  const [gauntletOpenProgress, setGauntletOpenProgress] = useState(0);
+  const [gauntletWipeProgress, setGauntletWipeProgress] = useState(0);
+  const [gauntletClenchProgress, setGauntletClenchProgress] = useState(0);
+  const [introFlightProgress, setIntroFlightProgress] = useState(0);
 
   // Lock document scroll while introduction is playing to prevent reload jumps or wheel scroll
   useEffect(() => {
@@ -395,7 +397,7 @@ export default function App() {
           setAboutInfoOpacity(glideT);
 
           setActiveNavSection('about');
-        } else if (p <= 0.90) {
+        } else if (p <= 0.84) {
           // Phase 5a — About Us Section in full focus (Star-Lord on right looking left, About panel on left)
           setMorphProgress(1);
           setAssemblyProgress(1);
@@ -410,20 +412,28 @@ export default function App() {
           setAboutInfoOpacity(1);
           setActiveNavSection('about');
         } else {
-          // Phase 5b — Seamless Handoff: as #events arrives at the top, fade out About panel and 3D canvas
-          const exitT = (p - 0.90) / 0.10;
+          // Phase 5b — Re-center Star-Lord helmet for transition into Thanos Infinity Gauntlet
+          // As requested: "during end of about section bring starlord helmet at center of screen again for transition"
+          const recenterNorm = (p - 0.84) / (1.0 - 0.84);
+          const recenterT = Math.min(1, Math.max(0, recenterNorm));
+          const easedRecenter = recenterT * recenterT * (3 - 2 * recenterT);
+
           setMorphProgress(1);
           setAssemblyProgress(1);
           setTransitionProgress(1);
-          setCanvasOpacity(Math.max(0, 1 - exitT));
+          setCanvasOpacity(1);
           setFromPositionX(0);
           setFromRotationY(Math.PI * 2);
 
-          setToPositionX(targetRightX);
-          setToRotationY(Math.PI * 2 + targetLeftRot);
+          // Smoothly glide Star-Lord from targetRightX (0.65) back to 0.0 (center)
+          setToPositionX(targetRightX * (1 - easedRecenter));
+          // Smoothly turn Star-Lord to face straight forward (Math.PI * 2)
+          setToRotationY(Math.PI * 2 + targetLeftRot * (1 - easedRecenter));
+
           setHeroInfoOpacity(0);
-          setAboutInfoOpacity(Math.max(0, 1 - exitT));
-          setActiveNavSection(exitT > 0.5 ? 'events' : 'about');
+          // Fade out About panel as helmet returns to center
+          setAboutInfoOpacity(Math.max(0, 1 - recenterT * 1.5));
+          setActiveNavSection('about');
         }
       },
     });
@@ -436,60 +446,90 @@ export default function App() {
       eventsSt = ScrollTrigger.create({
         trigger: eventsEl,
         start: 'top top',
-        end: '+=7200', // Dedicated scrub space: 8 stones + Gauntlet Convergence + Gauntlet->Loki 360 wipe
+        end: '+=9200', // Dedicated scrub space: 8 stones + Gauntlet Convergence + Gauntlet->Loki 360 wipe
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress; // 0.0 -> 1.0
 
-          // Phase 0: Pre-Event 1 Gauntlet Intro — fist slides in from top-right and opens (0.00 -> 0.08)
-          if (p <= 0.08) {
-            const openT = p / 0.08; // 0.0 to 1.0
-            setGauntletOpenProgress(openT);
-            setEventsTimelineProgress(0); // Hold at stone 1 start
+          // Phase 0A: Diagonal Laser Wipe from Star-Lord to Open Gauntlet (0.00 -> 0.14 - widened for smooth transition speed)
+          if (p <= 0.14) {
+            const wipeT = p / 0.14;
+            setGauntletWipeProgress(wipeT);
+            setGauntletClenchProgress(0); // Hand wide open
+            setIntroFlightProgress(0);
+            setEventsTimelineProgress(0);
+            setCanvasOpacity(1);
             setActiveNavSection('events');
           }
-          // Phase A: Stone 1 through Stone 8 in the 3D Orbit (0.08 -> 0.65)
-          else if (p <= 0.65) {
-            // Hold the fully-open gauntlet for a brief moment (0.08 -> 0.115) as Stone 1 materializes,
-            // then remove it cleanly so the orbit takes center stage
-            const phaseAT = (p - 0.08) / (0.65 - 0.08); // 0.0 to 1.0 across Phase A
-            setGauntletOpenProgress(phaseAT < 0.08 ? 1 : 0); // Hold open briefly, then hide
-            setEventsTimelineProgress(phaseAT * 7.0); // 0.0 to 7.0
+          // Phase 0B: Hand Clenches from Pinky to Thumb (0.14 -> 0.24)
+          else if (p <= 0.24) {
+            const clenchT = (p - 0.14) / (0.24 - 0.14);
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(clenchT);
+            setIntroFlightProgress(0);
+            setEventsTimelineProgress(0);
+            setCanvasOpacity(0);
             setActiveNavSection('events');
           }
-          // Phase B: Dedicated Hold on Event 8 (InnovateX) (0.65 -> 0.70)
-          else if (p <= 0.70) {
-            setGauntletOpenProgress(0);
-            setEventsTimelineProgress(7.15); // Resting hold on Event 8 (Gauntlet hidden)
+          // Phase 0C: Stones burst out, fly above gauntlet into orbit & Gauntlet sinks under camera (0.24 -> 0.36)
+          else if (p <= 0.36) {
+            const flightT = (p - 0.24) / (0.36 - 0.24);
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(1);
+            setIntroFlightProgress(flightT);
+            setEventsTimelineProgress(0);
+            setCanvasOpacity(0);
             setActiveNavSection('events');
           }
-          // Phase C: Stone Convergence onto Gauntlet + Finger Clench (0.70 -> 0.85)
-          else if (p <= 0.85) {
-            const convT = (p - 0.70) / (0.85 - 0.70); // 0.0 to 1.0
-            setGauntletOpenProgress(0); // Hide intro gauntlet — convergence gauntlet takes over
-            setEventsTimelineProgress(7.25 + convT * 1.0); // 7.25 to 8.25
+          // Phase 1: Events 1 to 8 Timeline in Orbit (0.36 -> 0.76)
+          else if (p <= 0.76) {
+            const timeT = (p - 0.36) / (0.76 - 0.36);
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(1);
+            setIntroFlightProgress(1);
+            setEventsTimelineProgress(timeT * 7.0);
+            setCanvasOpacity(0);
             setActiveNavSection('events');
           }
-          // Phase D: Rotate SAME Gauntlet and Laser Wipe into Loki (0.85 -> 1.00)
+          // Phase 2: Dedicated Hold on Event 8 (InnovateX) (0.76 -> 0.80)
+          else if (p <= 0.80) {
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(1);
+            setIntroFlightProgress(1);
+            setEventsTimelineProgress(7.15);
+            setCanvasOpacity(0);
+            setActiveNavSection('events');
+          }
+          // Phase 3: Post-Event 8: Stones Convergence onto Gauntlet + Finger Clench (0.80 -> 0.90)
+          else if (p <= 0.90) {
+            const convT = (p - 0.80) / (0.90 - 0.80);
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(1);
+            setIntroFlightProgress(1);
+            setEventsTimelineProgress(7.25 + convT * 1.0);
+            setCanvasOpacity(0);
+            setActiveNavSection('events');
+          }
+          // Phase 4: Rotate Gauntlet and Laser Wipe into Loki Helmet (0.90 -> 1.00)
           else {
-            const lokiT = (p - 0.85) / (1.00 - 0.85); // 0.0 to 1.0
-            setGauntletOpenProgress(0);
-            setEventsTimelineProgress(8.25 + lokiT * 0.85); // 8.25 to 9.1
+            const lokiT = (p - 0.90) / (1.00 - 0.90);
+            setGauntletWipeProgress(1);
+            setGauntletClenchProgress(1);
+            setIntroFlightProgress(1);
+            setEventsTimelineProgress(8.25 + lokiT * 0.85);
+            setCanvasOpacity(0);
             setActiveNavSection(lokiT >= 0.5 ? 'gallery' : 'events');
           }
         },
         onEnter: () => {
           setActiveNavSection('events');
-          setCanvasOpacity(0);
           setAboutInfoOpacity(0);
           setHeroInfoOpacity(0);
-          setGauntletOpenProgress(0); // Reset for clean re-entry
         },
         onEnterBack: () => {
           setActiveNavSection('events');
-          setCanvasOpacity(0);
           setAboutInfoOpacity(0);
           setHeroInfoOpacity(0);
         },
@@ -497,7 +537,9 @@ export default function App() {
           setActiveNavSection('about');
           setCanvasOpacity(1);
           setAboutInfoOpacity(1);
-          setGauntletOpenProgress(0); // Reset when scrolling back to About
+          setGauntletWipeProgress(0);
+          setGauntletClenchProgress(0);
+          setIntroFlightProgress(0);
         },
       });
       eventsStRef.current = eventsSt;
@@ -540,7 +582,7 @@ export default function App() {
   // Handler to smoothly scroll to any specific stone in the pinned timeline
   const handleSelectStone = useCallback((index: number) => {
     if (!eventsStRef.current) return;
-    const targetNorm = (index / 7.0) * 0.58; // 8 stones span 0.0 to 0.58 of the pinned scrub track
+    const targetNorm = 0.36 + (index / 7.0) * 0.40; // 8 stones span 0.36 to 0.76 of the pinned scrub track
     const targetScrollY = eventsStRef.current.start + targetNorm * (eventsStRef.current.end - eventsStRef.current.start);
     if (lenisRef.current) {
       lenisRef.current.scrollTo(targetScrollY, {
@@ -632,28 +674,60 @@ export default function App() {
       />
 
       {/* Fixed 3D Canvas */}
-      <div
-        className="fixed-3d-canvas-wrap"
-        style={{
-          opacity: canvasOpacity,
-          pointerEvents: 'none',
-          visibility: canvasOpacity <= 0.005 ? 'hidden' : 'visible',
-          transition: 'opacity 0.2s linear',
-        }}
-      >
-        <Transition
-          ref={transitionRef}
-          fromModel={ironManConfig}
-          toModel={starLordConfig}
-          assemblyProgress={assemblyProgress}
-          transitionProgress={transitionProgress}
-          fromPositionX={fromPositionX}
-          toPositionX={toPositionX}
-          fromRotationY={fromRotationY}
-          toRotationY={toRotationY}
-          enableScroll={false}
-        />
-      </div>
+      {(() => {
+        const isWipingToGauntlet = gauntletWipeProgress > 0.001 && gauntletWipeProgress < 0.999;
+        const wipePct = -10 + gauntletWipeProgress * 120;
+        const wipeMask = isWipingToGauntlet
+          ? `linear-gradient(to top right, transparent 0%, transparent ${wipePct}%, #000 calc(${wipePct}% + 1.5px), #000 100%)`
+          : undefined;
+
+        return (
+          <>
+            <div
+              className="fixed-3d-canvas-wrap"
+              style={{
+                opacity: gauntletWipeProgress >= 0.999 ? 0 : canvasOpacity,
+                pointerEvents: 'none',
+                visibility: (canvasOpacity <= 0.005 || gauntletWipeProgress >= 0.999) ? 'hidden' : 'visible',
+                transition: isWipingToGauntlet ? 'none' : 'opacity 0.2s linear',
+                zIndex: (scrollProgress > 0.82 && gauntletWipeProgress < 0.999) ? 42 : 1,
+                WebkitMaskImage: wipeMask,
+                maskImage: wipeMask,
+              }}
+            >
+              <Transition
+                ref={transitionRef}
+                fromModel={ironManConfig}
+                toModel={starLordConfig}
+                assemblyProgress={assemblyProgress}
+                transitionProgress={transitionProgress}
+                fromPositionX={fromPositionX}
+                toPositionX={toPositionX}
+                fromRotationY={fromRotationY}
+                toRotationY={toRotationY}
+                enableScroll={false}
+              />
+            </div>
+
+            {/* ── Diagonal Laser Seam Line (Star-Lord -> Thanos Infinity Gauntlet) ── */}
+            {isWipingToGauntlet && (
+              <div
+                className="gauntlet-laser-wipe-line"
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  width: '100vw',
+                  height: '100vh',
+                  zIndex: 44,
+                  pointerEvents: 'none',
+                  background: `linear-gradient(to top right, transparent calc(${wipePct}% - 3.5px), rgba(255, 215, 0, 0.9) calc(${wipePct}% - 1px), #ffffff ${wipePct}%, rgba(168, 85, 247, 0.95) calc(${wipePct}% + 1px), transparent calc(${wipePct}% + 3.5px))`,
+                  filter: 'drop-shadow(0 0 16px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 32px rgba(168, 85, 247, 0.65))',
+                }}
+              />
+            )}
+          </>
+        );
+      })()}
 
       {/* Home Page Hero Info Panel (Right Side: displays festival details while helmet gazes from the left) */}
       <section
@@ -828,7 +902,8 @@ export default function App() {
         <AnantyaTimeline
           timelineProgress={eventsTimelineProgress}
           onSelectStone={handleSelectStone}
-          gauntletOpenProgress={gauntletOpenProgress}
+          gauntletClenchProgress={gauntletClenchProgress}
+          introFlightProgress={introFlightProgress}
         />
       </section>
 

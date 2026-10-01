@@ -14,20 +14,22 @@ export const GAUNTLET_CONFIG = {
   position: [0.0, -0.32, 0.0] as [number, number, number], // [x, y, z] center position
   rotation: [0.0, 0.0, 0.0] as [number, number, number],   // [x, y, z] Euler rotation
 
-  // ── 2. Gauntlet Material & Shine (Tuned to eliminate excessive glare) ──
-  color: '#d49b29',              // Authentic Asgardian Uru Gold color
-  metalness: 0.58,               // Metalness (0.0 = plastic, 1.0 = mirror chrome; was 0.72)
-  roughness: 0.48,               // Roughness (higher softens glare; was 0.28)
-  emissive_color: '#1a0d02',     // Very soft shadow tone underglow (no bright glare)
-  emissive_intensity: 0.0,       // Zero emissive power on gauntlet itself to remove blinding glare
+  // ── 2. Gauntlet Material & Shine (Polished Uru Gold with metallic shine, zero glow) ──
+  color: '#d4a233',              // Vibrant Asgardian Uru Gold color
+  metalness: 0.74,               // Metallic shine and authentic golden reflections
+  roughness: 0.36,               // Smooth polished metallic sheen
+  emissive_color: '#000000',     // Pure black emissive: gauntlet does NOT glow
+  emissive_intensity: 0.0,       // Strictly zero emissive power
 
   // ── 3. Dedicated Gauntlet Illumination Lights ──
-  ambient_light: 0.65,           // Ambient omnidirectional fill light
-  key_light: 1.10,               // Soft directional light from front-top
-  fill_light_left: 0.60,         // Left warm rim light
-  fill_light_right: 0.50,        // Right cool rim light
-  point_light: 0.0,              // Disabled (was 4.5; removed front glare bulb)
-  nexus_pulse_intensity: 0.0,    // Disabled (was 6.0; removed center palm blinding bulb)
+  ambient_light: 0.35,           // Soft balanced omnidirectional fill
+  key_light: 0.55,               // Soft directional light from front-top
+  fill_light_left: 0.25,         // Soft left rim light
+  fill_light_right: 0.20,        // Soft right rim light
+  point_light: 0.0,              // Disabled (zero front glare bulb)
+  nexus_pulse_intensity: 0.0,    // Disabled (zero center palm glare)
+  socket_light_intensity: 2.6,   // Emits colored light onto the gauntlet metal in a small radius around each stone
+  socket_light_radius: 0.65,     // Small radius around each socket (drops to 0 beyond this distance)
 
   // ── 4a. Sequential Finger Folding & Clenching Movement (Post-Event 8) ──
   // Sequence: Pinky (1st) -> Ring (2nd) -> Middle (3rd) -> Index (4th) -> Thumb (5th locks into fist)

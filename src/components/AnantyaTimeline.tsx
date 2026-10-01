@@ -27,11 +27,11 @@ export const TIMELINE_CONFIG = {
 
   // ── 3. Lighting & Brightness Controls ──
   lighting_intensity: 1.0,      // General scene lighting multiplier (increase or decrease)
-  stone_glow: 1.25,             // Overall stone glow & bloom intensity
+  stone_glow: 1.0,              // Overall stone glow & bloom intensity
   ambient_light: 0.45,          // Ambient background fill light brightness
   directional_light: 1.5,       // Main directional key-light brightness
   point_light_intensity: 14,    // Internal crystal core point-light brightness
-  bloom_threshold: 0.65,        // Bloom threshold (higher prevents glare on white/yellow stones)
+  bloom_threshold: 1.00,        // Bloom threshold (>= 1.0 ensures non-emissive gauntlet body never blooms, only glowing stones bloom)
 
   // ── 4. Camera Framing ──
   camera_fov: 42,
@@ -213,6 +213,10 @@ interface OrbitSceneProps {
   lokiTransitionProgress?: number;
   /** 0.0 = closed fist top-right, 1.0 = wide open palm centered (pre-Event 1 intro) */
   gauntletOpenProgress?: number;
+  /** Direct hand clench progress (0.0 = open hand, 1.0 = closed fist from pinky to thumb) */
+  gauntletClenchProgress?: number;
+  /** Intro stone emergence and flight progress (0.0 = docked in hand, 1.0 = in orbit) */
+  introFlightProgress?: number;
 }
 
 /**
@@ -231,6 +235,8 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
   convergenceProgress = 0,
   lokiTransitionProgress = 0,
   gauntletOpenProgress = 0,
+  gauntletClenchProgress = 0,
+  introFlightProgress,
 }) => {
   const { gl, scene, camera } = useThree();
 
@@ -238,20 +244,40 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
   const isTransitioning = lokiTransitionProgress > 0.001;
   const sharedRotY = lokiTransitionProgress * Math.PI * 2;
 
-  // Diagonal laser clipping planes (angle 72 degrees, bottom-left to top-right)
+  // Diagonal laser clipping planes (perfectly aligned with to top right laser seam line)
   const clipPlaneGauntlet = useMemo(() => new THREE.Plane(), []);
   const clipPlaneLoki = useMemo(() => new THREE.Plane(), []);
 
   useFrame(() => {
     if (isTransitioning && lokiTransitionProgress < 0.999) {
       gl.localClippingEnabled = true;
-      const angle = 72 * (Math.PI / 180);
-      const nx = Math.cos(angle);
-      const ny = Math.sin(angle);
-      // Sweep distance across the screen
-      const d = THREE.MathUtils.lerp(-4.5, 4.5, lokiTransitionProgress);
-      clipPlaneGauntlet.set(new THREE.Vector3(nx, ny, 0), -d);
-      clipPlaneLoki.set(new THREE.Vector3(-nx, -ny, 0), d);
+
+      // ── Fixed Transition Axis: Exactly matches linear-gradient(to top right, ...) in 2D Viewport Space ──
+      const persCam = camera as THREE.PerspectiveCamera;
+      const aspect = persCam.aspect || (typeof window !== 'undefined' ? window.innerWidth / window.innerHeight : 16 / 9);
+      const fovRad = ((persCam.fov || 45) * Math.PI) / 180;
+      const zDist = camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
+      const h3d = 2 * Math.tan(fovRad / 2) * zDist;
+      const w3d = h3d * aspect;
+      const len = Math.hypot(w3d, h3d);
+      // CSS linear-gradient(to top right) has color lines perpendicular to (w, h)
+      // Normal vector pointing to top-right in screen space is (h3d / len, w3d / len)
+      const nx = h3d / len;
+      const ny = w3d / len;
+      const totalL = (2 * w3d * h3d) / len;
+
+      // Exact distance matching 2D pct = -10 + p * 120 (from -10% to 110% of gradient length)
+      const pct = -10 + lokiTransitionProgress * 120;
+      const d = ((pct - 50) / 100) * totalL;
+
+      // Define plane in CAMERA (VIEW) SPACE so normal (nx, ny, 0) matches screen linear-gradient(to top right) perfectly
+      const planeCamGauntlet = new THREE.Plane(new THREE.Vector3(nx, ny, 0), -d);
+      const planeCamLoki = new THREE.Plane(new THREE.Vector3(-nx, -ny, 0), d);
+
+      // Transform to world space so that Three.js (which applies camera.matrixWorldInverse) gets exact camera-space planes!
+      camera.updateMatrixWorld();
+      clipPlaneGauntlet.copy(planeCamGauntlet).applyMatrix4(camera.matrixWorld);
+      clipPlaneLoki.copy(planeCamLoki).applyMatrix4(camera.matrixWorld);
     } else {
       gl.localClippingEnabled = false;
     }
@@ -370,89 +396,109 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
         opacity={0.45}
       />
 
-      {/* ── One Single 3D Layered Orbit Ring (Positioned at Orbit Center & Tilted) ── */}
-      <group
-        position={[cfg.orbit_center_x, cfg.orbit_center_y, cfg.orbit_center_z]}
-        rotation={[cfg.orbit_tilt_x, cfg.orbit_tilt_y, cfg.orbit_tilt_z]}
-      >
-        {/* Layer 1: Heavy Titanium Aerospace Rail with physical depth */}
-        <mesh>
-          <torusGeometry args={[cfg.circle_radius, 0.045 * cfg.stones_size, 16, 240]} />
-          <meshStandardMaterial
-            color="#1c2432"
-            roughness={0.2}
-            metalness={0.95}
-            envMapIntensity={2.2}
-          />
-        </mesh>
+      {/* ── One Single 3D Layered Orbit Ring (Removed during Gauntlet convergence & transition to Loki) ── */}
+      {!isTransitioning && lokiTransitionProgress <= 0.001 && convergenceProgress <= 0.01 && (introFlightProgress === undefined || introFlightProgress >= 0.75) && (
+        <group
+          position={[cfg.orbit_center_x, cfg.orbit_center_y, cfg.orbit_center_z]}
+          rotation={[cfg.orbit_tilt_x, cfg.orbit_tilt_y, cfg.orbit_tilt_z]}
+        >
+          {/* Layer 1: Heavy Titanium Aerospace Rail with physical depth */}
+          <mesh>
+            <torusGeometry args={[cfg.circle_radius, 0.045 * cfg.stones_size, 16, 240]} />
+            <meshStandardMaterial
+              color="#1c2432"
+              roughness={0.2}
+              metalness={0.95}
+              envMapIntensity={2.2}
+            />
+          </mesh>
 
-        {/* Layer 2: Gold/Bronze Outer Bevel Rim */}
-        <mesh>
-          <torusGeometry
-            args={[
-              cfg.circle_radius + 0.038 * cfg.stones_size,
-              0.008 * cfg.stones_size,
-              12,
-              240,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#d4af37"
-            roughness={0.25}
-            metalness={0.92}
-            envMapIntensity={1.8}
-          />
-        </mesh>
+          {/* Layer 2: Gold/Bronze Outer Bevel Rim */}
+          <mesh>
+            <torusGeometry
+              args={[
+                cfg.circle_radius + 0.038 * cfg.stones_size,
+                0.008 * cfg.stones_size,
+                12,
+                240,
+              ]}
+            />
+            <meshStandardMaterial
+              color="#d4af37"
+              roughness={0.25}
+              metalness={0.92}
+              envMapIntensity={1.8}
+            />
+          </mesh>
 
-        {/* Layer 3: Central Luminous Energy Conduit Track */}
-        <mesh>
-          <torusGeometry
-            args={[cfg.circle_radius, 0.01 * cfg.stones_size, 12, 200]}
-          />
-          <meshStandardMaterial
-            color="#38bdf8"
-            emissive="#0284c7"
-            emissiveIntensity={1.5 * cfg.stone_glow}
-            roughness={0.1}
-          />
-        </mesh>
+          {/* Layer 3: Central Luminous Energy Conduit Track */}
+          <mesh>
+            <torusGeometry
+              args={[cfg.circle_radius, 0.01 * cfg.stones_size, 12, 200]}
+            />
+            <meshStandardMaterial
+              color="#38bdf8"
+              emissive="#0284c7"
+              emissiveIntensity={1.5 * cfg.stone_glow}
+              roughness={0.1}
+            />
+          </mesh>
 
-        {/* Layer 4: Inner Dark Track Guide */}
-        <mesh>
-          <torusGeometry
-            args={[
-              cfg.circle_radius - 0.038 * cfg.stones_size,
-              0.008 * cfg.stones_size,
-              12,
-              240,
-            ]}
-          />
-          <meshStandardMaterial
-            color="#2a3446"
-            roughness={0.3}
-            metalness={0.9}
-          />
-        </mesh>
-      </group>
+          {/* Layer 4: Inner Dark Track Guide */}
+          <mesh>
+            <torusGeometry
+              args={[
+                cfg.circle_radius - 0.038 * cfg.stones_size,
+                0.008 * cfg.stones_size,
+                12,
+                240,
+              ]}
+            />
+            <meshStandardMaterial
+              color="#2a3446"
+              roughness={0.3}
+              metalness={0.9}
+            />
+          </mesh>
+        </group>
+      )}
 
-      {/* ── Pre-Event 1 Opening Gauntlet: Slides from top-right to bottom-left as fist unfurls ── */}
-      {gauntletOpenProgress > 0.001 && convergenceProgress < 0.01 && (
+      {/* ── Intro Thanos Infinity Gauntlet (Open hand clenches pinky to thumb, then hides under camera as stones fly) ── */}
+      {introFlightProgress !== undefined && introFlightProgress < 1.0 && convergenceProgress < 0.001 && (
         (() => {
-          // Smooth ease-in-out for position (1.0 = fully centered / bottom-left)
+          let introGauntletY = GAUNTLET_CONFIG.position[1];
+          if (introFlightProgress > 0.28) {
+            const sinkT = (introFlightProgress - 0.28) / (1.0 - 0.28);
+            const easedSink = sinkT * sinkT * 1.35;
+            introGauntletY = THREE.MathUtils.lerp(GAUNTLET_CONFIG.position[1], -9.5, Math.min(1, easedSink));
+          }
+
+          return (
+            <group
+              position={[GAUNTLET_CONFIG.position[0], introGauntletY, GAUNTLET_CONFIG.position[2]]}
+              rotation={GAUNTLET_CONFIG.rotation}
+              scale={GAUNTLET_CONFIG.scale}
+            >
+              <InfinityGauntlet
+                clenchProgress={gauntletClenchProgress}
+                scale={1.0}
+              />
+            </group>
+          );
+        })()
+      )}
+
+      {/* ── Backward compatibility fallback for standalone gauntletOpenProgress ── */}
+      {gauntletOpenProgress > 0.001 && convergenceProgress < 0.01 && introFlightProgress === undefined && (
+        (() => {
           const ease = gauntletOpenProgress < 0.5
             ? 2 * gauntletOpenProgress * gauntletOpenProgress
             : 1 - Math.pow(-2 * gauntletOpenProgress + 2, 2) / 2;
 
-          // Diagonal: top-right (high X, high Y) → center-bottom-left (low X, low Y)
-          // At openProgress=0: top-right (+3.0 X, +2.2 Y); at 1.0: center (0.0 X, -0.32 Y)
           const posX = THREE.MathUtils.lerp(3.2, GAUNTLET_CONFIG.position[0], ease);
           const posY = THREE.MathUtils.lerp(2.4, GAUNTLET_CONFIG.position[1], ease);
           const posZ = GAUNTLET_CONFIG.position[2];
-
-          // Scale: slightly smaller at entry, full size at destination
           const openScale = THREE.MathUtils.lerp(1.2, 1.0, ease) * GAUNTLET_CONFIG.scale;
-
-          // Slight intro rotation: tilted right at entry, settling to neutral
           const rotZ = THREE.MathUtils.lerp(-0.35, 0, ease);
 
           return (
@@ -468,7 +514,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
       )}
 
       {/* ── 3D Open-Palm Infinity Gauntlet (Emerges AFTER Event 8, stones attach, fingers fold) ── */}
-      {convergenceProgress > 0.0001 && (
+      {convergenceProgress > 0.0001 && lokiTransitionProgress < 0.999 && (
         <group rotation={[0, sharedRotY, 0]}>
           <group position={GAUNTLET_CONFIG.position} rotation={GAUNTLET_CONFIG.rotation} scale={GAUNTLET_CONFIG.scale}>
             <InfinityGauntlet
@@ -481,47 +527,64 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
       )}
 
       {/* ── 8 Procedural Concentric Layered Crystals along the Orbit ── */}
-      <group rotation={[0, sharedRotY, 0]}>
-        {STONES_DATA.map((stone, i) => (
-          <ProceduralCrystalStone
-            key={stone.id}
-            stone={stone}
-            index={i}
-            numStones={NUM_STONES}
-            sharedGeometry={sharedGeometry}
-            stoneGeometry={gauntletStoneGeometries[stone.id]}
-            orbitRotation={orbitRotation}
-            orbitRadius={cfg.circle_radius}
-            stonesSize={cfg.stones_size}
-            stoneGlow={cfg.stone_glow}
-            pointLightIntensity={cfg.point_light_intensity}
-            orbitCenterX={cfg.orbit_center_x}
-            orbitCenterY={cfg.orbit_center_y}
-            orbitCenterZ={cfg.orbit_center_z}
-            orbitTiltX={cfg.orbit_tilt_x}
-            orbitTiltY={cfg.orbit_tilt_y}
-            orbitTiltZ={cfg.orbit_tilt_z}
-            isActive={i === activeIndex}
-            onSelect={onSelectStone}
-            convergenceProgress={convergenceProgress}
-            gauntletPosition={GAUNTLET_CONFIG.position}
-            gauntletScale={GAUNTLET_CONFIG.scale}
-          />
-        ))}
-      </group>
+      {lokiTransitionProgress < 0.999 && (
+        <group rotation={[0, sharedRotY, 0]}>
+          {STONES_DATA.map((stone, i) => {
+            let stoneGauntletY = GAUNTLET_CONFIG.position[1];
+            if (introFlightProgress !== undefined && introFlightProgress > 0.28) {
+              const sinkT = (introFlightProgress - 0.28) / (1.0 - 0.28);
+              const easedSink = sinkT * sinkT * 1.35;
+              stoneGauntletY = THREE.MathUtils.lerp(GAUNTLET_CONFIG.position[1], -9.5, Math.min(1, easedSink));
+            }
+
+            return (
+              <ProceduralCrystalStone
+                key={stone.id}
+                stone={stone}
+                index={i}
+                numStones={NUM_STONES}
+                sharedGeometry={sharedGeometry}
+                stoneGeometry={gauntletStoneGeometries[stone.id]}
+                orbitRotation={orbitRotation}
+                orbitRadius={cfg.circle_radius}
+                stonesSize={cfg.stones_size}
+                stoneGlow={cfg.stone_glow}
+                pointLightIntensity={cfg.point_light_intensity}
+                orbitCenterX={cfg.orbit_center_x}
+                orbitCenterY={cfg.orbit_center_y}
+                orbitCenterZ={cfg.orbit_center_z}
+                orbitTiltX={cfg.orbit_tilt_x}
+                orbitTiltY={cfg.orbit_tilt_y}
+                orbitTiltZ={cfg.orbit_tilt_z}
+                isActive={i === activeIndex && (introFlightProgress === undefined || introFlightProgress >= 0.95)}
+                onSelect={onSelectStone}
+                convergenceProgress={convergenceProgress}
+                introFlightProgress={introFlightProgress}
+                introGauntletY={stoneGauntletY}
+                gauntletPosition={GAUNTLET_CONFIG.position}
+                gauntletScale={GAUNTLET_CONFIG.scale}
+                clippingPlanes={isTransitioning ? [clipPlaneGauntlet] : undefined}
+                lokiTransitionProgress={lokiTransitionProgress}
+              />
+            );
+          })}
+        </group>
+      )}
 
       {/* ── Loki's Regal Horned Helmet (Revealed along the laser seam) ── */}
       {isTransitioning && (
         <group rotation={[0, sharedRotY, 0]} position={[0, 0.05, 0.0]} scale={1.0}>
-          <LokiHelmet clippingPlanes={isTransitioning ? [clipPlaneLoki] : undefined} />
+          <LokiHelmet clippingPlanes={lokiTransitionProgress < 0.999 ? [clipPlaneLoki] : undefined} />
         </group>
       )}
 
-      {/* ── UnrealBloom & Vignette Post-Processing Glow (Glare auto-suppressed as gauntlet converges) ── */}
+      {/* ── UnrealBloom & Vignette Post-Processing Glow (Tight radius ensures stones glow vibrantly without spilling on gauntlet) ── */}
       <EffectComposer>
         <Bloom
-          intensity={THREE.MathUtils.lerp(1.15 * (cfg.stone_glow / 1.25), 0.25, convergenceProgress)}
-          luminanceThreshold={THREE.MathUtils.lerp(cfg.bloom_threshold, 0.95, convergenceProgress)}
+          intensity={0.78}
+          luminanceThreshold={cfg.bloom_threshold ?? 1.00}
+          luminanceSmoothing={0.12}
+          radius={0.30}
           mipmapBlur
         />
         <Vignette eskil={false} offset={0.2} darkness={1.12} />
@@ -535,12 +598,18 @@ export interface AnantyaTimelineProps {
   onSelectStone?: (index: number) => void;
   /** 0.0 = gauntlet hidden, transitioning from 0→1 triggers the pre-Event 1 fist-opening intro */
   gauntletOpenProgress?: number;
+  /** Direct hand clench progress (0.0 = open hand, 1.0 = closed fist from pinky to thumb) */
+  gauntletClenchProgress?: number;
+  /** Intro stone emergence and flight progress (0.0 = docked in hand, 1.0 = in orbit) */
+  introFlightProgress?: number;
 }
 
 export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
   timelineProgress,
   onSelectStone: onSelectStoneProp,
   gauntletOpenProgress = 0,
+  gauntletClenchProgress = 0,
+  introFlightProgress,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -704,6 +773,8 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
   };
 
   const activeStone = STONES_DATA[activeIndex] || STONES_DATA[0];
+  const isIntroFlight = introFlightProgress !== undefined && introFlightProgress < 1.0;
+  const introUiFade = isIntroFlight ? Math.max(0, (introFlightProgress - 0.88) / 0.12) : 1.0;
 
   return (
     <div
@@ -747,28 +818,30 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
             convergenceProgress={convergenceProgress}
             lokiTransitionProgress={lokiTransitionProgress}
             gauntletOpenProgress={gauntletOpenProgress}
+            gauntletClenchProgress={gauntletClenchProgress}
+            introFlightProgress={introFlightProgress}
           />
         </Suspense>
       </Canvas>
 
       {/* ── Diagonal Laser Seam Line (Sweeps across during Gauntlet -> Loki wipe) ── */}
-      {lokiTransitionProgress > 0.001 && lokiTransitionProgress < 0.999 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: `${lokiTransitionProgress * 100}%`,
-            width: '4px',
-            height: '100%',
-            transform: 'translateX(-50%) rotate(-18deg)',
-            transformOrigin: 'center center',
-            background: 'linear-gradient(to bottom, #10b981, #fef08a, #00f0ff)',
-            boxShadow: '0 0 24px #10b981, 0 0 48px #34d399, 0 0 80px #06b6d4',
-            zIndex: 35,
-            pointerEvents: 'none',
-          }}
-        />
-      )}
+      {lokiTransitionProgress > 0.001 && lokiTransitionProgress < 0.999 && (() => {
+        const pct = -10 + lokiTransitionProgress * 120;
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 35,
+              pointerEvents: 'none',
+              background: `linear-gradient(to top right, transparent calc(${pct}% - 4px), rgba(16, 185, 129, 0.95) calc(${pct}% - 1.2px), #ffffff ${pct}%, rgba(245, 158, 11, 0.95) calc(${pct}% + 1.2px), transparent calc(${pct}% + 4px))`,
+              filter: 'drop-shadow(0 0 14px rgba(16, 185, 129, 0.9)) drop-shadow(0 0 28px rgba(245, 158, 11, 0.8))',
+            }}
+          />
+        );
+      })()}
 
       {/* ── 2. Right Side: Vertical 01–08 Progress Indicator (Safe Margin) ── */}
       <div
@@ -783,8 +856,8 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
           gap: 'clamp(7px, 1.4vh, 12px)',
           alignItems: 'flex-end',
           userSelect: 'none',
-          opacity: Math.max(0, 1 - convergenceProgress * 3.5),
-          pointerEvents: convergenceProgress > 0.2 ? 'none' : 'auto',
+          opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
+          pointerEvents: (convergenceProgress > 0.2 || introUiFade < 0.5) ? 'none' : 'auto',
           transition: 'opacity 0.25s ease',
         }}
       >
@@ -848,7 +921,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
           gap: '8px',
           pointerEvents: 'none',
           userSelect: 'none',
-          opacity: Math.max(0, 1 - convergenceProgress * 3.5),
+          opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
           transition: 'opacity 0.25s ease',
         }}
       >
@@ -885,8 +958,8 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
             ? `translate(-50%, ${Math.abs(cardState.offset) * 0.6}px) scale(${cardState.scale})`
             : `translate(${cardState.offset}px, -50%) scale(${cardState.scale})`,
           transformOrigin: isMobile ? 'center bottom' : 'left center',
-          opacity: cardState.opacity,
-          pointerEvents: cardState.opacity > 0.35 ? 'auto' : 'none',
+          opacity: cardState.opacity * introUiFade,
+          pointerEvents: (cardState.opacity * introUiFade > 0.35) ? 'auto' : 'none',
           width: isMobile ? 'calc(100% - 32px)' : 'clamp(320px, 32vw, 440px)',
           maxWidth: '440px',
           maxHeight: isMobile ? '48vh' : '82vh',
