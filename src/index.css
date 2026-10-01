@@ -18,6 +18,7 @@ html {
 button, nav, .navbar-morph-container, .mobile-hamburger-btn, .mobile-drawer-item {
   user-select: none;
   -webkit-user-select: none;
+  scroll-behavior: auto;
 }
 
 p, h1, h2, h3, h4, span.stat-val, span.stat-label, .about-feature-content, .gallery-card-info {

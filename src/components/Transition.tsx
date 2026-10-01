@@ -77,6 +77,8 @@ export interface TransitionHandle {
   setToRotationY: (y: number) => void;
   /** Pause or resume the render loop */
   setPaused: (paused: boolean) => void;
+  /** Directly update 3D model transforms without triggering React re-renders */
+  setModelTransforms?: (fromX: number, fromRotY: number, toX: number, toRotY: number) => void;
 }
 
 export interface TransitionProps {
@@ -345,6 +347,12 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const setPaused = useCallback((paused: boolean) => {
       isPausedRef.current = paused;
     }, []);
+    const setModelTransforms = useCallback((fromX: number, fromRotY: number, toX: number, toRotY: number) => {
+      targetFromPositionXRef.current = fromX;
+      targetFromRotationYRef.current = fromRotY;
+      targetToPositionXRef.current = toX;
+      targetToRotationYRef.current = toRotY;
+    }, []);
 
     useImperativeHandle(
       ref,
@@ -363,9 +371,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         setToPositionY,
         setFromRotationY,
         setToRotationY,
-        setPaused
+        setPaused,
+        setModelTransforms
       }),
-      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setFromPositionX, setToPositionX, setFromPositionY, setToPositionY, setFromRotationY, setToRotationY, setPaused]
+      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setFromPositionX, setToPositionX, setFromPositionY, setToPositionY, setFromRotationY, setToRotationY, setPaused, setModelTransforms]
     );
 
     // Stable configs
@@ -430,6 +439,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const roomEnv1 = new RoomEnvironment();
       fromScene.environment = pmremGen1.fromScene(roomEnv1, 0.04).texture;
       roomEnv1.dispose();
+      pmremGen1.dispose();
 
 
       // Lighting Rig 1
@@ -505,6 +515,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const roomEnv2 = new RoomEnvironment();
       toScene.environment = pmremGen2.fromScene(roomEnv2, 0.04).texture;
       roomEnv2.dispose();
+      pmremGen2.dispose();
 
       // Lighting Rig 2
       const light2 = toModel.lighting || {};
@@ -824,7 +835,6 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         if (isPausedRef.current) {
           return;
         }
-
         // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
           const { startTime, duration, startVal, targetVal } = tweenRef.current;
@@ -913,9 +923,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
         }
 
-        // Selective rendering: only render scene if its group is visible
-        const shouldRenderFrom = Boolean(fromGroupRef.current && fromGroupRef.current.visible);
-        const shouldRenderTo = Boolean(toGroupRef.current && toGroupRef.current.visible);
+        // Skip WebGL rendering if container or parent is hidden (e.g. during events/gallery/contact)
+        const container = containerRef.current;
+        const parent = container?.parentElement;
+        const isHidden = parent && (parent.style.visibility === 'hidden' || parent.style.opacity === '0');
+        if (isHidden) {
+          return;
+        }
+
+        // Selective rendering: only render scene if its group is visible and within active progress
+        const shouldRenderFrom = Boolean(fromGroupRef.current && fromGroupRef.current.visible) && currentProgress < 0.998;
+        const shouldRenderTo = Boolean(toGroupRef.current && toGroupRef.current.visible) && currentProgress > 0.002;
 
         if (shouldRenderFrom) {
           fromRenderer.render(fromScene, fromCamera);

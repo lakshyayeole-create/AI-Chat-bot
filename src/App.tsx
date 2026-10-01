@@ -7,6 +7,10 @@ import Navbar, { NavbarHandle } from './components/Navbar';
 import AvengersIntro from './components/ui/AvengersIntro';
 import AnantyaTimeline, { AnantyaTimelineHandle } from './components/AnantyaTimeline';
 import { GallerySection } from './components/GallerySection';
+import ContactSection from './components/ContactSection';
+import CountdownTimer from './components/CountdownTimer';
+import ScrollGuidance from './components/ScrollGuidance';
+import './components/CyberHeroCard.css';
 
 const ironManConfig: ModelConfig = {
   modelPath: '/assets/iron_man_detailed_web.glb',
@@ -696,10 +700,28 @@ export default function App() {
       });
     }
 
+    // ScrollTrigger for Contact Section
+    const contactEl = document.getElementById('contact');
+    let contactSt: ScrollTrigger | null = null;
+    if (contactEl) {
+      contactSt = ScrollTrigger.create({
+        trigger: contactEl,
+        start: 'top 60%',
+        end: 'bottom bottom',
+        onEnter: () => {
+          updateActiveNav('contact');
+        },
+        onEnterBack: () => {
+          updateActiveNav('contact');
+        },
+      });
+    }
+
     return () => {
       st.kill();
       if (eventsSt) eventsSt.kill();
       if (gallerySt) gallerySt.kill();
+      if (contactSt) contactSt.kill();
       eventsStRef.current = null;
     };
   }, [hasEntered, syncDOM, updateActiveNav]);
@@ -753,6 +775,18 @@ export default function App() {
           });
         } else {
           galleryEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      return;
+    }
+
+    if (id === 'contact') {
+      const contactEl = document.getElementById('contact');
+      if (contactEl) {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(contactEl, { offset: 0, duration: 2.2 });
+        } else {
+          contactEl.scrollIntoView({ behavior: 'smooth' });
         }
       }
       return;
@@ -837,10 +871,10 @@ export default function App() {
         }}
       />
 
-      {/* Home Page Hero Info Panel (Right Side: displays festival details while helmet gazes from the left) */}
+      {/* Home Page Hero Info Panel (Right Side: high-tech Stark HUD cyber frame) */}
       <section
         ref={heroInfoPanelRef}
-        className="home-hero-panel"
+        className="home-hero-panel cyber-hud-card"
         style={{
           opacity: 0,
           transform: isMobile ? 'translate(-50%, 25px)' : 'translateY(-50%) translateX(35px)',
@@ -848,58 +882,122 @@ export default function App() {
           visibility: 'hidden',
         }}
       >
-        <div className="hero-cyber-badge">
-          <span className="hero-pulse-dot" />
-          <span className="hero-badge-text">PCCOE PRESENTS • MARCH 2026</span>
+        {/* Geometric Clipped Background Plate */}
+        <div className="cyber-bg-plate" aria-hidden="true" />
+
+        {/* Cybernetic Frame Armor Overlays & SVG HUD Accents */}
+        <div className="cyber-frame-armor" aria-hidden="true">
+          <svg className="cyber-frame-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="cyberBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="50%" stopColor="#00e5ff" />
+                <stop offset="100%" stopColor="#0284c7" />
+              </linearGradient>
+            </defs>
+
+            {/* Outer Glowing Cyber Perimeter */}
+            <path
+              className="cyber-svg-outer-path"
+              d="M 6.5,0.6 
+                 L 41,0.6 L 43.5,2.4 L 56.5,2.4 L 59,0.6 L 93.5,0.6 
+                 L 99.4,6.5 
+                 L 99.4,43.5 L 97.9,45.5 L 97.9,54.5 L 99.4,56.5 L 99.4,93.5 
+                 L 93.5,99.4 
+                 L 59,99.4 L 56.5,97.6 L 43.5,97.6 L 41,99.4 L 6.5,99.4 
+                 L 0.6,93.5 
+                 L 0.6,56.5 L 2.1,54.5 L 2.1,45.5 L 0.6,43.5 L 0.6,6.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Inner Keyline Frame */}
+            <path
+              className="cyber-svg-inner-path"
+              d="M 8.5,3.2 
+                 L 91.5,3.2 
+                 L 96.8,8.5 
+                 L 96.8,91.5 
+                 L 91.5,96.8 
+                 L 8.5,96.8 
+                 L 3.2,91.5 
+                 L 3.2,8.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Corner Hardware Brackets */}
+            <path className="cyber-bracket" d="M 2.4,12 L 2.4,6.5 L 6.5,2.4 L 12,2.4" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,2.4 L 93.5,2.4 L 97.6,6.5 L 97.6,12" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 2.4,88 L 2.4,93.5 L 6.5,97.6 L 12,97.6" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,97.6 L 93.5,97.6 L 97.6,93.5 L 97.6,88" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Left) */}
+            <line className="cyber-vent-line" x1="1.4" y1="47" x2="1.4" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="50" x2="1.4" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="53" x2="1.4" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Right) */}
+            <line className="cyber-vent-line" x1="98.6" y1="47" x2="98.6" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="50" x2="98.6" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="53" x2="98.6" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Top Center Rail */}
+            <line className="cyber-notch-accent" x1="46" y1="1.6" x2="54" y2="1.6" vectorEffect="non-scaling-stroke" />
+          </svg>
+
+          <div className="cyber-grid-overlay" />
+          <div className="cyber-corner-glow tl" />
+          <div className="cyber-corner-glow tr" />
+          <div className="cyber-corner-glow bl" />
+          <div className="cyber-corner-glow br" />
         </div>
 
-        <h1 className="hero-main-title">
-          ANANTYA <span className="hero-title-year">2026</span>
-        </h1>
+        {/* Card Main Body Content */}
+        <div className="cyber-card-content">
+          <h1 className="hero-main-title">
+            ANANTYA <span className="hero-title-year">2026</span>
+          </h1>
 
-        <div className="hero-tagline-pill">
-          <span className="tagline-gem" />
-          <span>SEVEN CRYSTALS • ONE SYSTEM</span>
-        </div>
+          <CountdownTimer />
 
-        <p className="hero-description">
-          Welcome to PCCOE's premier national techno-cultural extravaganza. Step into the high-tech Marvel dimension where speed coding warfare, autonomous robotics, CTF cybersecurity, and cultural brilliance converge.
-        </p>
-
-        {/* Quick Highlights / Stats Grid */}
-        <div className="hero-stats-grid">
-          <div className="stat-card">
-            <span className="stat-val">8+</span>
-            <span className="stat-label">Club Arenas</span>
+          {/* Quick Highlights / Stats Capsule Container */}
+          <div className="hero-stats-capsule">
+            <div className="stat-capsule-item">
+              <span className="stat-val">08+</span>
+              <span className="stat-label">Club Arenas</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">02</span>
+              <span className="stat-label">Epic Days</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">₹2L+</span>
+              <span className="stat-label">Prize Pool</span>
+            </div>
           </div>
-          <div className="stat-card">
-            <span className="stat-val">3</span>
-            <span className="stat-label">Epic Days</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-val">₹2L+</span>
-            <span className="stat-label">Prize Pool</span>
-          </div>
-        </div>
 
-        {/* Action Button Row */}
-        <div className="hero-btn-row">
-          <a
-            href="#events"
-            className="hero-btn primary-btn"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavSelect('events');
-            }}
-          >
-            <span>EXPLORE EVENTS</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </a>
-          <a href="#contact" className="hero-btn secondary-btn">
-            <span>REGISTER NOW</span>
-          </a>
+          {/* Action Button Row */}
+          <div className="hero-btn-row">
+            <a
+              href="#events"
+              className="hero-btn cyber-primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavSelect('events');
+              }}
+            >
+              <span>EXPLORE EVENTS</span>
+              <span className="btn-arrow-circle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -979,6 +1077,12 @@ export default function App() {
         </div>
       </section>
 
+      {/* Persistent Throughout-the-Site Scroll Guidance & HUD Wayfinder */}
+      <ScrollGuidance
+        activeSection={activeNavSection}
+        onNavigate={handleNavSelect}
+      />
+
       {/* Bottom Scroll Prompt (Only visible right after intro, fades out as user scrolls) */}
       <div
         ref={bottomScrollPromptRef}
@@ -1022,6 +1126,9 @@ export default function App() {
       <section id="gallery" className="gallery-main-section">
         <GallerySection />
       </section>
+
+      {/* Contact Section: S.H.I.E.L.D. Quantum Comm-Link & Avengers Initiative */}
+      <ContactSection onNavigate={handleNavSelect} />
 
       <style>{`
         .app-main-root {

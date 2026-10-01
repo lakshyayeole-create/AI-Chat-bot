@@ -255,12 +255,20 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       });
     }, HANDOFF_START * 1000);
 
+    // 11. Safety failsafe timeout: if for any reason handoff is delayed, force enter
+    const safetyTimer = setTimeout(() => {
+      if (!isFinishedRef.current) {
+        handleSkip();
+      }
+    }, 4500);
+
     return () => {
       clearTimeout(glowTimer);
       clearTimeout(pngTimer);
       clearTimeout(borderFadeTimer);
       clearTimeout(surgeTimer);
       clearTimeout(handoffTimer);
+      clearTimeout(safetyTimer);
     };
   }, [onComplete]);
 
@@ -272,7 +280,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
     if (containerRef.current) {
       gsap.to(containerRef.current, {
         opacity: 0,
-        duration: 0.4,
+        duration: 0.35,
         ease: 'power2.inOut',
         onComplete: () => {
           onComplete();
@@ -284,7 +292,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
   };
 
   return (
-    <div ref={containerRef} className="avengers-intro-root">
+    <div ref={containerRef} className="avengers-intro-root" onClick={handleSkip}>
       {/* Decorative background layers */}
       <div ref={bgLayersRef} className="avengers-bg-layers">
         {/* Floating cosmic particles canvas */}
