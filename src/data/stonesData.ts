@@ -1,155 +1,203 @@
+import { allEventsData } from '../components/allEventsData';
+
 export interface StoneData {
   id: string;
+  eventId?: string;
   name: string;
   stoneNumber: string;
   category: string;
+  organizer?: string;
   title: string;
   day: string;
-  time: string;
-  venue: string;
+  time?: string;
+  venue?: string;
   color: string;
   glowColor: string;
   description: string;
   highlights: string[];
   angleIndex: number;
   link?: string;
+  url?: string;
+  teamSize?: string;
+  prizePool?: string;
+  logoUrl?: string;
 }
 
-export const STONES_DATA: StoneData[] = [
+const RAW_STONES_DATA: StoneData[] = [
   {
     id: 'mind',
+    eventId: 'codigo',
     name: 'Mind Stone',
     stoneNumber: '01',
-    category: 'ACM // COMPETITIVE PROGRAMMING',
-    title: 'Codigo',
-    day: 'Day 1',
-    time: '10:00 AM – 01:30 PM',
-    venue: 'Turing Terminal Labs',
-    color: '#ffd600', // Pure Yellow
-    glowColor: '#fff275',
-    description:
-      'The ultimate arena of competitive programming and algorithmic supremacy hosted by ACM. Battle through multi-round coding gauntlets, sub-second optimizations, and problem-solving puzzles.',
-    highlights: ['Multi-Tier Algorithm Clash', 'Speed Optimization Duel', 'Algorithmic Problem-Solving Arena'],
+    category: 'Competitive Programming',
+    organizer: 'CESA-SDW / ACM PCCOE',
+    title: 'CODIGO!',
+    day: '10 October 2026 (Final Round)',
+    color: '#eab308',
+    glowColor: '#fde047',
+    description: 'Coding competition focused on problem solving.',
+    highlights: ['Problem Solving', 'Competitive Coding', 'CESA-SDW'],
     angleIndex: 0,
-    link: '',
+    url: 'https://pccoe-codigo-2026.vercel.app/',
+    link: 'https://pccoe-codigo-2026.vercel.app/',
+    prizePool: '₹18K+',
+    logoUrl: '/logos/codigo.png',
   },
   {
     id: 'time',
+    eventId: 'shesolves-3',
     name: 'Time Stone',
     stoneNumber: '02',
-    category: 'ACM-W // WOMEN IN TECH',
-    title: 'She Solves 3.0',
-    day: 'Day 1',
-    time: '02:00 PM – 06:30 PM',
-    venue: 'Ada Lovelace Tech Arena',
-    color: '#00e676', // Pure Green
-    glowColor: '#69f0ae',
-    description:
-      'Empowering female developers and tech innovators hosted by ACM-W. Ideate, prototype, and build transformative digital solutions addressing critical real-world industry challenges.',
-    highlights: ['Women In Tech Hackathon', 'Rapid Prototyping Sprint', 'Industry Mentorship Conclave'],
+    category: 'Hackathon / Software Dev',
+    organizer: 'ACM-W PCCOE',
+    title: 'SheSolves 3.0',
+    day: '9 October 2026 (Final Round)',
+    color: '#22c55e',
+    glowColor: '#86efac',
+    description: 'Women-focused hackathon based on innovation and problem solving.',
+    highlights: ['Women in Tech', 'Software Dev', 'ACM-W'],
     angleIndex: 1,
-    link: '',
+    url: 'https://shesolves3-0.vercel.app/',
+    link: 'https://shesolves3-0.vercel.app/',
+    teamSize: '2–4 female students',
+    prizePool: '₹16K+',
+    logoUrl: '/logos/shesolves-logo.png',
   },
   {
     id: 'soul',
+    eventId: 'byteme',
     name: 'Soul Stone',
     stoneNumber: '03',
-    category: 'OWASP // CYBERSECURITY & CTF',
-    title: 'Byte me CTF',
-    day: 'Day 2',
-    time: '10:00 AM – 03:00 PM',
-    venue: 'Cyber Defense Complex',
-    color: '#ff6d00', // Pure Orange
-    glowColor: '#ffab40',
-    description:
-      'Test your offensive and defensive security mettle in an elite Capture The Flag warfare arena hosted by OWASP. Decrypt cryptographic ciphers, exploit web vulnerabilities, and reverse-engineer binaries.',
-    highlights: ['Capture The Flag (CTF) War', 'Zero-Day Vulnerability Exploits', 'Cryptographic Puzzle Quests'],
+    category: 'Cybersecurity / CTF',
+    organizer: 'OWASP PCCOE',
+    title: "BYTE ME CTF '26",
+    day: '9 October 2026 | 9AM - 6PM',
+    color: '#f97316',
+    glowColor: '#fdba74',
+    description: 'Cybersecurity CTF covering Web, OSINT, Forensics, Cryptography, Networking, Linux and more.',
+    highlights: ['Web Exploits', 'Cryptography', 'Forensics'],
     angleIndex: 2,
-    link: '',
+    url: 'https://bytemectf.owasppccoe.in/',
+    link: 'https://bytemectf.owasppccoe.in/',
+    teamSize: '1–2 members',
+    prizePool: '₹1.5 LAKH+',
+    logoUrl: '/logos/byte.png',
   },
   {
     id: 'reality',
+    eventId: 'masterchef-ui',
     name: 'Reality Stone',
     stoneNumber: '04',
-    category: 'GDGC // DESIGN & UI/UX',
+    category: 'UI/UX Design',
+    organizer: 'GDGC PCCOE',
     title: 'MasterChef UI',
-    day: 'Day 2',
-    time: '03:30 PM – 07:00 PM',
-    venue: 'Holodeck Design Studio',
-    color: '#ff1744', // Pure Red
-    glowColor: '#ff616f',
-    description:
-      'Cook up stunning, high-fidelity user experiences and micro-interactions under the clock hosted by GDGC. Blend visual aesthetics, accessibility, and modern component systems to craft award-winning UI.',
-    highlights: ['Live UI/UX Cookoff', 'Figma Rapid Prototyping', 'Component System Architecture'],
+    day: '9 October 2026',
+    color: '#ef4444',
+    glowColor: '#fca5a5',
+    description: '3-round UI/UX design competition. Registration: Free for PCCOE students / ₹100 for other colleges',
+    highlights: ['UI/UX Prototyping', 'Design Systems', 'GDGC'],
     angleIndex: 3,
-    link: '',
+    link: '#',
+    teamSize: '1–2 members',
+    prizePool: '₹12K+ + Goodies',
+    logoUrl: '/logos/masterchefui.png',
   },
   {
     id: 'space',
+    eventId: 'decentrahack',
     name: 'Space Stone',
     stoneNumber: '05',
-    category: 'LFDT // BLOCKCHAIN & WEB3',
-    title: 'Decentral Hack',
-    day: 'Day 3',
-    time: '09:30 AM – 01:30 PM',
-    venue: 'Genesis Web3 Labs',
-    color: '#00a8ff', // Pure Blue
-    glowColor: '#40c4ff',
-    description:
-      'Pioneer the decentralized frontier hosted by LFDT. Architect smart contracts, engineer zero-knowledge proofs, and forge resilient Web3 protocols for the next era of decentralized finance and web.',
-    highlights: ['Smart Contract Security', 'DeFi & Zero-Knowledge Protocols', 'Decentralized Apps Sprint'],
+    category: 'Hackathon',
+    organizer: 'LFDT PCCOE',
+    title: 'DecentraHack 2.0',
+    day: '9 October 2026 (Final Pitch)',
+    color: '#3b82f6',
+    glowColor: '#93c5fd',
+    description: '3-round hackathon involving ideation, building and pitching. Tracks: Agentic AI, Blockchain/Web3, Open Source.',
+    highlights: ['Agentic AI', 'Blockchain / Web3', 'Open Source'],
     angleIndex: 4,
-    link: '',
+    url: 'https://decentrahack.vercel.app/',
+    link: 'https://decentrahack.vercel.app/',
+    teamSize: '2–4 members',
+    prizePool: '₹15K+',
+    logoUrl: '/logos/Decentra-hack.png',
   },
   {
     id: 'power',
+    eventId: 'iothrone',
     name: 'Power Stone',
     stoneNumber: '06',
-    category: 'IIRIS // IOT & ROBOTICS',
-    title: 'IoThrone',
-    day: 'Day 3',
-    time: '02:00 PM – 05:30 PM',
-    venue: 'Titanium Combat Arena',
-    color: '#a855f7', // Pure Purple
+    category: 'AI/ML/IoT/Hardware',
+    organizer: 'IRIS PCCOE',
+    title: 'IoThrone 2026',
+    day: '9-10 October 2026',
+    color: '#a855f7',
     glowColor: '#d8b4fe',
-    description:
-      'Claim the throne of connected machines and physical computing hosted by IIRIS. Interface microcontrollers, build automated robotics pipelines, and execute real-time sensor telemetry challenges.',
-    highlights: ['Hardware Sensor Warfare', 'Microcontroller Automation', 'Embedded Telemetry Duel'],
+    description: 'Innovation-driven hackathon involving prototype development and real-time integration.',
+    highlights: ['Hardware Prototype', 'AI/ML IoT', 'IRIS PCCOE'],
     angleIndex: 5,
-    link: '',
+    url: 'https://iothrone.vercel.app/',
+    link: 'https://iothrone.vercel.app/',
+    teamSize: '2–4 members',
+    prizePool: '₹15K+',
+    logoUrl: '/logos/iothrone.png',
   },
   {
     id: 'art',
+    eventId: 'make-a-doodle',
     name: 'Soul Stone',
     stoneNumber: '07',
-    category: 'ART CLUB // CREATIVE DESIGN',
+    category: 'Creative / Art',
+    organizer: 'Computer Department Art Circle',
     title: 'Make a Doodle',
-    day: 'Day 3',
-    time: '04:00 PM – 07:00 PM',
-    venue: 'Cosmic Open-Air Amphitheatre',
-    color: '#ffffff', // Pure White Diamond / Cosmic Prism
-    glowColor: '#e0f7fa',
-    description:
-      'Unleash raw creative energy onto the cosmic canvas hosted by ART CLUB. Speed doodling showdowns, character illustration battles, and expressive visual design celebrating imagination and artistic flair.',
-    highlights: ['Live Doodle Faceoff', 'Character Illustration Clash', 'Cosmic Canvas Creation'],
+    day: '10 October 2026 (Round 2)',
+    color: '#f8fafc',
+    glowColor: '#ffffff',
+    description: 'Creative doodle competition where participants create a doodle based on a given topic, followed by an offline twist round.',
+    highlights: ['Live Doodle', 'Creative Art', 'Offline Twist'],
     angleIndex: 6,
-    link: '',
+    link: '#',
+    teamSize: 'Individual (1 member)',
+    prizePool: '₹13K+',
+    logoUrl: '/logos/make_a_doddle.png',
   },
   {
     id: 'innovatex',
+    eventId: 'innovatex',
     name: 'Brown Stone',
     stoneNumber: '08',
-    category: 'INNOVATEX // FLAGSHIP EXPO',
-    title: 'Innovatex',
-    day: 'Day 3',
-    time: '05:30 PM – 09:30 PM',
-    venue: 'Quantum Grand Foundry & Auditorium',
-    color: '#8B4513', // Deep Earth Bronze Brown
-    glowColor: '#CD853F',
-    description:
-      'The grand flagship expo and convergence of engineering excellence. Visionary student developers, makers, and innovators demonstrate breakthrough hardware prototypes, AI innovations, and research ventures.',
-    highlights: ['Grand Project Expo', 'Startup Pitch Arena', 'Breakthrough Hardware Showcase'],
+    category: 'Flagship Expo',
+    organizer: 'PCCOE Innovation Council',
+    title: 'Innovatex 2026',
+    day: '10 October 2026 | Grand Expo',
+    color: '#d97706',
+    glowColor: '#fcd34d',
+    description: 'Grand flagship expo showcasing cutting-edge engineering prototypes, AI breakthroughs, and venture pitches.',
+    highlights: ['Flagship Expo', 'Startup Pitch', 'Prototypes'],
     angleIndex: 7,
-    link: '',
+    link: '#',
+    teamSize: '1–4 members',
+    prizePool: '₹50K+',
+    logoUrl: '/logos/ANANTYA.png',
   },
 ];
+
+export const STONES_DATA: StoneData[] = RAW_STONES_DATA.map((stone) => {
+  const match = allEventsData.find((e) => e.id === stone.eventId || e.id === stone.id);
+  if (!match) return stone;
+  const resolvedUrl = match.url || stone.url || stone.link;
+  return {
+    ...stone,
+    title: match.name || stone.title,
+    category: match.category || stone.category,
+    organizer: match.organizer || stone.organizer,
+    day: match.date || stone.day,
+    teamSize: match.teamSize || stone.teamSize,
+    prizePool: match.prizePool || stone.prizePool,
+    description: match.description || stone.description,
+    logoUrl: match.logoUrl || stone.logoUrl,
+    color: match.accent || stone.color,
+    url: resolvedUrl,
+    link: resolvedUrl,
+  };
+});

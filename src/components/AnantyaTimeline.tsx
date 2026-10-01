@@ -8,11 +8,12 @@ import { ProceduralCrystalStone } from './ProceduralCrystalStone';
 import { createProceduralStoneGeometry } from '../utils/crystalGeometry';
 import InfinityGauntlet from './InfinityGauntlet';
 import LokiHelmet from './LokiHelmet';
+import './AllEvents.css';
 // ============================================================================
 // 🌌 TIMELINE 3D CONTROLS & TUNING VARIABLES (EDIT FREELY HERE!)
 // ============================================================================
 // Change radius of circle, size of stones, and increase or decrease lighting/glow below:
-export const TIMELINE_CONFIG = {
+const TIMELINE_CONFIG = {
   // ── 1. Circle Radius & Orbit Controls ──
   circle_radius: 11.2,           // Change the radius of the circle (orbit radius)
   orbit_center_x: 0.0,          // Horizontal position of circle center (negative = left, positive = right)
@@ -44,14 +45,11 @@ export const TIMELINE_CONFIG = {
   },
 };
 
-export const TIMELINE_ORBIT_CONFIG = TIMELINE_CONFIG;
-
 // ============================================================================
 // 🥊 INFINITY GAUNTLET & STONES CONVERGENCE TUNING (EDIT FREELY HERE!)
 // ============================================================================
 // Change gauntlet scale, each finger's fold angle, shine/lighting, and stone docking:
 import { GAUNTLET_CONFIG } from '../config/gauntletConfig';
-export { GAUNTLET_CONFIG };
 
 const NUM_STONES = STONES_DATA.length; // 8 stones (including brown Terra Stone)
 const ANGLE_STEP = (Math.PI * 2) / NUM_STONES;
@@ -308,7 +306,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
       reality: 'Infinity_Stones004_1',  // 4. Reality: Middle finger knuckle stone (163 verts)
       space: 'Infinity_Stones005_1',    // 5. Space: Ring finger knuckle stone (216 verts)
       power: 'Infinity_Stones006_1',    // 6. Power: Pinky finger knuckle stone (53 verts)
-      
+
       // ── 7th Stone (Art / Creation, #ffffff White) ──
       // Duplicated from centerpiece Mind Stone (Infinity_Stones002) for brilliant diamond facets
       art: 'Infinity_Stones002',
@@ -739,23 +737,41 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
   useEffect(() => {
     let animId: number;
     let progress = targetProgressRef.current;
+    let lastRenderedProgress = -999;
 
     const loop = () => {
       animId = requestAnimationFrame(loop);
-      // Smooth exponential lerp damping for buttery 60fps momentum
-      progress += (targetProgressRef.current - progress) * 0.09;
-      progress = Math.max(0, Math.min(9.1, progress));
+      const diff = targetProgressRef.current - progress;
+      if (Math.abs(diff) > 0.0002) {
+        progress += diff * 0.12;
+        progress = Math.max(0, Math.min(9.1, progress));
+      } else {
+        progress = targetProgressRef.current;
+      }
 
-      const stage = computeTimelineStage(progress);
-      setCurrentRotation(stage.orbitRotation);
-      setActiveIndex(stage.activeIndex);
-      setConvergenceProgress(stage.convergenceProgress);
-      setLokiTransitionProgress(stage.lokiTransitionProgress);
-      setCardState({
-        opacity: stage.cardOpacity,
-        offset: stage.cardOffset,
-        scale: stage.cardScale,
-      });
+      // ONLY trigger React re-renders when progress actually changes!
+      if (Math.abs(progress - lastRenderedProgress) > 0.0005) {
+        lastRenderedProgress = progress;
+        const stage = computeTimelineStage(progress);
+        setCurrentRotation(stage.orbitRotation);
+        setActiveIndex(stage.activeIndex);
+        setConvergenceProgress(stage.convergenceProgress);
+        setLokiTransitionProgress(stage.lokiTransitionProgress);
+        setCardState((prev) => {
+          if (
+            Math.abs(prev.opacity - stage.cardOpacity) < 0.008 &&
+            Math.abs(prev.offset - stage.cardOffset) < 0.25 &&
+            Math.abs(prev.scale - stage.cardScale) < 0.008
+          ) {
+            return prev;
+          }
+          return {
+            opacity: stage.cardOpacity,
+            offset: stage.cardOffset,
+            scale: stage.cardScale,
+          };
+        });
+      }
     };
 
     animId = requestAnimationFrame(loop);
@@ -789,7 +805,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
     >
       {/* ── 1. Fullscreen R3F Canvas with Responsive Camera & Viewport Clamping ── */}
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, isMobile ? 1.2 : 1.5]}
         camera={{
           position: [0, TIMELINE_CONFIG.camera_y, TIMELINE_CONFIG.camera_z],
           fov: TIMELINE_CONFIG.camera_fov,
@@ -949,252 +965,111 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
 
       {/* ── 5. Scroll-Driven Event Details Box (Appears precisely at focal stone position) ── */}
       <div
+        className="event-card-wrapper"
         style={{
+          '--accent-color': activeStone.color,
           position: 'absolute',
-          left: isMobile ? '50%' : 'clamp(48%, 52vw, 55%)',
+          left: isMobile ? '50%' : 'clamp(47%, 50vw, 54%)',
           top: isMobile ? 'auto' : '50%',
-          bottom: isMobile ? 'clamp(1.2rem, 3vh, 2.2rem)' : 'auto',
+          bottom: isMobile ? 'clamp(1rem, 2.5vh, 1.8rem)' : 'auto',
           transform: isMobile
             ? `translate(-50%, ${Math.abs(cardState.offset) * 0.6}px) scale(${cardState.scale})`
             : `translate(${cardState.offset}px, -50%) scale(${cardState.scale})`,
           transformOrigin: isMobile ? 'center bottom' : 'left center',
           opacity: cardState.opacity * introUiFade,
           pointerEvents: (cardState.opacity * introUiFade > 0.35) ? 'auto' : 'none',
-          width: isMobile ? 'calc(100% - 32px)' : 'clamp(320px, 32vw, 440px)',
-          maxWidth: '440px',
-          maxHeight: isMobile ? '48vh' : '82vh',
-          overflowY: 'auto',
+          width: isMobile ? 'calc(100% - 32px)' : 'clamp(410px, 34vw, 470px)',
+          maxWidth: '470px',
+          height: 'auto',
+          maxHeight: 'none',
           zIndex: 20,
-          background: 'linear-gradient(135deg, rgba(8, 14, 28, 0.90) 0%, rgba(12, 20, 38, 0.78) 100%)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          border: `1px solid ${activeStone.color}45`,
-          borderRadius: '20px',
-          padding: 'clamp(18px, 2.2vh, 26px) clamp(20px, 2vw, 28px)',
-          boxShadow: `0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px ${activeStone.color}22, inset 0 1px 0 rgba(255, 255, 255, 0.12)`,
-          transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
           userSelect: 'none',
-          color: '#ffffff',
-        }}
+        } as React.CSSProperties}
       >
-        {/* Top Glowing Laser Accent Line */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '3px',
-            background: `linear-gradient(90deg, transparent, ${activeStone.color}, transparent)`,
-            boxShadow: `0 0 14px ${activeStone.color}`,
-          }}
-        />
-
-        {/* Category & Schedule Meta Row */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '8px',
-            marginBottom: '10px',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span
-              style={{
-                fontSize: '0.74rem',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 800,
-                padding: '3px 8px',
-                borderRadius: '6px',
-                color: activeStone.color,
-                background: `${activeStone.color}18`,
-                border: `1px solid ${activeStone.color}45`,
-                letterSpacing: '1.4px',
-                textTransform: 'uppercase',
-              }}
-            >
-              STONE {activeStone.stoneNumber}
-            </span>
-            <span
-              style={{
-                fontSize: '0.70rem',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 700,
-                letterSpacing: '1.5px',
-                color: '#94a3b8',
-                textTransform: 'uppercase',
-              }}
-            >
-              {activeStone.category}
-            </span>
+        <div className="event-card">
+          <div className="event-logo-area">
+            <div className="logo-glow" />
+            {activeStone.logoUrl ? (
+              <img src={activeStone.logoUrl} alt={`${activeStone.title} logo`} className="event-logo" />
+            ) : (
+              <div className="event-logo-placeholder">
+                <svg viewBox="0 0 100 100" className="placeholder-icon">
+                  <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="4" />
+                  <circle cx="50" cy="65" r="10" fill="currentColor" />
+                </svg>
+                <span>A N A N T Y A</span>
+              </div>
+            )}
           </div>
 
-          <div
-            style={{
-              fontSize: '0.70rem',
-              fontFamily: "'Inter', sans-serif",
-              fontWeight: 700,
-              letterSpacing: '1.0px',
-              color: '#f1f5f9',
-              background: 'rgba(255, 255, 255, 0.08)',
-              padding: '3px 10px',
-              borderRadius: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              whiteSpace: 'nowrap',
-              textTransform: 'uppercase',
-            }}
-          >
-            {activeStone.day} • {activeStone.time}
+          <div className="event-card-content">
+            <div className="event-category-row">
+              <span className="event-category">STONE {activeStone.stoneNumber} • {activeStone.category}</span>
+              <div className="category-line" />
+            </div>
+
+            {activeStone.organizer && (
+              <div className="event-organizer-row">
+                <span className="organizer-badge">BY {activeStone.organizer}</span>
+              </div>
+            )}
+
+            <h3 className="event-name">{activeStone.title}</h3>
+            <p className="event-card-desc">{activeStone.description}</p>
+
+            <div className="event-divider" />
+
+            <div className="event-details">
+              <div className="detail-item">
+                <div className="detail-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  DATE
+                </div>
+                <span className="detail-value">{activeStone.day}{activeStone.time ? ` • ${activeStone.time}` : ''}</span>
+              </div>
+              {activeStone.teamSize && (
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    TEAM SIZE
+                  </div>
+                  <span className="detail-value">{activeStone.teamSize}</span>
+                </div>
+              )}
+              {activeStone.prizePool && (
+                <div className="detail-item full-width">
+                  <div className="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                    PRIZE POOL
+                  </div>
+                  <span className="detail-value accent-text">{activeStone.prizePool}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="event-card-footer">
+              {(() => {
+                const targetUrl = activeStone.url || activeStone.link;
+                const isExternal = Boolean(targetUrl && targetUrl.startsWith('http'));
+                return (
+                  <a
+                    href={targetUrl || '#'}
+                    target={isExternal ? '_blank' : undefined}
+                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                    className="explore-btn"
+                    onClick={(e) => {
+                      if (!isExternal) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span>EXPLORE EVENT</span> <span className="arrow">→</span>
+                  </a>
+                );
+              })()}
+            </div>
           </div>
         </div>
-
-        {/* Event Title */}
-        <h2
-          style={{
-            fontSize: 'clamp(1.35rem, 2.0vw, 1.85rem)',
-            fontWeight: 900,
-            color: '#ffffff',
-            margin: '0 0 8px 0',
-            lineHeight: 1.15,
-            letterSpacing: '1.6px',
-            fontFamily: "'Inter', sans-serif",
-            textTransform: 'uppercase',
-            textShadow: '0 2px 20px rgba(0, 0, 0, 0.9)',
-          }}
-        >
-          {activeStone.title}
-        </h2>
-
-        {/* Venue with Map-Pin Icon */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 700,
-            color: '#94a3b8',
-            marginBottom: '12px',
-            textTransform: 'uppercase',
-            letterSpacing: '1.4px',
-          }}
-        >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke={activeStone.color}
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
-            <circle cx="12" cy="9" r="2.5" />
-          </svg>
-          <span>{activeStone.venue}</span>
-        </div>
-
-        {/* Description */}
-        <p
-          style={{
-            fontSize: 'clamp(0.82rem, 0.98vw, 0.90rem)',
-            lineHeight: 1.6,
-            color: '#e2e8f0',
-            margin: '0 0 14px 0',
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 500,
-            letterSpacing: '0.3px',
-          }}
-        >
-          {activeStone.description}
-        </p>
-
-        {/* Highlight Tags */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '6px',
-            marginBottom: '16px',
-          }}
-        >
-          {activeStone.highlights.map((h, idx) => (
-            <span
-              key={idx}
-              style={{
-                fontSize: '0.70rem',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 700,
-                color: '#f8fafc',
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: `1px solid ${activeStone.color}45`,
-                padding: '4px 9px',
-                borderRadius: '8px',
-                letterSpacing: '0.8px',
-                textTransform: 'uppercase',
-              }}
-            >
-              ✦ {h}
-            </span>
-          ))}
-        </div>
-
-        {/* Action Button */}
-        <a
-          href={activeStone.link || '#'}
-          target={activeStone.link ? '_blank' : undefined}
-          rel="noopener noreferrer"
-          title={`Explore ${activeStone.name}`}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            padding: '10px 20px',
-            borderRadius: '10px',
-            background: `linear-gradient(135deg, ${activeStone.color}28 0%, rgba(255, 255, 255, 0.06) 100%)`,
-            border: `1px solid ${activeStone.color}66`,
-            color: '#ffffff',
-            fontSize: '0.82rem',
-            fontWeight: 800,
-            letterSpacing: '1.6px',
-            textTransform: 'uppercase',
-            fontFamily: "'Inter', sans-serif",
-            textDecoration: 'none',
-            cursor: 'pointer',
-            boxShadow: `0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px ${activeStone.color}25`,
-            transition: 'all 0.25s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = activeStone.color;
-            e.currentTarget.style.color = '#000000';
-            e.currentTarget.style.boxShadow = `0 6px 20px ${activeStone.color}66`;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = `linear-gradient(135deg, ${activeStone.color}28 0%, rgba(255, 255, 255, 0.06) 100%)`;
-            e.currentTarget.style.color = '#ffffff';
-            e.currentTarget.style.boxShadow = `0 4px 15px rgba(0, 0, 0, 0.4), 0 0 15px ${activeStone.color}25`;
-          }}
-        >
-          <span>Explore Event</span>
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M7 17L17 7M17 7H7M17 7V17" />
-          </svg>
-        </a>
       </div>
     </div>
   );

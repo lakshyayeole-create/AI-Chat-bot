@@ -63,6 +63,8 @@ export interface TransitionHandle {
   getAssemblyProgress: () => number;
   /** Set transition progress directly (0.0 to 1.0) */
   setTransitionProgress: (progress: number) => void;
+  /** Directly update 3D model transforms without triggering React re-renders */
+  setModelTransforms?: (fromX: number, fromRotY: number, toX: number, toRotY: number) => void;
 }
 
 export interface TransitionProps {
@@ -274,6 +276,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       }
     }, []);
 
+    const setModelTransforms = useCallback((fromX: number, fromRotY: number, toX: number, toRotY: number) => {
+      targetFromPositionXRef.current = fromX;
+      targetFromRotationYRef.current = fromRotY;
+      targetToPositionXRef.current = toX;
+      targetToRotationYRef.current = toRotY;
+    }, []);
+
     useImperativeHandle(
       ref,
       () => ({
@@ -284,9 +293,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         triggerAssembly,
         setAssemblyProgress,
         getAssemblyProgress,
-        setTransitionProgress
+        setTransitionProgress,
+        setModelTransforms
       }),
-      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress]
+      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setModelTransforms]
     );
 
     // Stable configs
@@ -317,7 +327,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const width = window.innerWidth;
       const height = window.innerHeight;
       const aspect = width / height;
-      const pixelRatio = Math.min(window.devicePixelRatio, 2);
+      const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobileDevice ? 1.25 : 1.5);
 
       // ==========================================
       // 1. FRONT MODEL SCENE (fromModel)
@@ -345,6 +356,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const roomEnv1 = new RoomEnvironment();
       fromScene.environment = pmremGen1.fromScene(roomEnv1, 0.04).texture;
       roomEnv1.dispose();
+      pmremGen1.dispose();
 
 
       // Lighting Rig 1
@@ -420,6 +432,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const roomEnv2 = new RoomEnvironment();
       toScene.environment = pmremGen2.fromScene(roomEnv2, 0.04).texture;
       roomEnv2.dispose();
+      pmremGen2.dispose();
 
       // Lighting Rig 2
       const light2 = toModel.lighting || {};
@@ -667,7 +680,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const handleResize = () => {
         const w = window.innerWidth;
         const h = window.innerHeight;
-        const pr = Math.min(window.devicePixelRatio, 2);
+        const isMob = typeof window !== 'undefined' && window.innerWidth < 768;
+        const pr = Math.min(window.devicePixelRatio || 1, isMob ? 1.25 : 1.5);
 
         fromCamera.aspect = w / h;
         fromCamera.updateProjectionMatrix();
@@ -704,7 +718,6 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       // ==========================================
       const animate = (now: number) => {
         animationFrameId = requestAnimationFrame(animate);
-
 
         // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
@@ -751,22 +764,12 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
         // Apply group visibility, position X, and Y-axis rotation independently
         if (fromGroupRef.current) {
-          if (currentAssemblyProgressRef.current <= 0.001 || currentProgress >= 0.999) {
-            fromGroupRef.current.visible = false;
-          } else {
-            fromGroupRef.current.visible = true;
-            fromGroupRef.current.position.x += curFromPosX;
-            fromGroupRef.current.rotation.y += curFromRotY;
-          }
+          fromGroupRef.current.position.x = curFromPosX;
+          fromGroupRef.current.rotation.y = curFromRotY;
         }
         if (toGroupRef.current) {
-          if (currentProgress <= 0.001) {
-            toGroupRef.current.visible = false;
-          } else {
-            toGroupRef.current.visible = true;
-            toGroupRef.current.position.x = curToPosX;
-            toGroupRef.current.rotation.y = curToRotY;
-          }
+          toGroupRef.current.position.x = curToPosX;
+          toGroupRef.current.rotation.y = curToRotY;
         }
 
         if (onProgressChangeRef.current) {
@@ -788,8 +791,21 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
         }
 
-        fromRenderer.render(fromScene, fromCamera);
-        toRenderer.render(toScene, toCamera);
+        // Skip WebGL rendering if container or parent is hidden (e.g. during events/gallery/contact)
+        const container = containerRef.current;
+        const parent = container?.parentElement;
+        const isHidden = parent && (parent.style.visibility === 'hidden' || parent.style.opacity === '0');
+        if (isHidden) {
+          return;
+        }
+
+        // Selectively render only visible model scenes to conserve GPU draw calls
+        if (currentProgress < 0.998) {
+          fromRenderer.render(fromScene, fromCamera);
+        }
+        if (currentProgress > 0.002) {
+          toRenderer.render(toScene, toCamera);
+        }
       };
 
       animationFrameId = requestAnimationFrame(animate);

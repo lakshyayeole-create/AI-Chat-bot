@@ -1,0 +1,414 @@
+/* ==========================================================================
+   ANANTYA 2026 — MARVEL AVENGERS CONTACT SECTION (PIXEL-PERFECT HUD)
+   ========================================================================== */
+
+.marvel-contact-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 7rem 3.5rem 6rem 5.5rem;
+  background-image: url('/assets/contact_avengers_bg.jpg');
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+  background-color: #05070d;
+  color: #ffffff;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Dark Gradient Overlay for flawless contrast and readability on the left */
+.marvel-contact-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 7, 12, 0.94) 0%,
+    rgba(5, 7, 12, 0.85) 34%,
+    rgba(5, 7, 12, 0.48) 58%,
+    rgba(5, 7, 12, 0.12) 82%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Inner Container */
+.marvel-contact-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── Section Header ── */
+.marvel-contact-header {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.marvel-overline {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+  user-select: none;
+}
+
+.marvel-main-title {
+  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  display: flex;
+  align-items: baseline;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+}
+
+.marvel-title-accent {
+  background: linear-gradient(180deg, #ff4d6d 0%, #e11d48 45%, #991b1b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(225, 29, 72, 0.7));
+  margin-left: 0.3em;
+  display: inline-block;
+}
+
+.marvel-header-desc {
+  font-size: 0.96rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 560px;
+}
+
+/* ── Main Form Card ── */
+.marvel-form-card {
+  width: 100%;
+  max-width: 540px;
+  background: rgba(10, 13, 20, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.85rem 1.85rem 1.75rem;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Glowing Red Corner HUD Brackets */
+.hud-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hud-corner-tl {
+  top: -1px;
+  left: -1px;
+  border-top: 2.5px solid #ff2b47;
+  border-left: 2.5px solid #ff2b47;
+  border-top-left-radius: 12px;
+  box-shadow: -2px -2px 14px rgba(255, 43, 71, 0.85), inset 2px 2px 8px rgba(255, 43, 71, 0.35);
+}
+
+.hud-corner-br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2.5px solid #ff2b47;
+  border-right: 2.5px solid #ff2b47;
+  border-bottom-right-radius: 12px;
+  box-shadow: 2px 2px 14px rgba(255, 43, 71, 0.85), inset -2px -2px 8px rgba(255, 43, 71, 0.35);
+}
+
+/* Form Layout */
+.marvel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.marvel-form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.marvel-form-row {
+  width: 100%;
+}
+
+.marvel-input-group {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.marvel-input-icon {
+  position: absolute;
+  left: 1.1rem;
+  color: #64748b;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.25s ease, transform 0.25s ease;
+  z-index: 2;
+}
+
+.marvel-input-group:focus-within .marvel-input-icon {
+  color: #ff3355;
+  transform: scale(1.08);
+}
+
+.marvel-input,
+.marvel-textarea {
+  width: 100%;
+  background: rgba(14, 18, 27, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.92rem;
+  padding: 0.88rem 1rem 0.88rem 2.9rem;
+  font-family: inherit;
+  transition: all 0.25s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.marvel-input::placeholder,
+.marvel-textarea::placeholder {
+  color: #64748b;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+
+.marvel-input:focus,
+.marvel-textarea:focus {
+  border-color: rgba(255, 43, 71, 0.65);
+  box-shadow: 0 0 18px rgba(255, 43, 71, 0.22), inset 0 0 8px rgba(255, 43, 71, 0.08);
+  background: rgba(18, 23, 34, 0.96);
+}
+
+.marvel-input:focus::placeholder,
+.marvel-textarea:focus::placeholder {
+  color: #94a3b8;
+}
+
+.textarea-group {
+  align-items: flex-start;
+}
+
+.textarea-icon {
+  top: 1.1rem;
+}
+
+.marvel-textarea {
+  min-height: 125px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+/* Subtle corner grip inside textarea */
+.textarea-grip {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ── Submit Button with Chamfered Edges ── */
+.marvel-submit-btn {
+  width: 100%;
+  height: 52px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  /* Chamfered angled 45-degree cuts on left and right */
+  clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  background: linear-gradient(90deg, #7f1d1d 0%, #b91c1c 25%, #ef4444 50%, #b91c1c 75%, #7f1d1d 100%);
+  background-size: 200% 100%;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  box-shadow: 0 4px 28px rgba(239, 68, 68, 0.55), 0 0 18px rgba(220, 38, 38, 0.35);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 0.4rem;
+  overflow: hidden;
+}
+
+.marvel-submit-btn:hover {
+  background-position: 100% 0;
+  box-shadow: 0 6px 38px rgba(255, 43, 71, 0.85), 0 0 25px rgba(239, 68, 68, 0.6);
+  transform: translateY(-2px);
+}
+
+.marvel-submit-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 16px rgba(239, 68, 68, 0.5);
+}
+
+.btn-label {
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.btn-arrow-icon {
+  display: flex;
+  align-items: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marvel-submit-btn:hover .btn-arrow-icon {
+  transform: translateX(6px);
+}
+
+.marvel-submit-btn.sending {
+  opacity: 0.85;
+  cursor: wait;
+}
+
+/* ── Success Screen ── */
+.marvel-success-view {
+  padding: 1.5rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+}
+
+.marvel-success-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+.marvel-success-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.marvel-success-msg {
+  font-size: 0.92rem;
+  color: #94a3b8;
+  line-height: 1.6;
+  max-width: 440px;
+  margin: 0;
+}
+
+.marvel-success-ref {
+  font-size: 0.82rem;
+  font-family: monospace;
+  color: #cbd5e1;
+  letter-spacing: 0.1em;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.25rem;
+}
+
+.marvel-success-ref span {
+  color: #ff4d6d;
+  font-weight: 700;
+}
+
+.marvel-reset-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 43, 71, 0.5);
+  color: #ff4d6d;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-top: 0.5rem;
+}
+
+.marvel-reset-btn:hover {
+  background: rgba(255, 43, 71, 0.15);
+  border-color: #ff4d6d;
+  box-shadow: 0 0 16px rgba(255, 43, 71, 0.3);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .marvel-contact-section {
+    padding: 7rem 2.5rem 5rem 3.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .marvel-contact-section {
+    padding: 6.5rem 2rem 5rem;
+    background-position: 70% center;
+  }
+}
+
+@media (max-width: 768px) {
+  .marvel-contact-section {
+    padding: 6rem 1.25rem 4rem;
+    background-position: 80% center;
+  }
+
+  .marvel-contact-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 7, 12, 0.85) 0%,
+      rgba(5, 7, 12, 0.95) 100%
+    );
+  }
+
+  .marvel-main-title {
+    font-size: 2.6rem;
+  }
+
+  .marvel-form-card {
+    padding: 1.4rem 1.25rem;
+  }
+
+  .marvel-form-row-2col {
+    grid-template-columns: 1fr;
+  }
+}
