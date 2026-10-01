@@ -329,88 +329,104 @@
 @media (max-width: 900px) {
   .home-hero-panel.cyber-hud-card {
     top: auto !important;
-    bottom: clamp(4.4rem, 9.5vh, 5.2rem) !important;
+    bottom: clamp(3.0rem, 6vh, 3.8rem) !important;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%);
-    width: min(92vw, 400px) !important;
-    max-width: 400px !important;
-    padding: 1.25rem 1.3rem 1.15rem !important;
-    border-radius: 18px !important;
+    width: min(92vw, 380px) !important;
+    max-width: 380px !important;
+    padding: 0.95rem 1.1rem 0.85rem !important;
+    border-radius: 16px !important;
   }
 
   .cyber-card-content {
-    gap: 0.55rem !important;
+    gap: 0.42rem !important;
   }
 
   .cyber-card-content .hero-main-title {
-    font-size: 1.75rem !important;
-    letter-spacing: 0.12em !important;
+    font-size: 1.55rem !important;
+    letter-spacing: 0.10em !important;
     margin: 0 !important;
   }
 
   .cyber-card-content .hero-title-year {
-    font-size: 1.6rem !important;
+    font-size: 1.45rem !important;
   }
 
   .hero-stats-capsule {
-    padding: 0.45rem 0.8rem !important;
-    margin: 0.15rem 0 !important;
-  }
-
-  .stat-capsule-item .stat-val {
-    font-size: 1.08rem !important;
-  }
-
-  .stat-capsule-item .stat-label {
-    font-size: 0.54rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .home-hero-panel.cyber-hud-card {
-    bottom: clamp(4.4rem, 9vh, 5.0rem) !important;
-    width: 92% !important;
-    max-width: 375px !important;
-    padding: 1.0rem 1.05rem 0.95rem !important;
-    filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.35)) drop-shadow(0 14px 36px rgba(0, 0, 0, 0.85)) !important;
-  }
-
-  .cyber-card-content {
-    gap: 0.45rem !important;
-  }
-
-  .cyber-card-content .hero-main-title {
-    font-size: 1.5rem !important;
-    letter-spacing: 0.10em !important;
-  }
-
-  .cyber-card-content .hero-title-year {
-    font-size: 1.4rem !important;
-  }
-
-  .hero-stats-capsule {
-    padding: 0.35rem 0.6rem !important;
+    padding: 0.35rem 0.65rem !important;
     margin: 0.1rem 0 !important;
   }
 
   .stat-capsule-item .stat-val {
-    font-size: 0.98rem !important;
+    font-size: 1.0rem !important;
   }
 
   .stat-capsule-item .stat-label {
     font-size: 0.50rem !important;
   }
+}
+
+@media (max-width: 480px) {
+  .home-hero-panel.cyber-hud-card {
+    bottom: clamp(2.8rem, 5.5vh, 3.4rem) !important;
+    width: min(92vw, 355px) !important;
+    max-width: 355px !important;
+    padding: 0.68rem 0.85rem 0.62rem !important;
+    filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.35)) drop-shadow(0 14px 36px rgba(0, 0, 0, 0.85)) !important;
+    border-radius: 15px !important;
+  }
+
+  .cyber-card-content {
+    gap: 0.28rem !important;
+  }
+
+  .cyber-card-content .hero-main-title {
+    font-size: 1.32rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .cyber-card-content .hero-title-year {
+    font-size: 1.22rem !important;
+    margin-top: 0.05rem !important;
+  }
+
+  .countdown-box {
+    padding: 0.22rem 0.15rem 0.2rem !important;
+    border-radius: 6px !important;
+  }
+
+  .countdown-digit {
+    font-size: 1.0rem !important;
+  }
+
+  .countdown-unit-label {
+    font-size: 0.44rem !important;
+  }
+
+  .hero-stats-capsule {
+    padding: 0.22rem 0.45rem !important;
+    margin: 0.05rem 0 !important;
+    border-radius: 10px !important;
+  }
+
+  .stat-capsule-item .stat-val {
+    font-size: 0.90rem !important;
+  }
+
+  .stat-capsule-item .stat-label {
+    font-size: 0.46rem !important;
+  }
 
   .cyber-card-content .hero-btn-row {
     flex-direction: row;
-    gap: 0.5rem !important;
-    margin-top: 0.2rem !important;
+    gap: 0.4rem !important;
+    margin-top: 0.15rem !important;
   }
 
   .cyber-card-content .hero-btn {
-    padding: 0.55rem 0.65rem !important;
-    font-size: 0.66rem !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.62rem !important;
     border-radius: 9999px !important;
   }
 }

@@ -412,7 +412,7 @@ export default function App() {
         const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
         const targetLeftX = isMobileScreen ? 0 : -0.65;
         const targetRightX = isMobileScreen ? 0 : 0.65;
-        const targetY = isMobileScreen ? 0.54 : 0;
+        const targetY = isMobileScreen ? 0.85 : 0;
         const targetRightRot = isMobileScreen ? 0 : 0.38;   // looks towards the right
         const targetLeftRot = isMobileScreen ? 0 : -0.38;   // looks towards the left
 
@@ -1583,30 +1583,24 @@ export default function App() {
         }
 
         @media (max-width: 768px) {
-          .home-hero-panel,
           .about-info-panel {
             top: auto !important;
-            bottom: 0.85rem !important;
+            bottom: clamp(2.8rem, 5.5vh, 3.4rem) !important;
             left: 50% !important;
             right: auto !important;
-            width: calc(100% - 24px) !important;
-            max-width: 390px !important;
-            max-height: 38vh !important;
+            width: min(92vw, 355px) !important;
+            max-width: 355px !important;
+            max-height: 32vh !important;
             overflow-y: auto !important;
-            padding: 0.85rem 1rem !important;
-            gap: 0.42rem !important;
+            padding: 0.68rem 0.85rem 0.62rem !important;
+            gap: 0.28rem !important;
             text-align: center !important;
             align-items: center !important;
-            border-radius: 20px !important;
-            background: linear-gradient(180deg, rgba(8, 16, 32, 0.85) 0%, rgba(4, 9, 20, 0.93) 100%) !important;
-            border: 1px solid rgba(56, 189, 248, 0.28) !important;
+            border-radius: 18px !important;
+            background: linear-gradient(180deg, rgba(28, 10, 20, 0.88) 0%, rgba(14, 5, 12, 0.94) 100%) !important;
+            border: 1px solid rgba(244, 63, 94, 0.28) !important;
             backdrop-filter: blur(14px) !important;
             -webkit-backdrop-filter: blur(14px) !important;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 24px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
-          }
-          .about-info-panel {
-            background: linear-gradient(180deg, rgba(28, 10, 20, 0.85) 0%, rgba(14, 5, 12, 0.93) 100%) !important;
-            border: 1px solid rgba(244, 63, 94, 0.28) !important;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 24px rgba(244, 63, 94, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
           }
           .hero-cyber-badge,
