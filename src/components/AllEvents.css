@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-image: url('/bg.png');
+  background-image: url('/bg.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -453,5 +453,83 @@
 
   .all-events-container {
     padding: 0 1.25rem;
+  }
+}
+
+/* ==========================================================================
+   TIMELINE EVENT CARD RESPONSIVE POLISH (MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .events-timeline-section .event-card-wrapper {
+    max-width: 380px !important;
+    width: calc(100% - 28px) !important;
+  }
+  .events-timeline-section .event-logo-area {
+    height: 56px !important;
+    padding: 0.35rem 0.9rem !important;
+  }
+  .events-timeline-section .event-logo {
+    max-height: 42px !important;
+  }
+  .events-timeline-section .event-card-content {
+    padding: 0.75rem 1rem 0.85rem !important;
+  }
+  .events-timeline-section .event-category-row {
+    margin-bottom: 0.2rem !important;
+  }
+  .events-timeline-section .event-category {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.12em !important;
+  }
+  .events-timeline-section .organizer-badge {
+    font-size: 0.55rem !important;
+    padding: 1px 6px !important;
+  }
+  .events-timeline-section .event-name {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.25rem !important;
+    line-height: 1.15 !important;
+  }
+  .events-timeline-section .event-card-desc {
+    font-size: 0.74rem !important;
+    line-height: 1.32 !important;
+    margin-bottom: 0.4rem !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .events-timeline-section .event-divider {
+    margin: 0.35rem 0 0.5rem !important;
+  }
+  .events-timeline-section .event-details {
+    gap: 0.4rem !important;
+  }
+  .events-timeline-section .detail-item {
+    gap: 0.15rem !important;
+  }
+  .events-timeline-section .detail-label {
+    font-size: 0.62rem !important;
+    gap: 0.3rem !important;
+  }
+  .events-timeline-section .detail-label svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  .events-timeline-section .detail-value {
+    font-size: 0.74rem !important;
+    padding-left: 1.1rem !important;
+  }
+  .events-timeline-section .detail-value.accent-text {
+    font-size: 1.05rem !important;
+  }
+  .events-timeline-section .event-card-footer {
+    margin-top: 0.6rem !important;
+  }
+  .events-timeline-section .explore-btn {
+    padding: 0.55rem 0.9rem !important;
+    font-size: 0.75rem !important;
+    min-height: 36px !important;
+    letter-spacing: 0.1em !important;
   }
 }

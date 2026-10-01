@@ -23,7 +23,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹12K+ + Goodies",
     description: "3-round UI/UX design competition. Registration: Free for PCCOE students / ₹100 for other colleges",
     accent: "#ef4444", // Red
-    logoUrl: "/logos/masterchefui.png",
+    logoUrl: "/logos/masterchefui.webp",
   },
   {
     id: "shesolves-3",
@@ -34,7 +34,7 @@ export const allEventsData: EventItem[] = [
     teamSize: "2–4 female students",
     prizePool: "₹16K+",
     description: "Women-focused hackathon based on innovation and problem solving.",
-    logoUrl: "/logos/shesolves-logo.png",
+    logoUrl: "/logos/shesolves-logo.webp",
     accent: "#22c55e", // Green
     url: "https://shesolves3-0.vercel.app/"
   },
@@ -45,7 +45,7 @@ export const allEventsData: EventItem[] = [
     organizer: "CESA-SDW / ACM PCCOE",
     date: "10 October 2026 (Final Round)",
     prizePool: "₹18K+",
-    logoUrl: "/logos/codigo.png",
+    logoUrl: "/logos/codigo.webp",
     description: "Coding competition focused on problem solving.",
     accent: "#eab308", // Yellow/Gold
     url: "https://pccoe-codigo-2026.vercel.app/"
@@ -60,7 +60,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹1.5 LAKH+",
     description: "Cybersecurity CTF covering Web, OSINT, Forensics, Cryptography, Networking, Linux and more.",
     accent: "#f97316", // Orange
-    logoUrl: "/logos/byte.png",
+    logoUrl: "/logos/byte.webp",
     url: "https://bytemectf.owasppccoe.in/"
   },
   {
@@ -73,7 +73,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹15K+",
     description: "3-round hackathon involving ideation, building and pitching. Tracks: Agentic AI, Blockchain/Web3, Open Source.",
     accent: "#3b82f6", // Blue
-    logoUrl: "/logos/Decentra-hack.png",
+    logoUrl: "/logos/Decentra-hack.webp",
     url: "https://decentrahack.vercel.app/"
   },
   {
@@ -84,7 +84,7 @@ export const allEventsData: EventItem[] = [
     date: "9-10 October 2026",
     teamSize: "2–4 members",
     prizePool: "₹15K+",
-    logoUrl: "/logos/iothrone.png",
+    logoUrl: "/logos/iothrone.webp",
     description: "Innovation-driven hackathon involving prototype development and real-time integration.",
     accent: "#a855f7", // Purple
     url: "https://iothrone.vercel.app/"
@@ -98,6 +98,6 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹13K+",
     description: "Creative doodle competition where participants create a doodle based on a given topic, followed by an offline twist round.",
     accent: "#f8fafc", // White/Silver
-    logoUrl: "/logos/make_a_doddle.png",
+    logoUrl: "/logos/make_a_doddle.webp",
   }
 ];

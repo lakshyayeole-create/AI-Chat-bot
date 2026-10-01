@@ -41,7 +41,7 @@ const RAW_STONES_DATA: StoneData[] = [
     url: 'https://pccoe-codigo-2026.vercel.app/',
     link: 'https://pccoe-codigo-2026.vercel.app/',
     prizePool: '₹18K+',
-    logoUrl: '/logos/codigo.png',
+    logoUrl: '/logos/codigo.webp',
   },
   {
     id: 'time',
@@ -61,7 +61,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: 'https://shesolves3-0.vercel.app/',
     teamSize: '2–4 female students',
     prizePool: '₹16K+',
-    logoUrl: '/logos/shesolves-logo.png',
+    logoUrl: '/logos/shesolves-logo.webp',
   },
   {
     id: 'soul',
@@ -81,7 +81,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: 'https://bytemectf.owasppccoe.in/',
     teamSize: '1–2 members',
     prizePool: '₹1.5 LAKH+',
-    logoUrl: '/logos/byte.png',
+    logoUrl: '/logos/byte.webp',
   },
   {
     id: 'reality',
@@ -100,7 +100,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: '#',
     teamSize: '1–2 members',
     prizePool: '₹12K+ + Goodies',
-    logoUrl: '/logos/masterchefui.png',
+    logoUrl: '/logos/masterchefui.webp',
   },
   {
     id: 'space',
@@ -120,7 +120,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: 'https://decentrahack.vercel.app/',
     teamSize: '2–4 members',
     prizePool: '₹15K+',
-    logoUrl: '/logos/Decentra-hack.png',
+    logoUrl: '/logos/Decentra-hack.webp',
   },
   {
     id: 'power',
@@ -140,7 +140,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: 'https://iothrone.vercel.app/',
     teamSize: '2–4 members',
     prizePool: '₹15K+',
-    logoUrl: '/logos/iothrone.png',
+    logoUrl: '/logos/iothrone.webp',
   },
   {
     id: 'art',
@@ -159,7 +159,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: '#',
     teamSize: 'Individual (1 member)',
     prizePool: '₹13K+',
-    logoUrl: '/logos/make_a_doddle.png',
+    logoUrl: '/logos/make_a_doddle.webp',
   },
   {
     id: 'innovatex',
@@ -178,7 +178,7 @@ const RAW_STONES_DATA: StoneData[] = [
     link: '#',
     teamSize: '1–4 members',
     prizePool: '₹50K+',
-    logoUrl: '/logos/ANANTYA.png',
+    logoUrl: '/logos/ANANTYA.webp',
   },
 ];
 

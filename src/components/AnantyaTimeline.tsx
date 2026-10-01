@@ -624,6 +624,10 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
   isPaused = false,
 }, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isPausedRef = useRef(isPaused);
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
 
   // Continuous scroll progress: 0.0 (Stone 1) -> 7.0 (Stone 8) -> 8.0 (Gauntlet Placement)
   const targetProgressRef = useRef<number>(0);
@@ -769,6 +773,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
 
     const loop = () => {
       animId = requestAnimationFrame(loop);
+      if (isPausedRef.current) return;
       const diff = targetProgressRef.current - progress;
       if (Math.abs(diff) > 0.0002) {
         progress += diff * 0.12;
@@ -962,7 +967,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         <div
           style={{
             position: 'absolute',
-            bottom: 'calc(clamp(1.2rem, 3vh, 2.2rem) + 48vh + 10px)',
+            bottom: 'clamp(310px, 43vh, 360px)',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 25,
