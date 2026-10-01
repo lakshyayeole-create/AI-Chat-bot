@@ -1332,7 +1332,7 @@ export default function App() {
           --about-accent-glow: rgba(255, 107, 143, 0.28);
 
           position: fixed;
-          top: 170px;
+          top: 50%;
           left: 6%;
           width: min(520px, 44vw);
           max-width: 520px;
@@ -1877,4 +1877,3 @@ export default function App() {
     </main>
   );
 }
-
