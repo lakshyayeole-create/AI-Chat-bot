@@ -202,12 +202,14 @@ export default function App() {
     }
     window.scrollTo(0, 0);
 
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
     const lenis = new Lenis({
-      duration: 1.25,
+      duration: isTouch ? 0.95 : 1.25,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
-      touchMultiplier: 1.8,
+      touchMultiplier: 1.2,
+      syncTouch: true,
     });
 
     lenisRef.current = lenis;

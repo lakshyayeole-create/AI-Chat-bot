@@ -911,7 +911,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
         </div>
       )}
 
-      {/* ── 3. Mobile: Horizontal Floating Stone Pagination Pill ── */}
+      {/* ── 3. Mobile: Horizontal Floating Stone Pagination Pill with Touch Arrows ── */}
       {isMobile && (
         <div
           style={{
@@ -922,19 +922,45 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
             zIndex: 25,
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
-            background: 'rgba(8, 14, 26, 0.88)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            gap: '6px',
+            background: 'rgba(8, 14, 26, 0.90)',
+            backdropFilter: 'blur(18px)',
+            WebkitBackdropFilter: 'blur(18px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             borderRadius: '9999px',
-            padding: '5px 12px',
+            padding: '4px 10px',
             opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
             pointerEvents: (convergenceProgress > 0.2 || introUiFade < 0.5) ? 'none' : 'auto',
             transition: 'opacity 0.25s ease',
-            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.65)',
+            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.7)',
           }}
         >
+          {/* Prev Arrow */}
+          <button
+            type="button"
+            aria-label="Previous Stone"
+            disabled={activeIndex === 0}
+            onClick={() => handleSelectStone(Math.max(0, activeIndex - 1))}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: activeIndex === 0 ? 'default' : 'pointer',
+              opacity: activeIndex === 0 ? 0.25 : 0.85,
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '6px 4px',
+              minWidth: '24px',
+              minHeight: '28px',
+              touchAction: 'manipulation',
+            }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
           {STONES_DATA.map((stone, i) => {
             const isCurrent = i === activeIndex;
             return (
@@ -946,11 +972,12 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
-                  padding: '6px 3px',
+                  padding: '6px 2.5px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   outline: 'none',
+                  touchAction: 'manipulation',
                 }}
               >
                 <div
@@ -966,6 +993,32 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
               </button>
             );
           })}
+
+          {/* Next Arrow */}
+          <button
+            type="button"
+            aria-label="Next Stone"
+            disabled={activeIndex === NUM_STONES - 1}
+            onClick={() => handleSelectStone(Math.min(NUM_STONES - 1, activeIndex + 1))}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: activeIndex === NUM_STONES - 1 ? 'default' : 'pointer',
+              opacity: activeIndex === NUM_STONES - 1 ? 0.25 : 0.85,
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '6px 4px',
+              minWidth: '24px',
+              minHeight: '28px',
+              touchAction: 'manipulation',
+            }}
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
       )}
 

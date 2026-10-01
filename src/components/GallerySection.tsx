@@ -351,11 +351,30 @@ export const GallerySection: React.FC = () => {
             font-size: clamp(1.85rem, 6.5vw, 2.5rem);
           }
           .gallery-filter-bar {
-            gap: 0.45rem;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            width: calc(100% + 2.2rem);
+            margin-left: -1.1rem;
+            padding: 0 1.1rem 0.5rem;
+            gap: 0.5rem;
+          }
+          .gallery-filter-bar::-webkit-scrollbar {
+            display: none;
           }
           .gallery-filter-btn {
-            padding: 0.45rem 0.85rem;
-            font-size: 0.70rem;
+            flex-shrink: 0;
+            white-space: nowrap;
+            padding: 0.55rem 1.05rem;
+            min-height: 40px;
+            font-size: 0.72rem;
+            touch-action: manipulation;
+          }
+          .gallery-filter-btn:active {
+            transform: scale(0.96);
           }
         }
       `}</style>
