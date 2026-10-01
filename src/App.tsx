@@ -15,6 +15,7 @@ import './components/CyberHeroCard.css';
 const ironManConfig: ModelConfig = {
   modelPath: '/assets/iron_man_detailed_web.glb',
   bgImagePath: '/assets/iron_man_hud_bg.webp',
+  mobileBgImagePath: '/assets/iron_man_hud_bg_mobile.webp',
   rotationX: 0,
   targetHeight: 1.5,
   assemblyAnimation: true,
@@ -153,6 +154,8 @@ export default function App() {
   const bottomScrollPromptRef = useRef<HTMLDivElement>(null);
 
   const [hasEntered, setHasEntered] = useState(false);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [modelLoadProgress, setModelLoadProgress] = useState(0);
   const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
   const activeNavSectionRef = useRef<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -853,8 +856,34 @@ export default function App() {
           toModel={starLordConfig}
           enableScroll={false}
           isPaused={activeNavSection !== 'home' && activeNavSection !== 'about'}
+          onModelLoaded={() => setIsModelLoaded(true)}
+          onModelProgress={(pct) => setModelLoadProgress(pct)}
         />
       </div>
+
+      {/* Stark Arc Reactor Holographic HUD Loader (Shown while 8.9MB 3D model loads) */}
+      {!isModelLoaded && hasEntered && (
+        <div className="stark-hero-loader-wrap">
+          <div className="stark-arc-core">
+            <div className="arc-ring ring-1" />
+            <div className="arc-ring ring-2" />
+            <div className="arc-ring ring-3" />
+            <div className="arc-center-reactor" />
+          </div>
+          <div className="stark-telemetry-box">
+            <span className="stark-hud-code">STARK PROTOCOL // MARK LXXXV</span>
+            <span className="stark-hud-state">
+              SYNCHRONIZING ARMOR SYSTEMS{modelLoadProgress > 0 ? ` [${modelLoadProgress}%]` : '...'}
+            </span>
+            <div className="stark-hud-bar">
+              <div
+                className="stark-hud-fill"
+                style={{ width: `${Math.max(14, modelLoadProgress)}%` }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Diagonal Laser Seam Line (Star-Lord -> Thanos Infinity Gauntlet) */}
       <div

@@ -30,6 +30,8 @@ export interface ModelConfig {
   modelPath: string;
   /** Optional background image texture placed on a plane directly behind the model */
   bgImagePath?: string;
+  /** Dedicated mobile background image texture (9:16 portrait) */
+  mobileBgImagePath?: string;
   /** Optional forward/backward tilt along the X axis in radians */
   rotationX?: number;
   /** Normalized target height in world units (defaults to 1.5) */
@@ -118,6 +120,10 @@ export interface TransitionProps {
   rotationSensitivity?: number;
   /** Callback fired whenever transition progress updates */
   onProgressChange?: (progress: number) => void;
+  /** Optional callback fired when front 3D model finishes loading */
+  onModelLoaded?: () => void;
+  /** Optional callback reporting model download percentage */
+  onModelProgress?: (percent: number) => void;
   /** Optional callback fired when assembly animation completes */
   onAssemblyComplete?: () => void;
   /** Optional callback fired during assembly status changes */
@@ -151,6 +157,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
       onProgressChange,
+      onModelLoaded,
+      onModelProgress,
       onAssemblyComplete,
       onAssemblyStatus,
       isPaused = false,
@@ -167,6 +175,12 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     // Keep callback refs stable to prevent re-renders
     const onProgressChangeRef = useRef(onProgressChange);
     onProgressChangeRef.current = onProgressChange;
+
+    const onModelLoadedRef = useRef(onModelLoaded);
+    onModelLoadedRef.current = onModelLoaded;
+
+    const onModelProgressRef = useRef(onModelProgress);
+    onModelProgressRef.current = onModelProgress;
 
     const onAssemblyCompleteRef = useRef(onAssemblyComplete);
     onAssemblyCompleteRef.current = onAssemblyComplete;
@@ -469,15 +483,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       // Background Plane 1
       let fromBgPlane: THREE.Mesh | null = null;
-      if (fromBgPath) {
-        const tex = textureLoader.load(fromBgPath);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        const geo = new THREE.PlaneGeometry(24, 16);
-        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
-        fromBgPlane = new THREE.Mesh(geo, mat);
-        fromBgPlane.position.set(0, 0, -1.5);
-        fromScene.add(fromBgPlane);
-      }
+      const actualFromBgPath = (isMobileDevice && fromModel.mobileBgImagePath)
+        ? fromModel.mobileBgImagePath
+        : fromBgPath;
+
+      const isMobileBg = isMobileDevice && Boolean(fromModel.mobileBgImagePath);
+      const fromBaseW = isMobileBg ? 9 : 24;
+      const fromBaseH = 16;
 
       const updateFromBgPlane = () => {
         if (!fromBgPlane) return;
@@ -485,9 +497,23 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         const vFov = (fromCamera.fov * Math.PI) / 180;
         const planeH = 2 * dist * Math.tan(vFov / 2);
         const planeW = planeH * fromCamera.aspect;
-        fromBgPlane.scale.set((planeW * 1.6) / 24, (planeH * 1.6) / 16, 1);
+        const scaleFactor = Math.max(planeW / fromBaseW, planeH / fromBaseH) * 1.08;
+        fromBgPlane.scale.set(scaleFactor, scaleFactor, 1);
       };
       updateFromBgPlaneRef.current = updateFromBgPlane;
+
+      if (actualFromBgPath) {
+        const tex = textureLoader.load(actualFromBgPath, () => {
+          updateFromBgPlane();
+        });
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const geo = new THREE.PlaneGeometry(fromBaseW, fromBaseH);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
+        fromBgPlane = new THREE.Mesh(geo, mat);
+        fromBgPlane.position.set(0, 0, -2);
+        fromScene.add(fromBgPlane);
+        updateFromBgPlane();
+      }
 
       // ==========================================
       // 2. BACK MODEL SCENE (toModel)
@@ -544,25 +570,29 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       // Background Plane 2
       let toBgPlane: THREE.Mesh | null = null;
-      if (toBgPath) {
-        const tex = textureLoader.load(toBgPath);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        const geo = new THREE.PlaneGeometry(24, 16);
-        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
-        toBgPlane = new THREE.Mesh(geo, mat);
-        toBgPlane.position.set(0, 0, -1.5);
-        toScene.add(toBgPlane);
-      }
-
       const updateToBgPlane = () => {
         if (!toBgPlane) return;
         const dist = Math.abs(toCamera.position.z - toBgPlane.position.z);
         const vFov = (toCamera.fov * Math.PI) / 180;
         const planeH = 2 * dist * Math.tan(vFov / 2);
         const planeW = planeH * toCamera.aspect;
-        toBgPlane.scale.set((planeW * 1.6) / 24, (planeH * 1.6) / 16, 1);
+        const scaleFactor = Math.max(planeW / 24, planeH / 16) * 1.08;
+        toBgPlane.scale.set(scaleFactor, scaleFactor, 1);
       };
       updateToBgPlaneRef.current = updateToBgPlane;
+
+      if (toBgPath) {
+        const tex = textureLoader.load(toBgPath, () => {
+          updateToBgPlane();
+        });
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const geo = new THREE.PlaneGeometry(24, 16);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
+        toBgPlane = new THREE.Mesh(geo, mat);
+        toBgPlane.position.set(0, 0, -2);
+        toScene.add(toBgPlane);
+        updateToBgPlane();
+      }
 
       // ==========================================
       // LOAD MODELS
@@ -690,8 +720,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
               pendingAssemblyStartRef.current = false;
             }
           }
+
+          if (isMounted) {
+            onModelLoadedRef.current?.();
+          }
         },
-        undefined,
+        (xhr) => {
+          if (xhr.total > 0 && onModelProgressRef.current) {
+            const pct = Math.round((xhr.loaded / xhr.total) * 100);
+            onModelProgressRef.current(pct);
+          }
+        },
         (err) => console.error('Failed to load fromModel:', err)
       );
 
