@@ -10,7 +10,7 @@
   display: flex;
   background-color: #080b12;
   padding: 6rem 0;
-  
+
   /* Geometric Sans-Serif Stack matching the reference */
   font-family: 'Montserrat', 'Gotham', 'Outfit', 'Poppins', 'Avenir Next', 'Avenir', 'Century Gothic', 'Futura', sans-serif;
 }
@@ -81,11 +81,16 @@
   flex-direction: column;
   position: relative;
   padding: 2px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.05) 80%, var(--accent-color) 100%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.05) 80%, var(--accent-color) 100%);
   clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
   filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent-color) 50%, transparent));
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s ease;
   height: auto;
+}
+
+.events-timeline-section .event-card-wrapper {
+  transition: filter 0.3s ease;
+  will-change: transform, opacity;
 }
 
 .events-grid .event-card-wrapper {
@@ -132,7 +137,8 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 17px; /* Start after the top-left cut */
+  left: 17px;
+  /* Start after the top-left cut */
   right: 0;
   height: 2px;
   background: var(--accent-color);
@@ -351,7 +357,8 @@
   font-size: 1.02rem;
   color: #f8fafc;
   font-weight: 600;
-  padding-left: 1.55rem; /* Align with text after icon */
+  padding-left: 1.55rem;
+  /* Align with text after icon */
 }
 
 .detail-value.accent-text {
@@ -439,11 +446,11 @@
   .all-events-section {
     padding: 4rem 0;
   }
-  
+
   .events-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .all-events-container {
     padding: 0 1.25rem;
   }

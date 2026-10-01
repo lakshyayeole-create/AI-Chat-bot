@@ -7,6 +7,10 @@ import Navbar from './components/Navbar';
 import AvengersIntro from './components/ui/AvengersIntro';
 import AnantyaTimeline from './components/AnantyaTimeline';
 import { GallerySection } from './components/GallerySection';
+import ContactSection from './components/ContactSection';
+import CountdownTimer from './components/CountdownTimer';
+import ScrollGuidance from './components/ScrollGuidance';
+import './components/CyberHeroCard.css';
 
 const ironManConfig: ModelConfig = {
   modelPath: '/assets/iron_man_detailed_web.glb',
@@ -140,23 +144,77 @@ export default function App() {
   const transitionRef = useRef<TransitionHandle>(null);
   const lenisRef = useRef<Lenis | null>(null);
   const [hasEntered, setHasEntered] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [morphProgress, setMorphProgress] = useState(0);
-  const [assemblyProgress, setAssemblyProgress] = useState(0);
-  const [transitionProgress, setTransitionProgress] = useState(0);
-  const [fromPositionX, setFromPositionX] = useState(0);
-  const [toPositionX, setToPositionX] = useState(0);
-  const [fromRotationY, setFromRotationY] = useState(0);
-  const [toRotationY, setToRotationY] = useState(0);
-  const [heroInfoOpacity, setHeroInfoOpacity] = useState(0);
-  const [aboutInfoOpacity, setAboutInfoOpacity] = useState(0);
-  const [canvasOpacity, setCanvasOpacity] = useState(1);
-  const [eventsTimelineProgress, setEventsTimelineProgress] = useState(0);
-  const eventsStRef = useRef<ScrollTrigger | null>(null);
   const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
-  const [gauntletWipeProgress, setGauntletWipeProgress] = useState(0);
+  const [eventsTimelineProgress, setEventsTimelineProgress] = useState(0);
   const [gauntletClenchProgress, setGauntletClenchProgress] = useState(0);
   const [introFlightProgress, setIntroFlightProgress] = useState(0);
+
+  // Direct DOM and Animation refs to eliminate 60fps React state re-render cascades
+  const heroPanelRef = useRef<HTMLElement>(null);
+  const aboutPanelRef = useRef<HTMLElement>(null);
+  const canvasWrapRef = useRef<HTMLDivElement>(null);
+  const laserWipeLineRef = useRef<HTMLDivElement>(null);
+  const activeNavSectionRef = useRef<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
+  const morphProgressRef = useRef<number>(0);
+  const lastEventsProgressRef = useRef<number>(-999);
+  const lastGauntletClenchRef = useRef<number>(-999);
+  const lastIntroFlightRef = useRef<number>(-999);
+  const eventsStRef = useRef<ScrollTrigger | null>(null);
+
+  // High-performance DOM style synchronizers
+  const updateHeroPanel = useCallback((opacity: number, navSec: string) => {
+    if (!heroPanelRef.current) return;
+    const isHidden = navSec === 'events' || navSec === 'gallery' || opacity <= 0.01;
+    heroPanelRef.current.style.opacity = isHidden ? '0' : String(opacity);
+    heroPanelRef.current.style.transform = `translateY(-50%) translateX(${(1 - opacity) * 35}px)`;
+    heroPanelRef.current.style.pointerEvents = (isHidden || opacity <= 0.4) ? 'none' : 'auto';
+    heroPanelRef.current.style.visibility = isHidden ? 'hidden' : 'visible';
+  }, []);
+
+  const updateAboutPanel = useCallback((opacity: number, navSec: string) => {
+    if (!aboutPanelRef.current) return;
+    const isHidden = navSec === 'events' || navSec === 'gallery' || opacity <= 0.01;
+    aboutPanelRef.current.style.opacity = isHidden ? '0' : String(opacity);
+    aboutPanelRef.current.style.transform = `translateY(-50%) translateX(${(1 - opacity) * -35}px)`;
+    aboutPanelRef.current.style.pointerEvents = (isHidden || opacity <= 0.4) ? 'none' : 'auto';
+    aboutPanelRef.current.style.visibility = isHidden ? 'hidden' : 'visible';
+  }, []);
+
+  const updateCanvasWrap = useCallback((opacity: number, zIdx: number, mask?: string) => {
+    if (!canvasWrapRef.current) return;
+    canvasWrapRef.current.style.opacity = String(opacity);
+    canvasWrapRef.current.style.visibility = opacity <= 0.005 ? 'hidden' : 'visible';
+    canvasWrapRef.current.style.zIndex = String(zIdx);
+    if (mask !== undefined) {
+      canvasWrapRef.current.style.webkitMaskImage = mask;
+      canvasWrapRef.current.style.maskImage = mask;
+    }
+  }, []);
+
+  const updateLaserWipeLine = useCallback((show: boolean, pct?: number) => {
+    if (!laserWipeLineRef.current) return;
+    if (!show || pct === undefined) {
+      laserWipeLineRef.current.style.display = 'none';
+      return;
+    }
+    laserWipeLineRef.current.style.display = 'block';
+    laserWipeLineRef.current.style.background = `linear-gradient(to top right, transparent calc(${pct}% - 3.5px), rgba(255, 215, 0, 0.9) calc(${pct}% - 1px), #ffffff ${pct}%, rgba(168, 85, 247, 0.95) calc(${pct}% + 1px), transparent calc(${pct}% + 3.5px))`;
+  }, []);
+
+  const syncNavSection = useCallback((sec: 'home' | 'about' | 'events' | 'gallery' | 'contact') => {
+    if (activeNavSectionRef.current !== sec) {
+      activeNavSectionRef.current = sec;
+      setActiveNavSection(sec);
+    }
+  }, []);
+
+  const syncMorphProgress = useCallback((val: number) => {
+    if (Math.abs(val - morphProgressRef.current) > 0.015 || (val === 1 && morphProgressRef.current !== 1) || (val === 0 && morphProgressRef.current !== 0)) {
+      morphProgressRef.current = val;
+      setMorphProgress(val);
+    }
+  }, []);
 
   // Lock document scroll while introduction is playing to prevent reload jumps or wheel scroll
   useEffect(() => {
@@ -213,7 +271,7 @@ export default function App() {
     };
 
     gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33); // Smooth out frame drops rather than harsh stuttering jumps
 
     return () => {
       gsap.ticker.remove(updateTicker);
@@ -266,21 +324,20 @@ export default function App() {
 
     const track = document.getElementById('scroll-track');
     if (!track) return;
-    const NAV_END      = 0.12;  // navbar fully formed
-    const IRON_END     = 0.30;  // Iron Man fully assembled and in hero position on left
-    const HOME_HOLD    = 0.44;  // Home page hero section in full focus
-    const CENTER_END   = 0.50;  // Iron Man smoothly returns to center facing forward
-    const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Star-Lord with full 3D rotation
-    const ABOUT_HOLD   = 0.76;  // Star-Lord glides to right, turns left, About Us panel in full focus
+    const NAV_END = 0.12;  // navbar fully formed
+    const IRON_END = 0.30;  // Iron Man fully assembled and in hero position on left
+    const HOME_HOLD = 0.44;  // Home page hero section in full focus
+    const CENTER_END = 0.50;  // Iron Man smoothly returns to center facing forward
+    const WIPE_END = 0.66;  // Diagonal laser wipe in center: Iron Man -> Star-Lord with full 3D rotation
+    const ABOUT_HOLD = 0.76;  // Star-Lord glides to right, turns left, About Us panel in full focus
 
     const st = ScrollTrigger.create({
       trigger: track,
       start: 'top top',
-      end: 'bottom top', // Meshes perfectly with events section start: 'top top' (zero dead zone!)
+      end: 'bottom top',
       scrub: 0.6,
       onUpdate: (self) => {
         const p = self.progress; // 0.0 to 1.0
-        setScrollProgress(p);
 
         const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
         const targetLeftX = isMobile ? 0 : -0.65;
@@ -291,255 +348,234 @@ export default function App() {
         if (p <= NAV_END) {
           // Phase 1 — Logo-to-Navbar Morph
           const navP = Math.min(1, p / NAV_END);
-          setMorphProgress(navP);
-          setAssemblyProgress(0);
-          setTransitionProgress(0);
-          setCanvasOpacity(1);
-          setFromPositionX(0);
-          setFromRotationY(0);
-          setToPositionX(0);
-          setToRotationY(0);
-          setHeroInfoOpacity(0);
-          setAboutInfoOpacity(0);
-          setActiveNavSection('home');
+          syncMorphProgress(navP);
+          transitionRef.current?.setAssemblyProgress(0);
+          transitionRef.current?.setTransitionProgress(0);
+          transitionRef.current?.setModelTransforms?.(0, 0, 0, 0);
+          updateCanvasWrap(1, 1, '');
+          updateHeroPanel(0, 'home');
+          updateAboutPanel(0, 'home');
+          syncNavSection('home');
         } else if (p <= IRON_END) {
           // Phase 2 — Iron Man Assembly & Glide to Left
-          setMorphProgress(1);
+          syncMorphProgress(1);
           const maskP = (p - NAV_END) / (IRON_END - NAV_END);
           const clampedMaskP = Math.min(1, Math.max(0, maskP));
-          setAssemblyProgress(clampedMaskP);
-          setTransitionProgress(0);
-          setCanvasOpacity(1);
-          setToPositionX(0);
-          setToRotationY(0);
-          setAboutInfoOpacity(0);
-          setActiveNavSection('home');
+          transitionRef.current?.setAssemblyProgress(clampedMaskP);
+          transitionRef.current?.setTransitionProgress(0);
+          updateCanvasWrap(1, 1, '');
+          updateAboutPanel(0, 'home');
+          syncNavSection('home');
 
           if (clampedMaskP > 0.55) {
             const slideT = (clampedMaskP - 0.55) / 0.45;
-            setFromPositionX(targetLeftX * slideT);
-            setFromRotationY(targetRightRot * slideT);
-            setHeroInfoOpacity(slideT);
+            transitionRef.current?.setModelTransforms?.(targetLeftX * slideT, targetRightRot * slideT, 0, 0);
+            updateHeroPanel(slideT, 'home');
           } else {
-            setFromPositionX(0);
-            setFromRotationY(0);
-            setHeroInfoOpacity(0);
+            transitionRef.current?.setModelTransforms?.(0, 0, 0, 0);
+            updateHeroPanel(0, 'home');
           }
         } else if (p <= HOME_HOLD) {
           // Phase 3 — Home Page Hero Section in full focus (Iron Man on left looking right)
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setTransitionProgress(0);
-          setCanvasOpacity(1);
-          setFromPositionX(targetLeftX);
-          setFromRotationY(targetRightRot);
-          setToPositionX(0);
-          setToRotationY(0);
-          setHeroInfoOpacity(1);
-          setAboutInfoOpacity(0);
-          setActiveNavSection('home');
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          transitionRef.current?.setTransitionProgress(0);
+          transitionRef.current?.setModelTransforms?.(targetLeftX, targetRightRot, 0, 0);
+          updateCanvasWrap(1, 1, '');
+          updateHeroPanel(1, 'home');
+          updateAboutPanel(0, 'home');
+          syncNavSection('home');
         } else if (p <= CENTER_END) {
           // Phase 4a — Re-center helmet to prepare for the seamless laser wipe
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setTransitionProgress(0);
-          setCanvasOpacity(1);
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          transitionRef.current?.setTransitionProgress(0);
+          updateCanvasWrap(1, 1, '');
 
           const centerT = (p - HOME_HOLD) / (CENTER_END - HOME_HOLD);
-          setFromPositionX(targetLeftX * (1 - centerT));
-          setFromRotationY(targetRightRot * (1 - centerT));
-          setHeroInfoOpacity(Math.max(0, 1 - centerT * 2.2));
-
-          setToPositionX(0);
-          setToRotationY(0);
-          setAboutInfoOpacity(0);
-          setActiveNavSection('home');
+          transitionRef.current?.setModelTransforms?.(targetLeftX * (1 - centerT), targetRightRot * (1 - centerT), 0, 0);
+          updateHeroPanel(Math.max(0, 1 - centerT * 2.2), 'home');
+          updateAboutPanel(0, 'home');
+          syncNavSection('home');
         } else if (p <= WIPE_END) {
-          // Phase 4b — Seamless Diagonal Laser Seam Wipe in the CENTER (Exact smooth transition like before)
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setCanvasOpacity(1);
-          setHeroInfoOpacity(0);
-          setAboutInfoOpacity(0);
+          // Phase 4b — Seamless Diagonal Laser Seam Wipe in the CENTER
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          updateCanvasWrap(1, 1, '');
+          updateHeroPanel(0, 'home');
+          updateAboutPanel(0, 'home');
 
           const wipeNorm = (p - CENTER_END) / (WIPE_END - CENTER_END);
           const wipeT = Math.min(1, Math.max(0, wipeNorm));
-          setTransitionProgress(wipeT);
+          transitionRef.current?.setTransitionProgress(wipeT);
 
-          // Both models are aligned in the exact same center position
-          setFromPositionX(0);
-          setToPositionX(0);
-
-          // Synchronous full 360-degree rotation across the diagonal laser seam
           const sharedRotY = wipeT * Math.PI * 2;
-          setFromRotationY(sharedRotY);
-          setToRotationY(sharedRotY);
-
-          setActiveNavSection(wipeT >= 0.5 ? 'about' : 'home');
+          transitionRef.current?.setModelTransforms?.(0, sharedRotY, 0, sharedRotY);
+          syncNavSection(wipeT >= 0.5 ? 'about' : 'home');
         } else if (p <= ABOUT_HOLD) {
           // Phase 4c — Wipe complete: Star-Lord glides to the right and turns left, About Us panel fades in
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setTransitionProgress(1);
-          setCanvasOpacity(1);
-          setHeroInfoOpacity(0);
-
-          setFromPositionX(0);
-          setFromRotationY(Math.PI * 2);
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          transitionRef.current?.setTransitionProgress(1);
+          updateCanvasWrap(1, 1, '');
+          updateHeroPanel(0, 'about');
 
           const glideNorm = (p - WIPE_END) / (ABOUT_HOLD - WIPE_END);
           const glideT = Math.min(1, Math.max(0, glideNorm));
           const posEase = Math.sin((glideT * Math.PI) / 2);
           const rotEase = 1 - Math.pow(1 - glideT, 2.5);
 
-          setToPositionX(targetRightX * posEase);
-          setToRotationY(Math.PI * 2 + targetLeftRot * rotEase);
-          setAboutInfoOpacity(glideT);
-
-          setActiveNavSection('about');
+          transitionRef.current?.setModelTransforms?.(0, Math.PI * 2, targetRightX * posEase, Math.PI * 2 + targetLeftRot * rotEase);
+          updateAboutPanel(glideT, 'about');
+          syncNavSection('about');
         } else if (p <= 0.84) {
           // Phase 5a — About Us Section in full focus (Star-Lord on right looking left, About panel on left)
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setTransitionProgress(1);
-          setCanvasOpacity(1);
-          setFromPositionX(0);
-          setFromRotationY(Math.PI * 2);
-
-          setToPositionX(targetRightX);
-          setToRotationY(Math.PI * 2 + targetLeftRot);
-          setHeroInfoOpacity(0);
-          setAboutInfoOpacity(1);
-          setActiveNavSection('about');
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          transitionRef.current?.setTransitionProgress(1);
+          updateCanvasWrap(1, 1, '');
+          transitionRef.current?.setModelTransforms?.(0, Math.PI * 2, targetRightX, Math.PI * 2 + targetLeftRot);
+          updateHeroPanel(0, 'about');
+          updateAboutPanel(1, 'about');
+          syncNavSection('about');
         } else {
           // Phase 5b — Re-center Star-Lord helmet for transition into Thanos Infinity Gauntlet
-          // As requested: "during end of about section bring starlord helmet at center of screen again for transition"
           const recenterNorm = (p - 0.84) / (1.0 - 0.84);
           const recenterT = Math.min(1, Math.max(0, recenterNorm));
           const easedRecenter = recenterT * recenterT * (3 - 2 * recenterT);
 
-          setMorphProgress(1);
-          setAssemblyProgress(1);
-          setTransitionProgress(1);
-          setCanvasOpacity(1);
-          setFromPositionX(0);
-          setFromRotationY(Math.PI * 2);
-
-          // Smoothly glide Star-Lord from targetRightX (0.65) back to 0.0 (center)
-          setToPositionX(targetRightX * (1 - easedRecenter));
-          // Smoothly turn Star-Lord to face straight forward (Math.PI * 2)
-          setToRotationY(Math.PI * 2 + targetLeftRot * (1 - easedRecenter));
-
-          setHeroInfoOpacity(0);
-          // Fade out About panel as helmet returns to center
-          setAboutInfoOpacity(Math.max(0, 1 - recenterT * 1.5));
-          setActiveNavSection('about');
+          syncMorphProgress(1);
+          transitionRef.current?.setAssemblyProgress(1);
+          transitionRef.current?.setTransitionProgress(1);
+          updateCanvasWrap(1, p > 0.82 ? 42 : 1, '');
+          transitionRef.current?.setModelTransforms?.(0, Math.PI * 2, targetRightX * (1 - easedRecenter), Math.PI * 2 + targetLeftRot * (1 - easedRecenter));
+          updateHeroPanel(0, 'about');
+          updateAboutPanel(Math.max(0, 1 - recenterT * 1.5), 'about');
+          syncNavSection('about');
         }
       },
     });
 
     // Pinned ScrollTrigger for Events Section:
-    // PINS #events firmly at top:0 so it fills 100% of the screen BEFORE any stones rotate!
     const eventsEl = document.getElementById('events');
     let eventsSt: ScrollTrigger | null = null;
     if (eventsEl) {
       eventsSt = ScrollTrigger.create({
         trigger: eventsEl,
         start: 'top top',
-        end: '+=9200', // Dedicated scrub space: 8 stones + Gauntlet Convergence + Gauntlet->Loki 360 wipe
+        end: '+=9200',
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
         onUpdate: (self) => {
           const p = self.progress; // 0.0 -> 1.0
 
-          // Phase 0A: Diagonal Laser Wipe from Star-Lord to Open Gauntlet (0.00 -> 0.14 - widened for smooth transition speed)
+          // Phase 0A: Diagonal Laser Wipe from Star-Lord to Open Gauntlet (0.00 -> 0.14)
           if (p <= 0.14) {
             const wipeT = p / 0.14;
-            setGauntletWipeProgress(wipeT);
-            setGauntletClenchProgress(0); // Hand wide open
-            setIntroFlightProgress(0);
-            setEventsTimelineProgress(0);
-            setCanvasOpacity(1);
-            setActiveNavSection('events');
+            const wipePct = -10 + wipeT * 120;
+            const wipeMask = wipeT < 0.999
+              ? `linear-gradient(to top right, transparent 0%, transparent ${wipePct}%, #000 calc(${wipePct}% + 1.5px), #000 100%)`
+              : 'none';
+            updateCanvasWrap(wipeT >= 0.999 ? 0 : 1, 42, wipeMask);
+            updateLaserWipeLine(wipeT > 0.001 && wipeT < 0.999, wipePct);
+            if (lastGauntletClenchRef.current !== 0) { lastGauntletClenchRef.current = 0; setGauntletClenchProgress(0); }
+            if (lastIntroFlightRef.current !== 0) { lastIntroFlightRef.current = 0; setIntroFlightProgress(0); }
+            if (lastEventsProgressRef.current !== 0) { lastEventsProgressRef.current = 0; setEventsTimelineProgress(0); }
+            syncNavSection('events');
           }
           // Phase 0B: Hand Clenches from Pinky to Thumb (0.14 -> 0.24)
           else if (p <= 0.24) {
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
             const clenchT = (p - 0.14) / (0.24 - 0.14);
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(clenchT);
-            setIntroFlightProgress(0);
-            setEventsTimelineProgress(0);
-            setCanvasOpacity(0);
-            setActiveNavSection('events');
+            if (Math.abs(clenchT - lastGauntletClenchRef.current) > 0.015) {
+              lastGauntletClenchRef.current = clenchT;
+              setGauntletClenchProgress(clenchT);
+            }
+            if (lastIntroFlightRef.current !== 0) { lastIntroFlightRef.current = 0; setIntroFlightProgress(0); }
+            if (lastEventsProgressRef.current !== 0) { lastEventsProgressRef.current = 0; setEventsTimelineProgress(0); }
+            syncNavSection('events');
           }
-          // Phase 0C: Stones burst out, fly above gauntlet into orbit & Gauntlet sinks under camera (0.24 -> 0.36)
+          // Phase 0C: Stones burst out, fly above gauntlet into orbit (0.24 -> 0.36)
           else if (p <= 0.36) {
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
             const flightT = (p - 0.24) / (0.36 - 0.24);
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(1);
-            setIntroFlightProgress(flightT);
-            setEventsTimelineProgress(0);
-            setCanvasOpacity(0);
-            setActiveNavSection('events');
+            if (lastGauntletClenchRef.current !== 1) { lastGauntletClenchRef.current = 1; setGauntletClenchProgress(1); }
+            if (Math.abs(flightT - lastIntroFlightRef.current) > 0.015) {
+              lastIntroFlightRef.current = flightT;
+              setIntroFlightProgress(flightT);
+            }
+            if (lastEventsProgressRef.current !== 0) { lastEventsProgressRef.current = 0; setEventsTimelineProgress(0); }
+            syncNavSection('events');
           }
           // Phase 1: Events 1 to 8 Timeline in Orbit (0.36 -> 0.76)
           else if (p <= 0.76) {
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
             const timeT = (p - 0.36) / (0.76 - 0.36);
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(1);
-            setIntroFlightProgress(1);
-            setEventsTimelineProgress(timeT * 7.0);
-            setCanvasOpacity(0);
-            setActiveNavSection('events');
+            const eventsProg = timeT * 7.0;
+            if (lastGauntletClenchRef.current !== 1) { lastGauntletClenchRef.current = 1; setGauntletClenchProgress(1); }
+            if (lastIntroFlightRef.current !== 1) { lastIntroFlightRef.current = 1; setIntroFlightProgress(1); }
+            if (Math.abs(eventsProg - lastEventsProgressRef.current) > 0.02) {
+              lastEventsProgressRef.current = eventsProg;
+              setEventsTimelineProgress(eventsProg);
+            }
+            syncNavSection('events');
           }
           // Phase 2: Dedicated Hold on Event 8 (InnovateX) (0.76 -> 0.80)
           else if (p <= 0.80) {
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(1);
-            setIntroFlightProgress(1);
-            setEventsTimelineProgress(7.15);
-            setCanvasOpacity(0);
-            setActiveNavSection('events');
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
+            if (lastGauntletClenchRef.current !== 1) { lastGauntletClenchRef.current = 1; setGauntletClenchProgress(1); }
+            if (lastIntroFlightRef.current !== 1) { lastIntroFlightRef.current = 1; setIntroFlightProgress(1); }
+            if (Math.abs(7.15 - lastEventsProgressRef.current) > 0.01) {
+              lastEventsProgressRef.current = 7.15;
+              setEventsTimelineProgress(7.15);
+            }
+            syncNavSection('events');
           }
-          // Phase 3: Post-Event 8: Stones Convergence onto Gauntlet + Finger Clench (0.80 -> 0.90)
+          // Phase 3: Post-Event 8: Stones Convergence onto Gauntlet (0.80 -> 0.90)
           else if (p <= 0.90) {
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
             const convT = (p - 0.80) / (0.90 - 0.80);
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(1);
-            setIntroFlightProgress(1);
-            setEventsTimelineProgress(7.25 + convT * 1.0);
-            setCanvasOpacity(0);
-            setActiveNavSection('events');
+            const eventsProg = 7.25 + convT * 1.0;
+            if (Math.abs(eventsProg - lastEventsProgressRef.current) > 0.02) {
+              lastEventsProgressRef.current = eventsProg;
+              setEventsTimelineProgress(eventsProg);
+            }
+            syncNavSection('events');
           }
           // Phase 4: Rotate Gauntlet and Laser Wipe into Loki Helmet (0.90 -> 1.00)
           else {
+            updateLaserWipeLine(false);
+            updateCanvasWrap(0, 1);
             const lokiT = (p - 0.90) / (1.00 - 0.90);
-            setGauntletWipeProgress(1);
-            setGauntletClenchProgress(1);
-            setIntroFlightProgress(1);
-            setEventsTimelineProgress(8.25 + lokiT * 0.85);
-            setCanvasOpacity(0);
-            setActiveNavSection(lokiT >= 0.5 ? 'gallery' : 'events');
+            const eventsProg = 8.25 + lokiT * 0.85;
+            if (Math.abs(eventsProg - lastEventsProgressRef.current) > 0.02) {
+              lastEventsProgressRef.current = eventsProg;
+              setEventsTimelineProgress(eventsProg);
+            }
+            syncNavSection(lokiT >= 0.5 ? 'gallery' : 'events');
           }
         },
         onEnter: () => {
-          setActiveNavSection('events');
-          setAboutInfoOpacity(0);
-          setHeroInfoOpacity(0);
+          syncNavSection('events');
+          updateAboutPanel(0, 'events');
+          updateHeroPanel(0, 'events');
         },
         onEnterBack: () => {
-          setActiveNavSection('events');
-          setAboutInfoOpacity(0);
-          setHeroInfoOpacity(0);
+          syncNavSection('events');
+          updateAboutPanel(0, 'events');
+          updateHeroPanel(0, 'events');
         },
         onLeaveBack: () => {
-          setActiveNavSection('about');
-          setCanvasOpacity(1);
-          setAboutInfoOpacity(1);
-          setGauntletWipeProgress(0);
-          setGauntletClenchProgress(0);
-          setIntroFlightProgress(0);
+          syncNavSection('about');
+          updateCanvasWrap(1, 1, '');
+          updateAboutPanel(1, 'about');
+          updateLaserWipeLine(false);
         },
       });
       eventsStRef.current = eventsSt;
@@ -556,17 +592,34 @@ export default function App() {
         scrub: true,
         onUpdate: (self) => {
           if (self.progress > 0.4) {
-            setActiveNavSection('gallery');
+            syncNavSection('gallery');
           }
         },
         onEnter: () => {
-          setActiveNavSection('gallery');
+          syncNavSection('gallery');
         },
         onEnterBack: () => {
-          setActiveNavSection('gallery');
+          syncNavSection('gallery');
         },
         onLeaveBack: () => {
-          setActiveNavSection('gallery');
+          syncNavSection('gallery');
+        },
+      });
+    }
+
+    // ScrollTrigger for Contact Section:
+    const contactEl = document.getElementById('contact');
+    let contactSt: ScrollTrigger | null = null;
+    if (contactEl) {
+      contactSt = ScrollTrigger.create({
+        trigger: contactEl,
+        start: 'top 60%',
+        end: 'bottom bottom',
+        onEnter: () => {
+          syncNavSection('contact');
+        },
+        onEnterBack: () => {
+          syncNavSection('contact');
         },
       });
     }
@@ -575,9 +628,10 @@ export default function App() {
       st.kill();
       if (eventsSt) eventsSt.kill();
       if (gallerySt) gallerySt.kill();
+      if (contactSt) contactSt.kill();
       eventsStRef.current = null;
     };
-  }, [hasEntered]);
+  }, [hasEntered, syncMorphProgress, syncNavSection, updateAboutPanel, updateCanvasWrap, updateHeroPanel, updateLaserWipeLine]);
 
   // Handler to smoothly scroll to any specific stone in the pinned timeline
   const handleSelectStone = useCallback((index: number) => {
@@ -600,10 +654,10 @@ export default function App() {
       const eventsEl = document.getElementById('events');
       if (eventsEl) {
         // Immediately dismiss Home/About panels and canvas
-        setAboutInfoOpacity(0);
-        setHeroInfoOpacity(0);
-        setActiveNavSection('events');
-        setCanvasOpacity(0);
+        updateAboutPanel(0, 'events');
+        updateHeroPanel(0, 'events');
+        syncNavSection('events');
+        updateCanvasWrap(0, 1);
 
         // Scroll slightly into the pinned timeline track (+25px) to guarantee #events is firmly pinned and active
         const targetY = (eventsStRef.current ? eventsStRef.current.start : eventsEl.offsetTop) + 25;
@@ -634,6 +688,21 @@ export default function App() {
       return;
     }
 
+    if (id === 'contact') {
+      const contactEl = document.getElementById('contact');
+      if (contactEl) {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(contactEl, {
+            duration: 1.8,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+        } else {
+          contactEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+      return;
+    }
+
     const track = document.getElementById('scroll-track');
     if (!track) return;
     const trackScrollDistance = track.offsetHeight;
@@ -642,10 +711,10 @@ export default function App() {
     let targetProgress = 0.36; // Default to Home section (Iron Man hero stance on left, Info on right)
     if (id === 'home') {
       targetProgress = 0.36;
-      setCanvasOpacity(1);
+      updateCanvasWrap(1, 1);
     } else if (id === 'about') {
       targetProgress = 0.82; // About Us section (Star-Lord hero stance on right, Info on left)
-      setCanvasOpacity(1);
+      updateCanvasWrap(1, 1);
     }
 
     const targetScrollY = targetProgress * trackScrollDistance;
@@ -658,7 +727,7 @@ export default function App() {
     } else {
       window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
     }
-  }, []);
+  }, [syncNavSection, updateAboutPanel, updateCanvasWrap, updateHeroPanel]);
 
   return (
     <main className="app-main-root">
@@ -674,135 +743,184 @@ export default function App() {
       />
 
       {/* Fixed 3D Canvas */}
-      {(() => {
-        const isWipingToGauntlet = gauntletWipeProgress > 0.001 && gauntletWipeProgress < 0.999;
-        const wipePct = -10 + gauntletWipeProgress * 120;
-        const wipeMask = isWipingToGauntlet
-          ? `linear-gradient(to top right, transparent 0%, transparent ${wipePct}%, #000 calc(${wipePct}% + 1.5px), #000 100%)`
-          : undefined;
-
-        return (
-          <>
-            <div
-              className="fixed-3d-canvas-wrap"
-              style={{
-                opacity: gauntletWipeProgress >= 0.999 ? 0 : canvasOpacity,
-                pointerEvents: 'none',
-                visibility: (canvasOpacity <= 0.005 || gauntletWipeProgress >= 0.999) ? 'hidden' : 'visible',
-                transition: isWipingToGauntlet ? 'none' : 'opacity 0.2s linear',
-                zIndex: (scrollProgress > 0.82 && gauntletWipeProgress < 0.999) ? 42 : 1,
-                WebkitMaskImage: wipeMask,
-                maskImage: wipeMask,
-              }}
-            >
-              <Transition
-                ref={transitionRef}
-                fromModel={ironManConfig}
-                toModel={starLordConfig}
-                assemblyProgress={assemblyProgress}
-                transitionProgress={transitionProgress}
-                fromPositionX={fromPositionX}
-                toPositionX={toPositionX}
-                fromRotationY={fromRotationY}
-                toRotationY={toRotationY}
-                enableScroll={false}
-              />
-            </div>
-
-            {/* ── Diagonal Laser Seam Line (Star-Lord -> Thanos Infinity Gauntlet) ── */}
-            {isWipingToGauntlet && (
-              <div
-                className="gauntlet-laser-wipe-line"
-                style={{
-                  position: 'fixed',
-                  inset: 0,
-                  width: '100vw',
-                  height: '100vh',
-                  zIndex: 44,
-                  pointerEvents: 'none',
-                  background: `linear-gradient(to top right, transparent calc(${wipePct}% - 3.5px), rgba(255, 215, 0, 0.9) calc(${wipePct}% - 1px), #ffffff ${wipePct}%, rgba(168, 85, 247, 0.95) calc(${wipePct}% + 1px), transparent calc(${wipePct}% + 3.5px))`,
-                  filter: 'drop-shadow(0 0 16px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 32px rgba(168, 85, 247, 0.65))',
-                }}
-              />
-            )}
-          </>
-        );
-      })()}
-
-      {/* Home Page Hero Info Panel (Right Side: displays festival details while helmet gazes from the left) */}
-      <section
-        className="home-hero-panel"
+      <div
+        ref={canvasWrapRef}
+        className="fixed-3d-canvas-wrap"
         style={{
-          opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : heroInfoOpacity,
-          transform: `translateY(-50%) translateX(${(1 - heroInfoOpacity) * 35}px)`,
-          pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.4) ? 'none' : 'auto',
-          visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.01) ? 'hidden' : 'visible',
+          opacity: 1,
+          pointerEvents: 'none',
+          visibility: 'visible',
+          zIndex: 1,
+          willChange: 'opacity',
         }}
       >
-        <div className="hero-cyber-badge">
-          <span className="hero-pulse-dot" />
-          <span className="hero-badge-text">PCCOE PRESENTS • MARCH 2026</span>
+        <Transition
+          ref={transitionRef}
+          fromModel={ironManConfig}
+          toModel={starLordConfig}
+          enableScroll={false}
+        />
+      </div>
+
+      {/* Diagonal Laser Seam Line (Star-Lord -> Thanos Infinity Gauntlet) */}
+      <div
+        ref={laserWipeLineRef}
+        className="gauntlet-laser-wipe-line"
+        style={{
+          display: 'none',
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: 44,
+          pointerEvents: 'none',
+          filter: 'drop-shadow(0 0 16px rgba(255, 215, 0, 0.85)) drop-shadow(0 0 32px rgba(168, 85, 247, 0.65))',
+          willChange: 'background',
+        }}
+      />
+
+      {/* Home Page Hero Info Panel (Right Side: high-tech Stark HUD cyber frame) */}
+      <section
+        ref={heroPanelRef}
+        className="home-hero-panel cyber-hud-card"
+        style={{
+          opacity: 0,
+          transform: 'translateY(-50%) translateX(35px)',
+          pointerEvents: 'none',
+          visibility: 'hidden',
+          willChange: 'transform, opacity',
+        }}
+      >
+        {/* Geometric Clipped Background Plate */}
+        <div className="cyber-bg-plate" aria-hidden="true" />
+
+        {/* Cybernetic Frame Armor Overlays & SVG HUD Accents */}
+        <div className="cyber-frame-armor" aria-hidden="true">
+          <svg className="cyber-frame-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="cyberBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="50%" stopColor="#00e5ff" />
+                <stop offset="100%" stopColor="#0284c7" />
+              </linearGradient>
+            </defs>
+
+            {/* Outer Glowing Cyber Perimeter */}
+            <path
+              className="cyber-svg-outer-path"
+              d="M 6.5,0.6 
+                 L 41,0.6 L 43.5,2.4 L 56.5,2.4 L 59,0.6 L 93.5,0.6 
+                 L 99.4,6.5 
+                 L 99.4,43.5 L 97.9,45.5 L 97.9,54.5 L 99.4,56.5 L 99.4,93.5 
+                 L 93.5,99.4 
+                 L 59,99.4 L 56.5,97.6 L 43.5,97.6 L 41,99.4 L 6.5,99.4 
+                 L 0.6,93.5 
+                 L 0.6,56.5 L 2.1,54.5 L 2.1,45.5 L 0.6,43.5 L 0.6,6.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Inner Keyline Frame */}
+            <path
+              className="cyber-svg-inner-path"
+              d="M 8.5,3.2 
+                 L 91.5,3.2 
+                 L 96.8,8.5 
+                 L 96.8,91.5 
+                 L 91.5,96.8 
+                 L 8.5,96.8 
+                 L 3.2,91.5 
+                 L 3.2,8.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Corner Hardware Brackets */}
+            <path className="cyber-bracket" d="M 2.4,12 L 2.4,6.5 L 6.5,2.4 L 12,2.4" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,2.4 L 93.5,2.4 L 97.6,6.5 L 97.6,12" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 2.4,88 L 2.4,93.5 L 6.5,97.6 L 12,97.6" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,97.6 L 93.5,97.6 L 97.6,93.5 L 97.6,88" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Left) */}
+            <line className="cyber-vent-line" x1="1.4" y1="47" x2="1.4" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="50" x2="1.4" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="53" x2="1.4" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Right) */}
+            <line className="cyber-vent-line" x1="98.6" y1="47" x2="98.6" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="50" x2="98.6" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="53" x2="98.6" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Top Center Rail */}
+            <line className="cyber-notch-accent" x1="46" y1="1.6" x2="54" y2="1.6" vectorEffect="non-scaling-stroke" />
+          </svg>
+
+          <div className="cyber-grid-overlay" />
+          <div className="cyber-corner-glow tl" />
+          <div className="cyber-corner-glow tr" />
+          <div className="cyber-corner-glow bl" />
+          <div className="cyber-corner-glow br" />
         </div>
 
-        <h1 className="hero-main-title">
-          ANANTYA <span className="hero-title-year">2026</span>
-        </h1>
+        {/* Card Main Body Content */}
+        <div className="cyber-card-content">
+          <h1 className="hero-main-title">
+            ANANTYA <span className="hero-title-year">2026</span>
+          </h1>
 
-        <div className="hero-tagline-pill">
-          <span className="tagline-gem" />
-          <span>SEVEN CRYSTALS • ONE SYSTEM</span>
-        </div>
+          <CountdownTimer />
 
-        <p className="hero-description">
-          Welcome to PCCOE's premier national techno-cultural extravaganza. Step into the high-tech Marvel dimension where speed coding warfare, autonomous robotics, CTF cybersecurity, and cultural brilliance converge.
-        </p>
-
-        {/* Quick Highlights / Stats Grid */}
-        <div className="hero-stats-grid">
-          <div className="stat-card">
-            <span className="stat-val">8+</span>
-            <span className="stat-label">Club Arenas</span>
+          {/* Quick Highlights / Stats Capsule Container */}
+          <div className="hero-stats-capsule">
+            <div className="stat-capsule-item">
+              <span className="stat-val">08+</span>
+              <span className="stat-label">Club Arenas</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">02</span>
+              <span className="stat-label">Epic Days</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">₹2L+</span>
+              <span className="stat-label">Prize Pool</span>
+            </div>
           </div>
-          <div className="stat-card">
-            <span className="stat-val">3</span>
-            <span className="stat-label">Epic Days</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-val">₹2L+</span>
-            <span className="stat-label">Prize Pool</span>
-          </div>
-        </div>
 
-        {/* Action Button Row */}
-        <div className="hero-btn-row">
-          <a
-            href="#events"
-            className="hero-btn primary-btn"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavSelect('events');
-            }}
-          >
-            <span>EXPLORE EVENTS</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </a>
-          <a href="#contact" className="hero-btn secondary-btn">
-            <span>REGISTER NOW</span>
-          </a>
+          {/* Action Button Row */}
+          <div className="hero-btn-row">
+            <a
+              href="#events"
+              className="hero-btn cyber-primary-btn"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavSelect('events');
+              }}
+            >
+              <span>EXPLORE EVENTS</span>
+              <span className="btn-arrow-circle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 
       {/* About Us Info Panel (Left Side: displays About information while helmet gazes from the right) */}
       <section
         id="about"
+        ref={aboutPanelRef}
         className="about-info-panel"
         style={{
-          opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : aboutInfoOpacity,
-          transform: `translateY(-50%) translateX(${(1 - aboutInfoOpacity) * -35}px)`,
-          pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.4) ? 'none' : 'auto',
-          visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.01) ? 'hidden' : 'visible',
+          opacity: 0,
+          transform: 'translateY(-50%) translateX(-35px)',
+          pointerEvents: 'none',
+          visibility: 'hidden',
+          willChange: 'transform, opacity',
         }}
       >
         <div className="about-cyber-badge">
@@ -869,30 +987,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* Bottom Scroll Prompt (Only visible right after intro, fades out as user scrolls) */}
-      <div
-        className="bottom-scroll-prompt"
-        style={{
-          opacity: Math.max(0, 1 - scrollProgress * 5.0),
-          pointerEvents: scrollProgress < 0.04 ? 'auto' : 'none',
-        }}
-      >
-        <span className="scroll-prompt-text">SCROLL</span>
-        <div className="scroll-prompt-mouse">
-          <div className="scroll-prompt-dot" />
-        </div>
-        <svg
-          className="scroll-prompt-arrow"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </div>
+      {/* Persistent Throughout-the-Site Scroll Guidance & HUD Wayfinder */}
+      <ScrollGuidance
+        activeSection={activeNavSection}
+        onNavigate={handleNavSelect}
+      />
 
       {/* Scroll track providing smooth scrolling space across Home & About sections */}
       <div id="scroll-track" className="scroll-track-container" />
@@ -911,6 +1010,9 @@ export default function App() {
       <section id="gallery" className="gallery-main-section">
         <GallerySection />
       </section>
+
+      {/* Contact Section: S.H.I.E.L.D. Quantum Comm-Link & Avengers Initiative */}
+      <ContactSection onNavigate={handleNavSelect} />
 
       <style>{`
         .app-main-root {
@@ -1028,7 +1130,7 @@ export default function App() {
           flex-direction: column;
           align-items: flex-start;
           gap: 1.15rem;
-          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform, opacity;
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
           background: radial-gradient(130% 100% at 0% 0%, rgba(15, 23, 42, 0.75) 0%, rgba(8, 14, 26, 0.65) 100%);
@@ -1074,18 +1176,18 @@ export default function App() {
         .hero-main-title {
           font-size: clamp(2.4rem, 4vw, 3.5rem);
           font-weight: 900;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           color: #ffffff;
           line-height: 1.05;
           margin: 0;
-          text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.35);
+          text-shadow: none;
         }
 
         .hero-title-year {
-          background: linear-gradient(135deg, #f59e0b 0%, #ef4444 60%, #ec4899 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.45));
+          color: #ff7700;
+          background: none;
+          -webkit-text-fill-color: #ff7700;
+          filter: none;
         }
 
         .hero-tagline-pill {
@@ -1207,7 +1309,7 @@ export default function App() {
           flex-direction: column;
           align-items: flex-start;
           gap: 1.15rem;
-          transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform, opacity;
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
           background: radial-gradient(130% 100% at 100% 0%, rgba(15, 23, 42, 0.78) 0%, rgba(8, 14, 26, 0.68) 100%);

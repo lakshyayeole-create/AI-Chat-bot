@@ -12,7 +12,8 @@ html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   user-select: none;
   -webkit-user-select: none;
-  scroll-behavior: auto; /* Let Lenis handle smooth scrolling */
+  scroll-behavior: auto;
+  /* Let Lenis handle smooth scrolling */
 }
 
 body {

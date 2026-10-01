@@ -306,7 +306,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
       reality: 'Infinity_Stones004_1',  // 4. Reality: Middle finger knuckle stone (163 verts)
       space: 'Infinity_Stones005_1',    // 5. Space: Ring finger knuckle stone (216 verts)
       power: 'Infinity_Stones006_1',    // 6. Power: Pinky finger knuckle stone (53 verts)
-      
+
       // ── 7th Stone (Art / Creation, #ffffff White) ──
       // Duplicated from centerpiece Mind Stone (Infinity_Stones002) for brilliant diamond facets
       art: 'Infinity_Stones002',
@@ -737,23 +737,41 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
   useEffect(() => {
     let animId: number;
     let progress = targetProgressRef.current;
+    let lastRenderedProgress = -999;
 
     const loop = () => {
       animId = requestAnimationFrame(loop);
-      // Smooth exponential lerp damping for buttery 60fps momentum
-      progress += (targetProgressRef.current - progress) * 0.09;
-      progress = Math.max(0, Math.min(9.1, progress));
+      const diff = targetProgressRef.current - progress;
+      if (Math.abs(diff) > 0.0002) {
+        progress += diff * 0.12;
+        progress = Math.max(0, Math.min(9.1, progress));
+      } else {
+        progress = targetProgressRef.current;
+      }
 
-      const stage = computeTimelineStage(progress);
-      setCurrentRotation(stage.orbitRotation);
-      setActiveIndex(stage.activeIndex);
-      setConvergenceProgress(stage.convergenceProgress);
-      setLokiTransitionProgress(stage.lokiTransitionProgress);
-      setCardState({
-        opacity: stage.cardOpacity,
-        offset: stage.cardOffset,
-        scale: stage.cardScale,
-      });
+      // ONLY trigger React re-renders when progress actually changes!
+      if (Math.abs(progress - lastRenderedProgress) > 0.0005) {
+        lastRenderedProgress = progress;
+        const stage = computeTimelineStage(progress);
+        setCurrentRotation(stage.orbitRotation);
+        setActiveIndex(stage.activeIndex);
+        setConvergenceProgress(stage.convergenceProgress);
+        setLokiTransitionProgress(stage.lokiTransitionProgress);
+        setCardState((prev) => {
+          if (
+            Math.abs(prev.opacity - stage.cardOpacity) < 0.008 &&
+            Math.abs(prev.offset - stage.cardOffset) < 0.25 &&
+            Math.abs(prev.scale - stage.cardScale) < 0.008
+          ) {
+            return prev;
+          }
+          return {
+            opacity: stage.cardOpacity,
+            offset: stage.cardOffset,
+            scale: stage.cardScale,
+          };
+        });
+      }
     };
 
     animId = requestAnimationFrame(loop);
@@ -787,7 +805,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
     >
       {/* ── 1. Fullscreen R3F Canvas with Responsive Camera & Viewport Clamping ── */}
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, isMobile ? 1.2 : 1.5]}
         camera={{
           position: [0, TIMELINE_CONFIG.camera_y, TIMELINE_CONFIG.camera_z],
           fov: TIMELINE_CONFIG.camera_fov,
@@ -976,7 +994,7 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
             ) : (
               <div className="event-logo-placeholder">
                 <svg viewBox="0 0 100 100" className="placeholder-icon">
-                  <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="4"/>
+                  <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="4" />
                   <circle cx="50" cy="65" r="10" fill="currentColor" />
                 </svg>
                 <span>A N A N T Y A</span>
