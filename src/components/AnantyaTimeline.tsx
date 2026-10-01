@@ -843,80 +843,140 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
         );
       })()}
 
-      {/* ── 2. Right Side: Vertical 01–08 Progress Indicator (Safe Margin) ── */}
-      <div
-        style={{
-          position: 'absolute',
-          right: 'clamp(0.8rem, 2.2vw, 2.2rem)',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 'clamp(7px, 1.4vh, 12px)',
-          alignItems: 'flex-end',
-          userSelect: 'none',
-          opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
-          pointerEvents: (convergenceProgress > 0.2 || introUiFade < 0.5) ? 'none' : 'auto',
-          transition: 'opacity 0.25s ease',
-        }}
-      >
-        {STONES_DATA.map((stone, i) => {
-          const isCurrent = i === activeIndex;
-          return (
-            <button
-              key={stone.id}
-              onClick={() => handleSelectStone(i)}
-              title={`${stone.stoneNumber} • ${stone.name}`}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '3px 0',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                color: isCurrent ? '#ffffff' : 'rgba(255, 255, 255, 0.35)',
-                outline: 'none',
-                transition: 'all 0.25s ease',
-              }}
-            >
-              {/* Active Indicator Bar */}
-              <div
+      {/* ── 2. Desktop: Vertical 01–08 Progress Indicator (Right Side) ── */}
+      {!isMobile && (
+        <div
+          style={{
+            position: 'absolute',
+            right: 'clamp(0.8rem, 2.2vw, 2.2rem)',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(7px, 1.4vh, 12px)',
+            alignItems: 'flex-end',
+            userSelect: 'none',
+            opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
+            pointerEvents: (convergenceProgress > 0.2 || introUiFade < 0.5) ? 'none' : 'auto',
+            transition: 'opacity 0.25s ease',
+          }}
+        >
+          {STONES_DATA.map((stone, i) => {
+            const isCurrent = i === activeIndex;
+            return (
+              <button
+                key={stone.id}
+                onClick={() => handleSelectStone(i)}
+                title={`${stone.stoneNumber} • ${stone.name}`}
                 style={{
-                  width: isCurrent ? 'clamp(14px, 2vw, 22px)' : '6px',
-                  height: '2px',
-                  backgroundColor: isCurrent ? stone.color : 'rgba(255, 255, 255, 0.25)',
-                  boxShadow: isCurrent ? `0 0 10px ${stone.color}` : 'none',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '3px 0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  color: isCurrent ? '#ffffff' : 'rgba(255, 255, 255, 0.35)',
+                  outline: 'none',
                   transition: 'all 0.25s ease',
                 }}
-              />
-              {/* Number */}
-              <span
+              >
+                {/* Active Indicator Bar */}
+                <div
+                  style={{
+                    width: isCurrent ? 'clamp(14px, 2vw, 22px)' : '6px',
+                    height: '2px',
+                    backgroundColor: isCurrent ? stone.color : 'rgba(255, 255, 255, 0.25)',
+                    boxShadow: isCurrent ? `0 0 10px ${stone.color}` : 'none',
+                    transition: 'all 0.25s ease',
+                  }}
+                />
+                {/* Number */}
+                <span
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: isCurrent ? 'clamp(0.84rem, 1.1vw, 0.95rem)' : 'clamp(0.72rem, 0.9vw, 0.78rem)',
+                    fontWeight: isCurrent ? 700 : 500,
+                    color: isCurrent ? stone.color : 'rgba(255, 255, 255, 0.4)',
+                    textShadow: isCurrent ? `0 0 12px ${stone.color}` : 'none',
+                    letterSpacing: '1px',
+                  }}
+                >
+                  {stone.stoneNumber}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ── 3. Mobile: Horizontal Floating Stone Pagination Pill ── */}
+      {isMobile && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 'calc(clamp(1.2rem, 3vh, 2.2rem) + 48vh + 10px)',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 25,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'rgba(8, 14, 26, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderRadius: '9999px',
+            padding: '5px 12px',
+            opacity: Math.max(0, 1 - convergenceProgress * 3.5) * introUiFade,
+            pointerEvents: (convergenceProgress > 0.2 || introUiFade < 0.5) ? 'none' : 'auto',
+            transition: 'opacity 0.25s ease',
+            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.65)',
+          }}
+        >
+          {STONES_DATA.map((stone, i) => {
+            const isCurrent = i === activeIndex;
+            return (
+              <button
+                key={stone.id}
+                onClick={() => handleSelectStone(i)}
+                aria-label={`Select ${stone.name}`}
                 style={{
-                  fontFamily: 'monospace',
-                  fontSize: isCurrent ? 'clamp(0.84rem, 1.1vw, 0.95rem)' : 'clamp(0.72rem, 0.9vw, 0.78rem)',
-                  fontWeight: isCurrent ? 700 : 500,
-                  color: isCurrent ? stone.color : 'rgba(255, 255, 255, 0.4)',
-                  textShadow: isCurrent ? `0 0 12px ${stone.color}` : 'none',
-                  letterSpacing: '1px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '6px 3px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  outline: 'none',
                 }}
               >
-                {stone.stoneNumber}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+                <div
+                  style={{
+                    width: isCurrent ? '18px' : '6px',
+                    height: '6px',
+                    borderRadius: '9999px',
+                    backgroundColor: isCurrent ? stone.color : 'rgba(255, 255, 255, 0.3)',
+                    boxShadow: isCurrent ? `0 0 10px ${stone.color}` : 'none',
+                    transition: 'all 0.25s ease',
+                  }}
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
 
-      {/* ── 4. Bottom Left: “SCROLL TO ROTATE” ── */}
+      {/* ── 4. Bottom Left: “SCROLL TO ROTATE” (Desktop Only) ── */}
       <div
         style={{
           position: 'absolute',
           bottom: 'clamp(1.5rem, 3.2vh, 3.0rem)',
           left: 'clamp(1.2rem, 2.8vw, 2.8rem)',
           zIndex: 10,
-          display: 'flex',
+          display: isMobile ? 'none' : 'flex',
           alignItems: 'center',
           gap: '8px',
           pointerEvents: 'none',
@@ -949,6 +1009,8 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
 
       {/* ── 5. Scroll-Driven Event Details Box (Appears precisely at focal stone position) ── */}
       <div
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
         style={{
           position: 'absolute',
           left: isMobile ? '50%' : 'clamp(48%, 52vw, 55%)',
