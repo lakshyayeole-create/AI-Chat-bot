@@ -63,6 +63,20 @@ export interface TransitionHandle {
   getAssemblyProgress: () => number;
   /** Set transition progress directly (0.0 to 1.0) */
   setTransitionProgress: (progress: number) => void;
+  /** Set fromModel position X (negative = left) */
+  setFromPositionX: (x: number) => void;
+  /** Set toModel position X (positive = right) */
+  setToPositionX: (x: number) => void;
+  /** Set fromModel position Y (positive = up) */
+  setFromPositionY: (y: number) => void;
+  /** Set toModel position Y (positive = up) */
+  setToPositionY: (y: number) => void;
+  /** Set fromModel Y-axis rotation in radians */
+  setFromRotationY: (y: number) => void;
+  /** Set toModel Y-axis rotation in radians */
+  setToRotationY: (y: number) => void;
+  /** Pause or resume the render loop */
+  setPaused: (paused: boolean) => void;
 }
 
 export interface TransitionProps {
@@ -310,6 +324,28 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       }
     }, []);
 
+    const setFromPositionX = useCallback((x: number) => {
+      targetFromPositionXRef.current = x;
+    }, []);
+    const setToPositionX = useCallback((x: number) => {
+      targetToPositionXRef.current = x;
+    }, []);
+    const setFromPositionY = useCallback((y: number) => {
+      targetFromPositionYRef.current = y;
+    }, []);
+    const setToPositionY = useCallback((y: number) => {
+      targetToPositionYRef.current = y;
+    }, []);
+    const setFromRotationY = useCallback((y: number) => {
+      targetFromRotationYRef.current = y;
+    }, []);
+    const setToRotationY = useCallback((y: number) => {
+      targetToRotationYRef.current = y;
+    }, []);
+    const setPaused = useCallback((paused: boolean) => {
+      isPausedRef.current = paused;
+    }, []);
+
     useImperativeHandle(
       ref,
       () => ({
@@ -320,9 +356,16 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         triggerAssembly,
         setAssemblyProgress,
         getAssemblyProgress,
-        setTransitionProgress
+        setTransitionProgress,
+        setFromPositionX,
+        setToPositionX,
+        setFromPositionY,
+        setToPositionY,
+        setFromRotationY,
+        setToRotationY,
+        setPaused
       }),
-      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress]
+      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setFromPositionX, setToPositionX, setFromPositionY, setToPositionY, setFromRotationY, setToRotationY, setPaused]
     );
 
     // Stable configs
@@ -350,9 +393,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const loader = new GLTFLoader();
       const textureLoader = new THREE.TextureLoader();
 
+      const isMobileDevice = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+
       const getDevicePixelRatio = () => {
-        const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
-        return isMobile ? Math.min(window.devicePixelRatio, 1.25) : Math.min(window.devicePixelRatio, 1.75);
+        return isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.75);
       };
 
       const width = window.innerWidth;
@@ -369,7 +413,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromCameraRef.current = fromCamera;
 
       const fromRenderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isMobileDevice,
         alpha: true,
         powerPreference: 'high-performance'
       });
@@ -444,7 +488,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       toCameraRef.current = toCamera;
 
       const toRenderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isMobileDevice,
         alpha: true,
         powerPreference: 'high-performance'
       });
@@ -588,11 +632,11 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
           const currentAspect = window.innerWidth / Math.max(1, window.innerHeight);
-          const coverage = currentAspect < 1.0 ? 0.58 : 0.78;
+          const coverage = currentAspect < 1.0 ? 0.48 : 0.78;
           let cameraDist = (scaledSize.y / coverage) / (2 * Math.tan(fovRad / 2));
           if (currentAspect < 1.0) {
             // Guard against horizontal clipping on narrow mobile screens
-            const horizDist = (scaledSize.x / (0.78 * currentAspect)) / (2 * Math.tan(fovRad / 2));
+            const horizDist = (scaledSize.x / (0.74 * currentAspect)) / (2 * Math.tan(fovRad / 2));
             cameraDist = Math.max(cameraDist, horizDist);
           }
           const yCam = 0;
@@ -737,10 +781,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (sz.y > 0.01) {
             const fovR = (fromCamera.fov * Math.PI) / 180;
             const aspect = w / Math.max(1, h);
-            const cov = aspect < 1.0 ? 0.58 : 0.78;
+            const cov = aspect < 1.0 ? 0.48 : 0.78;
             let cDist = (sz.y / cov) / (2 * Math.tan(fovR / 2));
             if (aspect < 1.0) {
-              const hDist = (sz.x / (0.78 * aspect)) / (2 * Math.tan(fovR / 2));
+              const hDist = (sz.x / (0.74 * aspect)) / (2 * Math.tan(fovR / 2));
               cDist = Math.max(cDist, hDist);
             }
             baseCameraDistRef.current = cDist;
@@ -869,9 +913,9 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
         }
 
-        // Selective rendering: only render scene if its group is visible or in active transition
-        const shouldRenderFrom = fromGroupRef.current?.visible || currentProgress < 0.999;
-        const shouldRenderTo = toGroupRef.current?.visible || currentProgress > 0.001;
+        // Selective rendering: only render scene if its group is visible
+        const shouldRenderFrom = Boolean(fromGroupRef.current && fromGroupRef.current.visible);
+        const shouldRenderTo = Boolean(toGroupRef.current && toGroupRef.current.visible);
 
         if (shouldRenderFrom) {
           fromRenderer.render(fromScene, fromCamera);

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
 import { ANANTYA_LOGO_PATHS } from './anantyaLogoPaths';
 
-const anantyaLogo = '/assets/ANANTYA.png';
+const anantyaLogo = '/assets/ANANTYA.webp';
 
 interface AvengersIntroProps {
   onComplete: () => void;

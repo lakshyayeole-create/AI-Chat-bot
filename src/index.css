@@ -30,7 +30,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background: radial-gradient(circle at 50% 50%, #161e2e 0%, #0a0e17 60%, #030508 100%);
-  background-attachment: fixed;
 }
 
 #root {

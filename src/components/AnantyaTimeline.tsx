@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useEffect, Suspense } from 'react';
+import React, { useRef, useState, useMemo, useEffect, Suspense, forwardRef, useImperativeHandle } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { Stars, Sparkles, useGLTF } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
@@ -565,6 +565,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
                 introGauntletY={stoneGauntletY}
                 gauntletPosition={GAUNTLET_CONFIG.position}
                 gauntletScale={GAUNTLET_CONFIG.scale}
+                isMobile={isMobile}
                 clippingPlanes={isTransitioning ? [clipPlaneGauntlet] : undefined}
                 lokiTransitionProgress={lokiTransitionProgress}
               />
@@ -580,17 +581,19 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
         </group>
       )}
 
-      {/* ── UnrealBloom & Vignette Post-Processing Glow (Tight radius ensures stones glow vibrantly without spilling on gauntlet) ── */}
-      <EffectComposer multisampling={isMobile ? 0 : 4}>
-        <Bloom
-          intensity={0.78}
-          luminanceThreshold={cfg.bloom_threshold ?? 1.00}
-          luminanceSmoothing={0.12}
-          radius={isMobile ? 0.22 : 0.30}
-          mipmapBlur
-        />
-        <Vignette eskil={false} offset={0.2} darkness={1.12} />
-      </EffectComposer>
+      {/* ── UnrealBloom & Vignette Post-Processing Glow (Enabled on desktop; bypassed on mobile for 60fps performance) ── */}
+      {!isMobile && (
+        <EffectComposer multisampling={4}>
+          <Bloom
+            intensity={0.78}
+            luminanceThreshold={cfg.bloom_threshold ?? 1.00}
+            luminanceSmoothing={0.12}
+            radius={0.30}
+            mipmapBlur
+          />
+          <Vignette eskil={false} offset={0.2} darkness={1.12} />
+        </EffectComposer>
+      )}
     </>
   );
 };
@@ -604,19 +607,42 @@ export interface AnantyaTimelineProps {
   gauntletClenchProgress?: number;
   /** Intro stone emergence and flight progress (0.0 = docked in hand, 1.0 = in orbit) */
   introFlightProgress?: number;
+  /** Whether the timeline canvas should pause rendering when offscreen */
+  isPaused?: boolean;
 }
 
-export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
+export interface AnantyaTimelineHandle {
+  setTimelineProgress: (progress: number) => void;
+  setGauntletClenchProgress: (progress: number) => void;
+  setIntroFlightProgress: (progress: number) => void;
+}
+
+export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimelineProps>(({
   timelineProgress,
   onSelectStone: onSelectStoneProp,
   gauntletOpenProgress = 0,
-  gauntletClenchProgress = 0,
-  introFlightProgress,
-}) => {
+  gauntletClenchProgress: initialClench = 0,
+  introFlightProgress: initialIntroFlight,
+  isPaused = false,
+}, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Continuous scroll progress: 0.0 (Stone 1) -> 7.0 (Stone 8) -> 8.0 (Gauntlet Placement)
   const targetProgressRef = useRef<number>(0);
+  const [gauntletClenchProgress, setGauntletClenchProgress] = useState(initialClench);
+  const [introFlightProgress, setIntroFlightProgress] = useState<number | undefined>(initialIntroFlight);
+
+  useImperativeHandle(ref, () => ({
+    setTimelineProgress: (prog: number) => {
+      targetProgressRef.current = Math.max(0, Math.min(9.1, prog));
+    },
+    setGauntletClenchProgress: (prog: number) => {
+      setGauntletClenchProgress((prev) => (Math.abs(prev - prog) > 0.015 ? prog : prev));
+    },
+    setIntroFlightProgress: (prog: number) => {
+      setIntroFlightProgress((prev) => (prev === undefined || Math.abs(prev - prog) > 0.015 ? prog : prev));
+    },
+  }), []);
   const [currentRotation, setCurrentRotation] = useState<number>(START_ROTATION);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [convergenceProgress, setConvergenceProgress] = useState<number>(0);
@@ -791,7 +817,8 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
     >
       {/* ── 1. Fullscreen R3F Canvas with Responsive Camera & Viewport Clamping ── */}
       <Canvas
-        dpr={isMobile ? [1, 1.25] : [1, 1.5]}
+        frameloop={isPaused ? 'never' : 'always'}
+        dpr={isMobile ? 1.0 : [1, 1.5]}
         camera={{
           position: [0, TIMELINE_CONFIG.camera_y, TIMELINE_CONFIG.camera_z],
           fov: TIMELINE_CONFIG.camera_fov,
@@ -1316,7 +1343,9 @@ export const AnantyaTimeline: React.FC<AnantyaTimelineProps> = ({
       </div>
     </div>
   );
-};
+});
+
+AnantyaTimeline.displayName = 'AnantyaTimeline';
 
 useGLTF.preload('/assets/gauntlet.glb');
 
