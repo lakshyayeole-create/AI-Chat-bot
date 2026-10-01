@@ -833,6 +833,7 @@ export default function App() {
         logoSrc="/assets/ANANTYA.webp"
         activeId={activeNavSection}
         onSelect={handleNavSelect}
+        morphProgress={0}
       />
 
       {/* Fixed 3D Canvas */}

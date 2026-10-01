@@ -74,7 +74,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
   activeId = 'home',
   items = defaultItems,
   onSelect,
-  morphProgress: initialMorphProgress = 1.0,
+  morphProgress: initialMorphProgress = 0.0,
   className = '',
 }, ref) => {
   const [selectedId, setSelectedId] = useState<string>(activeId);
@@ -143,20 +143,42 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
   const applyMorph = useCallback((prog: number) => {
     const p = Math.max(0, Math.min(1, prog));
     const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const isMorphedTop = p >= 0.85;
 
     if (headerRef.current) {
       headerRef.current.style.top = `calc(50% * (1 - ${p}) + ${cfg.top} * ${p})`;
       headerRef.current.style.transform = `translate(-50%, calc(-50% * (1 - ${p})))`;
-      headerRef.current.style.pointerEvents = p >= 0.85 ? 'auto' : 'none';
+      headerRef.current.style.pointerEvents = isMorphedTop ? 'auto' : 'none';
+      if (mobile) {
+        headerRef.current.style.width = isMorphedTop ? 'calc(100vw - 24px)' : 'auto';
+        headerRef.current.style.maxWidth = isMorphedTop ? '440px' : '92vw';
+      } else {
+        headerRef.current.style.width = 'auto';
+        headerRef.current.style.maxWidth = '96vw';
+      }
     }
 
     if (navPillRef.current) {
-      navPillRef.current.style.background = `rgba(8, 14, 26, ${0.88 * p})`;
-      const blurAmt = mobile ? 12 * p : 20 * p;
-      navPillRef.current.style.backdropFilter = `blur(${blurAmt}px)`;
-      (navPillRef.current.style as any).webkitBackdropFilter = `blur(${blurAmt}px)`;
-      navPillRef.current.style.border = `${p > 0.05 ? cfg.borderWidth : '0px'} solid rgba(56, 189, 248, ${0.28 * p})`;
-      navPillRef.current.style.boxShadow = `0 ${16 * p}px ${48 * p}px rgba(0, 0, 0, ${0.75 * p}), inset 0 1px 0 rgba(255, 255, 255, ${0.14 * p})`;
+      if (mobile) {
+        navPillRef.current.style.width = isMorphedTop ? '100%' : 'auto';
+        navPillRef.current.style.justifyContent = isMorphedTop ? 'space-between' : 'center';
+        navPillRef.current.style.padding = isMorphedTop ? '6px 14px' : '0px';
+        navPillRef.current.style.background = isMorphedTop ? 'rgba(8, 14, 26, 0.88)' : 'transparent';
+        navPillRef.current.style.backdropFilter = isMorphedTop ? 'blur(12px)' : 'none';
+        (navPillRef.current.style as any).webkitBackdropFilter = isMorphedTop ? 'blur(12px)' : 'none';
+        navPillRef.current.style.border = isMorphedTop ? `${cfg.borderWidth} solid rgba(56, 189, 248, 0.28)` : 'none';
+        navPillRef.current.style.boxShadow = isMorphedTop ? '0 16px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.14)' : 'none';
+      } else {
+        navPillRef.current.style.width = 'auto';
+        navPillRef.current.style.justifyContent = 'center';
+        navPillRef.current.style.padding = '8px 24px';
+        navPillRef.current.style.background = `rgba(8, 14, 26, ${0.88 * p})`;
+        const blurAmt = 20 * p;
+        navPillRef.current.style.backdropFilter = `blur(${blurAmt}px)`;
+        (navPillRef.current.style as any).webkitBackdropFilter = `blur(${blurAmt}px)`;
+        navPillRef.current.style.border = `${p > 0.05 ? cfg.borderWidth : '0px'} solid rgba(56, 189, 248, ${0.28 * p})`;
+        navPillRef.current.style.boxShadow = `0 ${16 * p}px ${48 * p}px rgba(0, 0, 0, ${0.75 * p}), inset 0 1px 0 rgba(255, 255, 255, ${0.14 * p})`;
+      }
     }
 
     if (logoImgRef.current) {
@@ -183,8 +205,13 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
 
     // Mobile controls (active chip + cyber menu button)
     if (mobileBarRef.current) {
-      mobileBarRef.current.style.opacity = String(mobile ? linksProgress : 0);
-      mobileBarRef.current.style.pointerEvents = (mobile && p >= 0.95) ? 'auto' : 'none';
+      if (mobile) {
+        mobileBarRef.current.style.display = isMorphedTop ? 'flex' : 'none';
+        mobileBarRef.current.style.opacity = String(linksProgress);
+        mobileBarRef.current.style.pointerEvents = (p >= 0.95) ? 'auto' : 'none';
+      } else {
+        mobileBarRef.current.style.display = 'none';
+      }
     }
   }, [cfg]);
 
@@ -198,6 +225,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
   }, [applyMorph, initialMorphProgress]);
 
   const p = Math.max(0, Math.min(1, initialMorphProgress));
+  const isMorphedTop = p >= 0.85;
   const topPosition = `calc(50% * (1 - ${p}) + ${cfg.top} * ${p})`;
   const transformY = `calc(-50% * (1 - ${p}))`;
   const finalLogoH = isMobile ? cfg.logoHeightMobile : cfg.logoHeightFinal;
@@ -217,10 +245,10 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
           left: '50%',
           transform: `translate(-50%, ${transformY})`,
           zIndex: 100,
-          pointerEvents: p >= 0.85 ? 'auto' : 'none',
+          pointerEvents: isMorphedTop ? 'auto' : 'none',
           transition: 'none',
-          maxWidth: isMobile ? 'calc(100vw - 24px)' : '96vw',
-          width: isMobile ? 'calc(100vw - 24px)' : 'auto',
+          maxWidth: isMobile ? (isMorphedTop ? 'calc(100vw - 24px)' : '92vw') : '96vw',
+          width: isMobile ? (isMorphedTop ? 'calc(100vw - 24px)' : 'auto') : 'auto',
         }}
       >
         <nav
@@ -230,15 +258,15 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: isMobile ? 'space-between' : 'center',
-            background: `rgba(8, 14, 26, ${0.88 * p})`,
-            backdropFilter: `blur(${isMobile ? 12 * p : 20 * p}px)`,
-            WebkitBackdropFilter: `blur(${isMobile ? 12 * p : 20 * p}px)`,
-            border: `${p > 0.05 ? cfg.borderWidth : '0px'} solid rgba(56, 189, 248, ${0.28 * p})`,
+            justifyContent: isMobile ? (isMorphedTop ? 'space-between' : 'center') : 'center',
+            background: isMobile ? (isMorphedTop ? 'rgba(8, 14, 26, 0.88)' : 'transparent') : `rgba(8, 14, 26, ${0.88 * p})`,
+            backdropFilter: isMobile ? (isMorphedTop ? 'blur(12px)' : 'none') : `blur(${20 * p}px)`,
+            WebkitBackdropFilter: isMobile ? (isMorphedTop ? 'blur(12px)' : 'none') : `blur(${20 * p}px)`,
+            border: isMobile ? (isMorphedTop ? `${cfg.borderWidth} solid rgba(56, 189, 248, 0.28)` : 'none') : `${p > 0.05 ? cfg.borderWidth : '0px'} solid rgba(56, 189, 248, ${0.28 * p})`,
             borderRadius: cfg.borderRadius,
-            boxShadow: `0 ${16 * p}px ${48 * p}px rgba(0, 0, 0, ${0.75 * p}), inset 0 1px 0 rgba(255, 255, 255, ${0.14 * p})`,
-            padding: isMobile ? '6px 14px' : '8px 24px',
-            width: isMobile ? '100%' : 'auto',
+            boxShadow: isMobile ? (isMorphedTop ? '0 16px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.14)' : 'none') : `0 ${16 * p}px ${48 * p}px rgba(0, 0, 0, ${0.75 * p}), inset 0 1px 0 rgba(255, 255, 255, ${0.14 * p})`,
+            padding: isMobile ? (isMorphedTop ? '6px 14px' : '0px') : '8px 24px',
+            width: isMobile ? (isMorphedTop ? '100%' : 'auto') : 'auto',
             transition: 'none',
           }}
         >
@@ -249,9 +277,10 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               textDecoration: 'none',
               flexShrink: 0,
-              cursor: p >= 0.85 ? 'pointer' : 'default',
+              cursor: isMorphedTop ? 'pointer' : 'default',
             }}
           >
             <img
@@ -261,6 +290,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
               style={{
                 height: `${currentLogoHeight}px`,
                 width: 'auto',
+                maxWidth: '85vw',
                 objectFit: 'contain',
                 display: 'block',
                 filter: `drop-shadow(0 0 ${25 * (1 - p)}px rgba(255, 90, 0, ${0.75 * (1 - p)}))`,
@@ -345,7 +375,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
               ref={mobileBarRef}
               className="navbar-mobile-controls"
               style={{
-                display: 'flex',
+                display: isMorphedTop ? 'flex' : 'none',
                 alignItems: 'center',
                 gap: '8px',
                 opacity: linksProgress,
