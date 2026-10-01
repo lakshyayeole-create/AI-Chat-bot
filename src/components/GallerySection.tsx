@@ -89,7 +89,7 @@ export const GallerySection: React.FC = () => {
       <div className="gallery-header">
         <div className="gallery-badge">
           <span className="gallery-pulse-dot" />
-          <span className="gallery-badge-text">QUANTUM ARCHIVES • MULTIVERSE VAULT</span>
+          <span className="gallery-badge-text">MISSION ARCHIVES • ANANTYA UNIVERSE</span>
         </div>
 
         <h2 className="gallery-title">
@@ -97,7 +97,7 @@ export const GallerySection: React.FC = () => {
         </h2>
 
         <p className="gallery-subtitle">
-          Immortalized moments from the proving grounds of Anantya. From 36-hour hackathons and crushing combat robots to electrifying pro-nights under Asgardian skies.
+          Immortalized moments from the proving grounds of Anantya. From 36-hour hackathon operations and precision robotics warfare to electrifying pro-nights under cosmic skies.
         </p>
 
         {/* ── Category Filters ── */}
