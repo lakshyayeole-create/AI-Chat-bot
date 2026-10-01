@@ -669,15 +669,15 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           }
           baseFromPosYRef.current = fromGroup.position.y;
 
-          // Calibrate camera to frame mask prominently (~78% vertical coverage on desktop, adaptive on mobile)
+          // Calibrate camera to frame mask prominently (~78% vertical coverage on desktop, scaled down to ~34% on mobile for breathing room)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
           const currentAspect = window.innerWidth / Math.max(1, window.innerHeight);
-          const coverage = currentAspect < 1.0 ? 0.48 : 0.78;
+          const coverage = currentAspect < 1.0 ? 0.34 : 0.78;
           let cameraDist = (scaledSize.y / coverage) / (2 * Math.tan(fovRad / 2));
           if (currentAspect < 1.0) {
-            // Guard against horizontal clipping on narrow mobile screens
-            const horizDist = (scaledSize.x / (0.74 * currentAspect)) / (2 * Math.tan(fovRad / 2));
+            // Balanced horizontal padding on narrow mobile screens
+            const horizDist = (scaledSize.x / (0.52 * currentAspect)) / (2 * Math.tan(fovRad / 2));
             cameraDist = Math.max(cameraDist, horizDist);
           }
           const yCam = 0;
@@ -831,10 +831,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (sz.y > 0.01) {
             const fovR = (fromCamera.fov * Math.PI) / 180;
             const aspect = w / Math.max(1, h);
-            const cov = aspect < 1.0 ? 0.48 : 0.78;
+            const cov = aspect < 1.0 ? 0.34 : 0.78;
             let cDist = (sz.y / cov) / (2 * Math.tan(fovR / 2));
             if (aspect < 1.0) {
-              const hDist = (sz.x / (0.74 * aspect)) / (2 * Math.tan(fovR / 2));
+              const hDist = (sz.x / (0.52 * aspect)) / (2 * Math.tan(fovR / 2));
               cDist = Math.max(cDist, hDist);
             }
             baseCameraDistRef.current = cDist;

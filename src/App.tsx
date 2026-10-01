@@ -275,7 +275,7 @@ export default function App() {
       heroInfoPanelRef.current.style.visibility = (isEventsOrGallery || effectiveHop <= 0.01) ? 'hidden' : 'visible';
       heroInfoPanelRef.current.style.pointerEvents = (isEventsOrGallery || effectiveHop <= 0.4) ? 'none' : 'auto';
       heroInfoPanelRef.current.style.transform = isMobileRef.current
-        ? `translate(-50%, ${(1 - effectiveHop) * 25}px)`
+        ? `translate(-50%, ${(1 - effectiveHop) * 35}px)`
         : `translateY(-50%) translateX(${(1 - effectiveHop) * 35}px)`;
     }
 
@@ -907,7 +907,7 @@ export default function App() {
         className="home-hero-panel cyber-hud-card"
         style={{
           opacity: 0,
-          transform: isMobile ? 'translate(-50%, 25px)' : 'translateY(-50%) translateX(35px)',
+          transform: isMobile ? 'translate(-50%, 35px)' : 'translateY(-50%) translateX(35px)',
           pointerEvents: 'none',
           visibility: 'hidden',
         }}
