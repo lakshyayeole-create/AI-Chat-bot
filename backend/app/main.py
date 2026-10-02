@@ -4,6 +4,17 @@ Main entry point for the backend server.
 Configures CORS, loads the vector store on startup, and includes
 the chat API router.
 """
+import os
+
+# Limit CPU thread pools to prevent memory bloat on low-memory containers (e.g. Render Free 512MB)
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ["TORCH_NUM_THREADS"] = "1"
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -84,26 +95,31 @@ def create_app() -> FastAPI:
     )
 
     # CORS configuration
-    origins = [o.strip() for o in settings.frontend_origin.split(",") if o.strip()]
-    origins.extend([
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://localhost:5500",
-        "http://localhost:8001",
-        "http://localhost:8080",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5500",
-        "http://127.0.0.1:8001",
-        "http://127.0.0.1:8080",
-        "null",
-    ])
-    origins = list(dict.fromkeys(origins))
+    if settings.frontend_origin.strip() == "*":
+        origins = []
+        origin_regex = r".*"
+    else:
+        origins = [o.strip() for o in settings.frontend_origin.split(",") if o.strip()]
+        origins.extend([
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://localhost:5500",
+            "http://localhost:8001",
+            "http://localhost:8080",
+            "http://127.0.0.1:3000",
+            "http://127.0.0.1:5173",
+            "http://127.0.0.1:5500",
+            "http://127.0.0.1:8001",
+            "http://127.0.0.1:8080",
+            "null",
+        ])
+        origins = list(dict.fromkeys(origins))
+        origin_regex = r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
 
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,
-        allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+        allow_origin_regex=origin_regex,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

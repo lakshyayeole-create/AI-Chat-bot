@@ -1,0 +1,85 @@
+================================================================================
+EVENT KNOWLEDGE BASE: INNOVATE-X (ANANTYA)
+================================================================================
+
+[EVENT & INSTITUTION OVERVIEW]
+- Event Name: INNOVATE-X (Part of "ANANTYA")
+- Organizing Institution: Pimpri Chinchwad College of Engineering (PCCOE), PCET
+- Organizing Department: Department of Computer Engineering
+- Associated Student Bodies & Chapters:
+  * Computer Engineering Student Association (CESA)
+  * ACM Student Chapter (PCCOE)
+  * ACM-W PCCOE
+  * OWASP PCCOE Student Chapter
+  * GDGC (Google Developer Groups on Campus) PCCOE
+  * IRIS Innovation Society
+
+--------------------------------------------------------------------------------
+[ELIGIBILITY & TEAM COMPOSITION]
+--------------------------------------------------------------------------------
+- Target Participants: All B.Tech final-year students (Participation is COMPULSORY for all final-year B.Tech students).
+- Team Size: Maximum of 4 members per team.
+- Team Changes: Alteration of team members is strictly NOT allowed once registered.
+- Presence Requirement: All group members must be physically present during the presentation.
+
+--------------------------------------------------------------------------------
+[PROJECT REQUIREMENTS & SCOPE]
+--------------------------------------------------------------------------------
+- Domain: Projects can be based on any domain—either strictly Computer Engineering or interdisciplinary.
+- Deliverables: Participants must present their final project statement along with the detailed system architecture.
+- Expected Preparation: Teams should be prepared to thoroughly explain:
+  * Project Statement / Problem Definition
+  * System Architecture & Design
+  * Technical Workflow & Methodology
+  * Technology Stack & Technical Choices made
+  * Answers to questions posed by the panel of judges
+
+--------------------------------------------------------------------------------
+[EVENT FORMAT & TIMELINE]
+--------------------------------------------------------------------------------
+
+ROUND 1: PPT SUBMISSION & SHORTLISTING
+- Date: 6 October 2026
+- Mode: Online
+- Process:
+  * Teams must submit a presentation (PPT) containing their Final Project Statement and System Architecture.
+  * Submitted PPTs will be evaluated by an expert judging panel based on predefined criteria.
+  * Judges provide constructive feedback and suggest improvements.
+  * Shortlisting: The top 20 teams will be shortlisted to advance to Round 2.
+
+ROUND 2: FINAL REVIEW & PRESENTATION
+- Date: 10 October 2026
+- Mode: Offline (On-campus)
+- Duration: 15 minutes per team (allocated for presentation, live demonstration, and Q&A).
+- Process:
+  * The 20 shortlisted teams present their refined project statement and system architecture in person before the final evaluation panel.
+  * Teams demonstrate their solution and answer judge inquiries.
+  * The top 3 projects are selected as the final winners.
+
+--------------------------------------------------------------------------------
+[PRIZES & AWARDS]
+--------------------------------------------------------------------------------
+- 1st Prize: ₹6,000 (INR 6,000)
+- 2nd Prize: ₹4,000 (INR 4,000)
+- 3rd Prize: ₹2,000 (INR 2,000)
+
+--------------------------------------------------------------------------------
+[GENERAL INSTRUCTIONS & CODE OF CONDUCT]
+--------------------------------------------------------------------------------
+- Time Limit: Exactly 15 minutes will be allotted to each group for presentation and demonstration.
+- Equipment: All participants must bring their own laptop and ensure a stable internet connection.
+- Logistics:
+  * Teams must check their allocated Group ID provided via the distributed Excel sheet.
+  * Teams must report directly to their respective designated presentation rooms.
+  * Teams must stay at their allotted presentation stations/rooms throughout the event.
+  * Punctuality is strictly enforced; all participants must be present on time and adhere to all deadlines.
+- Judging Authority: The evaluations, ratings, and winner selections made by the judges are final, binding, and non-negotiable under any circumstances.
+
+--------------------------------------------------------------------------------
+[ORGANIZING COMMITTEE CONTACT INFORMATION]
+--------------------------------------------------------------------------------
+For queries, clarification, or event assistance, contact student coordinators:
+1. Divya Ughade: +91 7499020108
+2. Aditi Joshi: +91 9561125595
+3. Srushti Argade: +91 9730862089
+================================================================================

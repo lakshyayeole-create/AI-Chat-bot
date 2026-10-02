@@ -92,7 +92,13 @@ class Settings(BaseSettings):
         local_dir = backend_root / "event_info"
         if local_dir.is_dir():
             return local_dir
-        return backend_root / self.knowledge_dir
+        primary = (backend_root / self.knowledge_dir).resolve()
+        if primary.is_dir():
+            return primary
+        fallback = backend_root / "event_info"
+        if fallback.exists():
+            return fallback
+        return primary
 
     @property
     def resolved_cache_path(self) -> Path:
