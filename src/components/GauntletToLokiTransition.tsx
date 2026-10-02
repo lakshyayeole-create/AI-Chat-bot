@@ -184,7 +184,7 @@ export const GauntletToLokiTransition: React.FC<GauntletToLokiTransitionProps> =
     // Load Loki's Horned Helmet GLB
     const loader = new GLTFLoader();
     loader.load(
-      '/assets/loki_helmet.glb',
+      '/assets/loki_main.glb',
       (gltf) => {
         const model = gltf.scene;
 
@@ -215,13 +215,22 @@ export const GauntletToLokiTransition: React.FC<GauntletToLokiTransitionProps> =
         lokiGroup.add(model);
       },
       undefined,
-      (err) => console.error('Failed to load loki_helmet.glb:', err)
+      (err) => console.error('Failed to load loki_main.glb:', err)
     );
+
+    let lastW = window.innerWidth;
+    let lastH = window.innerHeight;
 
     // Resize handler
     const handleResize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+      if (isMobile && Math.abs(w - lastW) < 6 && Math.abs(h - lastH) < 160) {
+        return;
+      }
+      lastW = w;
+      lastH = h;
       if (cameraRef.current) {
         cameraRef.current.aspect = w / h;
         cameraRef.current.updateProjectionMatrix();

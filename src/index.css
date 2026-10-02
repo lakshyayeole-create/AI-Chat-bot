@@ -4,16 +4,26 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   background: #030508;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  scroll-behavior: auto; /* Let Lenis handle smooth scrolling */
+}
+
+/* Allow text selection for readable content while keeping UI buttons clean */
+button, nav, .navbar-morph-container, .mobile-hamburger-btn, .mobile-drawer-item {
   user-select: none;
   -webkit-user-select: none;
   scroll-behavior: auto;
-  /* Let Lenis handle smooth scrolling */
+}
+
+p, h1, h2, h3, h4, span.stat-val, span.stat-label, .about-feature-content, .gallery-card-info {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 body {
@@ -21,7 +31,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background: radial-gradient(circle at 50% 50%, #161e2e 0%, #0a0e17 60%, #030508 100%);
-  background-attachment: fixed;
 }
 
 #root {

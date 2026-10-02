@@ -16,6 +16,7 @@ interface FloatingShardsProps {
   scaleFactor?: number;
   stoneGlow?: number;
   luminanceFactor?: number;
+  isMobile?: boolean;
 }
 
 export const FloatingShards: React.FC<FloatingShardsProps> = ({
@@ -24,12 +25,14 @@ export const FloatingShards: React.FC<FloatingShardsProps> = ({
   scaleFactor = 1,
   stoneGlow = 1.45,
   luminanceFactor = 1.0,
+  isMobile = false,
 }) => {
   const shardsGroupRef = useRef<THREE.Group>(null);
 
+  const count = isMobile ? 6 : 22;
   const shards = useMemo(
     () =>
-      Array.from({ length: 22 }, (_, t) => ({
+      Array.from({ length: count }, (_, t) => ({
         position: [
           Math.sin(9.4 * t) * (1.15 + (t % 4) * 0.22) * scaleFactor,
           1.42 * Math.cos(5.6 * t) * scaleFactor,
@@ -38,7 +41,7 @@ export const FloatingShards: React.FC<FloatingShardsProps> = ({
         scale: (0.02 + (t % 4) * 0.016) * (isActive ? 1.15 : 0.8) * scaleFactor,
         rotation: [0.7 * t, 0.4 * t, 0.2 * t] as [number, number, number],
       })),
-    [isActive, scaleFactor]
+    [isActive, scaleFactor, count]
   );
 
   useFrame((_, delta) => {
@@ -93,6 +96,7 @@ export interface ProceduralCrystalStoneProps {
   stoneGeometry?: THREE.BufferGeometry;
   clippingPlanes?: THREE.Plane[];
   lokiTransitionProgress?: number;
+  isMobile?: boolean;
 }
 
 /**
@@ -125,7 +129,7 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   orbitTiltZ = 0,
   isActive,
   onSelect,
-  textureUrl = '/assets/amber-crystal-surface.png',
+  textureUrl = '/assets/amber-crystal-surface.webp',
   convergenceProgress = 0,
   introFlightProgress,
   introGauntletY,
@@ -134,6 +138,7 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   stoneGeometry,
   clippingPlanes,
   lokiTransitionProgress = 0,
+  isMobile = false,
 }) => {
   const activeGeometry = stoneGeometry || sharedGeometry;
   const groupRef = useRef<THREE.Group>(null);
@@ -213,9 +218,29 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   orbitVector.applyEuler(new THREE.Euler(orbitTiltX, orbitTiltY, orbitTiltZ, 'XYZ'));
 
   // Exact coordinates relative to orbit center (clean original scale, naturally in front of text at z = -0.7)
-  const targetX = orbitCenterX + orbitVector.x;
-  const targetY = orbitCenterY + orbitVector.y + (isActive ? 0.08 : 0);
-  const targetZ = orbitCenterZ + orbitVector.z + (isActive ? 0.38 : 0);
+  let targetX = orbitCenterX + orbitVector.x;
+  let targetY = orbitCenterY + orbitVector.y + (isActive ? 0.08 : 0);
+  let targetZ = orbitCenterZ + orbitVector.z + (isActive ? 0.38 : 0);
+
+  if (isMobile) {
+    // ── Improved Mobile Celestial Planetary Orbit ──
+    // All 8 stones form an elegant 3D celestial ring clearly visible on mobile
+    const rx = 1.85; // Width radius fits comfortably inside mobile viewport
+    const rz = 2.2;  // Depth into 3D space
+    const ringCenterY = 1.38;
+
+    if (isActive) {
+      // Hero showcase stone: brought forward, centered, and elevated
+      targetX = 0.0;
+      targetY = 1.42;
+      targetZ = 0.70;
+    } else {
+      // Inactive stones arrayed along a tilted 3D cosmic planetary ring
+      targetX = Math.cos(angle) * rx;
+      targetY = ringCenterY - Math.sin(angle) * 0.24;
+      targetZ = Math.sin(angle) * rz - 0.45;
+    }
+  }
 
   // Front-facing factor: +1.0 at front, -1.0 at back
   const frontFactor = orbitVector.z / (orbitRadius || 1);
@@ -223,9 +248,10 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   // Subtle depth attenuation factor for stones in the background
   const depthFactor = THREE.MathUtils.clamp((frontFactor + 1) / 2, 0.42, 1.0);
 
-  // Original stone size preserved
-  const baseScale = isCreation ? stonesSize * 1.08 : stonesSize;
-  const targetScale = isActive ? baseScale * 1.2 : baseScale;
+  // Responsive stone sizing: sleek crystal gem on mobile without overpowering narrow phone width
+  const mobileScaleFactor = isMobile ? (isActive ? 0.72 : 0.42) : 1.0;
+  const baseScale = (isCreation ? stonesSize * 1.08 : stonesSize) * mobileScaleFactor;
+  const targetScale = isActive ? baseScale * (isMobile ? 1.15 : 1.2) : baseScale;
 
   // Interactive Drag & Inertia Physics (Euler lerp)
   const targetRotation = useRef(new THREE.Euler(0.08, -0.35, 0));
@@ -295,11 +321,15 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
       const dockedY = gauntletY + socketData.position[1] * gauntletScale;
       const dockedZ = gauntletPosition[2] + socketData.position[2] * gauntletScale;
 
-      // Apex high in the air above the gauntlet
+      // Apex high in the air above the gauntlet (stay inside screen on mobile)
       const spreadNorm = (index - (numStones - 1) / 2) / ((numStones - 1) / 2);
-      const apexX = spreadNorm * 2.2;
-      const apexY = 2.8 + Math.sin((index / numStones) * Math.PI) * 0.7; // ~2.8 to 3.5 world units high (well above Y = -0.32)
-      const apexZ = 0.8 + Math.cos(index * 1.3) * 0.4;
+      const apexX = isMobile ? spreadNorm * 0.75 : spreadNorm * 2.2;
+      const apexY = isMobile
+        ? 1.7 + Math.sin((index / numStones) * Math.PI) * 0.4
+        : 2.8 + Math.sin((index / numStones) * Math.PI) * 0.7;
+      const apexZ = isMobile
+        ? 0.4 + Math.cos(index * 1.3) * 0.25
+        : 0.8 + Math.cos(index * 1.3) * 0.4;
 
       let curX: number, curY: number, curZ: number, curScale: number;
 
@@ -310,7 +340,8 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
         curX = THREE.MathUtils.lerp(dockedX, apexX, ease1);
         curY = THREE.MathUtils.lerp(dockedY, apexY, ease1);
         curZ = THREE.MathUtils.lerp(dockedZ, apexZ, ease1);
-        curScale = THREE.MathUtils.lerp(socketData.scale, targetScale * 0.85, ease1);
+        const dockedScale = isMobile ? socketData.scale * 0.72 : socketData.scale;
+        curScale = THREE.MathUtils.lerp(dockedScale, targetScale * 0.85, ease1);
 
         // Dynamic rotation from socket angle to upward hover spin
         rotGroupRef.current.rotation.x = THREE.MathUtils.lerp(socketData.rotation[0], 0.15, ease1);
@@ -472,9 +503,11 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
     const orbitLight2 = (isActive ? pointLightIntensity * 0.65 : pointLightIntensity * 0.3 * depthFactor) * (stoneGlow / 1.0) * luminanceFactor;
 
     // As stone docks into gauntlet, distance tightens to small radius (socketRadius) and intensity settles to socketIntensity
+    // On mobile, only activate point lights on the active stone to save GPU fragment shader overhead
+    const shouldEnableLights = !isMobile || isActive;
     const targetDistance = THREE.MathUtils.lerp(5 * stonesSize, socketRadius, stoneT);
-    const targetLight1 = THREE.MathUtils.lerp(orbitLight1, socketIntensity, stoneT);
-    const targetLight2 = THREE.MathUtils.lerp(orbitLight2, socketIntensity * 0.55, stoneT);
+    const targetLight1 = shouldEnableLights ? THREE.MathUtils.lerp(orbitLight1, socketIntensity, stoneT) : 0;
+    const targetLight2 = shouldEnableLights ? THREE.MathUtils.lerp(orbitLight2, socketIntensity * 0.55, stoneT) : 0;
 
     if (centerLightRef.current) {
       centerLightRef.current.distance = targetDistance;
@@ -567,13 +600,13 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             emissiveIntensity={baseEmissiveIntensity}
             roughness={0.16}
             metalness={0.03}
-            transmission={isCreation ? 0.65 : 0.52}
+            transmission={isMobile ? 0 : (isCreation ? 0.65 : 0.52)}
             thickness={1.6}
             ior={1.48}
             clearcoat={0.92}
             clearcoatRoughness={0.05}
             transparent
-            opacity={0.92}
+            opacity={isMobile ? 0.96 : 0.92}
             flatShading={true} // Razor-sharp crystalline facet gleams
             clippingPlanes={clippingPlanes && clippingPlanes.length > 0 ? clippingPlanes : undefined}
           />
@@ -647,23 +680,11 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
             scaleFactor={0.78}
             stoneGlow={stoneGlow}
             luminanceFactor={luminanceFactor}
+            isMobile={isMobile}
           />
         )}
       </group>
 
-      {/* ── Prismatic Diamond Aura (Subtle accent on active stone only) ── */}
-      {isActive && convergenceProgress < 0.02 && (
-        <mesh scale={1.22}>
-          <sphereGeometry args={[0.55, 16, 16]} />
-          <meshBasicMaterial
-            color={coreEmissive}
-            transparent
-            opacity={0.09 * luminanceFactor}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
-      )}
     </group>
   );
 };

@@ -119,7 +119,7 @@ export const GallerySection: React.FC = () => {
         {filteredItems.map((item) => (
           <div key={item.id} className="gallery-card">
             <div className="gallery-card-img-wrap">
-              <img src={item.image} alt={item.title} className="gallery-card-img" loading="lazy" />
+              <img src={item.image} alt={item.title} className="gallery-card-img" loading="lazy" decoding="async" />
               <div className="gallery-card-overlay" />
               <div className="gallery-tag-pill">{item.tag}</div>
               <div className="gallery-year-badge">{item.year}</div>
@@ -244,7 +244,7 @@ export const GallerySection: React.FC = () => {
 
         .gallery-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
           gap: 1.8rem;
         }
 
@@ -334,6 +334,48 @@ export const GallerySection: React.FC = () => {
           font-size: 0.78rem;
           color: #64748b;
           font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+          .gallery-inner-container {
+            padding: 3.5rem 1.1rem 5rem;
+          }
+          .gallery-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+          }
+          .gallery-card-img-wrap {
+            height: 195px;
+          }
+          .gallery-title {
+            font-size: clamp(1.85rem, 6.5vw, 2.5rem);
+          }
+          .gallery-filter-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            width: calc(100% + 2.2rem);
+            margin-left: -1.1rem;
+            padding: 0 1.1rem 0.5rem;
+            gap: 0.5rem;
+          }
+          .gallery-filter-bar::-webkit-scrollbar {
+            display: none;
+          }
+          .gallery-filter-btn {
+            flex-shrink: 0;
+            white-space: nowrap;
+            padding: 0.55rem 1.05rem;
+            min-height: 40px;
+            font-size: 0.72rem;
+            touch-action: manipulation;
+          }
+          .gallery-filter-btn:active {
+            transform: scale(0.96);
+          }
         }
       `}</style>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
 import { ANANTYA_LOGO_PATHS } from './anantyaLogoPaths';
 
-const anantyaLogo = '/assets/ANANTYA.png';
+const anantyaLogo = '/assets/ANANTYA.webp';
 
 interface AvengersIntroProps {
   onComplete: () => void;
@@ -44,7 +44,10 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       hue: number;
     }> = [];
 
-    for (let i = 0; i < 55; i++) {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const particleCount = isMobile ? 22 : 55;
+
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -70,8 +73,10 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.opacity})`;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
-        ctx.shadowBlur = 8;
+        if (!isMobile) {
+          ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
+          ctx.shadowBlur = 8;
+        }
         ctx.fill();
       }
 
@@ -510,6 +515,22 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
           border-color: rgba(255, 160, 0, 0.5);
           transform: translateY(-2px);
           box-shadow: 0 0 15px rgba(255, 100, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+          .avengers-skip-btn {
+            bottom: max(1.5rem, env(safe-area-inset-bottom, 1.5rem));
+            right: 1.25rem;
+            padding: 0.5rem 0.95rem;
+            font-size: 0.72rem;
+          }
+          .avengers-radial-core {
+            width: 85vw;
+            height: 85vw;
+          }
+          .avengers-logo-stage {
+            width: 88vw;
+          }
         }
       `}</style>
     </div>

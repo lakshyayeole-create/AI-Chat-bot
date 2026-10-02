@@ -30,6 +30,8 @@ export interface ModelConfig {
   modelPath: string;
   /** Optional background image texture placed on a plane directly behind the model */
   bgImagePath?: string;
+  /** Dedicated mobile background image texture (9:16 portrait) */
+  mobileBgImagePath?: string;
   /** Optional forward/backward tilt along the X axis in radians */
   rotationX?: number;
   /** Normalized target height in world units (defaults to 1.5) */
@@ -63,6 +65,20 @@ export interface TransitionHandle {
   getAssemblyProgress: () => number;
   /** Set transition progress directly (0.0 to 1.0) */
   setTransitionProgress: (progress: number) => void;
+  /** Set fromModel position X (negative = left) */
+  setFromPositionX: (x: number) => void;
+  /** Set toModel position X (positive = right) */
+  setToPositionX: (x: number) => void;
+  /** Set fromModel position Y (positive = up) */
+  setFromPositionY: (y: number) => void;
+  /** Set toModel position Y (positive = up) */
+  setToPositionY: (y: number) => void;
+  /** Set fromModel Y-axis rotation in radians */
+  setFromRotationY: (y: number) => void;
+  /** Set toModel Y-axis rotation in radians */
+  setToRotationY: (y: number) => void;
+  /** Pause or resume the render loop */
+  setPaused: (paused: boolean) => void;
   /** Directly update 3D model transforms without triggering React re-renders */
   setModelTransforms?: (fromX: number, fromRotY: number, toX: number, toRotY: number) => void;
 }
@@ -90,6 +106,12 @@ export interface TransitionProps {
   fromPositionX?: number;
   /** Specific position X for toModel (Ant-Man, positive = right) */
   toPositionX?: number;
+  /** Model position Y offset controlled by parent scroll (fallback if fromPositionY / toPositionY not provided) */
+  positionY?: number;
+  /** Specific position Y for fromModel (Iron Man, positive = up) */
+  fromPositionY?: number;
+  /** Specific position Y for toModel (Star-Lord, positive = up) */
+  toPositionY?: number;
   /** Enable internal mouse wheel / trackpad scroll interaction (default false when using Lenis) */
   enableScroll?: boolean;
   /** Transition sensitivity per scroll delta (default 0.0009) */
@@ -98,10 +120,16 @@ export interface TransitionProps {
   rotationSensitivity?: number;
   /** Callback fired whenever transition progress updates */
   onProgressChange?: (progress: number) => void;
+  /** Optional callback fired when front 3D model finishes loading */
+  onModelLoaded?: () => void;
+  /** Optional callback reporting model download percentage */
+  onModelProgress?: (percent: number) => void;
   /** Optional callback fired when assembly animation completes */
   onAssemblyComplete?: () => void;
   /** Optional callback fired during assembly status changes */
   onAssemblyStatus?: (status: AssemblyStatus) => void;
+  /** Pause rendering and RAF updates when component is out of viewport or hidden */
+  isPaused?: boolean;
   /** Optional container CSS class */
   className?: string;
   /** Optional container style */
@@ -122,12 +150,18 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       positionX,
       fromPositionX,
       toPositionX,
+      positionY,
+      fromPositionY,
+      toPositionY,
       enableScroll = false,
       scrollSensitivity = 0.0009,
       rotationSensitivity = 0.003,
       onProgressChange,
+      onModelLoaded,
+      onModelProgress,
       onAssemblyComplete,
       onAssemblyStatus,
+      isPaused = false,
       className,
       style
     },
@@ -142,11 +176,22 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const onProgressChangeRef = useRef(onProgressChange);
     onProgressChangeRef.current = onProgressChange;
 
+    const onModelLoadedRef = useRef(onModelLoaded);
+    onModelLoadedRef.current = onModelLoaded;
+
+    const onModelProgressRef = useRef(onModelProgress);
+    onModelProgressRef.current = onModelProgress;
+
     const onAssemblyCompleteRef = useRef(onAssemblyComplete);
     onAssemblyCompleteRef.current = onAssemblyComplete;
 
     const onAssemblyStatusRef = useRef(onAssemblyStatus);
     onAssemblyStatusRef.current = onAssemblyStatus;
+
+    const isPausedRef = useRef<boolean>(isPaused);
+    useEffect(() => {
+      isPausedRef.current = isPaused;
+    }, [isPaused]);
 
     const assemblyControllerRef = useRef<AssemblyController | null>(null);
     const pendingAssemblyStartRef = useRef<boolean>(false);
@@ -169,6 +214,14 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
     const currentFromPositionXRef = useRef<number>(fromPositionX ?? positionX ?? 0);
     const targetToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
     const currentToPositionXRef = useRef<number>(toPositionX ?? positionX ?? 0);
+
+    const targetFromPositionYRef = useRef<number>(fromPositionY ?? positionY ?? 0);
+    const currentFromPositionYRef = useRef<number>(fromPositionY ?? positionY ?? 0);
+    const targetToPositionYRef = useRef<number>(toPositionY ?? positionY ?? 0);
+    const currentToPositionYRef = useRef<number>(toPositionY ?? positionY ?? 0);
+
+    const baseFromPosYRef = useRef<number>(fromModel.offsetY ?? 0);
+    const baseToPosYRef = useRef<number>(toModel.offsetY ?? 0);
 
     // Three.js instances refs
     const fromGroupRef = useRef<THREE.Group | null>(null);
@@ -227,6 +280,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       }
     }, [fromPositionX, toPositionX, positionX]);
 
+    useEffect(() => {
+      const fromY = fromPositionY ?? positionY;
+      if (fromY !== undefined) {
+        targetFromPositionYRef.current = fromY;
+      }
+      const toY = toPositionY ?? positionY;
+      if (toY !== undefined) {
+        targetToPositionYRef.current = toY;
+      }
+    }, [fromPositionY, toPositionY, positionY]);
+
     // Imperative API implementation
     const transitionTo = useCallback((progress: number, durationMs = 800) => {
       const clamped = Math.max(0, Math.min(1, progress));
@@ -276,6 +340,27 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       }
     }, []);
 
+    const setFromPositionX = useCallback((x: number) => {
+      targetFromPositionXRef.current = x;
+    }, []);
+    const setToPositionX = useCallback((x: number) => {
+      targetToPositionXRef.current = x;
+    }, []);
+    const setFromPositionY = useCallback((y: number) => {
+      targetFromPositionYRef.current = y;
+    }, []);
+    const setToPositionY = useCallback((y: number) => {
+      targetToPositionYRef.current = y;
+    }, []);
+    const setFromRotationY = useCallback((y: number) => {
+      targetFromRotationYRef.current = y;
+    }, []);
+    const setToRotationY = useCallback((y: number) => {
+      targetToRotationYRef.current = y;
+    }, []);
+    const setPaused = useCallback((paused: boolean) => {
+      isPausedRef.current = paused;
+    }, []);
     const setModelTransforms = useCallback((fromX: number, fromRotY: number, toX: number, toRotY: number) => {
       targetFromPositionXRef.current = fromX;
       targetFromRotationYRef.current = fromRotY;
@@ -294,9 +379,16 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         setAssemblyProgress,
         getAssemblyProgress,
         setTransitionProgress,
+        setFromPositionX,
+        setToPositionX,
+        setFromPositionY,
+        setToPositionY,
+        setFromRotationY,
+        setToRotationY,
+        setPaused,
         setModelTransforms
       }),
-      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setModelTransforms]
+      [transitionTo, toggle, setRotationY, getProgress, triggerAssembly, setAssemblyProgress, getAssemblyProgress, setTransitionProgress, setFromPositionX, setToPositionX, setFromPositionY, setToPositionY, setFromRotationY, setToRotationY, setPaused, setModelTransforms]
     );
 
     // Stable configs
@@ -324,11 +416,16 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const loader = new GLTFLoader();
       const textureLoader = new THREE.TextureLoader();
 
+      const isMobileDevice = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+
+      const getDevicePixelRatio = () => {
+        return isMobileDevice ? 1.0 : Math.min(window.devicePixelRatio, 1.75);
+      };
+
       const width = window.innerWidth;
       const height = window.innerHeight;
       const aspect = width / height;
-      const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, isMobileDevice ? 1.25 : 1.5);
+      const pixelRatio = getDevicePixelRatio();
 
       // ==========================================
       // 1. FRONT MODEL SCENE (fromModel)
@@ -339,7 +436,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromCameraRef.current = fromCamera;
 
       const fromRenderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isMobileDevice,
         alpha: true,
         powerPreference: 'high-performance'
       });
@@ -386,15 +483,13 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       // Background Plane 1
       let fromBgPlane: THREE.Mesh | null = null;
-      if (fromBgPath) {
-        const tex = textureLoader.load(fromBgPath);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        const geo = new THREE.PlaneGeometry(24, 16);
-        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
-        fromBgPlane = new THREE.Mesh(geo, mat);
-        fromBgPlane.position.set(0, 0, -1.5);
-        fromScene.add(fromBgPlane);
-      }
+      const actualFromBgPath = (isMobileDevice && fromModel.mobileBgImagePath)
+        ? fromModel.mobileBgImagePath
+        : fromBgPath;
+
+      const isMobileBg = isMobileDevice && Boolean(fromModel.mobileBgImagePath);
+      const fromBaseW = isMobileBg ? 9 : 24;
+      const fromBaseH = 16;
 
       const updateFromBgPlane = () => {
         if (!fromBgPlane) return;
@@ -402,9 +497,23 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         const vFov = (fromCamera.fov * Math.PI) / 180;
         const planeH = 2 * dist * Math.tan(vFov / 2);
         const planeW = planeH * fromCamera.aspect;
-        fromBgPlane.scale.set((planeW * 1.6) / 24, (planeH * 1.6) / 16, 1);
+        const scaleFactor = Math.max(planeW / fromBaseW, planeH / fromBaseH) * 1.08;
+        fromBgPlane.scale.set(scaleFactor, scaleFactor, 1);
       };
       updateFromBgPlaneRef.current = updateFromBgPlane;
+
+      if (actualFromBgPath) {
+        const tex = textureLoader.load(actualFromBgPath, () => {
+          updateFromBgPlane();
+        });
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const geo = new THREE.PlaneGeometry(fromBaseW, fromBaseH);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
+        fromBgPlane = new THREE.Mesh(geo, mat);
+        fromBgPlane.position.set(0, 0, -2);
+        fromScene.add(fromBgPlane);
+        updateFromBgPlane();
+      }
 
       // ==========================================
       // 2. BACK MODEL SCENE (toModel)
@@ -415,7 +524,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       toCameraRef.current = toCamera;
 
       const toRenderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isMobileDevice,
         alpha: true,
         powerPreference: 'high-performance'
       });
@@ -461,25 +570,29 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
 
       // Background Plane 2
       let toBgPlane: THREE.Mesh | null = null;
-      if (toBgPath) {
-        const tex = textureLoader.load(toBgPath);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        const geo = new THREE.PlaneGeometry(24, 16);
-        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
-        toBgPlane = new THREE.Mesh(geo, mat);
-        toBgPlane.position.set(0, 0, -1.5);
-        toScene.add(toBgPlane);
-      }
-
       const updateToBgPlane = () => {
         if (!toBgPlane) return;
         const dist = Math.abs(toCamera.position.z - toBgPlane.position.z);
         const vFov = (toCamera.fov * Math.PI) / 180;
         const planeH = 2 * dist * Math.tan(vFov / 2);
         const planeW = planeH * toCamera.aspect;
-        toBgPlane.scale.set((planeW * 1.6) / 24, (planeH * 1.6) / 16, 1);
+        const scaleFactor = Math.max(planeW / 24, planeH / 16) * 1.08;
+        toBgPlane.scale.set(scaleFactor, scaleFactor, 1);
       };
       updateToBgPlaneRef.current = updateToBgPlane;
+
+      if (toBgPath) {
+        const tex = textureLoader.load(toBgPath, () => {
+          updateToBgPlane();
+        });
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const geo = new THREE.PlaneGeometry(24, 16);
+        const mat = new THREE.MeshBasicMaterial({ map: tex, depthWrite: false, toneMapped: false });
+        toBgPlane = new THREE.Mesh(geo, mat);
+        toBgPlane.position.set(0, 0, -2);
+        toScene.add(toBgPlane);
+        updateToBgPlane();
+      }
 
       // ==========================================
       // LOAD MODELS
@@ -554,11 +667,19 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (fromModel.offsetY !== undefined) {
             fromGroup.position.y += fromModel.offsetY;
           }
+          baseFromPosYRef.current = fromGroup.position.y;
 
-          // Calibrate camera to frame mask prominently (~78% vertical coverage)
+          // Calibrate camera to frame mask prominently (~78% vertical coverage on desktop, scaled down to ~25% on mobile for breathing room)
           const scaledSize = finalBox.getSize(new THREE.Vector3());
           const fovRad = (fromCamera.fov * Math.PI) / 180;
-          const cameraDist = (scaledSize.y / 0.78) / (2 * Math.tan(fovRad / 2));
+          const currentAspect = window.innerWidth / Math.max(1, window.innerHeight);
+          const coverage = currentAspect < 1.0 ? 0.25 : 0.78;
+          let cameraDist = (scaledSize.y / coverage) / (2 * Math.tan(fovRad / 2));
+          if (currentAspect < 1.0) {
+            // Balanced horizontal padding on narrow mobile screens
+            const horizDist = (scaledSize.x / (0.40 * currentAspect)) / (2 * Math.tan(fovRad / 2));
+            cameraDist = Math.max(cameraDist, horizDist);
+          }
           const yCam = 0;
           baseYCamRef.current = yCam;
           baseCameraDistRef.current = cameraDist;
@@ -599,8 +720,17 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
               pendingAssemblyStartRef.current = false;
             }
           }
+
+          if (isMounted) {
+            onModelLoadedRef.current?.();
+          }
         },
-        undefined,
+        (xhr) => {
+          if (xhr.total > 0 && onModelProgressRef.current) {
+            const pct = Math.round((xhr.loaded / xhr.total) * 100);
+            onModelProgressRef.current(pct);
+          }
+        },
         (err) => console.error('Failed to load fromModel:', err)
       );
 
@@ -646,6 +776,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           if (toModel.offsetY !== undefined) {
             toGroup.position.y += toModel.offsetY;
           }
+          baseToPosYRef.current = toGroup.position.y;
         },
         undefined,
         (err) => {
@@ -669,10 +800,14 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
               if (toModel.offsetY !== undefined) {
                 toGroup.position.y += toModel.offsetY;
               }
+              baseToPosYRef.current = toGroup.position.y;
             });
           }
         }
       );
+
+      let lastWidth = window.innerWidth;
+      let lastHeight = window.innerHeight;
 
       // ==========================================
       // EVENT LISTENERS
@@ -680,19 +815,50 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const handleResize = () => {
         const w = window.innerWidth;
         const h = window.innerHeight;
-        const isMob = typeof window !== 'undefined' && window.innerWidth < 768;
-        const pr = Math.min(window.devicePixelRatio || 1, isMob ? 1.25 : 1.5);
+        const isMobile = window.innerWidth < 768 || ('ontouchstart' in window && window.innerWidth < 1024);
+        const widthChanged = Math.abs(w - lastWidth) > 6;
+        const heightDelta = Math.abs(h - lastHeight);
+
+        // On mobile devices, ignore vertical-only resize caused by address bar toggling
+        if (isMobile && !widthChanged && heightDelta < 160) {
+          return;
+        }
+
+        lastWidth = w;
+        lastHeight = h;
+
+        const pr = getDevicePixelRatio();
 
         fromCamera.aspect = w / h;
         fromCamera.updateProjectionMatrix();
         fromRenderer.setSize(w, h);
         fromRenderer.setPixelRatio(pr);
-        updateFromBgPlane();
 
         toCamera.aspect = w / h;
         toCamera.updateProjectionMatrix();
         toRenderer.setSize(w, h);
         toRenderer.setPixelRatio(pr);
+
+        // Recalculate camera distance for updated aspect ratio
+        if (fromGroupRef.current) {
+          const b = new THREE.Box3().setFromObject(fromGroupRef.current);
+          const sz = b.getSize(new THREE.Vector3());
+          if (sz.y > 0.01) {
+            const fovR = (fromCamera.fov * Math.PI) / 180;
+            const aspect = w / Math.max(1, h);
+            const cov = aspect < 1.0 ? 0.25 : 0.78;
+            let cDist = (sz.y / cov) / (2 * Math.tan(fovR / 2));
+            if (aspect < 1.0) {
+              const hDist = (sz.x / (0.40 * aspect)) / (2 * Math.tan(fovR / 2));
+              cDist = Math.max(cDist, hDist);
+            }
+            baseCameraDistRef.current = cDist;
+            fromCamera.position.z = cDist;
+            toCamera.position.z = cDist;
+          }
+        }
+
+        updateFromBgPlane();
         updateToBgPlane();
       };
       window.addEventListener('resize', handleResize);
@@ -719,6 +885,10 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       const animate = (now: number) => {
         animationFrameId = requestAnimationFrame(animate);
 
+        // When paused (canvas is hidden or offscreen), skip expensive calculations and rendering
+        if (isPausedRef.current) {
+          return;
+        }
         // Smooth tween for programmatic transition
         if (tweenRef.current && tweenRef.current.active) {
           const { startTime, duration, startVal, targetVal } = tweenRef.current;
@@ -756,20 +926,36 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
         const currentProgress = currentProgressRef.current;
         currentFromPositionXRef.current += (targetFromPositionXRef.current - currentFromPositionXRef.current) * 0.12;
         currentToPositionXRef.current += (targetToPositionXRef.current - currentToPositionXRef.current) * 0.12;
+        currentFromPositionYRef.current += (targetFromPositionYRef.current - currentFromPositionYRef.current) * 0.12;
+        currentToPositionYRef.current += (targetToPositionYRef.current - currentToPositionYRef.current) * 0.12;
 
         const curFromPosX = currentFromPositionXRef.current;
         const curToPosX = currentToPositionXRef.current;
+        const curFromPosY = currentFromPositionYRef.current;
+        const curToPosY = currentToPositionYRef.current;
         const curFromRotY = currentFromRotationYRef.current;
         const curToRotY = currentToRotationYRef.current;
 
-        // Apply group visibility, position X, and Y-axis rotation independently
+        // Apply group visibility, position X, Y, and Y-axis rotation independently
         if (fromGroupRef.current) {
-          fromGroupRef.current.position.x = curFromPosX;
-          fromGroupRef.current.rotation.y = curFromRotY;
+          if (currentAssemblyProgressRef.current <= 0.001 || currentProgress >= 0.999) {
+            fromGroupRef.current.visible = false;
+          } else {
+            fromGroupRef.current.visible = true;
+            fromGroupRef.current.position.x = curFromPosX;
+            fromGroupRef.current.position.y = baseFromPosYRef.current + curFromPosY;
+            fromGroupRef.current.rotation.y = curFromRotY;
+          }
         }
         if (toGroupRef.current) {
-          toGroupRef.current.position.x = curToPosX;
-          toGroupRef.current.rotation.y = curToRotY;
+          if (currentProgress <= 0.001) {
+            toGroupRef.current.visible = false;
+          } else {
+            toGroupRef.current.visible = true;
+            toGroupRef.current.position.x = curToPosX;
+            toGroupRef.current.position.y = baseToPosYRef.current + curToPosY;
+            toGroupRef.current.rotation.y = curToRotY;
+          }
         }
 
         if (onProgressChangeRef.current) {
@@ -799,11 +985,14 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           return;
         }
 
-        // Selectively render only visible model scenes to conserve GPU draw calls
-        if (currentProgress < 0.998) {
+        // Selective rendering: only render scene if its group is visible and within active progress
+        const shouldRenderFrom = Boolean(fromGroupRef.current && fromGroupRef.current.visible) && currentProgress < 0.998;
+        const shouldRenderTo = Boolean(toGroupRef.current && toGroupRef.current.visible) && currentProgress > 0.002;
+
+        if (shouldRenderFrom) {
           fromRenderer.render(fromScene, fromCamera);
         }
-        if (currentProgress > 0.002) {
+        if (shouldRenderTo) {
           toRenderer.render(toScene, toCamera);
         }
       };
