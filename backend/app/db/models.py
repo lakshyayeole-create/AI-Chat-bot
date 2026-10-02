@@ -1,7 +1,7 @@
 """Pydantic schemas and database models for MongoDB collections."""
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, EmailStr, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 # ============================================================================
@@ -87,7 +87,7 @@ class UserRecord(BaseModel):
     """Schema for user profile records in MongoDB."""
     user_id: str
     name: str
-    email: EmailStr
+    email: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     role: str = "visitor"
     metadata: Dict[str, Any] = Field(default_factory=dict)
