@@ -11,7 +11,7 @@
   // Base API configuration (Render Cloud Backend)
   const BACKEND_BASE = (
     (typeof window !== "undefined" && window.ANANTYA_API_URL) ||
-    "https://anantya-ai-backend.onrender.com"
+    "https://anantya-ai-backend-3rje.onrender.com"
   ).replace(/\/+$/, "");
 
   // Configuration
