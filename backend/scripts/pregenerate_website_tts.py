@@ -53,7 +53,7 @@ SECTIONS = [
         "Central Command & Closing",
         "Anantya Central Command is located at PCCOE Sector 26, Pradhikaran, Nigdi, Pune. Connect with student "
         "coordinators Divya Ughade, Aditi Joshi, and Srushti Argade, or transmit an encrypted message directly "
-        "through our contact terminal. Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, and IRIS at PCCOE. "
+        "through our contact terminal. Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, LFDT and IRIS at PCCOE. "
         "We look forward to welcoming you to the Multiverse of Technology!"
     ),
 ]
@@ -90,7 +90,7 @@ async def main():
     try:
         # Check if ElevenLabs has enough quota for substantial generation
         test_audio = await client.generate_speech(
-            text="Anantya 2026 Department of Computer Engineering PCCOE Pune",
+            text="Anantya 2026 By the Department of Computer Engineering PCCOE Pune",
             voice_id=voice_id,
             model_id=model_id,
         )

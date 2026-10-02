@@ -216,7 +216,7 @@
 
     // 5. Page End: Closing
     segments.push(
-      "Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, and IRIS at PCCOE. We look forward to welcoming you to the Multiverse of Technology!"
+      "Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, LFDT and IRIS at PCCOE. We look forward to welcoming you to the Multiverse of Technology!"
     );
 
     // Natural speech chunking: split into chunks bounded by complete sentences (~250-320 chars)
