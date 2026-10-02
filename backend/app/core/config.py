@@ -51,6 +51,7 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8001
     log_level: str = "info"
+    backend_url: str = "https://anantya-ai-backend-3rje.onrender.com"
 
     # --- Message Limits ---
     max_message_length: int = 1000
