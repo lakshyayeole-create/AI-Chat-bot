@@ -4,6 +4,8 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { StoneData } from '../data/stonesData';
 import { GAUNTLET_CONFIG, GAUNTLET_SOCKETS, calculateStoneSlotPosition, GauntletSocket } from '../config/gauntletConfig';
+import { getImageUrl } from '../utils/assets';
+
 
 /**
  * 22 Orbiting Crystal Shards (Tetrahedrons)
@@ -129,7 +131,7 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   orbitTiltZ = 0,
   isActive,
   onSelect,
-  textureUrl = '/assets/amber-crystal-surface.webp',
+  textureUrl = getImageUrl('/assets/amber-crystal-surface.webp', '/assets/amber-crystal-surface.webp'),
   convergenceProgress = 0,
   introFlightProgress,
   introGauntletY,

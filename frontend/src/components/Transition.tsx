@@ -9,8 +9,10 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { createAssemblySystem, AssemblyController, AssemblyStatus } from '../utils/assemblyAnimation';
+import { getModelUrl } from '../utils/assets';
 
 export type { AssemblyStatus } from '../utils/assemblyAnimation';
+
 
 export interface ModelLightingConfig {
   ambientColor?: number;
@@ -796,7 +798,7 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           console.error('Failed to load toModel:', err);
           if (toModel.modelPath !== '/assets/marvel_ant-man_helmet.glb') {
             console.warn('Attempting fallback to /assets/marvel_ant-man_helmet.glb while starlord.glb is being placed');
-            loader.load('/assets/marvel_ant-man_helmet.glb', (fallbackGltf) => {
+            loader.load(getModelUrl('/assets/marvel_ant-man_helmet.glb', '/assets/marvel_ant-man_helmet.glb'), (fallbackGltf) => {
               const model = fallbackGltf.scene;
               const box = new THREE.Box3().setFromObject(model);
               const center = box.getCenter(new THREE.Vector3());

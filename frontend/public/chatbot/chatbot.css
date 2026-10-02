@@ -427,6 +427,35 @@
   color: rgba(0, 243, 255, 0.7);
 }
 
+.anantya-hud-msg-listen-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 243, 255, 0.25);
+  border-radius: 4px;
+  color: var(--hud-cyan);
+  cursor: pointer;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: var(--hud-font-mono);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  margin-left: auto;
+  opacity: 0.75;
+}
+
+.anantya-hud-msg-listen-btn:hover {
+  background: rgba(0, 243, 255, 0.2);
+  border-color: var(--hud-cyan);
+  opacity: 1;
+}
+
+.anantya-hud-msg-listen-btn.is-playing {
+  background: rgba(0, 243, 255, 0.25);
+  border-color: var(--hud-cyan);
+  box-shadow: 0 0 8px rgba(0, 243, 255, 0.4);
+}
+
 .anantya-hud-bubble {
   padding: 11px 14px;
   border-radius: 10px;

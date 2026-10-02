@@ -1,0 +1,271 @@
+EVENT_ID: ANANTYA-001
+
+EVENT_NAME: DECENTRAHACK 2.0
+
+EVENT_EDITION: ANANTYA '26
+
+EVENT_TYPE: Technical Hackathon
+
+EVENT_THEME: LEARN • BUILD • TRUST
+
+INSTITUTION: Pimpri Chinchwad College of Engineering (PCCOE)
+
+DEPARTMENT: All Departments
+
+ORGANIZING_CLUB: LFDT Student Chapter
+
+VENUE: PCCOE, Pune
+
+====================
+EVENT OVERVIEW
+==============
+
+DECENTRAHACK 2.0 is a 3-round technical hackathon organized by the LFDT Student Chapter at Pimpri Chinchwad College of Engineering (PCCOE).
+
+The hackathon focuses on ideation, building, demonstration, and pitching solutions across technical tracks including:
+
+* Agentic AI
+* Blockchain / Web3
+* Open Source
+
+The event follows a three-stage progression:
+
+1. IDEA — Submit an abstract
+2. BUILD — Develop and present a working demo with PPT
+3. PITCH — Top 15 teams pitch their solutions at PCCOE
+
+====================
+TEAM SIZE
+=========
+
+Minimum team size: 2 members
+
+Maximum team size: 4 members
+
+Teams must consist of 2–4 members.
+
+====================
+ELIGIBILITY
+===========
+
+Eligibility: College Students
+
+The event is open to college students.
+
+====================
+HACKATHON TRACKS
+================
+
+The listed technical tracks are:
+
+* Agentic AI
+* Blockchain / Web3
+* Open Source
+
+====================
+ROUNDS
+======
+
+ROUND 1 — IDEA
+
+Participants submit their abstract.
+
+Purpose:
+The first round focuses on presenting the idea or proposed solution through an abstract.
+
+Submission:
+Abstract
+
+ROUND 2 — BUILD
+
+Participants develop their solution and present a working demonstration.
+
+Requirements:
+
+* Working Demo
+* PPT
+
+Purpose:
+The second round focuses on building and demonstrating the proposed solution.
+
+ROUND 3 — PITCH
+
+The Top 15 teams proceed to the final pitching round.
+
+Final:
+Top 15 teams pitch their solutions at PCCOE.
+
+Venue:
+PCCOE, Pune
+
+Final Pitch Date:
+9 October 2026
+
+====================
+REGISTRATION
+============
+
+Registration Window:
+20 September 2026 – 30 September 2026
+
+Registration Deadline:
+30 September 2026
+
+REGISTRATION FEES
+
+PCCOE Students:
+Free
+
+Other Students:
+₹99
+
+REGISTRATION LINKS
+
+PCCOE Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSdflaXKcQasPjrEJuziW_SXNWcu7eVQFf-oZvD7sI7nqfWY5g/viewform
+
+Unstop Registration:
+https://unstop.com/p/decentrahack-20-pimpri-chinchwad-college-of-engineering-1760291?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+====================
+PRIZES & BENEFITS
+=================
+
+Prize Pool:
+₹15K+
+
+Additional benefits:
+
+* Goodies
+* Memberships
+
+====================
+RULES & GUIDELINES
+==================
+
+AI Tools:
+AI tools are allowed.
+
+No additional rules or guidelines were provided in the supplied event information.
+
+====================
+IMPORTANT DATES
+===============
+
+Registration Opens:
+20 September 2026
+
+Registration Deadline:
+30 September 2026
+
+Final Pitch:
+9 October 2026
+
+====================
+EVENT COORDINATORS
+==================
+
+Rohit Sonawane
+Phone: +91 8857011104
+Email: [rohit.sonawane24@pccoepune.org](mailto:rohit.sonawane24@pccoepune.org)
+
+Email:
+[prithviraj.sherikar24@pccoepune.org](mailto:prithviraj.sherikar24@pccoepune.org)
+
+====================
+QUICK FACTS
+===========
+
+Event:
+DECENTRAHACK 2.0
+
+Event ID:
+ANANTYA-001
+
+Type:
+Technical Hackathon
+
+Theme:
+LEARN • BUILD • TRUST
+
+Organizer:
+LFDT Student Chapter
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+Department:
+All Departments
+
+Team Size:
+2–4 Members
+
+Eligibility:
+College Students
+
+Tracks:
+Agentic AI, Blockchain / Web3, Open Source
+
+Number of Rounds:
+3
+
+Round 1:
+Idea — Abstract Submission
+
+Round 2:
+Build — Working Demo + PPT
+
+Round 3:
+Pitch — Top 15 Teams
+
+PCCOE Registration Fee:
+Free
+
+Other Students Registration Fee:
+₹99
+
+Prize Pool:
+₹15K+
+
+Final Pitch:
+9 October 2026
+
+Venue:
+PCCOE, Pune
+
+AI Tools:
+Allowed
+
+====================
+SOURCE METADATA
+===============
+
+SOURCE_FILE:
+event_001_decentrahack_2_0.txt
+
+SOURCE_TYPE:
+Official event information provided for ANANTYA '26 chatbot knowledge base
+
+KNOWLEDGE_SCOPE:
+This document contains only the DECENTRAHACK 2.0 event information supplied for the ANANTYA '26 chatbot.
+
+GROUNDING_INSTRUCTION:
+When answering questions about DECENTRAHACK 2.0, use only the information contained in this event document and other explicitly provided official event sources.
+
+Do not invent:
+
+* Dates
+* Times
+* Venues
+* Fees
+* Rules
+* Eligibility conditions
+* Tracks
+* Prize details
+* Registration information
+* Contact details
+* URLs
+
+If the requested information is not present in the available event information, state that the information is not available in the provided DECENTRAHACK 2.0 details.
+
+Preserve registration URLs exactly as provided.

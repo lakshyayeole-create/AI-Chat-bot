@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import './LokiLoomOverlay.css';
+import { getImageUrl } from '../utils/assets';
 
 export interface LoomItem {
   id: string;
@@ -738,7 +739,7 @@ export const LokiLoomOverlay: React.FC<LokiLoomOverlayProps> = ({ loomProgress }
                 <div className="loom-card-img-wrap">
                   <img
                     key={currentPhoto.id}
-                    src={currentPhoto.url}
+                    src={getImageUrl(currentPhoto.url, currentPhoto.url)}
                     alt={`${currentPhoto.title} ${mobilePhotoIndex + 1}`}
                     className="loom-card-img"
                     loading="lazy"
@@ -850,7 +851,7 @@ export const LokiLoomOverlay: React.FC<LokiLoomOverlayProps> = ({ loomProgress }
                 <div className="loom-card-img-wrap">
                   <img
                     key={`${t.id}-${currentImgIdx}`}
-                    src={activeImage}
+                    src={getImageUrl(activeImage, activeImage)}
                     alt={`${t.title} ${currentImgIdx + 1}`}
                     className="loom-card-img"
                     loading="lazy"
@@ -921,7 +922,7 @@ export const LokiLoomOverlay: React.FC<LokiLoomOverlayProps> = ({ loomProgress }
             <div className="lightbox-image-viewport">
               <img
                 key={`${modalData.activeIndex}`}
-                src={modalData.images[modalData.activeIndex]}
+                src={getImageUrl(modalData.images[modalData.activeIndex], modalData.images[modalData.activeIndex])}
                 alt={`${modalData.title} - ${modalData.activeIndex + 1}`}
                 className="lightbox-pure-image"
               />

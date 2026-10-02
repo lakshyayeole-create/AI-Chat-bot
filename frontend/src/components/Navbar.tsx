@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
+import { getImageUrl } from '../utils/assets';
 
 export const NAVBAR_CONFIG = {
   top: '20px',
@@ -70,7 +71,7 @@ const defaultItems: NavItem[] = [
 ];
 
 export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
-  logoSrc = '/assets/ANANTYA.webp',
+  logoSrc = getImageUrl('/assets/ANANTYA.webp', '/assets/ANANTYA.webp'),
   activeId = 'home',
   items = defaultItems,
   onSelect,

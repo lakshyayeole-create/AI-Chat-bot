@@ -2,6 +2,9 @@ import React, { useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { getModelUrl } from '../utils/assets';
+
+const LOKI_MODEL = getModelUrl('/assets/loki_main.glb', '/assets/loki_main.glb');
 
 interface LokiHelmetProps {
   position?: [number, number, number];
@@ -20,7 +23,7 @@ export const LokiHelmet: React.FC<LokiHelmetProps> = ({
   isFloating = true,
   opacity = 1.0,
 }) => {
-  const { scene } = useGLTF('/assets/loki_main.glb');
+  const { scene } = useGLTF(LOKI_MODEL);
   const floatRef = useRef<THREE.Group>(null);
   const materialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
 
@@ -133,5 +136,5 @@ export const LokiHelmet: React.FC<LokiHelmetProps> = ({
   );
 };
 
-useGLTF.preload('/assets/loki_main.glb');
+useGLTF.preload(LOKI_MODEL);
 export default LokiHelmet;

@@ -1,3 +1,5 @@
+import { getImageUrl } from '../utils/assets';
+
 export type EventItem = {
   id: string;
   name: string;
@@ -23,7 +25,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹12K+ + Goodies",
     description: "3-round UI/UX design competition. Registration: Free for PCCOE students / ₹100 for other colleges",
     accent: "#ef4444", // Red
-    logoUrl: "/logos/masterchefui.webp",
+    logoUrl: getImageUrl("/logos/masterchefui.webp", "/logos/masterchefui.webp"),
     url: "https://masterchefui-gdgc.vercel.app/"
   },
   {
@@ -35,7 +37,7 @@ export const allEventsData: EventItem[] = [
     teamSize: "2–4 female students",
     prizePool: "₹16K+",
     description: "Women-focused hackathon based on innovation and problem solving.",
-    logoUrl: "/logos/shesolves-logo.webp",
+    logoUrl: getImageUrl("/logos/shesolves-logo.webp", "/logos/shesolves-logo.webp"),
     accent: "#22c55e", // Green
     url: "https://shesolves3-0.vercel.app/"
   },
@@ -47,7 +49,7 @@ export const allEventsData: EventItem[] = [
     date: "10 October 2026 (Final Round)",
     teamSize: "Individual (1 member)",
     prizePool: "₹18K+",
-    logoUrl: "/logos/codigo.webp",
+    logoUrl: getImageUrl("/logos/codigo.webp", "/logos/codigo.webp"),
     description: "Coding competition focused on problem solving.",
     accent: "#eab308", // Yellow/Gold
     url: "https://pccoe-codigo-2026.vercel.app/"
@@ -62,7 +64,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹1.5 LAKH+",
     description: "Cybersecurity CTF covering Web, OSINT, Forensics, Cryptography, Networking, Linux and more.",
     accent: "#f97316", // Orange
-    logoUrl: "/logos/byte.webp",
+    logoUrl: getImageUrl("/logos/byte.webp", "/logos/byte.webp"),
     url: "https://bytemectf.owasppccoe.in/"
   },
   {
@@ -75,7 +77,7 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹15K+",
     description: "3-round hackathon involving ideation, building and pitching. Tracks: Agentic AI, Blockchain/Web3, Open Source.",
     accent: "#3b82f6", // Blue
-    logoUrl: "/logos/Decentra-hack.webp",
+    logoUrl: getImageUrl("/logos/Decentra-hack.webp", "/logos/Decentra-hack.webp"),
     url: "https://decentrahack.vercel.app/"
   },
   {
@@ -86,7 +88,7 @@ export const allEventsData: EventItem[] = [
     date: "9-10 October 2026",
     teamSize: "2–4 members",
     prizePool: "₹15K+",
-    logoUrl: "/logos/iothrone.webp",
+    logoUrl: getImageUrl("/logos/iothrone.webp", "/logos/iothrone.webp"),
     description: "Innovation-driven hackathon involving prototype development and real-time integration.",
     accent: "#a855f7", // Purple
     url: "https://iothrone.vercel.app/"
@@ -100,20 +102,20 @@ export const allEventsData: EventItem[] = [
     prizePool: "₹13K+",
     description: "Creative doodle competition where participants create a doodle based on a given topic, followed by an offline twist round.",
     accent: "#f8fafc", // White/Silver
-    logoUrl: "/logos/make_a_doddle.webp",
+    logoUrl: getImageUrl("/logos/make_a_doddle.webp", "/logos/make_a_doddle.webp"),
     url: "https://make-a-doodle.vercel.app/"
   },
   {
-    id: "innovatex",
-    name: "Innovatex 2026",
-    category: "Flagship Expo",
-    organizer: "PCCOE Innovation Council",
-    date: "10 October 2026 | Grand Expo",
-    teamSize: "1–4 members",
-    prizePool: "₹50K+",
-    description: "Grand flagship expo showcasing cutting-edge engineering prototypes, AI breakthroughs, and venture pitches.",
-    accent: "#d97706",
-    logoUrl: "/logos/ANANTYA.webp",
+    id: "innovate-x",
+    name: "INNOVATE-X",
+    category: "Capstone Project & System Architecture",
+    organizer: "Dept of Computer Engineering / CESA, ACM, ACM-W, OWASP, GDGC, IRIS",
+    date: "6 & 10 October 2026",
+    teamSize: "Max 4 members (Compulsory for B.Tech Final-Year)",
+    prizePool: "₹12,000 (1st: ₹6K | 2nd: ₹4K | 3rd: ₹2K)",
+    description: "B.Tech final-year capstone project presentation and system architecture showcase before an expert evaluation panel. Round 1: Online PPT submission (6 Oct). Round 2: Offline final presentation (10 Oct).",
+    accent: "#06b6d4",
+    logoUrl: getImageUrl("/logos/ANANTYA.webp", "/logos/ANANTYA.webp"),
     url: "https://innovate-x-blue.vercel.app/"
   }
 ];

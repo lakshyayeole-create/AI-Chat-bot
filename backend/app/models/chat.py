@@ -10,6 +10,8 @@ class ChatRequest(BaseModel):
             the configured maximum length.
     """
     message: str
+    session_id: str | None = None
+    user_id: str | None = None
 
     @field_validator("message")
     @classmethod

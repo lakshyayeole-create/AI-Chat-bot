@@ -13,10 +13,15 @@ from app.core.config import get_settings
 from app.core.logging_config import setup_logging, get_logger
 from app.api.chat import router as chat_router
 from app.api.tts import router as tts_router
+from app.api.assets import router as assets_router
+from app.api.contact import router as contact_router
+from app.api.visitors import router as visitors_router
+from app.db.mongodb import mongo_manager
 from app.rag import qdrant_store
 
 from app.rag.queue_manager import get_queue_manager
 
+# Application routers
 logger = get_logger(__name__)
 
 
@@ -45,6 +50,9 @@ async def lifespan(app: FastAPI):
         app.state.vector_store_loaded = False
         logger.error("Failed to connect to Qdrant: %s", str(e))
 
+    # Connect to MongoDB Atlas
+    await mongo_manager.connect()
+
     # Start request queue workers
     queue_mgr = get_queue_manager()
     queue_mgr.start_workers(settings.num_workers)
@@ -56,6 +64,7 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     await queue_mgr.stop_workers()
+    await mongo_manager.close()
     logger.info("Anantya Chatbot Backend — Shutting down")
 
 
@@ -103,15 +112,20 @@ def create_app() -> FastAPI:
     # Include routers
     app.include_router(chat_router)
     app.include_router(tts_router)
+    app.include_router(assets_router)
+    app.include_router(contact_router)
+    app.include_router(visitors_router)
 
     # Health endpoint
     @app.get("/health", tags=["Health"])
     async def health():
         """Health check endpoint for deployment/monitoring."""
         vs_status = "loaded" if getattr(app.state, "vector_store_loaded", False) else "not_loaded"
+        mongo_status = "connected" if mongo_manager.is_connected else "disconnected"
         return {
             "status": "ok",
             "vector_store": vs_status,
+            "mongodb": mongo_status,
         }
 
     return app

@@ -1,0 +1,272 @@
+EVENT_ID: ANANTYA-005
+
+EVENT_NAME: MasterChef UI
+
+EVENT_EDITION: ANANTYA 2026
+
+EVENT_TYPE: UI/UX Design Competition
+
+EVENT_THEME:
+MasterChef UI
+
+EVENT_TAGLINE:
+Design. Solve. Cook.
+
+PRESENTED_BY:
+GDGC PCCOE x ACM x ACM-W x OWASP x IRIS x LFDT
+
+====================
+EVENT OVERVIEW
+==============
+
+MasterChef UI is a 3-round UI/UX design competition organized as part of Techfest Anantya 2026.
+
+The competition presents UI/UX design as a creative challenge where participants design, solve problems, and present their final work under pressure.
+
+The event follows a three-round competition structure.
+
+====================
+TEAM STRUCTURE
+==============
+
+Minimum team size:
+1 member
+
+Maximum team size:
+2 members
+
+Team Structure:
+1–2 members
+
+====================
+ROUNDS
+======
+
+ROUND 1 — THE TASTE TEST
+
+Round 1 is referred to as:
+
+The Taste Test
+
+An alternative round description provided for the event is:
+
+The UI Quest — Find the right ingredients
+
+ROUND 2 — THE PRESSURE TEST
+
+Round 2 is referred to as:
+
+The Pressure Test
+
+An alternative round description provided for the event is:
+
+Turn ideas into solutions
+
+ROUND 3 — THE CUTTHROAT FINALE
+
+Round 3 is referred to as:
+
+The Cutthroat Finale
+
+An alternative round description provided for the event is:
+
+The Cutthroat Final — Present your masterpiece
+
+====================
+PRIZES & BENEFITS
+=================
+
+Prize Pool:
+₹12,000
+
+Additional benefits:
+
+* Goodies
+* Swags
+* ACM Membership
+
+====================
+DATE
+====
+
+Event Date:
+9th October 2026
+
+====================
+REGISTRATION
+============
+
+PCCOE STUDENTS:
+
+Registration Fee:
+FREE
+
+PCCOE Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+
+OTHER COLLEGES:
+
+Registration Fee:
+₹100
+
+Unstop Registration:
+https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+====================
+COMMUNITY / WHATSAPP
+====================
+
+WhatsApp Group:
+https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk
+
+====================
+EVENT ORGANIZERS / PRESENTERS
+=============================
+
+The event is presented by:
+
+* GDGC PCCOE
+* ACM
+* ACM-W
+* OWASP
+* IRIS
+* LFDT
+
+====================
+EVENT CONTACTS
+==============
+
+Mayur Kharat
+Phone:
+99604 32698
+
+Samiksha Mote
+Phone:
+75587 26679
+
+====================
+VENUE
+=====
+
+Venue:
+Not provided in the supplied event information.
+
+====================
+ELIGIBILITY
+===========
+
+Eligibility:
+Not provided in the supplied event information.
+
+====================
+ROUND DETAILS
+=============
+
+Detailed tasks, submission requirements, timings, evaluation criteria, and judging rules for each round were not provided in the supplied event information.
+
+The available round information is:
+
+Round 1:
+The Taste Test / The UI Quest — Find the right ingredients
+
+Round 2:
+The Pressure Test / Turn ideas into solutions
+
+Round 3:
+The Cutthroat Finale / The Cutthroat Final — Present your masterpiece
+
+====================
+QUICK FACTS
+===========
+
+Event:
+MasterChef UI
+
+Event ID:
+ANANTYA-005
+
+Edition:
+ANANTYA 2026
+
+Type:
+UI/UX Design Competition
+
+Number of Rounds:
+3
+
+Team Size:
+1–2 Members
+
+Round 1:
+The Taste Test / The UI Quest
+
+Round 2:
+The Pressure Test
+
+Round 3:
+The Cutthroat Finale / The Cutthroat Final
+
+Prize Pool:
+₹12,000
+
+Additional Benefits:
+Goodies, Swags, ACM Membership
+
+Event Date:
+9th October 2026
+
+PCCOE Registration:
+Free
+
+Other Colleges:
+₹100
+
+PCCOE Registration Link:
+https://docs.google.com/forms/d/e/1FAIpQLSeXkTfnEDepxaukKpvyypXXXWCqCFg3FMezULDqYWdISS-qQQ/viewform?usp=publish-editor
+
+Unstop Registration:
+https://unstop.com/o/RV6zodW?utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+WhatsApp Group:
+https://chat.whatsapp.com/GVnYGGRCSJ5Hka3gKzX1Wk
+
+====================
+SOURCE METADATA
+===============
+
+SOURCE_FILE:
+event_005_masterchef_ui.txt
+
+SOURCE_TYPE:
+Event information provided for ANANTYA 2026 chatbot knowledge base
+
+KNOWLEDGE_SCOPE:
+This document contains the MasterChef UI event information supplied for the ANANTYA 2026 chatbot.
+
+GROUNDING_INSTRUCTION:
+When answering questions about MasterChef UI, use only the information contained in this event document and other explicitly provided official event sources.
+
+Do not invent:
+
+* Eligibility requirements
+* Venue
+* Round timings
+* Round duration
+* Submission requirements
+* Design tools
+* Judging criteria
+* Evaluation criteria
+* Number of shortlisted teams
+* Selection process
+* Rules
+* Deadlines
+* Prize distribution
+* Additional fees
+* Registration requirements
+
+If the requested information is not present in the available MasterChef UI event information, state that the information is not available in the provided event details.
+
+Preserve all registration and community URLs exactly as provided.
+
+IMPORTANT:
+The supplied event information contains two naming/description variants for the rounds. Preserve both variants when answering questions rather than assuming additional details that were not provided.

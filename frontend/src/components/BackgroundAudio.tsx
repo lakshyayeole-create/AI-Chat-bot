@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './BackgroundAudio.css';
+import { getAudioUrl } from '../utils/assets';
 
 interface BackgroundAudioProps {
   isVisible?: boolean;
 }
 
 const STORAGE_KEY = 'anantya_audio_muted';
-const AUDIO_SRC = '/background_audio.mpeg';
+const AUDIO_SRC = getAudioUrl('/background_audio.mpeg', '/background_audio.mpeg');
 const DEFAULT_VOLUME = 0.35;
+
 
 export const BackgroundAudio: React.FC<BackgroundAudioProps> = ({ isVisible = true }) => {
   const [isMuted, setIsMuted] = useState<boolean>(() => {

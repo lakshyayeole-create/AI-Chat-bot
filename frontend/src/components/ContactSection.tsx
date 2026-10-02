@@ -25,48 +25,89 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate: _onN
   });
 
   const [formStatus, setFormStatus] = useState<'idle' | 'sending' | 'success'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successToken, setSuccessToken] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    if (errorMessage) setErrorMessage(null);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage('Please fill in your name, email, and message.');
+      return;
+    }
 
     setFormStatus('sending');
+    setErrorMessage(null);
+
+    const backendUrl =
+      (typeof window !== 'undefined' && (window as any).__BACKEND_URL__) ||
+      'http://localhost:8001';
 
     try {
-      await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+      // 1. Submit directly to FastAPI backend which stores message in MongoDB
+      const res = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject || 'General Inquiry',
-          message: formData.message,
-          timestamp: new Date().toLocaleString(),
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject?.trim() || 'General Inquiry',
+          message: formData.message.trim(),
         }),
       });
 
-      const randomCode = Math.floor(1000 + Math.random() * 9000);
-      setSuccessToken(`AVN-COMM-${randomCode}`);
-      setFormStatus('success');
+      // 2. Also notify Google Sheet webhook in background for legacy tracking
+      try {
+        fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            subject: formData.subject || 'General Inquiry',
+            message: formData.message,
+            timestamp: new Date().toLocaleString(),
+          }),
+        }).catch(() => {});
+      } catch (_) {}
+
+      if (res.ok) {
+        const data = await res.json();
+        setSuccessToken(data.reference_code || `AVN-COMM-${Math.floor(1000 + Math.random() * 9000)}`);
+        setErrorMessage(null);
+        setFormStatus('success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        console.warn('Backend contact submission note:', errData);
+        let detailMsg = 'Failed to relay transmission. Please verify your details.';
+        if (errData.detail) {
+          if (Array.isArray(errData.detail) && errData.detail[0]?.msg) {
+            detailMsg = errData.detail[0].msg.replace('Value error, ', '');
+          } else if (typeof errData.detail === 'string') {
+            detailMsg = errData.detail;
+          }
+        }
+        setErrorMessage(detailMsg);
+        setFormStatus('idle');
+      }
     } catch (error) {
       console.error('Transmission error:', error);
-      // Fallback: confirm receipt locally so user is not stuck
-      const randomCode = Math.floor(1000 + Math.random() * 9000);
-      setSuccessToken(`AVN-COMM-${randomCode}`);
-      setFormStatus('success');
+      setErrorMessage('Could not reach backend service. Check if backend is running on port 8001.');
+      setFormStatus('idle');
     }
   };
+
 
   const handleReset = () => {
     setFormData({
@@ -223,6 +264,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onNavigate: _onN
                   </div>
                 </div>
               </div>
+
+              {/* Error Message HUD */}
+              {errorMessage && (
+                <div
+                  className="marvel-form-error"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    background: 'rgba(239, 68, 68, 0.12)',
+                    border: '1px solid rgba(239, 68, 68, 0.45)',
+                    borderRadius: '8px',
+                    padding: '0.75rem 1rem',
+                    color: '#fca5a5',
+                    fontSize: '0.85rem',
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               {/* Submit Button */}
               <button

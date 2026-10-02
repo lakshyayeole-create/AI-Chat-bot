@@ -1,0 +1,92 @@
+EVENT ID: ANANTYA-008
+
+EVENT NAME: INNOVATE-X
+
+EVENT EDITION: ANANTYA '26
+
+EVENT TYPE: Capstone Project Presentation and Architecture Showcase
+
+INSTITUTION: Pimpri Chinchwad College of Engineering (PCCOE), PCET
+
+DEPARTMENT: Department of Computer Engineering
+
+ORGANIZING STUDENT BODIES:
+* Computer Engineering Student Association (CESA)
+* ACM Student Chapter (PCCOE)
+* ACM-W PCCOE Student Chapter
+* OWASP PCCOE Student Chapter
+* GDGC (Google Developer Groups on Campus) PCCOE
+* IRIS Innovation Society
+
+==================================================
+EVENT OVERVIEW
+==============
+
+INNOVATE-X is a premier capstone project presentation and system architecture competition under Anantya '26, organized by the Department of Computer Engineering at PCCOE in collaboration with all major student bodies: CESA, ACM, ACM-W, OWASP, GDGC, and IRIS.
+
+The event provides a platform for graduating B.Tech final-year students to present their final-year engineering projects, articulate their problem definitions, demonstrate comprehensive system architectures, justify technical choices, and defend their work before an expert evaluation panel.
+
+==================================================
+ELIGIBILITY AND TEAM COMPOSITION
+================================
+Target Participants: All B.Tech final-year students.
+Participation Requirement: Participation is COMPULSORY for all final-year B.Tech students.
+Team Size: Maximum of 4 members per team.
+Team Changes: Alteration of team members is strictly NOT allowed once registered.
+Presence Requirement: All group members must be physically present during the presentation and live evaluation.
+
+==================================================
+PROJECT REQUIREMENTS AND DOMAINS
+================================
+Domain Scope: Projects can be based on any domain—either strictly Computer Engineering or interdisciplinary.
+Deliverables: Participants must present their final project statement along with the detailed system architecture.
+Expected Technical Preparation:
+* Project Statement and Problem Definition
+* System Architecture and Architectural Design
+* Technical Workflow and Methodology
+* Technology Stack and justification of Technical Choices made
+* Answers to technical and domain-specific questions posed by the expert panel of judges
+
+==================================================
+COMPETITION STRUCTURE AND TIMELINE
+==================================
+
+ROUND 1: PPT SUBMISSION AND SHORTLISTING
+* Date: 6 October 2026
+* Mode: Online
+* Deliverable: Presentation (PPT) containing the Final Project Statement and System Architecture.
+* Evaluation: Submitted PPTs evaluated by an expert judging panel based on predefined academic and technical criteria. Judges provide constructive feedback and suggest improvements.
+* Shortlisting: Top 20 teams will be shortlisted to advance to Round 2.
+
+ROUND 2: FINAL REVIEW AND PRESENTATION
+* Date: 10 October 2026
+* Mode: Offline (On-campus at PCCOE)
+* Duration: 15 minutes per team (allocated for presentation, live demonstration, and Q&A).
+* Process: The 20 shortlisted teams present their refined project statement and system architecture in person before the final evaluation panel, demonstrate their working solution, and answer judge inquiries.
+* Winner Selection: The top 3 projects are selected as the final winners.
+
+==================================================
+PRIZES AND AWARDS
+=================
+* 1st Prize: ₹6,000 (INR 6,000)
+* 2nd Prize: ₹4,000 (INR 4,000)
+* 3rd Prize: ₹2,000 (INR 2,000)
+* Total Prize Pool: ₹12,000 (INR 12,000)
+
+==================================================
+RULES AND CODE OF CONDUCT
+=========================
+* Time Limit: Exactly 15 minutes will be allotted to each group for presentation and demonstration.
+* Equipment: All participants must bring their own laptop and ensure a stable internet connection.
+* Group ID and Reporting: Teams must check their allocated Group ID provided via the distributed Excel sheet and report directly to their respective designated presentation rooms.
+* Presentation Stations: Teams must stay at their allotted presentation stations/rooms throughout the event.
+* Punctuality: Strictly enforced; all participants must be present on time and adhere to all deadlines.
+* Judging Authority: The evaluations, ratings, and winner selections made by the judges are final, binding, and non-negotiable under any circumstances.
+
+==================================================
+ORGANIZING COMMITTEE AND CONTACTS
+=================================
+For queries, clarification, or event assistance, contact student coordinators:
+1. Divya Ughade: +91 7499020108
+2. Aditi Joshi: +91 9561125595
+3. Srushti Argade: +91 9730862089

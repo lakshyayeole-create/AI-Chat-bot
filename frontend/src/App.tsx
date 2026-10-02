@@ -13,11 +13,12 @@ import Footer from './components/Footer';
 import VisitorCounter from './components/VisitorCounter';
 import BackgroundAudio from './components/BackgroundAudio';
 import './components/CyberHeroCard.css';
+import { getModelUrl, getImageUrl } from './utils/assets';
 
 const ironManConfig: ModelConfig = {
-  modelPath: '/assets/iron_man_detailed_web.glb',
-  bgImagePath: '/assets/iron_man_hud_bg.webp',
-  mobileBgImagePath: '/assets/iron_man_hud_bg_mobile.webp',
+  modelPath: getModelUrl('/assets/iron_man_detailed_web.glb', '/assets/iron_man_detailed_web.glb'),
+  bgImagePath: getImageUrl('/assets/iron_man_hud_bg.webp', '/assets/iron_man_hud_bg.webp'),
+  mobileBgImagePath: getImageUrl('/assets/iron_man_hud_bg_mobile.webp', '/assets/iron_man_hud_bg_mobile.webp'),
   rotationX: 0,
   targetHeight: 1.5,
   assemblyAnimation: typeof window !== 'undefined' && window.innerWidth >= 768,
@@ -59,8 +60,8 @@ function getEyeGlowTexture(): THREE.CanvasTexture {
 }
 
 const starLordConfig: ModelConfig = {
-  modelPath: '/assets/starlord.glb',
-  bgImagePath: '/assets/star_lord_bg.webp',
+  modelPath: getModelUrl('/assets/starlord.glb', '/assets/starlord.glb'),
+  bgImagePath: getImageUrl('/assets/star_lord_bg.webp', '/assets/star_lord_bg.webp'),
   targetHeight: 1.32,
   offsetY: -0.08,
   lighting: {

@@ -6,38 +6,80 @@ interface VisitorCounterProps {
 }
 
 const STORAGE_KEY = 'anantya_site_visitor_count';
-const SESSION_KEY = 'anantya_session_counted';
+const VISITOR_ID_KEY = 'anantya_visitor_uuid';
+
+function getOrCreateVisitorId(): string {
+  try {
+    let vid = localStorage.getItem(VISITOR_ID_KEY);
+    if (!vid) {
+      vid = 'v_' + Math.random().toString(36).substring(2, 12) + '_' + Date.now().toString(36);
+      localStorage.setItem(VISITOR_ID_KEY, vid);
+    }
+    return vid;
+  } catch {
+    return 'v_temp_' + Math.random().toString(36).substring(2, 12);
+  }
+}
 
 export const VisitorCounter: React.FC<VisitorCounterProps> = ({ isVisible = true }) => {
   const [displayCount, setDisplayCount] = useState<number>(0);
 
-  // Initialize and increment count starting from 0
   useEffect(() => {
+    let isMounted = true;
+    const visitorId = getOrCreateVisitorId();
+    const backendUrl =
+      (typeof window !== 'undefined' && (window as any).__BACKEND_URL__) ||
+      'http://localhost:8001';
+
+    // Local cached count as instant placeholder
     try {
-      // Clear legacy mock counter if present
-      if (localStorage.getItem('anantya_2026_visitor_count')) {
-        localStorage.removeItem('anantya_2026_visitor_count');
-      }
-
       const stored = localStorage.getItem(STORAGE_KEY);
-      let currentCount = stored !== null ? parseInt(stored, 10) : 0;
-      if (isNaN(currentCount) || currentCount < 0) {
-        currentCount = 0;
+      if (stored) {
+        const val = parseInt(stored, 10);
+        if (!isNaN(val) && val > 0) setDisplayCount(val);
       }
+    } catch {}
 
-      // Check if this browser session has already been counted
-      const sessionLogged = sessionStorage.getItem(SESSION_KEY);
-      if (!sessionLogged) {
-        currentCount += 1;
-        sessionStorage.setItem(SESSION_KEY, 'true');
-        localStorage.setItem(STORAGE_KEY, currentCount.toString());
+    // Send tracking ping to MongoDB backend
+    async function trackVisit() {
+      try {
+        const res = await fetch(`${backendUrl}/api/visitors/track`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            visitor_id: visitorId,
+            user_agent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+            screen_resolution:
+              typeof window !== 'undefined'
+                ? `${window.screen.width}x${window.screen.height}`
+                : '',
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && typeof data.total_visitors === 'number') {
+            setDisplayCount(data.total_visitors);
+            try {
+              localStorage.setItem(STORAGE_KEY, data.total_visitors.toString());
+            } catch {}
+          }
+        }
+      } catch (err) {
+        console.warn('Visitor telemetry ping fallback:', err);
       }
-
-      setDisplayCount(currentCount);
-    } catch {
-      setDisplayCount(1);
     }
+
+    trackVisit();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
 
   return (
     <aside

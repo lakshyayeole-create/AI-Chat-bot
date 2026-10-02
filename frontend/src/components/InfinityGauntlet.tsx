@@ -4,8 +4,12 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { clone as skeletonClone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { GAUNTLET_CONFIG } from '../config/gauntletConfig';
+import { getModelUrl } from '../utils/assets';
+
+const GAUNTLET_MODEL = getModelUrl('/assets/gauntlet.glb', '/assets/gauntlet.glb');
 
 interface InfinityGauntletProps {
+
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: number;
@@ -56,7 +60,7 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
   const coreLightRef = useRef<THREE.PointLight>(null);
   const gauntletMaterialRef = useRef<THREE.MeshStandardMaterial | null>(null);
 
-  const { scene } = useGLTF('/assets/gauntlet.glb');
+  const { scene } = useGLTF(GAUNTLET_MODEL);
 
   // Clone using SkeletonUtils so all 20 armature bones remain bound to the SkinnedMesh!
   const { gauntletModel, fingerBones } = useMemo(() => {
@@ -240,5 +244,5 @@ export const InfinityGauntlet: React.FC<InfinityGauntletProps> = ({
   );
 };
 
-useGLTF.preload('/assets/gauntlet.glb');
+useGLTF.preload(GAUNTLET_MODEL);
 export default InfinityGauntlet;

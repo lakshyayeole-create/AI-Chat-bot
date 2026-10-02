@@ -36,6 +36,8 @@ class ChatJob:
     query_vector: np.ndarray
     intent: QueryIntent
     event_ids: list[str]
+    session_id: str | None = None
+    user_id: str | None = None
     status: str = "queued"  # "queued", "processing", "completed", "failed"
     created_at: float = field(default_factory=time.time)
     result: dict | None = None
@@ -68,6 +70,8 @@ class QueueManager:
         query_vector: np.ndarray,
         intent: QueryIntent,
         event_ids: list[str],
+        session_id: str | None = None,
+        user_id: str | None = None,
     ) -> ChatJob:
         """Enqueue a chat job or attach to an existing in-flight matching job.
 
@@ -81,6 +85,8 @@ class QueueManager:
             query_vector: Precomputed query embedding vector.
             intent: Query intent.
             event_ids: Detected canonical event IDs.
+            session_id: Optional client session token.
+            user_id: Optional user identifier.
 
         Returns:
             The queued ChatJob (either newly created or existing in-flight).
@@ -114,6 +120,8 @@ class QueueManager:
                 query_vector=query_vector,
                 intent=intent,
                 event_ids=event_ids,
+                session_id=session_id,
+                user_id=user_id,
                 status="queued",
             )
             self._jobs[job_id] = job
@@ -143,10 +151,29 @@ class QueueManager:
                 job.status = "completed"
                 logger.info("Worker [%d] completed job %s successfully", worker_id, job.job_id)
 
+                # Persist completed chat interaction to MongoDB
+                try:
+                    from app.db.chat_logger import log_chat_interaction
+                    asyncio.create_task(
+                        log_chat_interaction(
+                            question=job.message,
+                            answer=result.get("answer", "") if result else "",
+                            session_id=job.session_id,
+                            intent=job.intent.value if hasattr(job.intent, "value") else str(job.intent),
+                            event_ids=job.event_ids,
+                            sources=result.get("sources", []) if result else [],
+                            cached=False,
+                            user_id=job.user_id,
+                        )
+                    )
+                except Exception as log_err:
+                    logger.warning("Could not persist worker chat interaction to MongoDB: %s", log_err)
+
             except Exception as e:
                 logger.error("Worker [%d] failed processing job %s: %s", worker_id, job.job_id, e, exc_info=True)
                 job.status = "failed"
                 job.error = "Our event assistant encountered an issue processing your question. Please try again."
+
 
             finally:
                 job.completed_event.set()

@@ -62,9 +62,9 @@ class ElevenLabsClient:
             "text": text,
             "model_id": active_model,
             "voice_settings": voice_settings or {
-                "stability": 0.50,
-                "similarity_boost": 0.75,
-                "style": 0.0,
+                "stability": 0.65,
+                "similarity_boost": 0.80,
+                "style": 0.05,
                 "use_speaker_boost": True,
             },
         }

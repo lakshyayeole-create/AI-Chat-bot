@@ -65,6 +65,10 @@ EVENT_KEYWORD_MAP = {
     "decentrahack 2.0": "ANANTYA-001",
     "decentra": "ANANTYA-001",
     "masterchef": "ANANTYA-005",
+    "innovate-x": "ANANTYA-008",
+    "innovate x": "ANANTYA-008",
+    "innovatex": "ANANTYA-008",
+    "innovate": "ANANTYA-008",
 }
 
 # Patterns that signal comparison / multi-event intent
@@ -103,7 +107,7 @@ _INTERNAL_METADATA_SECTIONS = {
 }
 
 
-# Canonical 7 event IDs
+# Canonical 8 event IDs
 ALL_EVENT_IDS = [
     "ANANTYA-001",
     "ANANTYA-002",
@@ -112,6 +116,7 @@ ALL_EVENT_IDS = [
     "ANANTYA-005",
     "ANANTYA-006",
     "ANANTYA-007",
+    "ANANTYA-008",
 ]
 
 # Attribute keywords that require event-level details rather than just the general symposium overview

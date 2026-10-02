@@ -70,6 +70,26 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
                 )
                 for s in cached.get("sources", [])
             ]
+
+            # Persist cache-hit interaction to MongoDB
+            try:
+                import asyncio
+                from app.db.chat_logger import log_chat_interaction
+                asyncio.create_task(
+                    log_chat_interaction(
+                        question=request.message,
+                        answer=cached["answer"],
+                        session_id=request.session_id,
+                        intent=intent.value if hasattr(intent, "value") else str(intent),
+                        event_ids=event_ids,
+                        sources=cached.get("sources", []),
+                        cached=True,
+                        user_id=request.user_id,
+                    )
+                )
+            except Exception as log_err:
+                logger.warning("Could not persist cache-hit chat to MongoDB: %s", log_err)
+
             return ChatResponse(
                 status="completed",
                 answer=cached["answer"],
@@ -89,7 +109,10 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
             query_vector=query_vector,
             intent=intent,
             event_ids=event_ids,
+            session_id=request.session_id,
+            user_id=request.user_id,
         )
+
 
         # If synchronous wait is requested (e.g. legacy/testing)
         if wait:

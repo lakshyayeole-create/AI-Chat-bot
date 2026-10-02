@@ -1,0 +1,133 @@
+"""Pregenerates and caches complete website narration audio from start to finish."""
+import asyncio
+import os
+import shutil
+import sys
+from pathlib import Path
+
+# Add backend to python path
+backend_dir = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(backend_dir))
+
+from app.core.config import get_settings
+from app.core.logging_config import setup_logging, get_logger
+from app.tts.elevenlabs_client import get_elevenlabs_client
+from app.tts.cache import get_audio_cache, compute_cache_key, normalize_text_for_tts
+
+logger = get_logger(__name__)
+
+SECTIONS = [
+    (
+        "Introduction & Marvel Arenas",
+        "Welcome to Anantya 2026, the Annual National Technical Symposium organized by the "
+        "Department of Computer Engineering at Pimpri Chinchwad College of Engineering, Pune. "
+        "Step into the Multiverse of Technology, Innovation, and Interdisciplinary Excellence "
+        "from October 6 to October 10, 2026. Explore our Marvel-inspired arenas: Iron Man Arena "
+        "for cutting-edge engineering and quantum systems, Star-Lord Arena for Web3 and decentralized networks, "
+        "Loki Sacred Timeline for algorithmic problem solving, and Infinity Gauntlet for AI, Robotics, and IoT convergence."
+    ),
+    (
+        "Events 1 to 4",
+        "Here are the eight official events of Anantya 2026. "
+        "Event 1: DecentraHack 2.0. A 3-round Web3, Blockchain, Agentic AI, and Open Source Hackathon presented by "
+        "the LFDT Student Chapter. Teams of 2 to 4 members compete for a 15,000 rupee prize pool. "
+        "Event 2: She Solves 3.0. The premier women-oriented hackathon organized by ACM-W PCCOE, empowering female "
+        "developers to build impactful solutions with a 16,000 rupee prize pool. "
+        "Event 3: BYTE ME CTF '26. A national-level Capture The Flag cybersecurity competition organized by OWASP PCCOE, "
+        "featuring Web Security, OSINT, Cryptography, and Forensics with 1.5 Lakhs in prizes. "
+        "Event 4: IoThrone 2026. Hardware and prototype innovation hackathon organized by IRIS PCCOE, integrating IoT, "
+        "Edge AI, Computer Vision, and Robotics with a 15,000 rupee prize pool."
+    ),
+    (
+        "Events 5 to 8",
+        "Event 5: MasterChef UI. A 3-round UI/UX and frontend design competition organized by GDGC PCCOE, "
+        "testing designers on rapid prototyping and user experience with a 12,000 rupee prize pool. "
+        "Event 6: Make a Doodle 2026. A creative digital art and illustration challenge organized by the Computer "
+        "Department Art Circle, celebrating artistic creativity with a 13,000 rupee prize pool. "
+        "Event 7: Codigo 2026. An ICPC-style 3-round competitive programming contest organized by CESA-SDW and ACM PCCOE, "
+        "testing algorithmic speed and DSA with an 18,000 rupee prize pool. "
+        "Event 8: INNOVATE-X. The flagship B.Tech final-year capstone project presentation and system architecture showcase, "
+        "organized by the Department of Computer Engineering across all student chapters. Round 1 online PPT evaluation "
+        "on October 6, and Round 2 offline final presentation on October 10 with a 12,000 rupee prize pool. "
+        "Participation is compulsory for all final-year students."
+    ),
+    (
+        "Central Command & Closing",
+        "Anantya Central Command is located at PCCOE Sector 26, Pradhikaran, Nigdi, Pune. Connect with student "
+        "coordinators Divya Ughade, Aditi Joshi, and Srushti Argade, or transmit an encrypted message directly "
+        "through our contact terminal. Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, and IRIS at PCCOE. "
+        "We look forward to welcoming you to the Multiverse of Technology!"
+    ),
+]
+
+
+async def main():
+    settings = get_settings()
+    setup_logging("info")
+    print("=" * 65)
+    print("Anantya '26 — Complete Website TTS Audio Generator & Cache Primer")
+    print("=" * 65)
+
+    cache = get_audio_cache()
+    client = get_elevenlabs_client()
+    voice_id = settings.elevenlabs_voice_id
+    model_id = settings.elevenlabs_model_id
+
+    # 1. Delete all old cache files
+    print("\n[1/4] Clearing existing cache...")
+    deleted_count = cache.clear()
+    print(f"  Deleted {deleted_count} cached audio files from {cache.cache_dir}")
+
+    cache_json = backend_dir / "data" / "cache.json"
+    if cache_json.is_file():
+        cache_json.write_text("{}", encoding="utf-8")
+        print("  Reset semantic cache (data/cache.json)")
+
+    # 2. Generate and cache speech for each section
+    print(f"\n[2/4] Generating speech for {len(SECTIONS)} sections via ElevenLabs...")
+    print(f"  Voice ID: {voice_id}")
+    print(f"  Model ID: {model_id}")
+
+    combined_mp3_bytes = bytearray()
+
+    for i, (name, text) in enumerate(SECTIONS, start=1):
+        print(f"\n  Generating [{i}/{len(SECTIONS)}]: {name} ({len(text)} chars)...")
+        cache_key = compute_cache_key(
+            text=text,
+            voice_id=voice_id,
+            model_id=model_id,
+            output_format="mp3",
+        )
+        audio_bytes = await client.generate_speech(
+            text=normalize_text_for_tts(text),
+            voice_id=voice_id,
+            model_id=model_id,
+        )
+        # Store individual chunk in cache
+        cache.put(cache_key, audio_bytes)
+        print(f"    Saved section chunk: {len(audio_bytes):,} bytes (key: {cache_key[:12]}...)")
+        combined_mp3_bytes.extend(audio_bytes)
+        # Small courteous delay between API requests
+        await asyncio.sleep(0.5)
+
+    # 3. Save combined full-website narration audio
+    print("\n[3/4] Storing combined complete website narration in cache folder...")
+    full_audio_path = cache.cache_dir / "full_website_read.mp3"
+    full_audio_path.write_bytes(combined_mp3_bytes)
+    print(f"  Successfully created: {full_audio_path.name}")
+    print(f"  Total audio size: {len(combined_mp3_bytes):,} bytes (~{len(combined_mp3_bytes) / 1024 / 1024:.2f} MB)")
+
+    # 4. Verification check
+    print("\n[4/4] Verifying cache contents...")
+    files = list(cache.cache_dir.glob("*.mp3"))
+    print(f"  Files in {cache.cache_dir}:")
+    for f in sorted(files, key=lambda x: x.name):
+        print(f"    - {f.name} ({f.stat().st_size:,} bytes)")
+
+    print("\n" + "=" * 65)
+    print("SUCCESS: Full website audio generated and cached permanently!")
+    print("=" * 65)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

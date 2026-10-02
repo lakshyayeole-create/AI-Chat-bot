@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from '../../lib/gsap';
 import { ANANTYA_LOGO_PATHS } from './anantyaLogoPaths';
+import { getImageUrl } from '../../utils/assets';
 
-const anantyaLogo = '/assets/ANANTYA.webp';
+const anantyaLogo = getImageUrl('/assets/ANANTYA.webp', '/assets/ANANTYA.webp');
+
 
 interface AvengersIntroProps {
   onComplete: () => void;

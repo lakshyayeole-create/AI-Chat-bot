@@ -117,6 +117,31 @@ async def generate_tts(request: TTSRequestBody):
         )
 
 
+@router.get("/page", response_class=Response)
+async def get_full_page_audio():
+    """Retrieve the pre-generated, cached complete website narration audio from disk cache.
+    
+    Always serves the complete website audio from start to end directly from backend/data/audio_cache/.
+    """
+    settings = get_settings()
+    cache = get_audio_cache()
+    full_path = cache.cache_dir / "full_website_read.mp3"
+
+    if full_path.is_file():
+        audio_bytes = full_path.read_bytes()
+        logger.info("Serving complete website narration from audio cache (%d bytes)", len(audio_bytes))
+        return Response(
+            content=audio_bytes,
+            media_type="audio/mpeg",
+            headers={
+                "X-Audio-Cache": "HIT",
+                "Cache-Control": f"public, max-age={settings.tts_cache_ttl_seconds}",
+            },
+        )
+
+    raise HTTPException(status_code=404, detail="Full website narration audio is not yet primed.")
+
+
 @router.get("/status")
 async def tts_status():
     """Operational status of the TTS service (does not expose keys or secrets)."""

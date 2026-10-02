@@ -16,9 +16,10 @@
     ttsUrl: "http://localhost:8001/api/tts",
     title: "ANANTYA '26 JARVIS",
     welcomeMessage:
-      "👋 **Hello and welcome!** I am **Anantya's Jarvis**, your official AI assistant for **Anantya '26**, the annual technical and creative symposium organized by the Department of Computer Engineering at PCCOE.\n\nI can help you with complete details on all 7 events:\n- **BYTE ME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **SHE SOLVES 3.0** (Women-Oriented Hackathon)\n- **DECENTRAHACK 2.0** (Web3 & AI Hackathon)\n- **MasterChef UI 2026** (UI/UX Design)\n- **IoThrone 2026** (IoT & Robotics Hackathon)\n- **MAKE A DOODLE! 2026** (Digital Art Competition)\n\nAsk me about registration links, rules, eligibility, team sizes, fees, dates, or prize pools!",
+      "👋 **Hello and welcome!** I am **Anantya's Jarvis**, your official AI assistant for **Anantya '26**, the annual technical and creative symposium organized by the Department of Computer Engineering at PCCOE.\n\nI can help you with complete details on all 8 events:\n- **BYTE ME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **SHE SOLVES 3.0** (Women-Oriented Hackathon)\n- **DECENTRAHACK 2.0** (Web3 & AI Hackathon)\n- **MasterChef UI 2026** (UI/UX Design)\n- **IoThrone 2026** (IoT & Robotics Hackathon)\n- **MAKE A DOODLE! 2026** (Digital Art Competition)\n- **INNOVATE-X** (Final-Year Capstone Project & Architecture Showcase)\n\nAsk me about registration links, rules, eligibility, team sizes, fees, dates, or prize pools!",
     quickChips: [
       "What events are in Anantya '26?",
+      "Tell me about INNOVATE-X",
       "Tell me about BYTEME CTF",
       "Tell me about Codigo 2026",
       "Tell me about She Solves 3.0",
@@ -44,93 +45,194 @@
   // DOM Elements cache
   let dom = {};
 
-  /**
-   * Cleans markdown syntax out of text for spoken speech.
-   */
-  function cleanMarkdownForSpeech(text) {
-    if (!text) return "";
-    return text
-      .replace(/[*#_`~>]/g, "")
-      .replace(/\[(.*?)\]\(.*?\)/g, "$1")
-      .replace(/https?:\/\/\S+/g, "")
-      .replace(/^[•\-+]\s+/gm, "")
-      .replace(/\n+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+  // Browser Speech Voices Preload Cache
+  let cachedBrowserVoices = [];
+  function populateVoices() {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      cachedBrowserVoices = window.speechSynthesis.getVoices() || [];
+    }
+  }
+  if (typeof window !== "undefined" && "speechSynthesis" in window) {
+    populateVoices();
+    window.speechSynthesis.onvoiceschanged = populateVoices;
+  }
+
+  function getBestBrowserVoice() {
+    const voices =
+      cachedBrowserVoices.length > 0
+        ? cachedBrowserVoices
+        : typeof window !== "undefined" && "speechSynthesis" in window
+        ? window.speechSynthesis.getVoices()
+        : [];
+    if (!voices || voices.length === 0) return null;
+    return (
+      voices.find((v) =>
+        /Google UK English Male|Google US English|Natural|Daniel|Oliver|George|Guy|David|Arthur/i.test(
+          v.name
+        )
+      ) ||
+      voices.find((v) => v.lang === "en-GB" || v.lang === "en-US") ||
+      voices.find((v) => v.lang.startsWith("en")) ||
+      voices[0]
+    );
   }
 
   /**
-   * Extracts readable visible content from the main host webpage.
-   * Excludes navigation, forms, buttons, hidden sections, and chatbot HUD.
+   * Cleans markdown syntax, emojis, URLs, and symbols for natural, fluent speech.
+   */
+  function cleanMarkdownForSpeech(text) {
+    if (!text) return "";
+
+    let s = text;
+
+    // 1. Remove all emojis & graphical symbols
+    s = s.replace(
+      /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}\u{2B50}\u{2B55}\u{2934}\u{2935}\u{25AA}\u{25AB}\u{25FE}\u{25FD}\u{25FC}\u{25FB}\u{25B6}\u{25C0}\u{1F004}\u{1F0CF}\u{200D}\u{FE0F}]/gu,
+      ""
+    );
+    s = s.replace(/[◈◆◇○●■□►▻•★☆※]/g, "");
+
+    // 2. Remove markdown images and URLs cleanly, keep link anchor text
+    s = s.replace(/!\[.*?\]\(.*?\)/g, "");
+    s = s.replace(/\[(.*?)\]\(.*?\)/g, "$1");
+    s = s.replace(/https?:\/\/\S+/g, "");
+
+    // 3. Currency, quantities, and symbols expansion for natural voice cadence
+    s = s.replace(/₹\s*([0-9.]+)\s*(?:lakh|lakhs|LAKH|Lakh)\b/gi, "$1 Lakh Rupees");
+    s = s.replace(/₹\s*([0-9.]+)\s*(?:k|K)\b/g, "$1 thousand Rupees");
+    s = s.replace(/₹\s*([0-9,.]+)/g, "$1 Rupees");
+    s = s.replace(/([0-9]+)\s*\/\s*(team|person|participant|head|member)/gi, "$1 per $2");
+
+    s = s.replace(/\s*\|\s*/g, ", ");
+    s = s.replace(/&amp;/g, " and ");
+    s = s.replace(/&/g, " and ");
+    s = s.replace(/\+/g, " plus");
+    s = s.replace(/~/g, "");
+    s = s.replace(/[_*`#]/g, "");
+
+    // 4. Line-by-line sentence restructuring for natural breathing pauses
+    const rawLines = s.split(/\r?\n/);
+    const cleaned = [];
+
+    for (let line of rawLines) {
+      line = line.trim();
+      if (!line) continue;
+
+      // Strip leading list bullet marks: -, *, +, or 1., 2.
+      line = line.replace(/^[-*+]\s+/, "").replace(/^\d+[\.\)]\s+/, "").trim();
+      if (!line) continue;
+
+      // Skip standalone prompt markers
+      if (/^(link|registration|website|register):\s*$/i.test(line)) continue;
+
+      // Ensure every independent bullet or line ends with a pause punctuation
+      if (!/[.?!:;,]$/.test(line)) {
+        line += ".";
+      }
+      cleaned.push(line);
+    }
+
+    return cleaned.join(" ").replace(/\s+/g, " ").trim();
+  }
+
+  /**
+   * Extracts complete readable content covering the entire Anantya webpage from start to finish.
+   * Walks through:
+   * 1. Hero Introduction & Symposium theme
+   * 2. Marvel Multiverse Arenas & 3D character showcases
+   * 3. All 8 Events in the Multiverse Timeline (with domains, organizers, and prizes)
+   * 4. Central Command, Coordination, and Contact details
+   * 5. Closing & Host credits
+   * Splits into natural, complete-sentence speech chunks (~250-320 chars) ideal for ElevenLabs disk caching.
    */
   function extractReadableContent() {
-    const root =
-      document.querySelector("main") ||
-      document.querySelector('[role="main"]') ||
-      document.querySelector("article") ||
-      document.getElementById("root") ||
-      document.body;
+    const segments = [];
 
-    if (!root) return [];
-
-    const ignoredTags = new Set([
-      "SCRIPT", "STYLE", "NOSCRIPT", "SVG", "NAV", "FOOTER",
-      "BUTTON", "INPUT", "TEXTAREA", "SELECT", "HEADER", "FORM", "IFRAME"
-    ]);
-
-    const paragraphs = [];
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, {
-      acceptNode(node) {
-        if (ignoredTags.has(node.tagName)) return NodeFilter.FILTER_REJECT;
-        if (node.id === "anantya-hud-root" || node.closest("#anantya-hud-root")) {
-          return NodeFilter.FILTER_REJECT;
-        }
-        if (node.getAttribute("aria-hidden") === "true") return NodeFilter.FILTER_REJECT;
-
-        // Skip visually hidden elements
-        const style = window.getComputedStyle(node);
-        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
-          return NodeFilter.FILTER_REJECT;
-        }
-
-        // Accept heading and paragraph-like elements
-        if (/^(H1|H2|H3|H4|H5|H6|P|LI|BLOCKQUOTE)$/.test(node.tagName)) {
-          return NodeFilter.FILTER_ACCEPT;
-        }
-        return NodeFilter.FILTER_SKIP;
-      },
-    });
-
-    let current;
-    while ((current = walker.nextNode())) {
-      const text = cleanMarkdownForSpeech(current.innerText || current.textContent);
-      if (text.length > 20) {
-        paragraphs.push(text);
+    // Optional contextual note if an event card or modal is currently open on screen
+    const activeCard = document.querySelector(".event-card, .event-card-content, .all-events-modal");
+    if (activeCard && activeCard.offsetHeight > 0) {
+      const titleEl = activeCard.querySelector(".event-name, h2, h3");
+      const categoryEl = activeCard.querySelector(".event-category");
+      const orgEl = activeCard.querySelector(".organizer-badge, .organizer");
+      const descEl = activeCard.querySelector(".event-card-desc, p");
+      const title = titleEl ? titleEl.textContent.trim() : "";
+      if (title) {
+        let cardIntro = `Currently highlighting ${title}. `;
+        if (categoryEl) cardIntro += `Category: ${categoryEl.textContent.trim()}. `;
+        if (orgEl) cardIntro += `Organized by ${orgEl.textContent.trim()}. `;
+        if (descEl) cardIntro += `${descEl.textContent.trim()} `;
+        segments.push(cardIntro);
       }
     }
 
-    if (paragraphs.length === 0) {
-      // Fallback: try capturing text from any visible container
-      const genericText = cleanMarkdownForSpeech(root.innerText);
-      if (genericText.length > 30) {
-        paragraphs.push(genericText.slice(0, 1000));
-      }
-    }
+    // 1. Page Beginning: Welcome & Symposium Overview
+    segments.push(
+      "Welcome to Anantya 2026, the Annual National Technical Symposium organized by the Department of Computer Engineering at Pimpri Chinchwad College of Engineering, Pune."
+    );
+    segments.push(
+      "Step into the Multiverse of Technology, Innovation, and Interdisciplinary Excellence from October 6 to October 10, 2026."
+    );
 
-    // Chunk paragraphs into <= 250-word segments
+    // 2. Interactive Arenas & Character Showcases
+    segments.push(
+      "Explore our Marvel-inspired arenas: Iron Man Arena for cutting-edge engineering and quantum systems, Star-Lord Arena for Web3 and decentralized networks, Loki Sacred Timeline for algorithmic problem solving, and Infinity Gauntlet for AI, Robotics, and IoT convergence."
+    );
+
+    // 3. Multiverse Timeline — All 8 Official Events
+    segments.push(
+      "Here are the eight official events of Anantya 2026."
+    );
+    segments.push(
+      "Event 1: DecentraHack 2.0. A 3-round Web3, Blockchain, Agentic AI, and Open Source Hackathon presented by the LFDT Student Chapter. Teams of 2 to 4 members compete for a 15,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 2: She Solves 3.0. The premier women-oriented hackathon organized by ACM-W PCCOE, empowering female developers to build impactful solutions with a 16,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 3: BYTE ME CTF '26. A national-level Capture The Flag cybersecurity competition organized by OWASP PCCOE, featuring Web Security, OSINT, Cryptography, and Forensics with 1.5 Lakhs in prizes."
+    );
+    segments.push(
+      "Event 4: IoThrone 2026. Hardware and prototype innovation hackathon organized by IRIS PCCOE, integrating IoT, Edge AI, Computer Vision, and Robotics with a 15,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 5: MasterChef UI. A 3-round UI/UX and frontend design competition organized by GDGC PCCOE, testing designers on rapid prototyping and user experience with a 12,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 6: Make a Doodle 2026. A creative digital art and illustration challenge organized by the Computer Department Art Circle, celebrating artistic creativity with a 13,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 7: Codigo 2026. An ICPC-style 3-round competitive programming contest organized by CESA-SDW and ACM PCCOE, testing algorithmic speed and DSA with an 18,000 rupee prize pool."
+    );
+    segments.push(
+      "Event 8: INNOVATE-X. The flagship B.Tech final-year capstone project presentation and system architecture showcase, organized by the Department of Computer Engineering across all student chapters. Round 1 online PPT evaluation on October 6, and Round 2 offline final presentation on October 10 with a 12,000 rupee prize pool. Participation is compulsory for all final-year students."
+    );
+
+    // 4. Central Command, Coordination, and Contact
+    segments.push(
+      "Anantya Central Command is located at PCCOE Sector 26, Pradhikaran, Nigdi, Pune. Connect with student coordinators Divya Ughade, Aditi Joshi, and Srushti Argade, or transmit an encrypted message directly through our contact terminal."
+    );
+
+    // 5. Page End: Closing
+    segments.push(
+      "Anantya 2026 is brought to you by CESA, ACM, ACM-W, OWASP, GDGC, and IRIS at PCCOE. We look forward to welcoming you to the Multiverse of Technology!"
+    );
+
+    // Natural speech chunking: split into chunks bounded by complete sentences (~250-320 chars)
     const chunks = [];
     let currentChunk = "";
 
-    for (const p of paragraphs) {
-      const combined = currentChunk ? `${currentChunk} ${p}` : p;
-      if (combined.split(/\s+/).length > 200) {
-        if (currentChunk) chunks.push(currentChunk);
-        currentChunk = p;
+    for (const seg of segments) {
+      const cleanSeg = cleanMarkdownForSpeech(seg);
+      if (!cleanSeg) continue;
+      const withPunct = /[.?!:;]$/.test(cleanSeg) ? cleanSeg : `${cleanSeg}.`;
+      if ((currentChunk + " " + withPunct).length > 320) {
+        if (currentChunk) chunks.push(currentChunk.trim());
+        currentChunk = withPunct;
       } else {
-        currentChunk = combined;
+        currentChunk = currentChunk ? `${currentChunk} ${withPunct}` : withPunct;
       }
     }
-    if (currentChunk) chunks.push(currentChunk);
+    if (currentChunk) chunks.push(currentChunk.trim());
 
     return chunks;
   }
@@ -144,8 +246,9 @@
   const ttsManager = {
     currentAudio: null,
     currentBlobUrl: null,
-    currentUtterance: null,
+    currentUtterances: [],
     isSpeakingWithBrowser: false,
+    keepAliveInterval: null,
 
     stop() {
       state.activeSpeechSessionId++;
@@ -167,7 +270,11 @@
       if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
-      this.currentUtterance = null;
+      if (this.keepAliveInterval) {
+        clearInterval(this.keepAliveInterval);
+        this.keepAliveInterval = null;
+      }
+      this.currentUtterances = [];
       this.isSpeakingWithBrowser = false;
 
       this.updateUI();
@@ -228,11 +335,17 @@
     },
 
     /**
-     * Speaks the final chatbot answer once (Mode A).
+     * Speaks the final chatbot answer once (Mode A: when voice is toggled on).
      */
     async speakAnswer(text) {
       if (!state.voiceEnabled) return;
+      return this.speakSingleAnswer(text);
+    },
 
+    /**
+     * Speaks a specific text unconditionally (used by voice mode and message listen button).
+     */
+    async speakSingleAnswer(text) {
       const cleanText = cleanMarkdownForSpeech(text);
       if (!cleanText) return;
 
@@ -245,9 +358,43 @@
     },
 
     /**
-     * Reads visible page content aloud sequentially (Mode B).
+     * Reads complete website audio from start to end directly from cached audio.
      */
     async readPage() {
+      this.stop();
+      const sessionId = ++state.activeSpeechSessionId;
+      state.ttsState = "loading";
+      this.updateUI("Anantya '26 • Loading Complete Website Narration...");
+
+      try {
+        // Stream complete pre-generated website audio directly from backend cache
+        const pageAudioUrl = `${CONFIG.ttsUrl}/page`;
+        const res = await fetch(pageAudioUrl, { method: "GET" });
+
+        if (state.activeSpeechSessionId !== sessionId) return;
+
+        if (res.ok) {
+          const blob = await res.blob();
+          if (blob.size > 0 && state.activeSpeechSessionId === sessionId) {
+            this.playBlob(
+              blob,
+              "Welcome to Anantya 2026, the Annual National Technical Symposium organized by the Department of Computer Engineering at PCCOE Pune...",
+              sessionId,
+              "Anantya '26 • Complete Website Narration",
+              () => {
+                if (state.activeSpeechSessionId === sessionId) {
+                  this.stop();
+                }
+              }
+            );
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn("[TTS] Could not fetch cached full website audio directly, falling back to chunked extraction:", err);
+      }
+
+      // Fallback: sequential chunk playback if needed
       const chunks = extractReadableContent();
       if (!chunks || chunks.length === 0) {
         addMessage(
@@ -257,15 +404,10 @@
         return;
       }
 
-      this.stop();
-      const sessionId = ++state.activeSpeechSessionId;
-      state.ttsState = "loading";
-      this.updateUI(`Reading Page • Chunk 1 of ${chunks.length}...`);
-
       for (let i = 0; i < chunks.length; i++) {
         if (state.activeSpeechSessionId !== sessionId) break;
 
-        const label = `Reading Page • ${i + 1}/${chunks.length}`;
+        const label = `Reading Page • ${i + 1} of ${chunks.length}`;
         this.updateUI(label);
 
         await new Promise((resolve) => {
@@ -274,7 +416,7 @@
 
         // Small pause between chunks
         if (state.activeSpeechSessionId === sessionId) {
-          await new Promise((r) => setTimeout(r, 400));
+          await new Promise((r) => setTimeout(r, 250));
         }
       }
 
@@ -298,7 +440,6 @@
           }),
         });
 
-        // If session became stale while waiting for response, abort
         if (state.activeSpeechSessionId !== sessionId) {
           if (onDone) onDone();
           return;
@@ -307,23 +448,23 @@
         if (res.ok) {
           const blob = await res.blob();
           if (blob.size > 0 && state.activeSpeechSessionId === sessionId) {
-            this.playBlob(blob, sessionId, label, onDone);
+            this.playBlob(blob, text, sessionId, label, onDone);
             return;
           }
         }
       } catch (err) {
-        // Network / service error -> proceed to browser fallback
+        // Backend / network error -> fall back to browser speech
       }
 
       // Fallback path: Browser Web Speech API
       if (state.activeSpeechSessionId === sessionId) {
-        this.speakWithBrowser(text, sessionId, `${label} (Browser Fallback)`, onDone);
+        this.speakWithBrowser(text, sessionId, `${label} (Browser Voice)`, onDone);
       } else if (onDone) {
         onDone();
       }
     },
 
-    playBlob(blob, sessionId, label, onDone) {
+    playBlob(blob, originalText, sessionId, label, onDone) {
       if (this.currentBlobUrl) {
         URL.revokeObjectURL(this.currentBlobUrl);
       }
@@ -352,16 +493,17 @@
 
       audio.onerror = () => {
         if (state.activeSpeechSessionId === sessionId) {
-          state.ttsState = "idle";
-          this.updateUI();
+          // Playback failed -> try browser speech with the actual text
+          this.speakWithBrowser(originalText, sessionId, label, onDone);
+        } else if (onDone) {
+          onDone();
         }
-        if (onDone) onDone();
       };
 
       audio.play().catch(() => {
-        // Autoplay policy or playback failure -> try browser speech
+        // Autoplay policy or playback failure -> try browser speech with the actual text
         if (state.activeSpeechSessionId === sessionId) {
-          this.speakWithBrowser(cleanMarkdownForSpeech(label), sessionId, label, onDone);
+          this.speakWithBrowser(originalText, sessionId, label, onDone);
         } else if (onDone) {
           onDone();
         }
@@ -377,48 +519,89 @@
       }
 
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      this.currentUtterance = utterance;
       this.isSpeakingWithBrowser = true;
 
-      // Select a clear English voice if available
-      const voices = window.speechSynthesis.getVoices();
-      if (voices && voices.length > 0) {
-        const preferred =
-          voices.find((v) => /Daniel|David|Oliver|Arthur|Google UK English Male/i.test(v.name)) ||
-          voices.find((v) => v.lang.startsWith("en"));
-        if (preferred) utterance.voice = preferred;
-      }
+      // Chrome Speech Synthesis Keepalive: ping every 10 seconds to avoid 14-second cutoff
+      if (this.keepAliveInterval) clearInterval(this.keepAliveInterval);
+      this.keepAliveInterval = setInterval(() => {
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          window.speechSynthesis.pause();
+          window.speechSynthesis.resume();
+        }
+      }, 10000);
 
-      utterance.rate = 1.0;
-      utterance.pitch = 0.95;
+      // Split into sentences for robust browser speech
+      const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+      const selectedVoice = getBestBrowserVoice();
+      let currentIndex = 0;
 
-      utterance.onstart = () => {
+      const speakNextSentence = () => {
         if (state.activeSpeechSessionId !== sessionId) {
           window.speechSynthesis.cancel();
+          if (this.keepAliveInterval) clearInterval(this.keepAliveInterval);
+          if (onDone) onDone();
           return;
         }
-        state.ttsState = "playing";
-        this.updateUI(label);
-      };
 
-      utterance.onend = () => {
-        if (state.activeSpeechSessionId === sessionId) {
+        if (currentIndex >= sentences.length) {
           state.ttsState = "idle";
           this.updateUI();
+          if (this.keepAliveInterval) clearInterval(this.keepAliveInterval);
+          if (onDone) onDone();
+          return;
         }
-        if (onDone) onDone();
+
+        const sentenceText = sentences[currentIndex++].trim();
+        if (!sentenceText) {
+          speakNextSentence();
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(sentenceText);
+        if (selectedVoice) utterance.voice = selectedVoice;
+        utterance.rate = 1.0;
+        utterance.pitch = 0.95;
+
+        // Keep reference in array to avoid Chrome garbage collection bug
+        this.currentUtterances.push(utterance);
+
+        utterance.onstart = () => {
+          if (state.activeSpeechSessionId !== sessionId) {
+            window.speechSynthesis.cancel();
+            return;
+          }
+          state.ttsState = "playing";
+          this.updateUI(label);
+        };
+
+        utterance.onend = () => {
+          const idx = this.currentUtterances.indexOf(utterance);
+          if (idx !== -1) this.currentUtterances.splice(idx, 1);
+          speakNextSentence();
+        };
+
+        utterance.onerror = (e) => {
+          const idx = this.currentUtterances.indexOf(utterance);
+          if (idx !== -1) this.currentUtterances.splice(idx, 1);
+
+          if (e.error === "canceled" || e.error === "interrupted") {
+            return;
+          }
+
+          if (currentIndex < sentences.length && state.activeSpeechSessionId === sessionId) {
+            speakNextSentence();
+          } else {
+            state.ttsState = "idle";
+            this.updateUI();
+            if (this.keepAliveInterval) clearInterval(this.keepAliveInterval);
+            if (onDone) onDone();
+          }
+        };
+
+        window.speechSynthesis.speak(utterance);
       };
 
-      utterance.onerror = () => {
-        if (state.activeSpeechSessionId === sessionId) {
-          state.ttsState = "idle";
-          this.updateUI();
-        }
-        if (onDone) onDone();
-      };
-
-      window.speechSynthesis.speak(utterance);
+      speakNextSentence();
     },
   };
 
@@ -681,7 +864,6 @@
     dom.window.addEventListener(
       "wheel",
       function (e) {
-        // Prevent event from bubbling to window / Lenis / ScrollTrigger
         e.stopPropagation();
 
         const stream = dom.stream;
@@ -696,7 +878,6 @@
             stream.scrollTop + stream.clientHeight >= stream.scrollHeight - 1 &&
             delta > 0;
 
-          // If at boundary, prevent default so the outer webpage doesn't scroll chain
           if (isAtTop || isAtBottom) {
             e.preventDefault();
           }
@@ -712,8 +893,7 @@
           }
         }
 
-        // 3. If scrolling over header, input, or any other part of HUD window,
-        // prevent page scrolling entirely
+        // 3. If scrolling over header, input, or any other part of HUD window
         e.preventDefault();
       },
       { passive: false }
@@ -742,7 +922,6 @@
         const readBtn = e.target.closest("[data-action='read-page']");
         const queryBtn = e.target.closest("[data-query]");
 
-        // If clicking on external triggers
         if (openBtn) {
           e.preventDefault();
           openHUD();
@@ -771,7 +950,7 @@
           closeHUD();
         }
       },
-      true // capture phase ensures reliability even if website elements prevent bubbling
+      true
     );
   }
 
@@ -785,8 +964,7 @@
     if (state.voiceEnabled) {
       dom.btnVoice.classList.add("is-active");
       dom.btnVoice.title = "Assistant Voice Active (Click to mute)";
-      // Speak brief confirmation
-      ttsManager.speakAnswer("Voice mode activated. I am ready.");
+      ttsManager.speakSingleAnswer("Voice mode activated. I am ready.");
     } else {
       dom.btnVoice.classList.remove("is-active");
       dom.btnVoice.title = "Toggle Assistant Voice (JARVIS)";
@@ -898,6 +1076,26 @@
     if (!bubble) return;
     bubble.innerHTML = formatMarkdown(text);
 
+    // Attach listen button to message header
+    const meta = msgEl.querySelector(".anantya-hud-msg-meta");
+    if (meta && !meta.querySelector(".anantya-hud-msg-listen-btn")) {
+      const listenBtn = document.createElement("button");
+      listenBtn.className = "anantya-hud-msg-listen-btn";
+      listenBtn.title = "Read this answer aloud (JARVIS)";
+      listenBtn.setAttribute("aria-label", "Listen to answer");
+      listenBtn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <span>Listen</span>
+      `;
+      listenBtn.addEventListener("click", () => {
+        ttsManager.speakSingleAnswer(text);
+      });
+      meta.appendChild(listenBtn);
+    }
+
     if (sources && sources.length > 0) {
       const sourcesWrap = document.createElement("div");
       sourcesWrap.className = "anantya-hud-sources";
@@ -957,10 +1155,6 @@
 
   /**
    * Sends user message to the backend pipeline.
-   * Handles:
-   * - Immediate WhatsApp-style typing indicator
-   * - Cache hit: immediate answer replaces typing indicator
-   * - Cache miss: queued -> poll while typing indicator animates -> answer replaces typing indicator
    */
   async function sendUserMessage(message) {
     // Immediately stop any active speech when a new user query begins
@@ -1033,22 +1227,18 @@
   function formatMarkdown(text) {
     if (!text) return "";
 
-    // Escape basic HTML
     let escaped = text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
 
-    // Bold: **text**
     escaped = escaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
-    // Inline code: `code`
     escaped = escaped.replace(
       /`([^`]+)`/g,
       '<code style="background:rgba(0,243,255,0.1);padding:1px 5px;border-radius:3px;color:#00f3ff;font-family:monospace;">$1</code>'
     );
 
-    // Bullet points: lines starting with "- " or "* "
     const lines = escaped.split("\n");
     let inList = false;
     let html = "";
@@ -1091,6 +1281,26 @@
     const meta = document.createElement("div");
     meta.className = "anantya-hud-msg-meta";
     meta.textContent = isUser ? `OPERATIVE • ${time}` : `ANANTYA CORE • ${time}`;
+
+    // Add listen button for assistant messages
+    if (!isUser) {
+      const listenBtn = document.createElement("button");
+      listenBtn.className = "anantya-hud-msg-listen-btn";
+      listenBtn.title = "Read this answer aloud (JARVIS)";
+      listenBtn.setAttribute("aria-label", "Listen to answer");
+      listenBtn.innerHTML = `
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <span>Listen</span>
+      `;
+      listenBtn.addEventListener("click", () => {
+        ttsManager.speakSingleAnswer(text);
+      });
+      meta.appendChild(listenBtn);
+    }
+
     msgEl.appendChild(meta);
 
     const bubble = document.createElement("div");
@@ -1105,7 +1315,7 @@
         const chip = document.createElement("span");
         chip.className = "anantya-hud-source-chip";
         chip.title = `Source: ${src.source_file || "Official Anantya Knowledge Base"}`;
-        chip.innerHTML = `◈ ${src.event_name || "Event Document"}`;
+        chip.innerHTML = `◈ ${src.event_id || "SRC"} • ${src.event_name || "Event Document"}`;
         sourcesWrap.appendChild(chip);
       });
       bubble.appendChild(sourcesWrap);
@@ -1158,7 +1368,7 @@
     toggle: toggleHUD,
     send: sendUserMessage,
     tts: {
-      speakAnswer: (t) => ttsManager.speakAnswer(t),
+      speakAnswer: (t) => ttsManager.speakSingleAnswer(t),
       readPage: () => ttsManager.readPage(),
       pause: () => ttsManager.pause(),
       resume: () => ttsManager.resume(),

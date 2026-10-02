@@ -10,6 +10,9 @@ import InfinityGauntlet from './InfinityGauntlet';
 import LokiHelmet from './LokiHelmet';
 import LokiLoomOverlay from './LokiLoomOverlay';
 import './AllEvents.css';
+import { getModelUrl } from '../utils/assets';
+
+const GAUNTLET_MODEL = getModelUrl('/assets/gauntlet.glb', '/assets/gauntlet.glb');
 // ============================================================================
 // 🌌 TIMELINE 3D CONTROLS & TUNING VARIABLES (EDIT FREELY HERE!)
 // ============================================================================
@@ -322,7 +325,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
   const sharedGeometry = useMemo(() => createProceduralStoneGeometry(), []);
 
   // Load gauntlet model to extract authentic 3D Infinity Stone geometries directly from gauntlet.glb!
-  const { scene: gauntletScene } = useGLTF('/assets/gauntlet.glb');
+  const { scene: gauntletScene } = useGLTF(GAUNTLET_MODEL);
 
   const gauntletStoneGeometries = useMemo(() => {
     const mapping: Record<string, string> = {
@@ -1356,6 +1359,6 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
 
 AnantyaTimeline.displayName = 'AnantyaTimeline';
 
-useGLTF.preload('/assets/gauntlet.glb');
+useGLTF.preload(GAUNTLET_MODEL);
 
 export default AnantyaTimeline;

@@ -67,6 +67,18 @@ class Settings(BaseSettings):
     tts_audio_cache_dir: str = "data/audio_cache"
     tts_max_text_length: int = 2000
 
+    # --- Cloudinary Static Website Assets ---
+    cloudinary_cloud_name: str = ""
+    cloudinary_api_key: str = ""
+    cloudinary_api_secret: str = ""
+    assets_manifest_path: str = "data/assets.json"
+
+    # --- MongoDB Storage ---
+    mongodb_username: str = ""
+    mongodb_password: str = ""
+    mongodb_uri: str = ""
+    mongodb_db_name: str = "anantya_db"
+
     model_config = {
         "env_file": str(Path(__file__).resolve().parent.parent.parent / ".env"),
         "env_file_encoding": "utf-8",
@@ -76,12 +88,21 @@ class Settings(BaseSettings):
     @property
     def knowledge_path(self) -> Path:
         """Resolve knowledge directory relative to the backend root."""
-        return Path(__file__).resolve().parent.parent.parent / self.knowledge_dir
+        backend_root = Path(__file__).resolve().parent.parent.parent
+        local_dir = backend_root / "event_info"
+        if local_dir.is_dir():
+            return local_dir
+        return backend_root / self.knowledge_dir
 
     @property
     def resolved_cache_path(self) -> Path:
         """Resolve cache file path relative to the backend root."""
         return Path(__file__).resolve().parent.parent.parent / self.cache_file_path
+
+    @property
+    def resolved_assets_manifest_path(self) -> Path:
+        """Resolve assets manifest file path relative to the backend root."""
+        return Path(__file__).resolve().parent.parent.parent / self.assets_manifest_path
 
 
 @lru_cache()
