@@ -8,11 +8,10 @@
 (function () {
   "use strict";
 
-  // Base API configuration (Render Cloud Backend with Localhost Fallback)
-  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  // Base API configuration (Render Cloud Backend)
   const BACKEND_BASE = (
-    (typeof window !== "undefined" && window.ANANTYA_API_URL) ||
-    (isLocal ? "http://localhost:8001" : "https://anantya-ai-backend-3rje.onrender.com")
+    (typeof window !== "undefined" && (window.ANANTYA_API_URL || window.BACKEND_URL)) ||
+    "https://anantya-ai-backend-3rje.onrender.com"
   ).replace(/\/+$/, "");
 
   // Configuration
@@ -977,12 +976,21 @@
     }
   }
 
+  let healthPollTimer = null;
+
   /**
-   * Polls the backend health check endpoint.
+   * Polls the backend health check endpoint with automatic retry and warm heartbeat.
    */
   async function checkHealth() {
     try {
-      const res = await fetch(CONFIG.healthUrl, { method: "GET" });
+      const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+      const timeoutId = controller ? setTimeout(() => controller.abort(), 9000) : null;
+      const res = await fetch(CONFIG.healthUrl, {
+        method: "GET",
+        signal: controller ? controller.signal : undefined,
+      });
+      if (timeoutId) clearTimeout(timeoutId);
+
       if (res.ok) {
         const data = await res.json();
         state.isOnline = true;
@@ -992,16 +1000,24 @@
         dom.statusText.textContent = vsLoaded
           ? "Online • Jarvis Ready"
           : "Online • Loading Events";
+
+        // Keep heartbeat alive every 45s so Render stays warm
+        if (healthPollTimer) clearTimeout(healthPollTimer);
+        healthPollTimer = setTimeout(checkHealth, 45000);
         return;
       }
     } catch (_) {
-      // Backend offline
+      // Backend waking up or offline
     }
 
     state.isOnline = false;
     dom.badge.classList.add("is-offline");
     dom.liveDot.classList.add("is-offline");
-    dom.statusText.textContent = "Offline • Reconnecting...";
+    dom.statusText.textContent = "Connecting to Jarvis (Waking Up)...";
+
+    // Auto-retry polling after 4 seconds
+    if (healthPollTimer) clearTimeout(healthPollTimer);
+    healthPollTimer = setTimeout(checkHealth, 4000);
   }
 
   /**
