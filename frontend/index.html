@@ -3,153 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ANANTYA '26 — PCCOE Tech Fest</title>
-
-  <!-- High-Tech & Futuristic Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-
-  <!-- 1. Website Stylesheet (Customizable & Separated) -->
-  <link rel="stylesheet" href="website.css" />
-
-  <!-- 2. Hologram Chatbot HUD Stylesheet (Self-Contained Module) -->
-  <link rel="stylesheet" href="chatbot/chatbot.css" />
+  <title>Website UI Integration Instructions — ANANTYA '26</title>
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #111827;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 40px 24px;
+      margin: 0;
+      line-height: 1.4;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: #0f172a;
+      border-left: 5px solid #2563eb;
+      padding-left: 14px;
+    }
+    h1.main-title {
+      font-size: 2.2rem;
+      color: #1e3a8a;
+      border-left: none;
+      padding-left: 0;
+      margin-top: 0;
+      margin-bottom: 30px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 15px;
+    }
+    h1.rule-highlight {
+      color: #b91c1c;
+      border-left-color: #dc2626;
+      background-color: #fef2f2;
+      padding: 12px 16px;
+      border-radius: 4px;
+    }
+    code {
+      background-color: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: Consolas, "Courier New", monospace;
+      color: #0369a1;
+      font-size: 0.95em;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="#" class="nav-brand">
-        <span class="nav-logo-badge">PCCOE ACM-W</span>
-        <span class="nav-brand-title">ANANTYA '26</span>
-      </a>
+  <h1 class="main-title">📋 INSTRUCTIONS FOR TEAM MEMBER: WEBSITE UI INTEGRATION</h1>
 
-      <ul class="nav-links">
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#events" class="nav-link">Events</a></li>
-        <li><a href="#hackathons" class="nav-link">Hackathons</a></li>
-      </ul>
+  <h1>1. PASTE YOUR WEBSITE HTML CODE IN THIS FILE: <code>frontend/index.html</code></h1>
 
-      <button class="nav-cta-btn" data-action="open-chatbot">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-        </svg>
-        AI Event Assistant
-      </button>
-    </div>
-  </nav>
+  <h1>2. PASTE YOUR WEBSITE CSS STYLING IN: <code>frontend/website.css</code></h1>
 
-  <!-- Hero Section -->
-  <header class="hero" id="about">
-    <div class="hero-tag">◈ ANNUAL FLAGSHIP TECHNICAL SYMPOSIUM ◈</div>
-    <h1 class="hero-title">ANANTYA '26</h1>
-    <h2 class="hero-subtitle">TIME STONE — IDEAS BEYOND TIME</h2>
-    <p class="hero-description">
-      Organized by the Department of Computer Engineering and PCCOE ACM-W Student Chapter.
-      Innovate, build, and present technology-driven solutions to real-world challenges.
-    </p>
+  <h1>3. PASTE YOUR WEBSITE JAVASCRIPT CODE IN: <code>frontend/website.js</code></h1>
 
-    <div class="hero-actions">
-      <button class="btn-primary" data-action="open-chatbot">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <line x1="12" y1="8" x2="12" y2="12"></line>
-          <line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        Ask Hologram Assistant
-      </button>
-      <a href="#hackathons" class="btn-secondary">Explore Hackathons</a>
-    </div>
-  </header>
+  <h1 class="rule-highlight">⚠️ CRITICAL RULE: DO NOT TOUCH OR DELETE THE <code>frontend/chatbot/</code> FOLDER!</h1>
 
-  <!-- Event Stats Strip -->
-  <section class="stats-strip">
-    <div class="stat-card">
-      <div class="stat-value">₹16,000</div>
-      <div class="stat-label">Prize Pool (She Solves)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">2 - 4</div>
-      <div class="stat-label">Team Members</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">MULTI-STAGE</div>
-      <div class="stat-label">Hackathon Format</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">RAG AI</div>
-      <div class="stat-label">Grounded Assistant</div>
-    </div>
-  </section>
+  <h1 class="rule-highlight">⚠️ CRITICAL RULE: ALWAYS KEEP THIS LINE RIGHT BEFORE <code>&lt;/body&gt;</code> IN YOUR HTML: <code>&lt;script src="chatbot/chatbot.js" defer&gt;&lt;/script&gt;</code></h1>
 
-  <!-- Flagship Event Showcase -->
-  <section class="section" id="hackathons">
-    <div class="section-header">
-      <div class="section-tag">Flagship Competition</div>
-      <h3 class="section-title">She Solves 3.0</h3>
-    </div>
+  <h1>4. (OPTIONAL) TO MAKE ANY BUTTON OPEN THE CHATBOT, ADD: <code>data-action="open-chatbot"</code></h1>
 
-    <div class="event-featured-card">
-      <div class="event-details">
-        <h4 class="event-details-title">She Solves 3.0 Hackathon</h4>
-        <p class="event-details-desc">
-          A multi-stage women-oriented hackathon providing a platform for female innovators
-          to solve real-world problems through cutting-edge technology and social impact.
-        </p>
+  <h1>5. (OPTIONAL) TO MAKE A BUTTON ASK A SPECIFIC QUESTION, ADD: <code>data-query="Your question here"</code></h1>
 
-        <div class="event-meta-grid">
-          <div class="event-meta-item">
-            <span class="event-meta-label">Eligibility</span>
-            <div class="event-meta-val">Female Students Only</div>
-          </div>
-          <div class="event-meta-item">
-            <span class="event-meta-label">PCCOE Registration</span>
-            <div class="event-meta-val">₹0 (Free)</div>
-          </div>
-          <div class="event-meta-item">
-            <span class="event-meta-label">External Registration</span>
-            <div class="event-meta-val">₹100</div>
-          </div>
-          <div class="event-meta-item">
-            <span class="event-meta-label">Perks</span>
-            <div class="event-meta-val">Goodies & Certificates</div>
-          </div>
-        </div>
+  <h1>6. NOTE: THE CHATBOT IS ACTIVE ON THIS PAGE RIGHT NOW — CHECK THE CIRCULAR BUTTON AT THE BOTTOM-RIGHT CORNER!</h1>
 
-        <button class="btn-primary" data-query="Tell me the rules and team requirements for She Solves 3.0">
-          Ask AI About Rules & Registration
-        </button>
-      </div>
-
-      <div class="event-ai-promo">
-        <h4>Need Instant Answers?</h4>
-        <p>
-          Our Hologram RAG AI assistant has ingested the official event document and can answer
-          any question in real-time.
-        </p>
-        <button class="btn-secondary" data-action="open-chatbot">
-          Launch Hologram HUD
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>
-      © ANANTYA '26 • Pimpri Chinchwad College of Engineering (PCCOE), Pune.
-      Powered by <strong>Grok / Groq RAG Engine</strong>.
-    </p>
-  </footer>
-
-  <!-- 1. Website Scripts -->
-  <script src="website.js"></script>
-
-  <!-- 2. Hologram Chatbot Module (Self-Mounting Plug & Play) -->
+  <!-- ============================================================ -->
+  <!-- 🤖 CHATBOT MODULE (MANDATORY — KEEP THIS LINE IN YOUR HTML)   -->
+  <!-- ============================================================ -->
   <script src="chatbot/chatbot.js" defer></script>
-
 </body>
 </html>

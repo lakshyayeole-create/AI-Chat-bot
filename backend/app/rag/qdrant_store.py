@@ -137,12 +137,21 @@ def search(
     if query_vector.ndim == 2:
         query_vector = query_vector.flatten()
 
-    results = client.search(
-        collection_name=collection_name,
-        query_vector=query_vector.tolist(),
-        query_filter=query_filter,
-        limit=top_k
-    )
+    if hasattr(client, "query_points"):
+        response = client.query_points(
+            collection_name=collection_name,
+            query=query_vector.tolist(),
+            query_filter=query_filter,
+            limit=top_k,
+        )
+        results = response.points
+    else:
+        results = client.search(
+            collection_name=collection_name,
+            query_vector=query_vector.tolist(),
+            query_filter=query_filter,
+            limit=top_k,
+        )
 
     return [(res.payload, res.score) for res in results if res.payload is not None]
 

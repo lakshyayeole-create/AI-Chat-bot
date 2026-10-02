@@ -62,6 +62,7 @@ EVENT_KEYWORD_MAP = {
     "byte me": "ANANTYA-003",
     "ctf": "ANANTYA-003",
     "decentrahack": "ANANTYA-001",
+    "decentrahack 2.0": "ANANTYA-001",
     "decentra": "ANANTYA-001",
     "masterchef": "ANANTYA-005",
 }

@@ -48,18 +48,18 @@ cd backend
 uvicorn app.main:app --reload
 ```
 
-The server starts at `http://localhost:8000`.
+The server starts at `http://localhost:8001`.
 
 ### 6. Test it
 
-- **Health**: `GET http://localhost:8000/health`
-- **Chat**: `POST http://localhost:8000/api/chat`
-- **Docs**: `http://localhost:8000/docs`
+- **Health**: `GET http://localhost:8001/health`
+- **Chat**: `POST http://localhost:8001/api/chat`
+- **Docs**: `http://localhost:8001/docs`
 
 Example chat request:
 
 ```bash
-curl -X POST http://localhost:8000/api/chat \
+curl -X POST http://localhost:8001/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "What is She Solves 3.0?"}'
 ```

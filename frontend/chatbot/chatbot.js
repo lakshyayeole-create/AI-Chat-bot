@@ -12,9 +12,9 @@
     apiUrl: "http://localhost:8001/api/chat",
     statusUrl: "http://localhost:8001/api/chat/status",
     healthUrl: "http://localhost:8001/health",
-    title: "ANANTYA '26 GUIDE",
+    title: "ANANTYA '26 JARVIS",
     welcomeMessage:
-      "👋 **Hello and welcome!** I am your official event guide for **Anantya '26**, the annual technical and creative symposium organized by the Department of Computer Engineering at PCCOE.\n\nI can help you with complete details on all 7 events:\n- **BYTE ME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **SHE SOLVES 3.0** (Women-Oriented Hackathon)\n- **DECENTRAHACK 2.0** (Web3 & AI Hackathon)\n- **MasterChef UI 2026** (UI/UX Design)\n- **IoThrone 2026** (IoT & Robotics Hackathon)\n- **MAKE A DOODLE! 2026** (Digital Art Competition)\n\nAsk me about registration links, rules, eligibility, team sizes, fees, dates, or prize pools!",
+      "👋 **Hello and welcome!** I am **Anantya's Jarvis**, your official AI assistant for **Anantya '26**, the annual technical and creative symposium organized by the Department of Computer Engineering at PCCOE.\n\nI can help you with complete details on all 7 events:\n- **BYTE ME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **SHE SOLVES 3.0** (Women-Oriented Hackathon)\n- **DECENTRAHACK 2.0** (Web3 & AI Hackathon)\n- **MasterChef UI 2026** (UI/UX Design)\n- **IoThrone 2026** (IoT & Robotics Hackathon)\n- **MAKE A DOODLE! 2026** (Digital Art Competition)\n\nAsk me about registration links, rules, eligibility, team sizes, fees, dates, or prize pools!",
     quickChips: [
       "What events are in Anantya '26?",
       "Tell me about BYTEME CTF",
@@ -39,11 +39,32 @@
   let dom = {};
 
   /**
+   * Automatically loads chatbot.css if not already present on the page.
+   */
+  function ensureStylesLoaded() {
+    if (document.querySelector('link[href*="chatbot.css"]')) return;
+
+    let cssHref = "chatbot/chatbot.css";
+    const currentScript =
+      document.currentScript ||
+      document.querySelector('script[src*="chatbot.js"]');
+    if (currentScript && currentScript.src) {
+      cssHref = currentScript.src.replace(/chatbot\.js(\?.*)?$/, "chatbot.css$1");
+    }
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = cssHref;
+    document.head.appendChild(link);
+  }
+
+  /**
    * Initializes the chatbot widget upon DOM ready.
    */
   function init() {
     if (document.getElementById("anantya-hud-root")) return;
 
+    ensureStylesLoaded();
     injectHTML();
     cacheDOM();
     bindEvents();
@@ -61,7 +82,7 @@
     root.id = "anantya-hud-root";
     root.innerHTML = `
       <!-- 1. Floating Circular Launcher -->
-      <button class="anantya-hud-launcher" id="anantya-hud-launcher" aria-label="Open AI Event Assistant" title="Open Hologram Chatbot">
+      <button class="anantya-hud-launcher" id="anantya-hud-launcher" aria-label="Open Anantya's Jarvis" title="Open Anantya's Jarvis">
         <svg class="anantya-hud-launcher-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -71,7 +92,7 @@
       </button>
 
       <!-- 2. Hologram HUD Window -->
-      <div class="anantya-hud-window" id="anantya-hud-window" role="dialog" aria-modal="true" aria-label="Event Intelligence Chatbot">
+      <div class="anantya-hud-window" id="anantya-hud-window" role="dialog" aria-modal="true" aria-label="Anantya's Jarvis Event Assistant">
         <div class="anantya-hud-scanlines"></div>
 
         <!-- Header -->
@@ -182,6 +203,26 @@
         closeHUD();
       }
     });
+
+    // Global click delegation for website triggers (works on ANY website UI)
+    document.addEventListener("click", function (e) {
+      const openBtn = e.target.closest("[data-action='open-chatbot']");
+      if (openBtn) {
+        e.preventDefault();
+        openHUD();
+        return;
+      }
+
+      const queryBtn = e.target.closest("[data-query]");
+      if (queryBtn) {
+        e.preventDefault();
+        const query = queryBtn.getAttribute("data-query");
+        openHUD();
+        if (query) {
+          sendUserMessage(query);
+        }
+      }
+    });
   }
 
   /**
@@ -197,7 +238,7 @@
         dom.badge.classList.remove("is-offline");
         dom.liveDot.classList.remove("is-offline");
         dom.statusText.textContent = vsLoaded
-          ? "Online • Event Guide Ready"
+          ? "Online • Jarvis Ready"
           : "Online • Loading Events";
         return;
       }
@@ -260,7 +301,7 @@
 
     const meta = document.createElement("div");
     meta.className = "anantya-hud-msg-meta";
-    meta.textContent = `ANANTYA GUIDE • ${time}`;
+    meta.textContent = `ANANTYA JARVIS • ${time}`;
     msgEl.appendChild(meta);
 
     const bubble = document.createElement("div");
