@@ -28,8 +28,12 @@ qdrant_data/
 .pytest_cache/
 
 # Local cache & data
-backend/data/
-data/
+backend/data/*
+!backend/data/audio_cache/
+backend/data/audio_cache/*
+!backend/data/audio_cache/full_website_read.mp3
+!backend/data/assets.json
+/data/
 cache.json
 *.lock
 

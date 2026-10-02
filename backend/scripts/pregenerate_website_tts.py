@@ -85,18 +85,25 @@ async def main():
     print(f"\n[2/4] Generating speech for {len(SECTIONS)} sections...")
     combined_mp3_bytes = bytearray()
 
-    # Determine provider (test ElevenLabs quota)
+    # Determine provider (test ElevenLabs quota for full script length)
     provider = "elevenlabs"
     try:
+        # Check if ElevenLabs has enough quota for substantial generation
         test_audio = await client.generate_speech(
-            text="Anantya 2026",
+            text="Anantya 2026 Department of Computer Engineering PCCOE Pune",
+            voice_id=voice_id,
+            model_id=model_id,
+        )
+        # If test passes, also test if quota can handle large event section
+        await client.generate_speech(
+            text="Here are the eight official events of Anantya 2026. Testing quota capacity.",
             voice_id=voice_id,
             model_id=model_id,
         )
         print("  Using ElevenLabs Neural Voice (Voice ID: " + voice_id + ")")
     except Exception as e:
         provider = "edge-tts"
-        print(f"  ElevenLabs quota reached or unavailable ({e}). Using Edge-TTS Neural Voice (en-US-ChristopherNeural)")
+        print(f"  ElevenLabs quota depleted ({e}). Using Edge-TTS Neural Voice (en-US-ChristopherNeural) for uniform narration.")
 
     for i, (name, text) in enumerate(SECTIONS, start=1):
         print(f"\n  Generating [{i}/{len(SECTIONS)}]: {name} ({len(text)} chars)...")
@@ -141,6 +148,11 @@ async def main():
     full_audio_path.write_bytes(combined_mp3_bytes)
     print(f"  Successfully created: {full_audio_path.name}")
     print(f"  Total audio size: {len(combined_mp3_bytes):,} bytes (~{len(combined_mp3_bytes) / 1024 / 1024:.2f} MB)")
+
+    # Mirror to frontend/public so it is also accessible statically and tracked in git
+    frontend_public = backend_dir.parent / "frontend" / "public" / "full_website_read.mp3"
+    frontend_public.write_bytes(combined_mp3_bytes)
+    print(f"  Mirrored to frontend/public: {frontend_public.name}")
 
     # 4. Verification check
     print("\n[4/4] Verifying cache contents...")

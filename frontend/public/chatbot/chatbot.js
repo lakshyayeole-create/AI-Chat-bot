@@ -369,13 +369,16 @@
       this.updateUI("Anantya '26 • Loading Complete Website Narration...");
 
       try {
-        // Stream complete pre-generated website audio directly from backend cache
-        const pageAudioUrl = `${CONFIG.ttsUrl}/page`;
-        const res = await fetch(pageAudioUrl, { method: "GET" });
+        // Stream complete pre-generated website audio directly
+        // Try backend cache first with timestamp to bypass stale browser cache, then fallback to public static audio
+        let res = await fetch(`${CONFIG.ttsUrl}/page?t=${Date.now()}`, { method: "GET" }).catch(() => null);
+        if (!res || !res.ok) {
+          res = await fetch(`/full_website_read.mp3?t=${Date.now()}`, { method: "GET" }).catch(() => null);
+        }
 
         if (state.activeSpeechSessionId !== sessionId) return;
 
-        if (res.ok) {
+        if (res && res.ok) {
           const blob = await res.blob();
           if (blob.size > 0 && state.activeSpeechSessionId === sessionId) {
             this.playBlob(

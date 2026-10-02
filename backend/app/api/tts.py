@@ -127,6 +127,13 @@ async def get_full_page_audio():
     cache = get_audio_cache()
     full_path = cache.cache_dir / "full_website_read.mp3"
 
+    # Fallback to frontend/public if not in backend cache
+    if not full_path.is_file():
+        backend_root = Path(__file__).resolve().parent.parent.parent
+        alt_path = backend_root.parent / "frontend" / "public" / "full_website_read.mp3"
+        if alt_path.is_file():
+            full_path = alt_path
+
     if full_path.is_file():
         audio_bytes = full_path.read_bytes()
         logger.info("Serving complete website narration from audio cache (%d bytes)", len(audio_bytes))
@@ -135,7 +142,9 @@ async def get_full_page_audio():
             media_type="audio/mpeg",
             headers={
                 "X-Audio-Cache": "HIT",
-                "Cache-Control": f"public, max-age={settings.tts_cache_ttl_seconds}",
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache",
+                "Expires": "0",
             },
         )
 
