@@ -401,7 +401,7 @@
   }
 
   .marvel-main-title {
-    font-size: 2.6rem;
+    font-size: clamp(2rem, 8vw, 2.6rem);
   }
 
   .marvel-form-card {
@@ -410,5 +410,24 @@
 
   .marvel-form-row-2col {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .marvel-contact-section {
+    padding: 5rem 1rem 3.5rem;
+  }
+
+  .marvel-form-card {
+    padding: 1.2rem 1rem;
+  }
+
+  .marvel-header-desc {
+    font-size: 0.88rem;
+  }
+
+  .btn-label {
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
   }
 }

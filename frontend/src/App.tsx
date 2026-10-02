@@ -6,11 +6,12 @@ import Transition, { ModelConfig, TransitionHandle } from './components/Transiti
 import Navbar, { NavbarHandle } from './components/Navbar';
 import AvengersIntro from './components/ui/AvengersIntro';
 import AnantyaTimeline, { AnantyaTimelineHandle } from './components/AnantyaTimeline';
-import { GallerySection } from './components/GallerySection';
 import ContactSection from './components/ContactSection';
 import CountdownTimer from './components/CountdownTimer';
 import ScrollGuidance from './components/ScrollGuidance';
 import Footer from './components/Footer';
+import VisitorCounter from './components/VisitorCounter';
+import BackgroundAudio from './components/BackgroundAudio';
 import './components/CyberHeroCard.css';
 
 const ironManConfig: ModelConfig = {
@@ -157,8 +158,14 @@ export default function App() {
   const canvasWrapRef = useRef<HTMLDivElement>(null);
   const gauntletLaserRef = useRef<HTMLDivElement>(null);
   const bottomScrollPromptRef = useRef<HTMLDivElement>(null);
+  const heroInstantBgRef = useRef<HTMLDivElement>(null);
 
-  const [hasEntered, setHasEntered] = useState(false);
+  const [hasEntered, setHasEntered] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('anantya_intro_seen') === 'true';
+    }
+    return false;
+  });
   const [activeNavSection, setActiveNavSection] = useState<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
   const activeNavSectionRef = useRef<'home' | 'about' | 'events' | 'gallery' | 'contact'>('home');
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -200,9 +207,11 @@ export default function App() {
       window.scrollTo(0, 0);
       document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
+      lenisRef.current?.stop();
     } else {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      lenisRef.current?.start();
     }
     return () => {
       document.documentElement.style.overflow = '';
@@ -266,6 +275,12 @@ export default function App() {
       canvasWrapRef.current.style.maskImage = wipeMask;
     }
 
+    if (heroInstantBgRef.current) {
+      const heroBgOp = (scrollProgressRef.current > 0.66 || gwp >= 0.999) ? 0 : co;
+      heroInstantBgRef.current.style.opacity = String(heroBgOp);
+      heroInstantBgRef.current.style.visibility = heroBgOp <= 0.005 ? 'hidden' : 'visible';
+    }
+
     if (gauntletLaserRef.current) {
       if (isWipingToGauntlet) {
         gauntletLaserRef.current.style.display = 'block';
@@ -318,7 +333,7 @@ export default function App() {
       const sp = scrollProgressRef.current;
       const promptOp = Math.max(0, 1 - sp * 5.0);
       bottomScrollPromptRef.current.style.opacity = String(promptOp);
-      bottomScrollPromptRef.current.style.pointerEvents = sp < 0.04 ? 'auto' : 'none';
+      bottomScrollPromptRef.current.style.pointerEvents = 'none';
       bottomScrollPromptRef.current.style.visibility = promptOp <= 0.005 ? 'hidden' : 'visible';
     }
 
@@ -386,10 +401,17 @@ export default function App() {
 
     lenisRef.current = lenis;
     (window as any).__lenis = lenis;
+    (window as any).ScrollTrigger = ScrollTrigger;
 
-    // Immediately halt scroll and anchor to top
-    lenis.scrollTo(0, { immediate: true });
-    lenis.stop();
+    const isIntroSeen = typeof window !== 'undefined' && sessionStorage.getItem('anantya_intro_seen') === 'true';
+
+    // If intro was already completed/bypassed, start scrolling immediately; otherwise halt until intro completes
+    if (isIntroSeen || hasEntered) {
+      lenis.start();
+    } else {
+      lenis.scrollTo(0, { immediate: true });
+      lenis.stop();
+    }
 
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -405,6 +427,7 @@ export default function App() {
       lenis.destroy();
       lenisRef.current = null;
       delete (window as any).__lenis;
+      delete (window as any).ScrollTrigger;
     };
   }, []);
 
@@ -413,22 +436,20 @@ export default function App() {
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
 
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    try {
+      sessionStorage.setItem('anantya_intro_seen', 'true');
+    } catch {}
 
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
       lenisRef.current.start();
+    } else {
+      window.scrollTo(0, 0);
     }
 
     setHasEntered(true);
 
     requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(0, { immediate: true });
-      }
       ScrollTrigger.clearScrollMemory?.('manual');
       ScrollTrigger.refresh();
       syncDOM();
@@ -445,8 +466,7 @@ export default function App() {
   useEffect(() => {
     if (!hasEntered) return;
 
-    window.scrollTo(0, 0);
-    if (lenisRef.current) {
+    if (window.scrollY === 0 && lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });
     }
     ScrollTrigger.clearScrollMemory?.('manual');
@@ -456,8 +476,8 @@ export default function App() {
 
     const track = document.getElementById('scroll-track');
     if (!track) return;
-    const NAV_END      = 0.12;  // navbar fully formed
-    const IRON_END     = 0.30;  // Iron Man fully assembled and in hero position on left
+    const NAV_END      = 0.08;  // navbar fully formed (snappy, responsive initial scroll)
+    const IRON_END     = 0.26;  // Iron Man fully assembled and in hero position on left
     const HOME_HOLD    = 0.44;  // Home page hero section in full focus
     const CENTER_END   = 0.50;  // Iron Man smoothly returns to center facing forward
     const WIPE_END     = 0.66;  // Diagonal laser wipe in center: Iron Man -> Star-Lord with full 3D rotation
@@ -653,7 +673,7 @@ export default function App() {
       },
     });
 
-    // Pinned ScrollTrigger for Events Section
+    // Pinned ScrollTrigger for Events & Multiverse Loom Section
     const eventsEl = document.getElementById('events');
     let eventsSt: ScrollTrigger | null = null;
     if (eventsEl) {
@@ -661,7 +681,7 @@ export default function App() {
       eventsSt = ScrollTrigger.create({
         trigger: eventsEl,
         start: 'top top',
-        end: isMobileScreen ? '+=3000' : '+=9200',
+        end: isMobileScreen ? '+=5200' : '+=12500',
         pin: true,
         scrub: 0.6,
         anticipatePin: 1,
@@ -679,58 +699,67 @@ export default function App() {
               canvasOpacityRef.current = 1;
               toRotationYRef.current = Math.PI * 2 + wipeT * Math.PI * 2;
               updateActiveNav('events');
-            } else if (p <= 0.14) {
-              const clenchT = (p - 0.08) / (0.14 - 0.08);
+            } else if (p <= 0.16) {
+              const clenchT = (p - 0.08) / (0.16 - 0.08);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = clenchT;
               introFlightProgressRef.current = 0;
               eventsTimelineProgressRef.current = 0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.22) {
-              const flightT = (p - 0.14) / (0.22 - 0.14);
+            } else if (p <= 0.24) {
+              const flightT = (p - 0.16) / (0.24 - 0.16);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = flightT;
               eventsTimelineProgressRef.current = 0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.78) {
-              const timeT = (p - 0.22) / (0.78 - 0.22);
+            } else if (p <= 0.62) {
+              const timeT = (p - 0.24) / (0.62 - 0.24);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = timeT * 7.0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.83) {
+            } else if (p <= 0.66) {
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 7.15;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.92) {
-              const convT = (p - 0.83) / (0.92 - 0.83);
+            } else if (p <= 0.74) {
+              const convT = (p - 0.66) / (0.74 - 0.66);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 7.25 + convT * 1.0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else {
-              const lokiT = (p - 0.92) / (1.00 - 0.92);
+            } else if (p <= 0.82) {
+              const lokiT = (p - 0.74) / (0.82 - 0.74);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 8.25 + lokiT * 0.85;
               canvasOpacityRef.current = 0;
               updateActiveNav(lokiT >= 0.5 ? 'gallery' : 'events');
+            } else {
+              // Phase 5: The SAME Loki Crown generates timeline threads & memory images on scrolling (0.82 -> 1.00)
+              const loomT = (p - 0.82) / (1.00 - 0.82);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 9.10 + loomT * 1.6;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('gallery');
             }
           } else {
             // Desktop: Full cinematic widescreen scroll pacing
-            if (p <= 0.14) {
-              const wipeT = p / 0.14;
+            if (p <= 0.10) {
+              const wipeT = p / 0.10;
               gauntletWipeProgressRef.current = wipeT;
               gauntletClenchProgressRef.current = 0;
               introFlightProgressRef.current = 0;
@@ -739,53 +768,62 @@ export default function App() {
               // Rotate Star-Lord 360° during diagonal laser wipe (syncs with gauntlet behind)
               toRotationYRef.current = Math.PI * 2 + wipeT * Math.PI * 2;
               updateActiveNav('events');
-            } else if (p <= 0.24) {
-              const clenchT = (p - 0.14) / (0.24 - 0.14);
+            } else if (p <= 0.18) {
+              const clenchT = (p - 0.10) / (0.18 - 0.10);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = clenchT;
               introFlightProgressRef.current = 0;
               eventsTimelineProgressRef.current = 0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.36) {
-              const flightT = (p - 0.24) / (0.36 - 0.24);
+            } else if (p <= 0.26) {
+              const flightT = (p - 0.18) / (0.26 - 0.18);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = flightT;
               eventsTimelineProgressRef.current = 0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.76) {
-              const timeT = (p - 0.36) / (0.76 - 0.36);
+            } else if (p <= 0.58) {
+              const timeT = (p - 0.26) / (0.58 - 0.26);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = timeT * 7.0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.80) {
+            } else if (p <= 0.62) {
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 7.15;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else if (p <= 0.90) {
-              const convT = (p - 0.80) / (0.90 - 0.80);
+            } else if (p <= 0.72) {
+              const convT = (p - 0.62) / (0.72 - 0.62);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 7.25 + convT * 1.0;
               canvasOpacityRef.current = 0;
               updateActiveNav('events');
-            } else {
-              const lokiT = (p - 0.90) / (1.00 - 0.90);
+            } else if (p <= 0.82) {
+              const lokiT = (p - 0.72) / (0.82 - 0.72);
               gauntletWipeProgressRef.current = 1;
               gauntletClenchProgressRef.current = 1;
               introFlightProgressRef.current = 1;
               eventsTimelineProgressRef.current = 8.25 + lokiT * 0.85;
               canvasOpacityRef.current = 0;
               updateActiveNav(lokiT >= 0.5 ? 'gallery' : 'events');
+            } else {
+              // Phase 5: The SAME Loki Crown generates timeline threads & memory images on scrolling (0.82 -> 1.00)
+              const loomT = (p - 0.82) / (1.00 - 0.82);
+              gauntletWipeProgressRef.current = 1;
+              gauntletClenchProgressRef.current = 1;
+              introFlightProgressRef.current = 1;
+              eventsTimelineProgressRef.current = 9.10 + loomT * 1.6;
+              canvasOpacityRef.current = 0;
+              updateActiveNav('gallery');
             }
           }
 
@@ -804,8 +842,7 @@ export default function App() {
           syncDOM();
         },
         onLeave: () => {
-          updateAboutPanel(0, 'gallery');
-          updateHeroPanel(0, 'gallery');
+          updateActiveNav('contact');
         },
         onLeaveBack: () => {
           updateActiveNav('about');
@@ -820,44 +857,6 @@ export default function App() {
         },
       });
       eventsStRef.current = eventsSt;
-    }
-
-    // ScrollTrigger for Gallery Section
-    const galleryEl = document.getElementById('gallery');
-    let gallerySt: ScrollTrigger | null = null;
-    if (galleryEl) {
-      gallerySt = ScrollTrigger.create({
-        trigger: galleryEl,
-        start: 'top bottom',
-        end: 'top top',
-        scrub: true,
-        onUpdate: (self) => {
-          if (self.progress > 0.4) {
-            updateActiveNav('gallery');
-          }
-        },
-        onEnter: () => {
-          updateActiveNav('gallery');
-          heroInfoOpacityRef.current = 0;
-          aboutInfoOpacityRef.current = 0;
-          syncDOM();
-        },
-        onEnterBack: () => {
-          updateActiveNav('gallery');
-          heroInfoOpacityRef.current = 0;
-          aboutInfoOpacityRef.current = 0;
-          syncDOM();
-        },
-        onLeave: () => {
-          updateActiveNav('contact');
-          heroInfoOpacityRef.current = 0;
-          aboutInfoOpacityRef.current = 0;
-          syncDOM();
-        },
-        onLeaveBack: () => {
-          updateActiveNav('gallery');
-        },
-      });
     }
 
     // ScrollTrigger for Contact Section
@@ -886,7 +885,6 @@ export default function App() {
     return () => {
       st.kill();
       if (eventsSt) eventsSt.kill();
-      if (gallerySt) gallerySt.kill();
       if (contactSt) contactSt.kill();
       eventsStRef.current = null;
     };
@@ -899,7 +897,7 @@ export default function App() {
       // On mobile, stones are navigated directly via the Left/Right controls without page jumping
       return;
     }
-    const targetNorm = 0.36 + (index / 7.0) * 0.40;
+    const targetNorm = 0.26 + (index / 7.0) * 0.32;
     const targetScrollY = eventsStRef.current.start + targetNorm * (eventsStRef.current.end - eventsStRef.current.start);
     if (lenisRef.current) {
       lenisRef.current.scrollTo(targetScrollY, {
@@ -936,19 +934,21 @@ export default function App() {
     }
 
     if (id === 'gallery') {
-      const galleryEl = document.getElementById('gallery');
-      if (galleryEl) {
+      const eventsEl = document.getElementById('events');
+      if (eventsEl && eventsStRef.current) {
         updateAboutPanel(0, 'gallery');
         updateHeroPanel(0, 'gallery');
         syncNavSection('gallery');
         updateCanvasWrap(0, 1);
+        const st = eventsStRef.current;
+        const targetScrollY = st.start + (st.end - st.start) * 0.88;
         if (lenisRef.current) {
-          lenisRef.current.scrollTo(galleryEl, {
-            duration: 1.8,
+          lenisRef.current.scrollTo(targetScrollY, {
+            duration: 1.6,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
           });
         } else {
-          galleryEl.scrollIntoView({ behavior: 'smooth' });
+          window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
         }
       }
       return;
@@ -1016,6 +1016,30 @@ export default function App() {
         activeId={activeNavSection}
         onSelect={handleNavSelect}
         morphProgress={0}
+      />
+
+      {/* Cyberpunk HUD Telemetry Cluster (Top Right Corner: Background Audio Mute Button + Visitor Counter) */}
+      <div className="top-right-telemetry-cluster" aria-label="Website Telemetry and Audio Controls">
+        <BackgroundAudio isVisible={hasEntered} />
+        <VisitorCounter isVisible={hasEntered} />
+      </div>
+
+      {/* Instant CSS Hero Background: Paints on frame 1 so background never pops in late */}
+      <div
+        ref={heroInstantBgRef}
+        className="hero-instant-bg-underlay"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundImage: `url(${isMobile ? ironManConfig.mobileBgImagePath : ironManConfig.bgImagePath})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          zIndex: 0,
+          pointerEvents: 'none',
+          transition: 'opacity 0.2s ease',
+        }}
       />
 
       {/* Fixed 3D Canvas */}
@@ -1325,7 +1349,7 @@ export default function App() {
         className="bottom-scroll-prompt"
         style={{
           opacity: 1,
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
           visibility: 'visible',
         }}
       >
@@ -1349,17 +1373,13 @@ export default function App() {
       {/* Scroll track providing smooth scrolling space across Home & About sections */}
       <div id="scroll-track" className="scroll-track-container" />
 
-      {/* Events 3D Orbit Timeline Section (Pinned via ScrollTrigger for full-screen immersion) */}
+      {/* Events & Multiverse Loom Section (Pinned via ScrollTrigger for full-screen immersion) */}
       <section id="events" ref={eventsSectionRef} className="events-timeline-section">
+        <div id="gallery" style={{ position: 'absolute', top: '82%', pointerEvents: 'none' }} />
         <AnantyaTimeline
           ref={timelineRef}
           onSelectStone={handleSelectStone}
         />
-      </section>
-
-      {/* Gallery Section: Chronicles of Glory (Multiverse Quantum Archives) */}
-      <section id="gallery" className="gallery-main-section">
-        <GallerySection />
       </section>
 
       {/* Contact Section: S.H.I.E.L.D. Quantum Comm-Link & Avengers Initiative */}
@@ -1394,6 +1414,26 @@ export default function App() {
           background: #040711;
           padding: 6rem 1.5rem 8rem;
           box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Top Right Cyber Telemetry Cluster (Visitor Counter + Background Audio) */
+        .top-right-telemetry-cluster {
+          position: fixed;
+          top: 20px;
+          right: 28px;
+          z-index: 96;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+          .top-right-telemetry-cluster {
+            top: 76px;
+            right: 12px;
+            gap: 8px;
+          }
         }
 
         .fixed-3d-canvas-wrap {
@@ -1431,6 +1471,7 @@ export default function App() {
           gap: 0.5rem;
           z-index: 50;
           user-select: none;
+          pointer-events: none;
           transition: opacity 0.25s ease;
         }
 
@@ -1885,11 +1926,14 @@ export default function App() {
         .about-pillar-card {
           min-width: 0;
           min-height: 0;
-          padding: 14px 14px 12px;
+          padding: 16px 16px 14px;
           border: 1px solid rgba(255, 108, 161, 0.58);
-          border-radius: 12px;
+          border-radius: 14px;
           background: linear-gradient(145deg, rgba(20, 25, 35, 0.82), rgba(8, 12, 20, 0.72));
           box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px rgba(255, 108, 161, 0.18), 0 0 18px rgba(255, 108, 161, 0.08);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
         .about-chapter-meta {
@@ -1909,30 +1953,28 @@ export default function App() {
 
         .about-chapter-card h3,
         .about-pillar-card h3 {
-          margin: 0.4rem 0 0.3rem;
-          color: #fff;
-          font-size: 16px;
-          line-height: 1.2;
-          font-weight: 800;
+          margin: 0 0 0.45rem;
+          color: #ffffff;
+          font-size: clamp(18px, 1.4vw, 22px);
+          line-height: 1.15;
+          font-weight: 900;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
 
         .about-chapter-card p,
         .about-pillar-card p {
           margin: 0;
           color: #ebf2ff;
-          font-size: 13px;
+          font-size: clamp(14px, 1.0vw, 16px);
           line-height: 1.45;
+          font-weight: 400;
         }
 
         .about-pillar-number {
           color: #ffc6d9;
           font-size: 0.7rem;
           font-weight: 800;
-        }
-
-        .about-pillar-card h3 {
-          margin-top: 0.55rem;
-          font-size: 16px;
         }
 
         .about-legacy-copy p {
@@ -1976,23 +2018,40 @@ export default function App() {
         }
 
         .about-finale-card {
-          align-items: flex-start;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+          gap: 0.9rem;
         }
 
         .about-primary-btn {
-          margin-top: 0.35rem;
-          font-size: 13px;
-          font-weight: 800;
-          letter-spacing: 0.08em;
-          background: linear-gradient(135deg, #ff89ae, #ff5d8b 48%, #ef4579);
-          color: #fff9fb;
-          border: 1px solid rgba(255, 213, 227, 0.9);
-          box-shadow: 0 4px 18px rgba(239, 69, 121, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+          flex: none !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          gap: 8px !important;
+          margin-top: 0.6rem !important;
+          padding: 0.65rem 1.7rem !important;
+          font-size: 15px !important;
+          font-weight: 800 !important;
+          letter-spacing: 0.08em !important;
+          border-radius: 9999px !important;
+          background: linear-gradient(135deg, #ff89ae, #ff5d8b 48%, #ef4579) !important;
+          color: #fff9fb !important;
+          border: 1px solid rgba(255, 213, 227, 0.9) !important;
+          box-shadow: 0 4px 18px rgba(239, 69, 121, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+          width: auto !important;
+          height: auto !important;
+          min-height: 42px !important;
+          max-height: 46px !important;
+          align-self: center !important;
+          transition: all 0.22s ease !important;
         }
 
         .about-primary-btn:hover {
-          border-color: var(--about-accent-soft);
-          box-shadow: 0 8px 24px rgba(217, 61, 109, 0.45);
+          transform: translateY(-2px) scale(1.03) !important;
+          border-color: var(--about-accent-soft) !important;
+          box-shadow: 0 8px 24px rgba(217, 61, 109, 0.55) !important;
         }
 
         /* Dedicated Card Footer Navigation (At bottom of card, eliminates arrow overlap) */
@@ -2105,93 +2164,249 @@ export default function App() {
         @media (max-width: 768px) {
           .about-info-panel {
             top: auto !important;
-            bottom: clamp(3.5rem, 6vh, 4.2rem) !important;
+            bottom: clamp(4.0rem, 7.5vh, 4.8rem) !important;
             left: 50% !important;
             right: auto !important;
             transform: translateX(-50%) !important;
-            width: min(94vw, 420px) !important;
-            max-width: 420px !important;
-            height: min(620px, calc(100vh - 7rem)) !important;
-            padding: 1.25rem 1rem !important;
-            gap: 0.75rem !important;
+            width: min(92vw, 370px) !important;
+            max-width: 370px !important;
+            height: clamp(370px, 54vh, 430px) !important;
+            padding: 0.65rem 0.8rem 0.5rem !important;
+            gap: 0.35rem !important;
             text-align: center !important;
             align-items: center !important;
+            border-radius: 16px !important;
+            box-shadow: 0 0 0 1px rgba(255, 106, 148, 0.55), 0 0 20px rgba(59, 130, 246, 0.18), 0 12px 36px rgba(0, 0, 0, 0.85) !important;
           }
+
+          .about-panel-header {
+            min-height: 28px !important;
+            padding: 0 0.1rem 0.2rem !important;
+            gap: 0.4rem !important;
+            width: 100% !important;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.3) !important;
+          }
+
+          .about-panel-emblem {
+            width: 20px !important;
+            height: 20px !important;
+          }
+
+          .about-panel-emblem-core {
+            width: 6px !important;
+            height: 6px !important;
+          }
+
+          .about-panel-brand {
+            font-size: 0.80rem !important;
+            letter-spacing: 0.10em !important;
+          }
+
+          .about-panel-status {
+            font-size: 0.58rem !important;
+            letter-spacing: 0.08em !important;
+            gap: 0.3rem !important;
+          }
+
+          .about-panel-status-dot {
+            width: 6px !important;
+            height: 6px !important;
+          }
+
+          .about-horizontal-viewport {
+            flex: 1 !important;
+            min-height: 0 !important;
+            width: 100% !important;
+          }
+
           .about-story-card {
-            gap: 0.65rem;
-            min-height: 520px;
-            padding: 18px 20px;
+            gap: 0.35rem !important;
+            min-height: 0 !important;
+            height: 100% !important;
+            padding: 4px 6px !important;
+            justify-content: space-evenly !important;
           }
+
           .about-cyber-badge {
-            align-self: center;
-            max-width: 100%;
+            align-self: center !important;
+            max-width: 100% !important;
+            padding: 2px 8px !important;
+            gap: 0.35rem !important;
           }
+
           .about-badge-text {
-            font-size: 0.52rem;
-            letter-spacing: 0.1em;
+            font-size: 0.48rem !important;
+            letter-spacing: 0.08em !important;
           }
-          .about-main-title,
-          .about-finale-title {
-            font-size: 40px;
+
+          .about-main-title {
+            font-size: clamp(22px, 5.5vw, 26px) !important;
+            line-height: 1.0 !important;
+            margin: 0 !important;
           }
+
           .about-story-quote {
-            font-size: 16px;
-            line-height: 1.45;
-            text-align: left;
+            font-size: 11.5px !important;
+            line-height: 1.35 !important;
+            text-align: left !important;
+            padding-left: 0.5rem !important;
+            margin: 0 !important;
           }
+
           .about-intro-copy,
           .about-legacy-copy {
-            gap: 0.45rem;
+            gap: 0.3rem !important;
           }
+
           .about-intro-copy p,
           .about-legacy-copy p {
-            font-size: 13px;
-            line-height: 1.4;
-            text-align: left;
+            font-size: 11px !important;
+            line-height: 1.35 !important;
+            text-align: left !important;
+            margin: 0 !important;
           }
+
           .about-section-label {
-            font-size: 0.55rem;
-            text-align: center;
+            font-size: 0.48rem !important;
+            letter-spacing: 0.1em !important;
+            text-align: center !important;
+            margin: 0 !important;
           }
+
           .about-section-title {
-            font-size: 28px;
-            text-align: center;
+            font-size: clamp(17px, 4.2vw, 20px) !important;
+            line-height: 1.05 !important;
+            text-align: center !important;
+            margin: 0 0 0.15rem !important;
           }
+
           .about-chapter-grid,
           .about-pillar-grid {
-            gap: 10px;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+            gap: 6px !important;
+            flex: 1 !important;
+            min-height: 0 !important;
+            width: 100% !important;
           }
+
           .about-chapter-card,
           .about-pillar-card {
-            padding: 9px;
-            text-align: left;
+            padding: 8px 10px !important;
+            text-align: left !important;
+            border-radius: 10px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            border: 1px solid rgba(255, 108, 161, 0.45) !important;
+            background: linear-gradient(145deg, rgba(20, 25, 35, 0.88), rgba(8, 12, 20, 0.8)) !important;
           }
+
           .about-chapter-meta {
-            font-size: 10px;
+            font-size: 9px !important;
           }
+
           .about-chapter-card h3,
           .about-pillar-card h3 {
-            font-size: 16px;
+            font-size: 14.5px !important;
+            font-weight: 900 !important;
+            margin: 0 0 4px !important;
+            line-height: 1.15 !important;
+            letter-spacing: 0.03em !important;
           }
+
           .about-chapter-card p,
           .about-pillar-card p {
-            font-size: 12px;
-            line-height: 1.35;
+            font-size: 12px !important;
+            line-height: 1.35 !important;
+            margin: 0 !important;
+            color: #ebf2ff !important;
           }
+
           .about-legacy-stat {
-            padding: 0.65rem 0.2rem;
+            padding: 0.45rem 0.2rem !important;
           }
+
           .about-legacy-stat strong {
-            font-size: 32px;
+            font-size: 22px !important;
           }
+
           .about-legacy-stat span {
-            font-size: 12px;
+            font-size: 10px !important;
           }
-          .about-card-indicator {
-            padding-top: 0.25rem;
-          }
+
           .about-finale-card {
-            align-items: center;
+            align-items: center !important;
+            text-align: center !important;
+            gap: 0.4rem !important;
+          }
+
+          .about-finale-title {
+            font-size: clamp(20px, 5vw, 24px) !important;
+            line-height: 1.05 !important;
+            margin: 0 !important;
+          }
+
+          .about-primary-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            flex: none !important;
+            padding: 0.55rem 1.4rem !important;
+            font-size: 0.88rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.08em !important;
+            border-radius: 9999px !important;
+            margin-top: 0.45rem !important;
+            width: auto !important;
+            height: auto !important;
+            min-height: 38px !important;
+            max-height: 42px !important;
+            max-width: 280px !important;
+            align-self: center !important;
+            box-shadow: 0 4px 14px rgba(239, 69, 121, 0.4) !important;
+          }
+
+          .about-primary-btn svg {
+            width: 14px !important;
+            height: 14px !important;
+          }
+
+          .about-panel-footer {
+            padding: 0.35rem 0.2rem 0 !important;
+            margin-top: auto !important;
+            width: 100% !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+          }
+
+          .about-nav-counter {
+            font-size: 0.62rem !important;
+          }
+
+          .about-arrow-btn {
+            width: 28px !important;
+            height: 28px !important;
+          }
+
+          .about-arrow-btn svg {
+            width: 14px !important;
+            height: 14px !important;
+          }
+
+          .about-card-indicator {
+            gap: 5px !important;
+            padding-top: 0 !important;
+          }
+
+          .about-card-indicator-item {
+            width: 6px !important;
+            height: 6px !important;
+          }
+
+          .about-card-indicator-item.is-active {
+            width: 18px !important;
           }
           .hero-cyber-badge {
             padding: 2px 8px !important;
@@ -2242,7 +2457,7 @@ export default function App() {
             margin-top: 0.2rem !important;
             width: 100% !important;
           }
-          .hero-btn {
+          .hero-btn-row .hero-btn {
             flex: 1 !important;
             padding: 0.52rem 0.75rem !important;
             font-size: 0.72rem !important;
@@ -2258,6 +2473,41 @@ export default function App() {
           }
           .scroll-track-container {
             height: 380vh !important;
+          }
+        }
+
+        
+        @media (max-width: 480px) {
+          .about-info-panel {
+            width: min(92vw, 345px) !important;
+            max-width: 345px !important;
+            height: clamp(350px, 52vh, 410px) !important;
+            bottom: clamp(3.8rem, 6.5vh, 4.4rem) !important;
+            padding: 0.55rem 0.65rem 0.4rem !important;
+          }
+          .about-pillar-card {
+            padding: 6px 8px !important;
+          }
+          .about-pillar-card h3 {
+            font-size: 13px !important;
+            margin: 0 0 3px !important;
+            font-weight: 900 !important;
+          }
+          .about-pillar-card p {
+            font-size: 10.8px !important;
+            line-height: 1.28 !important;
+          }
+          .about-story-quote {
+            font-size: 10.5px !important;
+          }
+          .about-primary-btn {
+            flex: none !important;
+            padding: 0.5rem 1.25rem !important;
+            font-size: 0.82rem !important;
+            min-height: 36px !important;
+            max-height: 40px !important;
+            width: auto !important;
+            align-self: center !important;
           }
         }
 

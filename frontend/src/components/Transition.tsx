@@ -435,18 +435,24 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       fromCamera.position.set(0, 0.15, 3.95);
       fromCameraRef.current = fromCamera;
 
-      const fromRenderer = new THREE.WebGLRenderer({
-        antialias: !isMobileDevice,
-        alpha: true,
-        powerPreference: 'high-performance'
-      });
-      fromRenderer.setPixelRatio(pixelRatio);
-      fromRenderer.setSize(width, height);
-      fromRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-      fromRenderer.toneMappingExposure = 1.0;
-      fromRenderer.outputColorSpace = THREE.SRGBColorSpace;
-      frontContainer.appendChild(fromRenderer.domElement);
-      fromRendererRef.current = fromRenderer;
+      let fromRenderer: THREE.WebGLRenderer;
+      try {
+        fromRenderer = new THREE.WebGLRenderer({
+          antialias: !isMobileDevice,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+        fromRenderer.setPixelRatio(pixelRatio);
+        fromRenderer.setSize(width, height);
+        fromRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        fromRenderer.toneMappingExposure = 1.0;
+        fromRenderer.outputColorSpace = THREE.SRGBColorSpace;
+        frontContainer.appendChild(fromRenderer.domElement);
+        fromRendererRef.current = fromRenderer;
+      } catch (err) {
+        console.warn('fromRenderer WebGL context creation failed or blocked:', err);
+        return;
+      }
 
       const pmremGen1 = new THREE.PMREMGenerator(fromRenderer);
       pmremGen1.compileEquirectangularShader();
@@ -523,18 +529,25 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
       toCamera.position.set(0, 0.15, 3.95);
       toCameraRef.current = toCamera;
 
-      const toRenderer = new THREE.WebGLRenderer({
-        antialias: !isMobileDevice,
-        alpha: true,
-        powerPreference: 'high-performance'
-      });
-      toRenderer.setPixelRatio(pixelRatio);
-      toRenderer.setSize(width, height);
-      toRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-      toRenderer.toneMappingExposure = 1.0;
-      toRenderer.outputColorSpace = THREE.SRGBColorSpace;
-      backContainer.appendChild(toRenderer.domElement);
-      toRendererRef.current = toRenderer;
+      let toRenderer: THREE.WebGLRenderer;
+      try {
+        toRenderer = new THREE.WebGLRenderer({
+          antialias: !isMobileDevice,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+        toRenderer.setPixelRatio(pixelRatio);
+        toRenderer.setSize(width, height);
+        toRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        toRenderer.toneMappingExposure = 1.0;
+        toRenderer.outputColorSpace = THREE.SRGBColorSpace;
+        backContainer.appendChild(toRenderer.domElement);
+        toRendererRef.current = toRenderer;
+      } catch (err) {
+        console.warn('toRenderer WebGL context creation failed or blocked:', err);
+        try { fromRenderer.dispose(); } catch (_) {}
+        return;
+      }
 
       const pmremGen2 = new THREE.PMREMGenerator(toRenderer);
       pmremGen2.compileEquirectangularShader();
@@ -985,8 +998,8 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           return;
         }
 
-        // Selective rendering: only render scene if its group is visible and within active progress
-        const shouldRenderFrom = Boolean(fromGroupRef.current && fromGroupRef.current.visible) && currentProgress < 0.998;
+        // Always render fromScene while currentProgress < 0.998 so fromBgPlane (the background) is ALWAYS visible from frame 1
+        const shouldRenderFrom = currentProgress < 0.998;
         const shouldRenderTo = Boolean(toGroupRef.current && toGroupRef.current.visible) && currentProgress > 0.002;
 
         if (shouldRenderFrom) {
@@ -1007,8 +1020,14 @@ export const Transition = forwardRef<TransitionHandle, TransitionProps>(
           window.removeEventListener('wheel', handleWheel);
         }
 
-        fromRenderer.dispose();
-        toRenderer.dispose();
+        try {
+          fromRenderer?.forceContextLoss?.();
+          fromRenderer?.dispose();
+        } catch (_) {}
+        try {
+          toRenderer?.forceContextLoss?.();
+          toRenderer?.dispose();
+        } catch (_) {}
 
         if (assemblyControllerRef.current) {
           assemblyControllerRef.current.dispose();

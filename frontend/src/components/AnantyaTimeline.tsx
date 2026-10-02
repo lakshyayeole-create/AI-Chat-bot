@@ -8,6 +8,7 @@ import { ProceduralCrystalStone } from './ProceduralCrystalStone';
 import { createProceduralStoneGeometry } from '../utils/crystalGeometry';
 import InfinityGauntlet from './InfinityGauntlet';
 import LokiHelmet from './LokiHelmet';
+import LokiLoomOverlay from './LokiLoomOverlay';
 import './AllEvents.css';
 // ============================================================================
 // 🌌 TIMELINE 3D CONTROLS & TUNING VARIABLES (EDIT FREELY HERE!)
@@ -63,6 +64,7 @@ interface TimelineStage {
   cardScale: number;
   convergenceProgress: number;
   lokiTransitionProgress: number;
+  galleryLoomProgress: number;
 }
 
 /**
@@ -82,6 +84,7 @@ function computeTimelineStage(progress: number): TimelineStage {
   let cardScale: number;
   let convergenceProgress = 0;
   let lokiTransitionProgress = 0;
+  let galleryLoomProgress = 0;
 
   if (p < NUM_STONES - 1) {
     const k = Math.min(NUM_STONES - 2, Math.floor(p));
@@ -122,6 +125,7 @@ function computeTimelineStage(progress: number): TimelineStage {
     cardScale = 1;
     convergenceProgress = 0;
     lokiTransitionProgress = 0;
+    galleryLoomProgress = 0;
   } else if (p <= (NUM_STONES - 1) + 1.25) {
     // ── Post Event 8: Stones Converge & Attach to Gauntlet with Finger Folding ──
     activeIndex = NUM_STONES - 1;
@@ -132,8 +136,9 @@ function computeTimelineStage(progress: number): TimelineStage {
     cardOffset = -40 * convT;
     cardScale = 1 - 0.05 * convT;
     lokiTransitionProgress = 0;
-  } else {
-    // ── Post Convergence: Rotate SAME Gauntlet into Loki's Helmet ──
+    galleryLoomProgress = 0;
+  } else if (p <= (NUM_STONES - 1) + 1.25 + 0.85) {
+    // ── Post Convergence: Rotate SAME Gauntlet into Loki's Helmet (8.25 -> 9.10) ──
     activeIndex = NUM_STONES - 1;
     rotationIndex = NUM_STONES - 1;
     convergenceProgress = 1.0;
@@ -142,6 +147,18 @@ function computeTimelineStage(progress: number): TimelineStage {
     cardScale = 0.95;
     const lokiT = Math.min(1, Math.max(0, (p - ((NUM_STONES - 1) + 1.25)) / 0.85));
     lokiTransitionProgress = lokiT;
+    galleryLoomProgress = 0;
+  } else {
+    // ── Post Loki Reveal: Multiverse Timeline Loom (Threads & Images sprout on scroll) (9.10 -> 10.70) ──
+    activeIndex = NUM_STONES - 1;
+    rotationIndex = NUM_STONES - 1;
+    convergenceProgress = 1.0;
+    cardOpacity = 0;
+    cardOffset = -40;
+    cardScale = 0.95;
+    lokiTransitionProgress = 1.0;
+    const loomT = Math.min(1, Math.max(0, (p - 9.10) / 1.6));
+    galleryLoomProgress = loomT;
   }
 
   // Orbit rotation driven by rotationIndex
@@ -155,6 +172,7 @@ function computeTimelineStage(progress: number): TimelineStage {
     cardScale,
     convergenceProgress,
     lokiTransitionProgress,
+    galleryLoomProgress,
   };
 }
 
@@ -252,6 +270,7 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
   // Diagonal laser clipping planes (perfectly aligned with to top right laser seam line)
   const clipPlaneGauntlet = useMemo(() => new THREE.Plane(), []);
   const clipPlaneLoki = useMemo(() => new THREE.Plane(), []);
+  const lokiClippingPlanes = useMemo(() => [clipPlaneLoki], [clipPlaneLoki]);
 
   useFrame(() => {
     if (isTransitioning && lokiTransitionProgress < 0.999) {
@@ -363,10 +382,12 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
 
   const cfg = TIMELINE_CONFIG;
 
-  // Dynamic Camera Mouse Parallax: subtle perspective shift giving authentic 3D pop
+  // Dynamic Camera Mouse Parallax: subtle perspective shift giving authentic 3D pop during timeline;
+  // Locks camera to dead-center during the Multiverse Loom Gallery for perfect thread alignment
   useFrame((state, delta) => {
-    const targetCamX = state.pointer.x * 0.25;
-    const targetCamY = cfg.camera_y + state.pointer.y * 0.15;
+    const isGallery = lokiTransitionProgress >= 0.999;
+    const targetCamX = isGallery ? 0 : state.pointer.x * 0.25;
+    const targetCamY = isGallery ? cfg.camera_y : cfg.camera_y + state.pointer.y * 0.15;
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetCamX, delta * 3.5);
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCamY, delta * 3.5);
     camera.lookAt(0, 0, 0);
@@ -595,16 +616,46 @@ const OrbitScene: React.FC<OrbitSceneProps> = ({
         </group>
       )}
 
-      {/* ── Loki's Regal Horned Helmet (Revealed along the laser seam) ── */}
-      {isTransitioning && (
-        <group
-          rotation={[0, sharedRotY, 0]}
-          position={isMobile ? [0, 0.55, 0.0] : [0, 0.05, 0.0]}
-          scale={isMobile ? 0.78 : 1.0}
-        >
-          <LokiHelmet clippingPlanes={lokiTransitionProgress < 0.999 ? [clipPlaneLoki] : undefined} />
-        </group>
-      )}
+      {/* ── Loki's Regal Horned Crown: Renders during 360° transition, smoothly glides near the head, and dissolves seamlessly into the artwork ── */}
+      {isTransitioning && (() => {
+        // 1. Full 360° rotation (completes by 0.72 so it stays poised and upright while moving to head)
+        const rotT = Math.min(1, lokiTransitionProgress / 0.72);
+        const rotEase = rotT * rotT * (3 - 2 * rotT);
+        const lokiRotY = (rotEase - 1) * Math.PI * 2;
+
+        // 2. Smooth glide from center to the exact place of Loki's crown in the background image
+        const startY = isMobile ? 0.35 : 0.0;
+        const startScale = isMobile ? 0.78 : 1.0;
+        const targetY = isMobile ? 0.38 : 0.71;
+        const targetScale = isMobile ? 0.28 : 0.34;
+
+        const glideRaw = Math.min(1, Math.max(0, (lokiTransitionProgress - 0.42) / 0.42));
+        const glideEase = glideRaw * glideRaw * (3 - 2 * glideRaw);
+
+        const currentY = THREE.MathUtils.lerp(startY, targetY, glideEase);
+        const currentScale = THREE.MathUtils.lerp(startScale, targetScale, glideEase);
+
+        // 3. Smooth dissolve into the painted crown on Loki's head (between 0.82 and 0.98)
+        const fadeRaw = Math.min(1, Math.max(0, (lokiTransitionProgress - 0.82) / 0.16));
+        const fadeEase = fadeRaw * fadeRaw * (3 - 2 * fadeRaw);
+        const crownOpacity = Math.max(0, 1.0 - fadeEase);
+
+        if (crownOpacity <= 0.001) return null;
+
+        return (
+          <group
+            rotation={[0, lokiRotY, 0]}
+            position={[0, currentY, 0.0]}
+            scale={currentScale}
+          >
+            <LokiHelmet
+              clippingPlanes={lokiTransitionProgress < 0.75 ? lokiClippingPlanes : undefined}
+              isFloating={lokiTransitionProgress < 0.42}
+              opacity={crownOpacity}
+            />
+          </group>
+        );
+      })()}
 
       {/* ── UnrealBloom & Vignette Post-Processing Glow (Enabled on desktop; bypassed on mobile for 60fps performance) ── */}
       {!isMobile && (
@@ -665,7 +716,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
 
   useImperativeHandle(ref, () => ({
     setTimelineProgress: (prog: number) => {
-      targetProgressRef.current = Math.max(0, Math.min(9.1, prog));
+      targetProgressRef.current = Math.max(0, Math.min(13.5, prog));
     },
     setGauntletClenchProgress: (prog: number) => {
       setGauntletClenchProgress((prev) => (Math.abs(prev - prog) > 0.015 ? prog : prev));
@@ -683,6 +734,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
   const isDirectNavRef = useRef<boolean>(false);
   const [convergenceProgress, setConvergenceProgress] = useState<number>(0);
   const [lokiTransitionProgress, setLokiTransitionProgress] = useState<number>(0);
+  const [galleryLoomProgress, setGalleryLoomProgress] = useState<number>(0);
   const [cardState, setCardState] = useState<{ opacity: number; offset: number; scale: number }>({
     opacity: 1,
     offset: 0,
@@ -710,7 +762,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
   useEffect(() => {
     if (timelineProgress !== undefined) {
       isDirectNavRef.current = false;
-      targetProgressRef.current = Math.max(0, Math.min(9.1, timelineProgress));
+      targetProgressRef.current = Math.max(0, Math.min(13.5, timelineProgress));
     }
   }, [timelineProgress]);
 
@@ -726,7 +778,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
       const diff = targetProgressRef.current - progress;
       if (Math.abs(diff) > 0.0002) {
         progress += diff * 0.14;
-        progress = Math.max(0, Math.min(9.1, progress));
+        progress = Math.max(0, Math.min(13.5, progress));
       } else {
         progress = targetProgressRef.current;
         isDirectNavRef.current = false;
@@ -743,6 +795,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         }
         setConvergenceProgress(stage.convergenceProgress);
         setLokiTransitionProgress(stage.lokiTransitionProgress);
+        setGalleryLoomProgress(stage.galleryLoomProgress);
         setCardState((prev) => {
           if (
             Math.abs(prev.opacity - stage.cardOpacity) < 0.008 &&
@@ -823,6 +876,61 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         backgroundColor: '#040711',
       }}
     >
+      {/* ── Loki God of Stories Atmospheric Background (Fades in smoothly as crown glides near head) ── */}
+      {(() => {
+        // Smoothly fade in background image as the crown begins gliding to the head
+        const bgFadeRaw = Math.min(1, Math.max(0, (lokiTransitionProgress - 0.50) / 0.32));
+        const bgOpacity = lokiTransitionProgress >= 0.82 ? 1 : bgFadeRaw * bgFadeRaw * (3 - 2 * bgFadeRaw);
+
+        return (
+          <div
+            className="loki-gallery-bg-backdrop"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 1,
+              pointerEvents: 'none',
+              opacity: bgOpacity,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'hidden',
+              background: '#040711',
+            }}
+            aria-hidden="true"
+          >
+            <div style={{ position: 'relative', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', transform: 'translateY(42px)' }}>
+              <img
+                src="/assets/loki_god_of_stories.jpg"
+                alt=""
+                style={{
+                  height: '100%',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none',
+                  maskImage: 'radial-gradient(ellipse 62% 72% at 50% 50%, black 32%, transparent 74%)',
+                  WebkitMaskImage: 'radial-gradient(ellipse 62% 72% at 50% 50%, black 32%, transparent 74%)',
+                }}
+              />
+            </div>
+            {/* Soft cosmic dark emerald atmospheric vignette seamlessly dissolving any edges */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'radial-gradient(ellipse 80% 85% at center, transparent 30%, rgba(4, 7, 17, 0.65) 60%, #040711 90%)',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
+        );
+      })()}
+
       {/* ── 1. Fullscreen R3F Canvas with Responsive Camera & Viewport Clamping ── */}
       <Canvas
         frameloop="always"
@@ -833,7 +941,7 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         }}
         gl={{
           antialias: false,
-          alpha: false,
+          alpha: true,
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.15,
@@ -843,10 +951,12 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
           inset: 0,
           width: '100%',
           height: '100%',
-          zIndex: 1,
+          zIndex: 2,
         }}
       >
-        <color attach="background" args={['#040711']} />
+        {lokiTransitionProgress < 0.98 && (
+          <color attach="background" args={['#040711']} />
+        )}
         <Suspense fallback={null}>
           <OrbitScene
             orbitRotation={currentRotation}
@@ -881,6 +991,9 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
           />
         );
       })()}
+
+      {/* ── Multiverse Timeline Loom (Threads & Images sprout from Loki's Horned Crown on scroll) ── */}
+      <LokiLoomOverlay loomProgress={galleryLoomProgress} />
 
       {/* ── 2. Desktop: Vertical 01–08 Progress Indicator (Right Side) ── */}
       {!isMobile && (
@@ -950,135 +1063,6 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         </div>
       )}
 
-      {/* ── 3. Mobile: Floating Left & Right Navigation Arrows & Glowing Stone Pill Badge ── */}
-      {isMobile && (
-        <>
-          {/* Futuristic Mobile Stone Pill Badge */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 'clamp(355px, 48vh, 410px)',
-              left: '50%',
-              transform: `translateX(-50%) translateY(${(1 - gauntletCompleteFade) * 20}px)`,
-              zIndex: 24,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '5px 16px',
-              borderRadius: '9999px',
-              background: 'rgba(8, 14, 26, 0.88)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: `1px solid ${activeStone.color}55`,
-              boxShadow: `0 0 16px ${activeStone.color}33, 0 4px 18px rgba(0, 0, 0, 0.6)`,
-              pointerEvents: 'none',
-              userSelect: 'none',
-              opacity: Math.max(0, 1 - convergenceProgress * 3.5) * gauntletCompleteFade,
-              transition: 'all 0.3s ease',
-            }}
-          >
-            <div
-              style={{
-                width: '7px',
-                height: '7px',
-                borderRadius: '50%',
-                backgroundColor: activeStone.color,
-                boxShadow: `0 0 10px ${activeStone.color}`,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: 'monospace',
-                fontSize: '0.74rem',
-                letterSpacing: '0.12em',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                fontWeight: 700,
-                textShadow: `0 0 8px ${activeStone.color}66`,
-              }}
-            >
-              {activeStone.stoneNumber} / 08 • {activeStone.name}
-            </span>
-          </div>
-
-          {/* Left Navigation Arrow */}
-          <button
-            type="button"
-            aria-label="Previous Event Stone"
-            disabled={displayIndex === 0}
-            onClick={() => handleSelectStone(Math.max(0, displayIndex - 1))}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              bottom: 'clamp(350px, 47vh, 405px)',
-              zIndex: 25,
-              width: '42px',
-              height: '42px',
-              borderRadius: '50%',
-              background: 'rgba(8, 14, 26, 0.85)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: `1px solid ${displayIndex > 0 ? `${activeStone.color}77` : 'rgba(255, 255, 255, 0.18)'}`,
-              boxShadow: displayIndex > 0
-                ? `0 4px 20px rgba(0, 0, 0, 0.7), 0 0 16px ${activeStone.color}44`
-                : '0 4px 20px rgba(0, 0, 0, 0.7)',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: displayIndex === 0 ? 'default' : 'pointer',
-              opacity: (displayIndex === 0 ? 0.25 : 1.0) * Math.max(0, 1 - convergenceProgress * 3.5) * gauntletCompleteFade,
-              pointerEvents: (displayIndex === 0 || convergenceProgress > 0.2 || gauntletCompleteFade < 0.5) ? 'none' : 'auto',
-              transform: `scale(${0.8 + 0.2 * gauntletCompleteFade})`,
-              transition: 'all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)',
-              touchAction: 'manipulation',
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-
-          {/* Right Navigation Arrow */}
-          <button
-            type="button"
-            aria-label="Next Event Stone"
-            disabled={displayIndex === NUM_STONES - 1}
-            onClick={() => handleSelectStone(Math.min(NUM_STONES - 1, displayIndex + 1))}
-            style={{
-              position: 'absolute',
-              right: '12px',
-              bottom: 'clamp(350px, 47vh, 405px)',
-              zIndex: 25,
-              width: '42px',
-              height: '42px',
-              borderRadius: '50%',
-              background: 'rgba(8, 14, 26, 0.85)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: `1px solid ${displayIndex < NUM_STONES - 1 ? `${activeStone.color}77` : 'rgba(255, 255, 255, 0.18)'}`,
-              boxShadow: displayIndex < NUM_STONES - 1
-                ? `0 4px 20px rgba(0, 0, 0, 0.7), 0 0 16px ${activeStone.color}44`
-                : '0 4px 20px rgba(0, 0, 0, 0.7)',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: displayIndex === NUM_STONES - 1 ? 'default' : 'pointer',
-              opacity: (displayIndex === NUM_STONES - 1 ? 0.25 : 1.0) * Math.max(0, 1 - convergenceProgress * 3.5) * gauntletCompleteFade,
-              pointerEvents: (displayIndex === NUM_STONES - 1 || convergenceProgress > 0.2 || gauntletCompleteFade < 0.5) ? 'none' : 'auto',
-              transform: `scale(${0.8 + 0.2 * gauntletCompleteFade})`,
-              transition: 'all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)',
-              touchAction: 'manipulation',
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </>
-      )}
-
       {/* ── 4. Bottom Left: “SCROLL TO ROTATE” (Desktop Only) ── */}
       <div
         style={{
@@ -1117,9 +1101,9 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
         </span>
       </div>
 
-      {/* ── 5. Scroll-Driven Event Details Box (Appears precisely at focal stone position) ── */}
+      {/* ── 5. Scroll-Driven Event Details Outer Container (Appears precisely at focal stone position) ── */}
       <div
-        className="event-card-wrapper"
+        className="event-card-outer"
         onTouchStart={(e) => e.stopPropagation()}
         onTouchMove={(e) => e.stopPropagation()}
         style={{
@@ -1127,113 +1111,241 @@ export const AnantyaTimeline = forwardRef<AnantyaTimelineHandle, AnantyaTimeline
           position: 'absolute',
           left: isMobile ? '50%' : 'clamp(47%, 50vw, 54%)',
           top: isMobile ? 'auto' : '50%',
-          bottom: isMobile ? 'clamp(3.2rem, 5.5vh, 4.0rem)' : 'auto',
+          bottom: isMobile ? 'clamp(1.2rem, 2.5vh, 1.8rem)' : 'auto',
           transform: isMobile
-            ? `translate(-50%, ${(1 - gauntletCompleteFade) * 45}px)`
+            ? `translate(-50%, ${(1 - gauntletCompleteFade) * 35}px)`
             : `translate(${cardState.offset}px, -50%) scale(${cardState.scale})`,
           transformOrigin: isMobile ? 'center bottom' : 'left center',
           opacity: (isMobile ? 1.0 : cardState.opacity) * Math.max(0, 1 - convergenceProgress * 3.5) * (isMobile ? gauntletCompleteFade : introUiFade),
           pointerEvents: (convergenceProgress > 0.2 || (isMobile ? gauntletCompleteFade : introUiFade) < 0.5) ? 'none' : 'auto',
           transition: isMobile ? 'opacity 0.35s ease, transform 0.35s ease' : undefined,
-          width: isMobile ? 'min(92vw, 380px)' : 'clamp(410px, 34vw, 470px)',
-          maxWidth: isMobile ? '380px' : '470px',
-          height: 'auto',
-          maxHeight: isMobile ? '45vh' : 'none',
-          overflowY: isMobile ? 'auto' : 'visible',
+          width: isMobile ? 'min(90vw, 340px)' : 'clamp(410px, 34vw, 470px)',
+          maxWidth: isMobile ? '340px' : '470px',
           zIndex: 20,
           userSelect: 'none',
         } as React.CSSProperties}
       >
-        <div className="event-card">
-          <div className="event-logo-area">
-            <div className="logo-glow" />
-            <div className="event-logo-container">
-              {activeStone.logoUrl ? (
-                <img
-                  key={activeStone.id}
-                  src={activeStone.logoUrl}
-                  alt={`${activeStone.title} logo`}
-                  className="event-logo"
-                  loading="eager"
-                  decoding="sync"
-                />
-              ) : (
-                <div className="event-logo-placeholder">
-                  <svg viewBox="0 0 100 100" className="placeholder-icon">
-                    <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="4" />
-                    <circle cx="50" cy="65" r="10" fill="currentColor" />
-                  </svg>
-                  <span>A N A N T Y A</span>
+        {/* Mobile Stone Switcher Navigation Bar (Guaranteed strictly 8px above the card, never overlaps) */}
+        {isMobile && (
+          <div
+            className="mobile-stone-nav-bar"
+            style={{
+              position: 'absolute',
+              bottom: 'calc(100% + 8px)',
+              left: 0,
+              right: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '0 2px',
+              zIndex: 25,
+            }}
+          >
+            {/* Left Navigation Arrow */}
+            <button
+              type="button"
+              aria-label="Previous Event Stone"
+              disabled={displayIndex === 0}
+              onClick={() => handleSelectStone(Math.max(0, displayIndex - 1))}
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'rgba(8, 14, 26, 0.90)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: `1px solid ${displayIndex > 0 ? `${activeStone.color}88` : 'rgba(255, 255, 255, 0.15)'}`,
+                boxShadow: displayIndex > 0
+                  ? `0 4px 14px rgba(0, 0, 0, 0.7), 0 0 12px ${activeStone.color}44`
+                  : '0 4px 14px rgba(0, 0, 0, 0.5)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: displayIndex === 0 ? 'default' : 'pointer',
+                opacity: displayIndex === 0 ? 0.3 : 1.0,
+                pointerEvents: displayIndex === 0 ? 'none' : 'auto',
+                touchAction: 'manipulation',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            {/* Glowing Stone Badge */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                padding: '4px 12px',
+                borderRadius: '9999px',
+                background: 'rgba(8, 14, 26, 0.92)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: `1px solid ${activeStone.color}66`,
+                boxShadow: `0 0 14px ${activeStone.color}33, 0 4px 16px rgba(0, 0, 0, 0.7)`,
+                pointerEvents: 'none',
+              }}
+            >
+              <div
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: activeStone.color,
+                  boxShadow: `0 0 8px ${activeStone.color}`,
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 'clamp(0.66rem, 2.4vw, 0.72rem)',
+                  letterSpacing: '0.10em',
+                  color: '#ffffff',
+                  textTransform: 'uppercase',
+                  fontWeight: 700,
+                  textShadow: `0 0 8px ${activeStone.color}66`,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {activeStone.stoneNumber} / 08 • {activeStone.name}
+              </span>
+            </div>
+
+            {/* Right Navigation Arrow */}
+            <button
+              type="button"
+              aria-label="Next Event Stone"
+              disabled={displayIndex === NUM_STONES - 1}
+              onClick={() => handleSelectStone(Math.min(NUM_STONES - 1, displayIndex + 1))}
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'rgba(8, 14, 26, 0.90)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: `1px solid ${displayIndex < NUM_STONES - 1 ? `${activeStone.color}88` : 'rgba(255, 255, 255, 0.15)'}`,
+                boxShadow: displayIndex < NUM_STONES - 1
+                  ? `0 4px 14px rgba(0, 0, 0, 0.7), 0 0 12px ${activeStone.color}44`
+                  : '0 4px 14px rgba(0, 0, 0, 0.5)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: displayIndex === NUM_STONES - 1 ? 'default' : 'pointer',
+                opacity: displayIndex === NUM_STONES - 1 ? 0.3 : 1.0,
+                pointerEvents: displayIndex === NUM_STONES - 1 ? 'none' : 'auto',
+                touchAction: 'manipulation',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        <div
+          className="event-card-wrapper"
+          style={{
+            width: '100%',
+          }}
+        >
+          <div className="event-card">
+            <div className="event-logo-area">
+              <div className="logo-glow" />
+              <div className="event-logo-container">
+                {activeStone.logoUrl ? (
+                  <img
+                    key={activeStone.id}
+                    src={activeStone.logoUrl}
+                    alt={`${activeStone.title} logo`}
+                    className="event-logo"
+                    loading="eager"
+                    decoding="sync"
+                  />
+                ) : (
+                  <div className="event-logo-placeholder">
+                    <svg viewBox="0 0 100 100" className="placeholder-icon">
+                      <polygon points="50,10 90,90 10,90" fill="none" stroke="currentColor" strokeWidth="4" />
+                      <circle cx="50" cy="65" r="10" fill="currentColor" />
+                    </svg>
+                    <span>A N A N T Y A</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="event-card-content">
+              <div className="event-category-row">
+                <span className="event-category">STONE {activeStone.stoneNumber} • {activeStone.category}</span>
+                <div className="category-line" />
+              </div>
+
+              {activeStone.organizer && (
+                <div className="event-organizer-row">
+                  <span className="organizer-badge">BY {activeStone.organizer}</span>
                 </div>
               )}
-            </div>
-          </div>
 
-          <div className="event-card-content">
-            <div className="event-category-row">
-              <span className="event-category">STONE {activeStone.stoneNumber} • {activeStone.category}</span>
-              <div className="category-line" />
-            </div>
+              <h3 className="event-name">{activeStone.title}</h3>
+              <p className="event-card-desc">{activeStone.description}</p>
 
-            {activeStone.organizer && (
-              <div className="event-organizer-row">
-                <span className="organizer-badge">BY {activeStone.organizer}</span>
-              </div>
-            )}
+              <div className="event-divider" />
 
-            <h3 className="event-name">{activeStone.title}</h3>
-            <p className="event-card-desc">{activeStone.description}</p>
-
-            <div className="event-divider" />
-
-            <div className="event-details">
-              <div className="detail-item">
-                <div className="detail-label">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                  DATE
+              <div className="event-details">
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    DATE
+                  </div>
+                  <span className="detail-value">{activeStone.day}{activeStone.time ? ` • ${activeStone.time}` : ''}</span>
                 </div>
-                <span className="detail-value">{activeStone.day}{activeStone.time ? ` • ${activeStone.time}` : ''}</span>
-              </div>
-              {activeStone.teamSize && (
                 <div className="detail-item">
                   <div className="detail-label">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     TEAM SIZE
                   </div>
-                  <span className="detail-value">{activeStone.teamSize}</span>
+                  <span className="detail-value">{activeStone.teamSize || 'Individual (1 member)'}</span>
                 </div>
-              )}
-              {activeStone.prizePool && (
-                <div className="detail-item full-width">
-                  <div className="detail-label">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-                    PRIZE POOL
+                {activeStone.prizePool && (
+                  <div className="detail-item full-width">
+                    <div className="detail-label">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+                      PRIZE POOL
+                    </div>
+                    <span className="detail-value accent-text">{activeStone.prizePool}</span>
                   </div>
-                  <span className="detail-value accent-text">{activeStone.prizePool}</span>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
 
-            <div className="event-card-footer">
-              {(() => {
-                const targetUrl = activeStone.url || activeStone.link;
-                const isExternal = Boolean(targetUrl && targetUrl.startsWith('http'));
-                return (
-                  <a
-                    href={targetUrl || '#'}
-                    target={isExternal ? '_blank' : undefined}
-                    rel={isExternal ? 'noopener noreferrer' : undefined}
-                    className="explore-btn"
-                    onClick={(e) => {
-                      if (!isExternal) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span>EXPLORE EVENT</span> <span className="arrow">→</span>
-                  </a>
-                );
-              })()}
+              <div className="event-card-footer">
+                {(() => {
+                  const targetUrl = activeStone.url || activeStone.link;
+                  const isExternal = Boolean(targetUrl && targetUrl.startsWith('http'));
+                  return (
+                    <a
+                      href={targetUrl || '#'}
+                      target={isExternal ? '_blank' : undefined}
+                      rel={isExternal ? 'noopener noreferrer' : undefined}
+                      className="explore-btn"
+                      onClick={(e) => {
+                        if (!isExternal) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      <span>EXPLORE EVENT</span> <span className="arrow">→</span>
+                    </a>
+                  );
+                })()}
+              </div>
             </div>
           </div>
         </div>

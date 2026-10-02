@@ -91,7 +91,7 @@ export const IntroOverlay: React.FC<IntroOverlayProps> = ({ onEnter }) => {
       <div className="intro-card">
         {/* Animated Brand Logo */}
         <div className="intro-logo-wrap">
-          <img src="/favicon.svg" alt="Anantya Logo" className="intro-logo-svg" />
+          <img src="/assets/ANANTYA.webp" alt="Anantya Logo" className="intro-logo-svg" />
           <div className="intro-logo-pulse" />
         </div>
 

@@ -1,0 +1,127 @@
+/* ── Stark Industries / Jarvis Cyber Visitor Counter ── */
+
+.visitor-counter-root {
+  position: relative;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+}
+
+.visitor-counter-root.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Glassmorphism Cyber Capsule Pill */
+.visitor-hud-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px;
+  background: rgba(8, 14, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: 9999px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75),
+              0 0 16px rgba(56, 189, 248, 0.12),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: default;
+  transition: border-color 0.25s ease,
+              box-shadow 0.25s ease,
+              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.visitor-counter-root:hover .visitor-hud-pill {
+  border-color: rgba(56, 189, 248, 0.65);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.85),
+              0 0 24px rgba(56, 189, 248, 0.28),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Glowing Live Radar Beacon */
+.visitor-beacon-wrap {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beacon-core {
+  position: absolute;
+  width: 6.5px;
+  height: 6.5px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.beacon-ping {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.7);
+  animation: beacon-ping-anim 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes beacon-ping-anim {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  70%, 100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Cyber User Icon */
+.visitor-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  transition: transform 0.25s ease;
+}
+
+.visitor-counter-root:hover .visitor-icon-wrap {
+  transform: scale(1.08);
+}
+
+/* Counter Number Only */
+.visitor-number {
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  line-height: 1;
+}
+
+/* ── Responsive Mobile Adjustments (< 768px) ── */
+@media (max-width: 768px) {
+  .visitor-hud-pill {
+    padding: 5px 11px;
+    gap: 7px;
+  }
+
+  .visitor-number {
+    font-size: 0.88rem;
+  }
+
+  .visitor-icon-wrap svg {
+    width: 12px;
+    height: 12px;
+  }
+}

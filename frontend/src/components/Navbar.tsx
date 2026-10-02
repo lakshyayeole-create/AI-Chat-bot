@@ -62,11 +62,11 @@ export interface NavbarHandle {
 }
 
 const defaultItems: NavItem[] = [
-  { id: 'home', label: 'Home', subtitle: 'Suit-Up & Armor Core', number: '01', accent: '#f59e0b' },
-  { id: 'about', label: 'About', subtitle: 'Galactic Extravaganza', number: '02', accent: '#f43f5e' },
-  { id: 'events', label: 'Events', subtitle: '8 Multiverse Arenas', number: '03', accent: '#38bdf8' },
-  { id: 'gallery', label: 'Gallery', subtitle: 'Quantum Archives', number: '04', accent: '#a855f7' },
-  { id: 'contact', label: 'Contact', subtitle: 'S.H.I.E.L.D. Comm-Link', number: '05', accent: '#10b981' },
+  { id: 'home', label: 'Home', number: '01', accent: '#f59e0b' },
+  { id: 'about', label: 'About', number: '02', accent: '#f43f5e' },
+  { id: 'events', label: 'Events', number: '03', accent: '#38bdf8' },
+  { id: 'gallery', label: 'Gallery', number: '04', accent: '#a855f7' },
+  { id: 'contact', label: 'Contact', number: '05', accent: '#10b981' },
 ];
 
 export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
@@ -468,7 +468,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
             <div className="drawer-header">
               <div className="drawer-system-tag">
                 <span className="system-pulse-dot" />
-                <span>SYSTEM NAVIGATION // HUD v2.6</span>
+                <span>NAVIGATION</span>
               </div>
               <button
                 type="button"
@@ -499,10 +499,7 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
                   >
                     <div className="drawer-card-left">
                       <span className="drawer-item-number">{item.number}</span>
-                      <div className="drawer-item-info">
-                        <span className="drawer-item-title">{item.label}</span>
-                        {item.subtitle && <span className="drawer-item-desc">{item.subtitle}</span>}
-                      </div>
+                      <span className="drawer-item-title">{item.label}</span>
                     </div>
                     <div className="drawer-card-arrow">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -512,24 +509,6 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
                   </button>
                 );
               })}
-            </div>
-
-            {/* Quick Action Footer */}
-            <div className="drawer-footer">
-              <button
-                type="button"
-                className="drawer-action-btn"
-                onClick={() => handleItemClick('events')}
-              >
-                <span>EXPLORE 8 ARENAS</span>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-              <div className="drawer-college-credit">
-                <span>PCCOE • DEPARTMENT OF COMPUTER ENGINEERING</span>
-              </div>
             </div>
           </aside>
         </div>
@@ -678,11 +657,11 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
 
         .drawer-nav-card {
           width: 100%;
-          min-height: 52px;
+          min-height: 48px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0.75rem 1rem;
+          padding: 0.65rem 1.1rem;
           background: rgba(15, 23, 42, 0.55);
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-left: 3px solid var(--card-accent);
@@ -704,34 +683,22 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
         .drawer-card-left {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
         }
 
         .drawer-item-number {
           font-family: monospace;
-          font-size: 0.75rem;
+          font-size: 0.78rem;
           font-weight: 800;
           color: var(--card-accent);
           opacity: 0.9;
         }
 
-        .drawer-item-info {
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-        }
-
         .drawer-item-title {
-          font-size: 0.92rem;
+          font-size: 0.96rem;
           font-weight: 700;
           letter-spacing: 0.8px;
           color: #ffffff;
-        }
-
-        .drawer-item-desc {
-          font-size: 0.65rem;
-          color: #94a3b8;
-          letter-spacing: 0.3px;
         }
 
         .drawer-card-arrow {
@@ -743,47 +710,6 @@ export const Navbar = forwardRef<NavbarHandle, NavbarProps>(({
         .drawer-nav-card.is-active .drawer-card-arrow {
           color: var(--card-accent);
           transform: translateX(3px);
-        }
-
-        .drawer-footer {
-          display: flex;
-          flex-direction: column;
-          gap: 0.8rem;
-          margin-top: 0.4rem;
-          padding-top: 0.8rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .drawer-action-btn {
-          width: 100%;
-          min-height: 44px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          background: linear-gradient(135deg, #0284c7 0%, #00e5ff 100%);
-          border: 1px solid rgba(0, 229, 255, 0.6);
-          border-radius: 10px;
-          color: #030712;
-          font-size: 0.78rem;
-          font-weight: 800;
-          letter-spacing: 1.2px;
-          cursor: pointer;
-          box-shadow: 0 4px 18px rgba(0, 229, 255, 0.35);
-          transition: transform 0.18s, box-shadow 0.18s;
-        }
-
-        .drawer-action-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 24px rgba(0, 229, 255, 0.55);
-        }
-
-        .drawer-college-credit {
-          text-align: center;
-          font-size: 0.55rem;
-          color: #64748b;
-          letter-spacing: 1px;
-          font-family: monospace;
         }
       `}</style>
     </>

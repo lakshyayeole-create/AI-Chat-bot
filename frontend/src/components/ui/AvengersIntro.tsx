@@ -100,14 +100,14 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
     const wrapperEl = logoWrapperRef.current;
     if (!svgEl || !pngEl || !wrapperEl) return;
 
-    // Timing constants
-    const DRAW_DURATION = 1.9;    // seconds each path takes to draw
-    const MAX_STAGGER = 1.3;      // max stagger spread (left-to-right)
-    const PNG_FADE_START = 1.6;   // when PNG starts fading in
-    const BORDER_FADE_START = 2.2; // when SVG borders fade out
-    const BORDER_FADE_DUR = 0.9;
-    const GLOW_APPLY_AT = (DRAW_DURATION + MAX_STAGGER) * 1000 + 60;
-    const HANDOFF_START = 3.3;    // when to start handoff transition to main page
+    // Timing constants (crisp, snappy, energetic)
+    const DRAW_DURATION = 1.3;    // seconds each path takes to draw
+    const MAX_STAGGER = 0.8;      // max stagger spread (left-to-right)
+    const PNG_FADE_START = 1.1;   // when PNG starts fading in
+    const BORDER_FADE_START = 1.6; // when SVG borders fade out
+    const BORDER_FADE_DUR = 0.7;
+    const GLOW_APPLY_AT = (DRAW_DURATION + MAX_STAGGER) * 1000 + 40;
+    const HANDOFF_START = 2.2;    // when to start handoff transition to main page
 
     // 1. Initial 3D state
     gsap.set(wrapperEl, {
@@ -211,17 +211,26 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
         filter:
           'brightness(1.3) contrast(1.1) drop-shadow(0 0 50px rgba(255, 120, 0, 0.95)) drop-shadow(0 0 80px rgba(255, 60, 0, 0.75))',
       });
-    }, 2.8 * 1000);
+    }, 1.75 * 1000);
 
     // 10. Seamless handoff to main page's centered Navbar state
     const handoffTimer = setTimeout(() => {
       if (isFinishedRef.current) return;
+      isFinishedRef.current = true;
+
+      // Immediately pass pointer events through so any wheel or touch gesture reaches the page
+      if (containerRef.current) {
+        containerRef.current.style.pointerEvents = 'none';
+      }
+
+      // Signal completion right as the background starts dissolving so scroll unlocks instantly
+      onComplete();
 
       // Dissolve dark intro background to reveal the main 3D canvas and navbar behind it
       if (bgLayersRef.current) {
         gsap.to(bgLayersRef.current, {
           opacity: 0,
-          duration: 0.6,
+          duration: 0.45,
           ease: 'power2.inOut',
         });
       }
@@ -229,7 +238,8 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       if (containerRef.current) {
         gsap.to(containerRef.current, {
           backgroundColor: 'rgba(3, 4, 8, 0)',
-          duration: 0.65,
+          opacity: 0,
+          duration: 0.5,
           ease: 'power2.inOut',
         });
       }
@@ -237,21 +247,9 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       // Smoothly morph logo size to match the Navbar's centered logo size (height ~110px)
       gsap.to(wrapperEl, {
         scale: 0.32,
-        duration: 0.85,
+        opacity: 0,
+        duration: 0.45,
         ease: 'power3.inOut',
-        onComplete: () => {
-          if (containerRef.current && !isFinishedRef.current) {
-            gsap.to(containerRef.current, {
-              opacity: 0,
-              duration: 0.35,
-              ease: 'power2.out',
-              onComplete: () => {
-                isFinishedRef.current = true;
-                onComplete();
-              },
-            });
-          }
-        },
       });
     }, HANDOFF_START * 1000);
 
@@ -260,7 +258,7 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
       if (!isFinishedRef.current) {
         handleSkip();
       }
-    }, 4500);
+    }, 3200);
 
     return () => {
       clearTimeout(glowTimer);
@@ -278,16 +276,16 @@ export const AvengersIntro: React.FC<AvengersIntroProps> = ({ onComplete }) => {
     isFinishedRef.current = true;
 
     if (containerRef.current) {
+      containerRef.current.style.pointerEvents = 'none';
+    }
+    onComplete();
+
+    if (containerRef.current) {
       gsap.to(containerRef.current, {
         opacity: 0,
-        duration: 0.35,
+        duration: 0.25,
         ease: 'power2.inOut',
-        onComplete: () => {
-          onComplete();
-        },
       });
-    } else {
-      onComplete();
     }
   };
 

@@ -37,12 +37,31 @@ function serveAssetsPlugin() {
   };
 }
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), serveAssetsPlugin()],
   publicDir: 'public',
   server: {
     port: 5173,
     open: false,
+  },
+  build: {
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'three-vendor';
+            }
+            if (id.includes('gsap') || id.includes('lenis')) {
+              return 'animation-vendor';
+            }
+            if (id.includes('react') || id.includes('scheduler')) {
+              return 'react-vendor';
+            }
+          }
+        },
+      },
+    },
   },
 });

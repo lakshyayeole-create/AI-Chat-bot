@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div className="footer-col brand-col">
             <div className="footer-brand-header">
               <img
-                src="/assets/ANANTYA.png"
+                src="/assets/ANANTYA.webp"
                 alt="Anantya 2026 Logo"
                 className="footer-logo-img"
                 onError={(e) => {
@@ -131,6 +131,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <a href="https://make-a-doodle.vercel.app/" target="_blank" rel="noopener noreferrer">
                   <span className="link-arrow">›</span> Make a Doodle (Art) ↗
+                </a>
+              </li>
+              <li>
+                <a href="https://innovate-x-blue.vercel.app/" target="_blank" rel="noopener noreferrer">
+                  <span className="link-arrow">›</span> InnovateX 2026 (Expo) ↗
                 </a>
               </li>
             </ul>

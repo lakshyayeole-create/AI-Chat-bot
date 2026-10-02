@@ -224,16 +224,16 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
 
   if (isMobile) {
     // ── Improved Mobile Celestial Planetary Orbit ──
-    // All 8 stones form an elegant 3D celestial ring clearly visible on mobile
-    const rx = 1.85; // Width radius fits comfortably inside mobile viewport
+    // All 8 stones form an elegant 3D celestial ring clearly visible in the upper viewport on mobile
+    const rx = 1.90; // Width radius fits comfortably inside mobile viewport
     const rz = 2.2;  // Depth into 3D space
-    const ringCenterY = 1.38;
+    const ringCenterY = 1.58;
 
     if (isActive) {
-      // Hero showcase stone: brought forward, centered, and elevated
+      // Hero showcase stone: brought forward, centered, and elevated well above the event card
       targetX = 0.0;
-      targetY = 1.42;
-      targetZ = 0.70;
+      targetY = 1.68;
+      targetZ = 0.72;
     } else {
       // Inactive stones arrayed along a tilted 3D cosmic planetary ring
       targetX = Math.cos(angle) * rx;
@@ -248,8 +248,8 @@ export const ProceduralCrystalStone: React.FC<ProceduralCrystalStoneProps> = ({
   // Subtle depth attenuation factor for stones in the background
   const depthFactor = THREE.MathUtils.clamp((frontFactor + 1) / 2, 0.42, 1.0);
 
-  // Responsive stone sizing: sleek crystal gem on mobile without overpowering narrow phone width
-  const mobileScaleFactor = isMobile ? (isActive ? 0.72 : 0.42) : 1.0;
+  // Responsive stone sizing: sleek crystal gem on mobile with vibrant presence
+  const mobileScaleFactor = isMobile ? (isActive ? 0.82 : 0.48) : 1.0;
   const baseScale = (isCreation ? stonesSize * 1.08 : stonesSize) * mobileScaleFactor;
   const targetScale = isActive ? baseScale * (isMobile ? 1.15 : 1.2) : baseScale;
 

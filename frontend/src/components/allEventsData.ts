@@ -45,6 +45,7 @@ export const allEventsData: EventItem[] = [
     category: "Competitive Programming",
     organizer: "CESA-SDW / ACM PCCOE",
     date: "10 October 2026 (Final Round)",
+    teamSize: "Individual (1 member)",
     prizePool: "₹18K+",
     logoUrl: "/logos/codigo.webp",
     description: "Coding competition focused on problem solving.",
@@ -101,5 +102,18 @@ export const allEventsData: EventItem[] = [
     accent: "#f8fafc", // White/Silver
     logoUrl: "/logos/make_a_doddle.webp",
     url: "https://make-a-doodle.vercel.app/"
+  },
+  {
+    id: "innovatex",
+    name: "Innovatex 2026",
+    category: "Flagship Expo",
+    organizer: "PCCOE Innovation Council",
+    date: "10 October 2026 | Grand Expo",
+    teamSize: "1–4 members",
+    prizePool: "₹50K+",
+    description: "Grand flagship expo showcasing cutting-edge engineering prototypes, AI breakthroughs, and venture pitches.",
+    accent: "#d97706",
+    logoUrl: "/logos/ANANTYA.webp",
+    url: "https://innovate-x-blue.vercel.app/"
   }
 ];
