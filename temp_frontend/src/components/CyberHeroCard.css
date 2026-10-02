@@ -1,0 +1,432 @@
+/* ==========================================================================
+   ANANTYA 2026 — CYBER HUD HERO CARD (HIGH-TECH STARK / MARVEL ARMOR FRAME)
+   Matching the holographic sci-fi card design from the concept HUD artwork
+   ========================================================================== */
+
+/* Main Cyber Armor Card Container */
+.home-hero-panel.cyber-hud-card {
+  position: fixed;
+  top: 50%;
+  right: 6%;
+  width: 100%;
+  max-width: 530px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.3rem 2.4rem 2rem;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  align-items: center !important;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: visible;
+  filter: drop-shadow(0 0 24px rgba(0, 229, 255, 0.45)) drop-shadow(0 20px 50px rgba(0, 0, 0, 0.85));
+  will-change: transform, opacity;
+}
+
+/* 1. Geometric Clipped Background Plate */
+.cyber-bg-plate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(130% 120% at 50% 10%, rgba(7, 18, 38, 0.94) 0%, rgba(2, 9, 20, 0.97) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  clip-path: polygon(
+    6.5% 0%,
+    41% 0%, 43.5% 1.8%, 56.5% 1.8%, 59% 0%,
+    93.5% 0%,
+    100% 6.5%,
+    100% 43.5%, 98.5% 45.5%, 98.5% 54.5%, 100% 56.5%,
+    100% 93.5%,
+    93.5% 100%,
+    59% 100%, 56.5% 98.2%, 43.5% 98.2%, 41% 100%,
+    6.5% 100%,
+    0% 93.5%,
+    0% 56.5%, 1.5% 54.5%, 1.5% 45.5%, 0% 43.5%,
+    0% 6.5%
+  );
+  box-shadow: inset 0 0 35px rgba(0, 229, 255, 0.12);
+}
+
+/* 2. SVG Cyber Armor Frame Layer */
+.cyber-frame-armor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.cyber-frame-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.8));
+}
+
+.cyber-svg-outer-path {
+  fill: none;
+  stroke: url(#cyberBorderGrad);
+  stroke-width: 2.2px;
+}
+
+.cyber-svg-inner-path {
+  fill: none;
+  stroke: rgba(56, 189, 248, 0.42);
+  stroke-width: 1.1px;
+}
+
+.cyber-bracket {
+  fill: none;
+  stroke: #38bdf8;
+  stroke-width: 2.8px;
+  filter: drop-shadow(0 0 6px #00e5ff);
+}
+
+.cyber-vent-line {
+  stroke: #38bdf8;
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px #00e5ff);
+}
+
+.cyber-notch-accent {
+  stroke: #38bdf8;
+  stroke-width: 2px;
+  stroke-linecap: round;
+}
+
+/* Holographic Dot Matrix Overlay */
+.cyber-grid-overlay {
+  position: absolute;
+  inset: 6px;
+  background-image: 
+    radial-gradient(rgba(56, 189, 248, 0.18) 1.2px, transparent 1.2px),
+    linear-gradient(rgba(56, 189, 248, 0.02) 1px, transparent 1px);
+  background-size: 15px 15px, 100% 4px;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+/* Corner Glow Halos */
+.cyber-corner-glow {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.45) 0%, transparent 70%);
+}
+.cyber-corner-glow.tl { top: -6px; left: -6px; }
+.cyber-corner-glow.tr { top: -6px; right: -6px; }
+.cyber-corner-glow.bl { bottom: -6px; left: -6px; }
+.cyber-corner-glow.br { bottom: -6px; right: -6px; }
+
+/* 3. Card Content Area */
+.cyber-card-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+/* Main Titles */
+.cyber-card-content .hero-main-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Outfit', 'Montserrat', -apple-system, sans-serif;
+  font-size: clamp(2.4rem, 4.2vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1.05;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  color: #ffffff !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.cyber-card-content .hero-title-year {
+  display: block;
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  letter-spacing: 0.08em;
+  color: #ff7700 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #ff7700 !important;
+  text-shadow: none !important;
+  filter: none !important;
+  margin-top: 0.15rem;
+}
+
+/* Timer Box Styling Enhancement inside Cyber Card */
+.cyber-card-content .countdown-box {
+  background: rgba(6, 18, 38, 0.75);
+  border: 1.2px solid rgba(56, 189, 248, 0.38);
+  border-radius: 10px;
+  box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.12), 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.cyber-card-content .countdown-digit {
+  font-family: 'Outfit', 'Montserrat', monospace, sans-serif;
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.75);
+}
+
+/* Unified Stats Capsule (Matching the Image) */
+.hero-stats-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0.85rem 0.6rem;
+  background: rgba(6, 18, 38, 0.7);
+  border: 1.2px solid rgba(56, 189, 248, 0.42);
+  border-radius: 13px;
+  box-shadow: 
+    inset 0 0 16px rgba(56, 189, 248, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.stat-capsule-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.stat-capsule-item .stat-val {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+  line-height: 1;
+}
+
+.stat-capsule-item .stat-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.stat-capsule-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+}
+
+/* Action Buttons Row */
+.cyber-card-content .hero-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.cyber-card-content .hero-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: 11px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* Primary Electric Cyan Button with Glow */
+.cyber-primary-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 60%, #075985 100%);
+  color: #ffffff !important;
+  border: 1.5px solid #38bdf8;
+  box-shadow: 
+    0 0 22px rgba(56, 189, 248, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-primary-btn:hover {
+  transform: translateY(-2px);
+  border-color: #7dd3fc;
+  box-shadow: 
+    0 0 32px rgba(56, 189, 248, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-arrow-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  transition: transform 0.22s ease;
+}
+
+.cyber-primary-btn:hover .btn-arrow-circle {
+  transform: translateX(3px);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Secondary Stealth Cyber Button */
+.cyber-secondary-btn {
+  background: rgba(6, 14, 26, 0.82);
+  color: #e2e8f0 !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 
+    inset 0 0 14px rgba(56, 189, 248, 0.14),
+    0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.cyber-secondary-btn:hover {
+  transform: translateY(-2px);
+  color: #ffffff !important;
+  border-color: #38bdf8;
+  background: rgba(14, 28, 54, 0.92);
+  box-shadow: 
+    0 0 22px rgba(56, 189, 248, 0.4),
+    inset 0 0 16px rgba(56, 189, 248, 0.22);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   ========================================================================== */
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   Compact Floating Cyber HUD Capsule for Mobile (Clears KEEP SCROLLING)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .home-hero-panel.cyber-hud-card {
+    top: auto !important;
+    bottom: clamp(4.2rem, 8vh, 5.0rem) !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: min(92vw, 380px) !important;
+    max-width: 380px !important;
+    padding: 0.95rem 1.1rem 0.85rem !important;
+    border-radius: 16px !important;
+  }
+
+  .cyber-card-content {
+    gap: 0.42rem !important;
+  }
+
+  .cyber-card-content .hero-main-title {
+    font-size: 1.55rem !important;
+    letter-spacing: 0.10em !important;
+    margin: 0 !important;
+  }
+
+  .cyber-card-content .hero-title-year {
+    font-size: 1.45rem !important;
+  }
+
+  .hero-stats-capsule {
+    padding: 0.35rem 0.65rem !important;
+    margin: 0.1rem 0 !important;
+  }
+
+  .stat-capsule-item .stat-val {
+    font-size: 1.0rem !important;
+  }
+
+  .stat-capsule-item .stat-label {
+    font-size: 0.50rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero-panel.cyber-hud-card {
+    bottom: clamp(4.0rem, 7.5vh, 4.8rem) !important;
+    width: min(92vw, 355px) !important;
+    max-width: 355px !important;
+    padding: 0.68rem 0.85rem 0.62rem !important;
+    filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.35)) drop-shadow(0 14px 36px rgba(0, 0, 0, 0.85)) !important;
+    border-radius: 15px !important;
+  }
+
+  .cyber-card-content {
+    gap: 0.28rem !important;
+  }
+
+  .cyber-card-content .hero-main-title {
+    font-size: 1.32rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .cyber-card-content .hero-title-year {
+    font-size: 1.22rem !important;
+    margin-top: 0.05rem !important;
+  }
+
+  .countdown-box {
+    padding: 0.22rem 0.15rem 0.2rem !important;
+    border-radius: 6px !important;
+  }
+
+  .countdown-digit {
+    font-size: 1.0rem !important;
+  }
+
+  .countdown-unit-label {
+    font-size: 0.44rem !important;
+  }
+
+  .hero-stats-capsule {
+    padding: 0.22rem 0.45rem !important;
+    margin: 0.05rem 0 !important;
+    border-radius: 10px !important;
+  }
+
+  .stat-capsule-item .stat-val {
+    font-size: 0.90rem !important;
+  }
+
+  .stat-capsule-item .stat-label {
+    font-size: 0.46rem !important;
+  }
+
+  .cyber-card-content .hero-btn-row {
+    flex-direction: row;
+    gap: 0.4rem !important;
+    margin-top: 0.15rem !important;
+  }
+
+  .cyber-card-content .hero-btn {
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.62rem !important;
+    border-radius: 9999px !important;
+  }
+}

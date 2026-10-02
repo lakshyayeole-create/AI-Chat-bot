@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Large raw 3D files & video references (>50MB / GitHub 100MB limit)
+*.blend
+*.blend1
+assets/Iron_Man_detailed.glb
+assets/iron-man_mark_85__rigged_4k.glb
+assets/iron-man_mark_85__rigged.glb
+assets/iron-man_helmet_mk3.glb
+assets/*.mp4
+index1.html
+
+# Temp / Scratch build scripts
+scripts/
+
+assets/Recordings/Mouse Cursor - Timeline.mp4
+assets/Text/ACM.txt
+assets/Text/1) Anantya Logo animation -  navbar.txt
+assets/starlord.glb
+assets/loki_main.glb
