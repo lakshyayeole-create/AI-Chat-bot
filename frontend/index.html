@@ -1,79 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Website UI Integration Instructions — ANANTYA '26</title>
-  <style>
-    body {
-      background-color: #ffffff;
-      color: #111827;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      padding: 40px 24px;
-      margin: 0;
-      line-height: 1.4;
-      max-width: 950px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-top: 24px;
-      margin-bottom: 12px;
-      color: #0f172a;
-      border-left: 5px solid #2563eb;
-      padding-left: 14px;
-    }
-    h1.main-title {
-      font-size: 2.2rem;
-      color: #1e3a8a;
-      border-left: none;
-      padding-left: 0;
-      margin-top: 0;
-      margin-bottom: 30px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 15px;
-    }
-    h1.rule-highlight {
-      color: #b91c1c;
-      border-left-color: #dc2626;
-      background-color: #fef2f2;
-      padding: 12px 16px;
-      border-radius: 4px;
-    }
-    code {
-      background-color: #f1f5f9;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-family: Consolas, "Courier New", monospace;
-      color: #0369a1;
-      font-size: 0.95em;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <h1 class="main-title">📋 INSTRUCTIONS FOR TEAM MEMBER: WEBSITE UI INTEGRATION</h1>
+    <title>Anantya 2026 - National Techno-Cultural Festival</title>
+    <!-- Preload hero background images for instantaneous first render -->
+    <link rel="preload" as="image" href="/assets/iron_man_hud_bg_mobile.webp" type="image/webp" media="(max-width: 768px)" />
+    <link rel="preload" as="image" href="/assets/iron_man_hud_bg.webp" type="image/webp" media="(min-width: 769px)" />
 
-  <h1>1. PASTE YOUR WEBSITE HTML CODE IN THIS FILE: <code>frontend/index.html</code></h1>
+    <script>
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
 
-  <h1>2. PASTE YOUR WEBSITE CSS STYLING IN: <code>frontend/website.css</code></h1>
+      window.scrollTo(0, 0);
+    </script>
+  </head>
 
-  <h1>3. PASTE YOUR WEBSITE JAVASCRIPT CODE IN: <code>frontend/website.js</code></h1>
-
-  <h1 class="rule-highlight">⚠️ CRITICAL RULE: DO NOT TOUCH OR DELETE THE <code>frontend/chatbot/</code> FOLDER!</h1>
-
-  <h1 class="rule-highlight">⚠️ CRITICAL RULE: ALWAYS KEEP THIS LINE RIGHT BEFORE <code>&lt;/body&gt;</code> IN YOUR HTML: <code>&lt;script src="chatbot/chatbot.js" defer&gt;&lt;/script&gt;</code></h1>
-
-  <h1>4. (OPTIONAL) TO MAKE ANY BUTTON OPEN THE CHATBOT, ADD: <code>data-action="open-chatbot"</code></h1>
-
-  <h1>5. (OPTIONAL) TO MAKE A BUTTON ASK A SPECIFIC QUESTION, ADD: <code>data-query="Your question here"</code></h1>
-
-  <h1>6. NOTE: THE CHATBOT IS ACTIVE ON THIS PAGE RIGHT NOW — CHECK THE CIRCULAR BUTTON AT THE BOTTOM-RIGHT CORNER!</h1>
-
-  <!-- ============================================================ -->
-  <!-- 🤖 CHATBOT MODULE (MANDATORY — KEEP THIS LINE IN YOUR HTML)   -->
-  <!-- ============================================================ -->
-  <script src="chatbot/chatbot.js" defer></script>
-</body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- Anantya '26 Jarvis Hologram Chatbot Assistant -->
+    <script src="/chatbot/chatbot.js" defer></script>
+  </body>
 </html>
