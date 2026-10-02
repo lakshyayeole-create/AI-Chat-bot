@@ -24,6 +24,7 @@ export const allEventsData: EventItem[] = [
     description: "3-round UI/UX design competition. Registration: Free for PCCOE students / ₹100 for other colleges",
     accent: "#ef4444", // Red
     logoUrl: "/logos/masterchefui.png",
+    url: "https://masterchefui-gdgc.vercel.app/"
   },
   {
     id: "shesolves-3",
@@ -99,5 +100,6 @@ export const allEventsData: EventItem[] = [
     description: "Creative doodle competition where participants create a doodle based on a given topic, followed by an offline twist round.",
     accent: "#f8fafc", // White/Silver
     logoUrl: "/logos/make_a_doddle.png",
+    url: "https://make-a-doodle.vercel.app/"
   }
 ];

@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import * as THREE from 'three';
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from './lib/gsap';
@@ -10,6 +10,7 @@ import { GallerySection } from './components/GallerySection';
 import ContactSection from './components/ContactSection';
 import CountdownTimer from './components/CountdownTimer';
 import ScrollGuidance from './components/ScrollGuidance';
+import Footer from './components/Footer';
 import './components/CyberHeroCard.css';
 
 const ironManConfig: ModelConfig = {
@@ -176,7 +177,7 @@ export default function App() {
   // High-performance DOM style synchronizers
   const updateHeroPanel = useCallback((opacity: number, navSec: string) => {
     if (!heroPanelRef.current) return;
-    const isHidden = navSec === 'events' || navSec === 'gallery' || opacity <= 0.01;
+    const isHidden = navSec !== 'home' || opacity <= 0.01;
     heroPanelRef.current.style.opacity = isHidden ? '0' : String(opacity);
     heroPanelRef.current.style.transform = `translateY(-50%) translateX(${(1 - opacity) * 35}px)`;
     heroPanelRef.current.style.pointerEvents = (isHidden || opacity <= 0.4) ? 'none' : 'auto';
@@ -185,7 +186,7 @@ export default function App() {
 
   const updateAboutPanel = useCallback((opacity: number, navSec: string) => {
     if (!aboutPanelRef.current) return;
-    const isHidden = navSec === 'events' || navSec === 'gallery' || opacity <= 0.01;
+    const isHidden = navSec !== 'about' || opacity <= 0.01;
     aboutPanelRef.current.style.opacity = isHidden ? '0' : String(opacity);
     aboutPanelRef.current.style.transform = `translateY(-50%) translateX(${(1 - opacity) * -35}px)`;
     aboutPanelRef.current.style.pointerEvents = (isHidden || opacity <= 0.4) ? 'none' : 'auto';
@@ -347,6 +348,12 @@ export default function App() {
       start: 'top top',
       end: 'bottom top',
       scrub: 0.6,
+      onLeave: () => {
+        updateHeroPanel(0, 'events');
+        updateAboutPanel(0, 'events');
+        setHeroInfoOpacity(0);
+        setAboutInfoOpacity(0);
+      },
       onUpdate: (self) => {
         const p = self.progress; // 0.0 to 1.0
         const aboutCardProgress = THREE.MathUtils.clamp((p - 0.66) / 0.18, 0, 0.999);
@@ -599,6 +606,12 @@ export default function App() {
           updateAboutPanel(0, 'events');
           updateHeroPanel(0, 'events');
         },
+        onLeave: () => {
+          updateAboutPanel(0, 'gallery');
+          updateHeroPanel(0, 'gallery');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
+        },
         onLeaveBack: () => {
           syncNavSection('about');
           updateCanvasWrap(1, 1, '');
@@ -625,9 +638,23 @@ export default function App() {
         },
         onEnter: () => {
           syncNavSection('gallery');
+          updateAboutPanel(0, 'gallery');
+          updateHeroPanel(0, 'gallery');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
         },
         onEnterBack: () => {
           syncNavSection('gallery');
+          updateAboutPanel(0, 'gallery');
+          updateHeroPanel(0, 'gallery');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
+        },
+        onLeave: () => {
+          updateAboutPanel(0, 'contact');
+          updateHeroPanel(0, 'contact');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
         },
         onLeaveBack: () => {
           syncNavSection('gallery');
@@ -645,9 +672,17 @@ export default function App() {
         end: 'bottom bottom',
         onEnter: () => {
           syncNavSection('contact');
+          updateAboutPanel(0, 'contact');
+          updateHeroPanel(0, 'contact');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
         },
         onEnterBack: () => {
           syncNavSection('contact');
+          updateAboutPanel(0, 'contact');
+          updateHeroPanel(0, 'contact');
+          setHeroInfoOpacity(0);
+          setAboutInfoOpacity(0);
         },
       });
     }
@@ -704,6 +739,12 @@ export default function App() {
     if (id === 'gallery') {
       const galleryEl = document.getElementById('gallery');
       if (galleryEl) {
+        updateAboutPanel(0, 'gallery');
+        updateHeroPanel(0, 'gallery');
+        syncNavSection('gallery');
+        updateCanvasWrap(0, 1);
+        setHeroInfoOpacity(0);
+        setAboutInfoOpacity(0);
         if (lenisRef.current) {
           lenisRef.current.scrollTo(galleryEl, {
             duration: 1.8,
@@ -719,6 +760,12 @@ export default function App() {
     if (id === 'contact') {
       const contactEl = document.getElementById('contact');
       if (contactEl) {
+        updateAboutPanel(0, 'contact');
+        updateHeroPanel(0, 'contact');
+        syncNavSection('contact');
+        updateCanvasWrap(0, 1);
+        setHeroInfoOpacity(0);
+        setAboutInfoOpacity(0);
         if (lenisRef.current) {
           lenisRef.current.scrollTo(contactEl, {
             duration: 1.8,
@@ -818,18 +865,85 @@ export default function App() {
 
       {/* Home Page Hero Info Panel (Right Side: high-tech Stark HUD cyber frame) */}
       <section
+        id="home"
         ref={heroPanelRef}
         className="home-hero-panel cyber-hud-card"
         style={{
-          opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : heroInfoOpacity,
+          opacity: activeNavSection !== 'home' ? 0 : heroInfoOpacity,
           transform: `translateY(-50%) translateX(${(1 - heroInfoOpacity) * 35}px)`,
-          pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.4) ? 'none' : 'auto',
-          visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || heroInfoOpacity <= 0.01) ? 'hidden' : 'visible',
+          pointerEvents: (activeNavSection !== 'home' || heroInfoOpacity <= 0.4) ? 'none' : 'auto',
+          visibility: (activeNavSection !== 'home' || heroInfoOpacity <= 0.01) ? 'hidden' : 'visible',
         }}
       >
-        <div className="hero-cyber-badge">
-          <span className="hero-pulse-dot" />
-          <span className="hero-badge-text">PCCOE PRESENTS • MARCH 2026</span>
+        {/* Geometric Clipped Background Plate */}
+        <div className="cyber-bg-plate" aria-hidden="true" />
+
+        {/* Cybernetic Frame Armor Overlays & SVG HUD Accents */}
+        <div className="cyber-frame-armor" aria-hidden="true">
+          <svg className="cyber-frame-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="cyberBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#38bdf8" />
+                <stop offset="50%" stopColor="#00e5ff" />
+                <stop offset="100%" stopColor="#0284c7" />
+              </linearGradient>
+            </defs>
+
+            {/* Outer Glowing Cyber Perimeter */}
+            <path
+              className="cyber-svg-outer-path"
+              d="M 6.5,0.6 
+                 L 41,0.6 L 43.5,2.4 L 56.5,2.4 L 59,0.6 L 93.5,0.6 
+                 L 99.4,6.5 
+                 L 99.4,43.5 L 97.9,45.5 L 97.9,54.5 L 99.4,56.5 L 99.4,93.5 
+                 L 93.5,99.4 
+                 L 59,99.4 L 56.5,97.6 L 43.5,97.6 L 41,99.4 L 6.5,99.4 
+                 L 0.6,93.5 
+                 L 0.6,56.5 L 2.1,54.5 L 2.1,45.5 L 0.6,43.5 L 0.6,6.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Inner Keyline Frame */}
+            <path
+              className="cyber-svg-inner-path"
+              d="M 8.5,3.2 
+                 L 91.5,3.2 
+                 L 96.8,8.5 
+                 L 96.8,91.5 
+                 L 91.5,96.8 
+                 L 8.5,96.8 
+                 L 3.2,91.5 
+                 L 3.2,8.5 
+                 Z"
+              vectorEffect="non-scaling-stroke"
+            />
+
+            {/* Corner Hardware Brackets */}
+            <path className="cyber-bracket" d="M 2.4,12 L 2.4,6.5 L 6.5,2.4 L 12,2.4" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,2.4 L 93.5,2.4 L 97.6,6.5 L 97.6,12" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 2.4,88 L 2.4,93.5 L 6.5,97.6 L 12,97.6" vectorEffect="non-scaling-stroke" />
+            <path className="cyber-bracket" d="M 88,97.6 L 93.5,97.6 L 97.6,93.5 L 97.6,88" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Left) */}
+            <line className="cyber-vent-line" x1="1.4" y1="47" x2="1.4" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="50" x2="1.4" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="1.4" y1="53" x2="1.4" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Side Vent Lines (Right) */}
+            <line className="cyber-vent-line" x1="98.6" y1="47" x2="98.6" y2="49" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="50" x2="98.6" y2="52" vectorEffect="non-scaling-stroke" />
+            <line className="cyber-vent-line" x1="98.6" y1="53" x2="98.6" y2="55" vectorEffect="non-scaling-stroke" />
+
+            {/* Top Center Rail */}
+            <line className="cyber-notch-accent" x1="46" y1="1.6" x2="54" y2="1.6" vectorEffect="non-scaling-stroke" />
+          </svg>
+
+          <div className="cyber-grid-overlay" />
+          <div className="cyber-corner-glow tl" />
+          <div className="cyber-corner-glow tr" />
+          <div className="cyber-corner-glow bl" />
+          <div className="cyber-corner-glow br" />
         </div>
 
         {/* Card Main Body Content */}
@@ -840,30 +954,23 @@ export default function App() {
 
           <CountdownTimer />
 
-        <div className="hero-tagline-pill">
-          <span className="tagline-gem" />
-          <span>SEVEN CRYSTALS • ONE SYSTEM</span>
-        </div>
-
-        <p className="hero-description">
-          Welcome to PCCOE's premier national techno-cultural extravaganza. Step into the high-tech Marvel dimension where speed coding warfare, autonomous robotics, CTF cybersecurity, and cultural brilliance converge.
-        </p>
-
-        {/* Quick Highlights / Stats Grid */}
-        <div className="hero-stats-grid">
-          <div className="stat-card">
-            <span className="stat-val">8+</span>
-            <span className="stat-label">Club Arenas</span>
+          {/* Quick Highlights / Stats Capsule Container */}
+          <div className="hero-stats-capsule">
+            <div className="stat-capsule-item">
+              <span className="stat-val">08+</span>
+              <span className="stat-label">Club Arenas</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">02</span>
+              <span className="stat-label">Epic Days</span>
+            </div>
+            <div className="stat-capsule-divider" />
+            <div className="stat-capsule-item">
+              <span className="stat-val">₹2L+</span>
+              <span className="stat-label">Prize Pool</span>
+            </div>
           </div>
-          <div className="stat-card">
-            <span className="stat-val">3</span>
-            <span className="stat-label">Epic Days</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-val">₹2L+</span>
-            <span className="stat-label">Prize Pool</span>
-          </div>
-        </div>
 
           {/* Action Button Row */}
           <div className="hero-btn-row">
@@ -893,10 +1000,10 @@ export default function App() {
         ref={aboutPanelRef}
         className="about-info-panel"
         style={{
-          opacity: activeNavSection === 'events' || activeNavSection === 'gallery' ? 0 : aboutInfoOpacity,
+          opacity: activeNavSection !== 'about' ? 0 : aboutInfoOpacity,
           transform: `translateY(-50%) translateX(${(1 - aboutInfoOpacity) * -35}px)`,
-          pointerEvents: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.4) ? 'none' : 'auto',
-          visibility: (activeNavSection === 'events' || activeNavSection === 'gallery' || aboutInfoOpacity <= 0.01) ? 'hidden' : 'visible',
+          pointerEvents: (activeNavSection !== 'about' || aboutInfoOpacity <= 0.4) ? 'none' : 'auto',
+          visibility: (activeNavSection !== 'about' || aboutInfoOpacity <= 0.01) ? 'hidden' : 'visible',
         }}
       >
         <div className="about-panel-header">
@@ -917,7 +1024,7 @@ export default function App() {
             <article className="about-story-card about-intro-card">
               <div className="about-cyber-badge">
                 <span className="about-pulse-dot" />
-                <span className="about-badge-text">ORIGIN ARCHIVE â€¢ ABOUT ANANTYA</span>
+                <span className="about-badge-text">ORIGIN ARCHIVE • ABOUT ANANTYA</span>
               </div>
               <h2 className="about-main-title">ANANTYA</h2>
               <blockquote className="about-story-quote">
@@ -978,38 +1085,45 @@ export default function App() {
             </article>
           </div>
         </div>
-        <div className="about-card-navigation">
-          <button
-            type="button"
-            className="about-arrow-btn"
-            onClick={() => goToAboutCard(activeAboutCard - 1)}
-            disabled={activeAboutCard === 0}
-            aria-label="Previous About card"
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-          <button
-            type="button"
-            className="about-arrow-btn"
-            onClick={() => goToAboutCard(activeAboutCard + 1)}
-            disabled={activeAboutCard === 2}
-            aria-label="Next About card"
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-        </div>
-        <div className="about-card-indicator" role="group" aria-label={`About story card ${activeAboutCard + 1} of 3`}>
-          {[0, 1, 2].map((cardIndex) => (
-            <span
-              key={cardIndex}
-              className={cardIndex === activeAboutCard ? 'about-card-indicator-item is-active' : 'about-card-indicator-item'}
-              aria-hidden="true"
-            />
-          ))}
+        {/* Dedicated Card Footer Navigation (Positioned cleanly at bottom of card) */}
+        <div className="about-panel-footer">
+          <div className="about-card-indicator" role="group" aria-label={`About story card ${activeAboutCard + 1} of 3`}>
+            {[0, 1, 2].map((cardIndex) => (
+              <button
+                key={cardIndex}
+                type="button"
+                className={cardIndex === activeAboutCard ? 'about-card-indicator-item is-active' : 'about-card-indicator-item'}
+                onClick={() => goToAboutCard(cardIndex)}
+                aria-label={`Go to slide ${cardIndex + 1}`}
+              />
+            ))}
+          </div>
+
+          <div className="about-card-navigation">
+            <span className="about-nav-counter">{activeAboutCard + 1} / 3</span>
+            <button
+              type="button"
+              className="about-arrow-btn"
+              onClick={() => goToAboutCard(activeAboutCard - 1)}
+              disabled={activeAboutCard === 0}
+              aria-label="Previous About card"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="about-arrow-btn"
+              onClick={() => goToAboutCard(activeAboutCard + 1)}
+              disabled={activeAboutCard === 2}
+              aria-label="Next About card"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -1039,6 +1153,9 @@ export default function App() {
 
       {/* Contact Section: S.H.I.E.L.D. Quantum Comm-Link & Avengers Initiative */}
       <ContactSection onNavigate={handleNavSelect} />
+
+      {/* Cybernetic Marvel Horizon Footer */}
+      <Footer onNavigate={handleNavSelect} />
 
       <style>{`
         .app-main-root {
@@ -1661,47 +1778,63 @@ export default function App() {
           box-shadow: 0 8px 24px rgba(217, 61, 109, 0.45);
         }
 
-        .about-card-navigation {
-          position: absolute;
-          top: 50%;
-          left: 0;
-          right: 0;
-          transform: translateY(-50%);
+        /* Dedicated Card Footer Navigation (At bottom of card, eliminates arrow overlap) */
+        .about-panel-footer {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 12px;
-          z-index: 100;
-          pointer-events: none;
+          width: 100%;
+          padding: 0.6rem 0.2rem 0.1rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          margin-top: auto;
+          flex-shrink: 0;
+        }
+
+        .about-card-navigation {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          position: static;
+          transform: none;
+          padding: 0;
+          pointer-events: auto;
+          z-index: 10;
+        }
+
+        .about-nav-counter {
+          font-size: 0.72rem;
+          font-weight: 800;
+          font-family: monospace;
+          letter-spacing: 0.12em;
+          color: #94a3b8;
+          margin-right: 0.2rem;
         }
 
         .about-arrow-btn {
-          width: 54px;
-          height: 54px;
-          display: flex;
-          flex: 0 0 auto;
+          width: 36px;
+          height: 36px;
+          display: inline-flex;
           align-items: center;
           justify-content: center;
           border-radius: 50%;
           border: 1px solid rgba(255, 107, 143, 0.55);
-          background: rgba(5, 7, 12, 0.88);
+          background: rgba(15, 23, 42, 0.88);
           color: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(14px);
           cursor: pointer;
           pointer-events: auto;
-          transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .about-arrow-btn:hover:not(:disabled) {
-          transform: scale(1.12);
-          color: var(--about-accent);
+          transform: scale(1.1);
+          color: #fff;
           border-color: var(--about-accent);
-          background: rgba(255, 107, 143, 0.12);
-          box-shadow: 0 0 25px rgba(255, 107, 143, 0.35);
+          background: rgba(255, 107, 143, 0.22);
+          box-shadow: 0 0 16px rgba(255, 107, 143, 0.45);
         }
 
         .about-arrow-btn:active:not(:disabled) {
-          transform: scale(0.96);
+          transform: scale(0.95);
         }
 
         .about-arrow-btn:disabled {
@@ -1711,26 +1844,31 @@ export default function App() {
 
         .about-card-indicator {
           display: flex;
-          flex: 0 0 auto;
           align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          min-height: 10px;
-          padding-top: 0.8rem;
+          gap: 6px;
+          padding-top: 0;
+          min-height: auto;
         }
 
         .about-card-indicator-item {
-          width: 7px;
-          height: 7px;
+          width: 8px;
+          height: 8px;
+          padding: 0;
+          border: none;
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.25);
+          cursor: pointer;
           transition: width 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .about-card-indicator-item:hover {
+          background: rgba(255, 255, 255, 0.5);
+        }
+
         .about-card-indicator-item.is-active {
-          width: 25px;
+          width: 24px;
           background: var(--about-accent);
-          box-shadow: 0 0 12px rgba(255, 107, 143, 0.55);
+          box-shadow: 0 0 12px rgba(255, 107, 143, 0.6);
         }
 
         @media (max-width: 900px) {
@@ -1744,10 +1882,6 @@ export default function App() {
             width: min(440px, 88vw);
             max-width: 440px;
             padding: 1.6rem 1.8rem;
-          }
-          .about-arrow-btn {
-            width: 46px;
-            height: 46px;
           }
         }
 
@@ -1865,12 +1999,8 @@ export default function App() {
 
         @media (max-width: 600px) {
           .about-arrow-btn {
-            width: 42px;
-            height: 42px;
-          }
-
-          .about-card-navigation {
-            padding: 0 6px;
+            width: 32px;
+            height: 32px;
           }
         }
       `}</style>
