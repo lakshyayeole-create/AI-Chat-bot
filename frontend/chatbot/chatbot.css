@@ -28,12 +28,12 @@
   position: fixed;
   bottom: 28px;
   right: 28px;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(0, 243, 255, 0.3), rgba(3, 7, 18, 0.95));
+  background: #030712;
   border: 2px solid var(--hud-cyan);
-  box-shadow: 0 0 24px rgba(0, 243, 255, 0.4), inset 0 0 12px rgba(0, 243, 255, 0.3);
+  box-shadow: 0 0 24px rgba(0, 243, 255, 0.45), inset 0 0 14px rgba(0, 243, 255, 0.3);
   cursor: pointer;
   z-index: 99999;
   display: flex;
@@ -43,11 +43,12 @@
   user-select: none;
   padding: 0;
   outline: none;
+  overflow: visible;
 }
 
 .anantya-hud-launcher:hover {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 0 35px rgba(0, 243, 255, 0.75), inset 0 0 18px rgba(0, 243, 255, 0.5);
+  transform: scale(1.1);
+  box-shadow: 0 0 35px rgba(0, 243, 255, 0.8), inset 0 0 18px rgba(0, 243, 255, 0.5);
 }
 
 .anantya-hud-launcher:active {
@@ -60,9 +61,9 @@
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1px dashed var(--hud-cyan);
+  border: 1.5px dashed var(--hud-cyan);
   animation: anantya-rotate 12s linear infinite;
-  opacity: 0.6;
+  opacity: 0.7;
   pointer-events: none;
 }
 
@@ -76,24 +77,72 @@
   pointer-events: none;
 }
 
-/* Rotating launcher core icon */
-.anantya-hud-launcher-icon {
-  width: 32px;
-  height: 32px;
-  color: var(--hud-cyan);
-  filter: drop-shadow(0 0 6px var(--hud-cyan));
-  transition: transform 0.4s ease;
+/* Inner Core Container */
+.anantya-hud-launcher-core {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #030712;
 }
 
-.anantya-hud-launcher.is-open .anantya-hud-launcher-icon {
-  transform: rotate(90deg);
+/* Arc Reactor Image - precision centered and scaled */
+.anantya-hud-launcher-reactor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  height: 224%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.85)) brightness(1.05);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+
+.anantya-hud-launcher:hover .anantya-hud-launcher-reactor {
+  transform: translate(-50%, -50%) rotate(30deg) scale(1.06);
+  filter: drop-shadow(0 0 16px rgba(0, 243, 255, 1)) brightness(1.2);
+}
+
+.anantya-hud-launcher.is-open .anantya-hud-launcher-reactor {
+  transform: translate(-50%, -50%) rotate(180deg);
+  filter: drop-shadow(0 0 20px rgba(0, 243, 255, 1)) brightness(1.25);
+}
+
+/* Arc Reactor Ambient Glow */
+.anantya-hud-reactor-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: anantya-reactor-throb 3s ease-in-out infinite alternate;
+}
+
+@keyframes anantya-reactor-throb {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
 }
 
 /* Status indicator badge on launcher */
 .anantya-hud-status-badge {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1px;
+  right: 1px;
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -101,6 +150,7 @@
   border: 2px solid #030712;
   box-shadow: 0 0 8px var(--hud-emerald);
   transition: background 0.3s ease;
+  z-index: 2;
 }
 
 .anantya-hud-status-badge.is-offline {
@@ -211,24 +261,31 @@
 
 .anantya-hud-core-orb {
   position: relative;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 1.5px solid var(--hud-cyan);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+  background: #030712;
+  flex-shrink: 0;
 }
 
-.anantya-hud-core-orb::after {
-  content: "";
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--hud-cyan);
-  box-shadow: 0 0 8px var(--hud-cyan);
-  animation: anantya-pulse-core 1.8s ease-in-out infinite alternate;
+.anantya-hud-header-reactor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 224%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 0 6px rgba(0, 243, 255, 0.9));
 }
 
 .anantya-hud-title-wrap {

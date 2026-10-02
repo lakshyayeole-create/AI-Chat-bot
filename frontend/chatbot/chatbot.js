@@ -74,20 +74,38 @@
     addMessage("assistant", CONFIG.welcomeMessage);
   }
 
+  function getReactorImageUrl() {
+    const currentScript =
+      document.currentScript ||
+      document.querySelector('script[src*="chatbot.js"]');
+    if (currentScript && currentScript.src) {
+      try {
+        return new URL("1351322.webp", currentScript.src).href;
+      } catch (_) {}
+    }
+    return "/assets/1351322.webp";
+  }
+
   /**
    * Injects the complete launcher and HUD modal markup into document.body.
    */
   function injectHTML() {
+    const reactorImgSrc = getReactorImageUrl();
     const root = document.createElement("div");
     root.id = "anantya-hud-root";
     root.innerHTML = `
-      <!-- 1. Floating Circular Launcher -->
-      <button class="anantya-hud-launcher" id="anantya-hud-launcher" aria-label="Open Anantya's Jarvis" title="Open Anantya's Jarvis">
-        <svg class="anantya-hud-launcher-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          <path d="M2 12h20"></path>
-        </svg>
+      <!-- 1. Floating Circular Launcher (Iron Man Arc Reactor) -->
+      <button class="anantya-hud-launcher" id="anantya-hud-launcher" aria-label="Open Anantya's Jarvis" title="Open Anantya's Jarvis Arc Reactor">
+        <div class="anantya-hud-launcher-core">
+          <img 
+            class="anantya-hud-launcher-reactor" 
+            src="${reactorImgSrc}" 
+            alt="Jarvis Arc Reactor"
+            loading="eager"
+            onerror="if(this.dataset.err!=='1'){this.dataset.err='1';this.src='/assets/1351322.webp';}else if(this.dataset.err==='1'){this.dataset.err='2';this.src='chatbot/1351322.webp';}"
+          />
+          <div class="anantya-hud-reactor-glow"></div>
+        </div>
         <span class="anantya-hud-status-badge" id="anantya-hud-badge"></span>
       </button>
 
@@ -98,7 +116,15 @@
         <!-- Header -->
         <header class="anantya-hud-header">
           <div class="anantya-hud-brand">
-            <div class="anantya-hud-core-orb"></div>
+            <div class="anantya-hud-core-orb">
+              <img 
+                class="anantya-hud-header-reactor" 
+                src="${reactorImgSrc}" 
+                alt="Arc Reactor Core"
+                loading="eager"
+                onerror="if(this.dataset.err!=='1'){this.dataset.err='1';this.src='/assets/1351322.webp';}else if(this.dataset.err==='1'){this.dataset.err='2';this.src='chatbot/1351322.webp';}"
+              />
+            </div>
             <div class="anantya-hud-title-wrap">
               <h2 class="anantya-hud-title">${CONFIG.title}</h2>
               <div class="anantya-hud-subtitle">

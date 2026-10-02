@@ -13,11 +13,13 @@ frontend/
 ├── chatbot/               <-- 🤖 CHATBOT ONLY (DO NOT MODIFY WHEN CHANGING WEBSITE UI)
 │   ├── chatbot.js         <-- Self-mounting widget, API client, HUD markup
 │   ├── chatbot.css        <-- Hologram HUD stylesheet (namespaced under .anantya-hud-*)
+│   ├── 1351322.webp       <-- Iron Man Arc Reactor launcher icon asset
 │   └── README.md          <-- This guide
 │
-├── index.html             <-- 🌐 WEBSITE UI (Feel free to redesign or replace)
-├── website.css            <-- 🎨 WEBSITE STYLES (Feel free to edit or replace)
-└── website.js             <-- ⚡ WEBSITE SCRIPTS (Feel free to edit or replace)
+├── public/                <-- 🌐 Static assets served by Vite
+│   └── chatbot/           <-- Mirrored chatbot assets served at root /chatbot/
+├── src/                   <-- ⚛️ React 18 + Three.js Website source code
+└── index.html             <-- 🌐 Main Website entrypoint
 ```
 
 ---
