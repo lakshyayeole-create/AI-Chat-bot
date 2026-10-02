@@ -18,13 +18,11 @@ logger = get_logger(__name__)
 
 SECTIONS = [
     (
-        "Introduction & Marvel Arenas",
+        "Introduction",
         "Welcome to Anantya 2026, the Annual National Technical Symposium organized by the "
         "Department of Computer Engineering at Pimpri Chinchwad College of Engineering, Pune. "
         "Step into the Multiverse of Technology, Innovation, and Interdisciplinary Excellence "
-        "from October 6 to October 10, 2026. Explore our Marvel-inspired arenas: Iron Man Arena "
-        "for cutting-edge engineering and quantum systems, Star-Lord Arena for Web3 and decentralized networks, "
-        "Loki Sacred Timeline for algorithmic problem solving, and Infinity Gauntlet for AI, Robotics, and IoT convergence."
+        "from October 6 to October 10, 2026."
     ),
     (
         "Events 1 to 4",
@@ -84,11 +82,21 @@ async def main():
         print("  Reset semantic cache (data/cache.json)")
 
     # 2. Generate and cache speech for each section
-    print(f"\n[2/4] Generating speech for {len(SECTIONS)} sections via ElevenLabs...")
-    print(f"  Voice ID: {voice_id}")
-    print(f"  Model ID: {model_id}")
-
+    print(f"\n[2/4] Generating speech for {len(SECTIONS)} sections...")
     combined_mp3_bytes = bytearray()
+
+    # Determine provider (test ElevenLabs quota)
+    provider = "elevenlabs"
+    try:
+        test_audio = await client.generate_speech(
+            text="Anantya 2026",
+            voice_id=voice_id,
+            model_id=model_id,
+        )
+        print("  Using ElevenLabs Neural Voice (Voice ID: " + voice_id + ")")
+    except Exception as e:
+        provider = "edge-tts"
+        print(f"  ElevenLabs quota reached or unavailable ({e}). Using Edge-TTS Neural Voice (en-US-ChristopherNeural)")
 
     for i, (name, text) in enumerate(SECTIONS, start=1):
         print(f"\n  Generating [{i}/{len(SECTIONS)}]: {name} ({len(text)} chars)...")
@@ -98,17 +106,34 @@ async def main():
             model_id=model_id,
             output_format="mp3",
         )
-        audio_bytes = await client.generate_speech(
-            text=normalize_text_for_tts(text),
-            voice_id=voice_id,
-            model_id=model_id,
-        )
+
+        audio_bytes = None
+        if provider == "elevenlabs":
+            try:
+                audio_bytes = await client.generate_speech(
+                    text=normalize_text_for_tts(text),
+                    voice_id=voice_id,
+                    model_id=model_id,
+                )
+            except Exception as e:
+                print(f"    ElevenLabs failed on section {i} ({e}). Switching to Edge-TTS neural engine...")
+                provider = "edge-tts"
+
+        if not audio_bytes or provider == "edge-tts":
+            import edge_tts
+            import io
+            communicate = edge_tts.Communicate(normalize_text_for_tts(text), "en-US-ChristopherNeural")
+            buf = io.BytesIO()
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    buf.write(chunk["data"])
+            audio_bytes = buf.getvalue()
+
         # Store individual chunk in cache
         cache.put(cache_key, audio_bytes)
         print(f"    Saved section chunk: {len(audio_bytes):,} bytes (key: {cache_key[:12]}...)")
         combined_mp3_bytes.extend(audio_bytes)
-        # Small courteous delay between API requests
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(0.3)
 
     # 3. Save combined full-website narration audio
     print("\n[3/4] Storing combined complete website narration in cache folder...")

@@ -180,12 +180,7 @@
       "Step into the Multiverse of Technology, Innovation, and Interdisciplinary Excellence from October 6 to October 10, 2026."
     );
 
-    // 2. Interactive Arenas & Character Showcases
-    segments.push(
-      "Explore our Marvel-inspired arenas: Iron Man Arena for cutting-edge engineering and quantum systems, Star-Lord Arena for Web3 and decentralized networks, Loki Sacred Timeline for algorithmic problem solving, and Infinity Gauntlet for AI, Robotics, and IoT convergence."
-    );
-
-    // 3. Multiverse Timeline — All 8 Official Events
+    // 2. Multiverse Timeline — All 8 Official Events
     segments.push(
       "Here are the eight official events of Anantya 2026."
     );

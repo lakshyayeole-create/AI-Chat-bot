@@ -96,7 +96,7 @@ class ElevenLabsClient:
             err_text = response.text
 
             if status == 401:
-                logger.error("ElevenLabs authentication error (401)")
+                logger.error("ElevenLabs authentication error (401): %s", err_text[:120])
                 raise TTSProviderException(
                     code="INVALID_API_KEY",
                     message="ElevenLabs API key is invalid or unauthorized.",
