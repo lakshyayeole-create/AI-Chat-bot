@@ -299,25 +299,39 @@
       { passive: false }
     );
 
-    // Global click delegation for website triggers (works on ANY website UI)
-    document.addEventListener("click", function (e) {
-      const openBtn = e.target.closest("[data-action='open-chatbot']");
-      if (openBtn) {
-        e.preventDefault();
-        openHUD();
-        return;
-      }
+    // Global click listener for website triggers & click-outside-to-close
+    document.addEventListener(
+      "click",
+      function (e) {
+        const isClickInsideWindow = dom.window && dom.window.contains(e.target);
+        const isClickOnLauncher = dom.launcher && dom.launcher.contains(e.target);
+        const openBtn = e.target.closest("[data-action='open-chatbot']");
+        const queryBtn = e.target.closest("[data-query]");
 
-      const queryBtn = e.target.closest("[data-query]");
-      if (queryBtn) {
-        e.preventDefault();
-        const query = queryBtn.getAttribute("data-query");
-        openHUD();
-        if (query) {
-          sendUserMessage(query);
+        // If clicking on external triggers
+        if (openBtn) {
+          e.preventDefault();
+          openHUD();
+          return;
         }
-      }
-    });
+
+        if (queryBtn) {
+          e.preventDefault();
+          const query = queryBtn.getAttribute("data-query");
+          openHUD();
+          if (query) {
+            sendUserMessage(query);
+          }
+          return;
+        }
+
+        // When the chatbot is open, clicking on any part of the website outside the chatbot area closes it
+        if (state.isOpen && !isClickInsideWindow && !isClickOnLauncher) {
+          closeHUD();
+        }
+      },
+      true // capture phase ensures reliability even if website elements prevent bubbling
+    );
   }
 
   /**
