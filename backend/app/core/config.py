@@ -55,6 +55,18 @@ class Settings(BaseSettings):
     # --- Message Limits ---
     max_message_length: int = 1000
 
+    # --- ElevenLabs TTS Configuration ---
+    elevenlabs_api_key: str = ""
+    elevenlabs_voice_id: str = "pNInz6obpgDQGcFmaJgB"  # Adam / Calm Assistant default
+    elevenlabs_model_id: str = "eleven_turbo_v2_5"
+    tts_max_concurrent_requests: int = 2
+    tts_queue_max_size: int = 10
+    tts_queue_timeout_ms: int = 8000
+    tts_provider_timeout_ms: int = 12000
+    tts_cache_ttl_seconds: int = 604800  # 7 days
+    tts_audio_cache_dir: str = "data/audio_cache"
+    tts_max_text_length: int = 2000
+
     model_config = {
         "env_file": str(Path(__file__).resolve().parent.parent.parent / ".env"),
         "env_file_encoding": "utf-8",

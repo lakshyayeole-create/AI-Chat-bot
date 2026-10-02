@@ -12,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import get_settings
 from app.core.logging_config import setup_logging, get_logger
 from app.api.chat import router as chat_router
+from app.api.tts import router as tts_router
 from app.rag import qdrant_store
 
 from app.rag.queue_manager import get_queue_manager
@@ -101,6 +102,7 @@ def create_app() -> FastAPI:
 
     # Include routers
     app.include_router(chat_router)
+    app.include_router(tts_router)
 
     # Health endpoint
     @app.get("/health", tags=["Health"])
