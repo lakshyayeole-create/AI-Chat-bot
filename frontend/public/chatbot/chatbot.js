@@ -8,12 +8,18 @@
 (function () {
   "use strict";
 
+  // Base API configuration (Render Cloud Backend)
+  const BACKEND_BASE = (
+    (typeof window !== "undefined" && window.ANANTYA_API_URL) ||
+    "https://anantya-ai-backend.onrender.com"
+  ).replace(/\/+$/, "");
+
   // Configuration
   const CONFIG = {
-    apiUrl: "http://localhost:8001/api/chat",
-    statusUrl: "http://localhost:8001/api/chat/status",
-    healthUrl: "http://localhost:8001/health",
-    ttsUrl: "http://localhost:8001/api/tts",
+    apiUrl: `${BACKEND_BASE}/api/chat`,
+    statusUrl: `${BACKEND_BASE}/api/chat/status`,
+    healthUrl: `${BACKEND_BASE}/health`,
+    ttsUrl: `${BACKEND_BASE}/api/tts`,
     title: "ANANTYA '26 JARVIS",
     welcomeMessage:
       "👋 **Hello and welcome!** I am **Anantya's Jarvis**, your official AI assistant for **Anantya '26**, the annual technical and creative symposium organized by the Department of Computer Engineering at PCCOE.\n\nI can help you with complete details on all 7 events:\n- **BYTE ME CTF '26** (Cybersecurity)\n- **Codigo 2026** (Competitive Programming)\n- **SHE SOLVES 3.0** (Women-Oriented Hackathon)\n- **DECENTRAHACK 2.0** (Web3 & AI Hackathon)\n- **MasterChef UI 2026** (UI/UX Design)\n- **IoThrone 2026** (IoT & Robotics Hackathon)\n- **MAKE A DOODLE! 2026** (Digital Art Competition)\n\nAsk me about registration links, rules, eligibility, team sizes, fees, dates, or prize pools!",
@@ -1105,7 +1111,7 @@
         const chip = document.createElement("span");
         chip.className = "anantya-hud-source-chip";
         chip.title = `Source: ${src.source_file || "Official Anantya Knowledge Base"}`;
-        chip.innerHTML = `◈ ${src.event_name || "Event Document"}`;
+        chip.innerHTML = `◈ ${src.event_id || "SRC"} • ${src.event_name || "Event Document"}`;
         sourcesWrap.appendChild(chip);
       });
       bubble.appendChild(sourcesWrap);

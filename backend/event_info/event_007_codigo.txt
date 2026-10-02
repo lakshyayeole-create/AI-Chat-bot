@@ -1,0 +1,108 @@
+EVENT ID: ANANTYA-007
+
+EVENT NAME: Codigo 2026
+
+EVENT EDITION: ANANTYA 26-27
+
+EVENT TYPE: Competitive Programming Contest
+
+INSTITUTION: PCET's Pimpri Chinchwad College of Engineering (PCCOE)
+
+DEPARTMENT: Computer Engineering
+
+ORGANIZER: PCCOE ACM Student Chapter / Team CESA-SDW
+
+EVENT OVERVIEW:
+Codigo 2026 is a 3-round competitive programming contest designed to assess participants' problem-solving skills, logical thinking, and proficiency in problem solving. The contest is designed to simulate the ICPC experience, with an online qualifier, an online semi-final, and a lab-based offline final. Participants solve progressively tougher DSA and competitive programming problems under contest conditions.
+
+TEAM SIZE:
+Exactly 3 members per team.
+
+Individual participation is not permitted.
+
+COMPETITION STRUCTURE:
+
+ROUND 1:
+Round Name: Qualifier Round
+Platform: CodeChef
+Mode: Online
+Date: 6 October 2026
+Duration: 2 Hours
+Time: 7:00 PM to 9:00 PM
+Problem Type: DSA-based questions
+Selection: Top 45 teams will qualify for Round 2 based on contest performance.
+
+ROUND 2:
+Round Name: Semi-Final Round
+Platform: CodeChef
+Mode: Online
+Date: 7 October 2026
+Duration: 2 Hours
+Time: 6:00 PM to 8:00 PM
+Problem Type: CP-based questions
+Selection: Top 20 teams will qualify for Round 3 based on contest performance.
+
+ROUND 3:
+Round Name: Final Round
+Platform: HackerRank
+Mode: Offline (Lab-Based)
+Date: 10 October 2026
+Duration: 3 Hours
+Time: 9:00 AM to 12:00 PM
+Problem Type: CP-based questions
+Format: ICPC Simulation
+Number of Questions: 7 CP-based questions
+Winner Selection: Top 3 teams will be declared winners of Codigo 2026.
+
+PRIZES:
+I Prize: ₹10,000
+II Prize: ₹5,000
+III Prize: ₹3,000
+Total Prize Pool: ₹18,000
+
+RULES AND REGULATIONS:
+
+1. Team Composition:
+   Participation is strictly allowed in teams of exactly three members. Individual participation is not permitted.
+
+2. Team Participation:
+   In every round, only the registered team as a unit must participate. Individual submissions by team members are not allowed.
+
+3. Platform Compliance:
+   All participants must follow the rules and code of conduct of the respective contest platforms, including CodeChef and HackerRank.
+
+4. Fair Play:
+   Any form of plagiarism, cheating, or use of unfair means will result in immediate disqualification of the team.
+
+5. Organizer's Decision:
+   The decision of the organizing committee of Anantya - Codigo 2026 is final and binding in matters related to the event.
+
+REGISTRATION:
+https://forms.gle/zYtdTo8vqWdG3gkJ6
+
+UNSTOP:
+https://unstop.com/p/codigo-2026-pimpri-chinchwad-college-of-engineering-pccoe-pune-1760417
+
+RULEBOOK:
+https://drive.google.com/drive/folders/1FzJyPu_LnQbMFcfiAVgbK0BlvRyhs6ay?usp=sharing
+
+CONTACTS:
+
+Khushie Mohod
+CESA President
+Phone: +91 9561976724
+
+Krushnakant Patil
+CESA Vice-President
+Phone: +91 9529956951
+
+IMPORTANT NOTES:
+
+* The official rulebook specifies the team size as exactly 3 members.
+* The official rulebook specifies the Round 1 time as 7:00 PM to 9:00 PM.
+* The official rulebook specifies the Round 2 time as 6:00 PM to 8:00 PM.
+* The official rulebook specifies the Round 3 time as 9:00 AM to 12:00 PM.
+* The final round is an offline, lab-based ICPC simulation.
+* The official rulebook does not specify a separate eligibility criterion beyond the stated team-composition requirements.
+* No registration fee was provided in the supplied event information.
+* No separate venue name was provided beyond the final round being lab-based at PCCOE.

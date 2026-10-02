@@ -1,0 +1,239 @@
+EVENT_ID: ANANTYA-006
+
+EVENT_NAME: MAKE A DOODLE! 2026
+
+EVENT_EDITION: ANANTYA '26
+
+EVENT_TYPE: Digital Doodling Event
+
+EVENT_THEME:
+MARVEL
+
+INSTITUTION:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+ORGANIZING_DEPARTMENT:
+Computer Department Art Circle
+
+VENUE:
+PCCOE
+
+====================
+EVENT OVERVIEW
+==============
+
+MAKE A DOODLE! is a digital doodling event conducted on computers as part of ANANTYA '26.
+
+Participants turn their ideas into digital artwork using tools such as:
+
+* Canva
+* AI tools
+* Their own creativity and digital art skills
+
+The event consists of two rounds:
+
+1. Round 1 — Online
+2. Round 2 — Offline
+
+====================
+ROUND 1 — ONLINE
+================
+
+Mode:
+Online
+
+Theme:
+MARVEL
+
+Participants create a digital doodle based on the Marvel theme.
+
+Tools:
+
+* Canva
+* AI
+* Participant's own skills and creativity
+
+Deadline:
+7th October 2026
+
+====================
+ROUND 2 — OFFLINE
+=================
+
+Mode:
+Offline
+
+Topic:
+Revealed on the spot
+
+Participants create their artwork digitally on a computer.
+
+The round focuses on creating, experimenting, and impressing through digital artwork.
+
+Date:
+10th October 2026
+
+Venue:
+PCCOE
+
+====================
+REGISTRATION
+============
+
+PCCOE STUDENTS:
+
+Registration Fee:
+Free
+
+PCCOE Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSdkCh0Buifs1sUP0H_YMUM85ESmcf5ogI_cSfghI5a29EOJOw/viewform
+
+OTHER STUDENTS:
+
+Registration Fee:
+₹49
+
+Unstop Registration:
+https://unstop.com/p/make-a-doodle-pimpri-chinchwad-college-of-engineering-1760448
+
+====================
+PRIZES
+======
+
+Prize Pool:
+₹13K+
+
+====================
+TOOLS
+=====
+
+Participants can create their digital doodles using:
+
+* Canva
+* AI
+* Their own creativity and skills
+
+The event is conducted digitally on computers.
+
+====================
+EVENT CONTACTS
+==============
+
+Aryan Chavan
+Phone:
+7385286894
+
+Apurv Fating
+Phone:
+8446392554
+
+====================
+IMPORTANT DATES
+===============
+
+ROUND 1 DEADLINE:
+7th October 2026
+
+ROUND 2:
+10th October 2026
+
+ROUND 2 VENUE:
+PCCOE
+
+====================
+QUICK FACTS
+===========
+
+Event:
+MAKE A DOODLE! 2026
+
+Event ID:
+ANANTYA-006
+
+Edition:
+ANANTYA '26
+
+Type:
+Digital Doodling Event
+
+Organizer:
+Computer Department Art Circle
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+Number of Rounds:
+2
+
+Round 1:
+Online
+
+Round 1 Theme:
+MARVEL
+
+Round 1 Deadline:
+7th October 2026
+
+Round 2:
+Offline
+
+Round 2 Topic:
+Revealed on the spot
+
+Round 2 Date:
+10th October 2026
+
+Round 2 Venue:
+PCCOE
+
+Prize Pool:
+₹13K+
+
+PCCOE Student Fee:
+Free
+
+Other Student Fee:
+₹49
+
+PCCOE Registration:
+https://docs.google.com/forms/d/e/1FAIpQLSdkCh0Buifs1sUP0H_YMUM85ESmcf5ogI_cSfghI5a29EOJOw/viewform
+
+Unstop:
+https://unstop.com/p/make-a-doodle-pimpri-chinchwad-college-of-engineering-1760448
+
+====================
+SOURCE METADATA
+===============
+
+SOURCE_FILE:
+event_006_make_a_doodle_2026.txt
+
+SOURCE_TYPE:
+Event information provided for ANANTYA '26 chatbot knowledge base
+
+KNOWLEDGE_SCOPE:
+This document contains the MAKE A DOODLE! 2026 event information supplied for the ANANTYA '26 chatbot.
+
+GROUNDING_INSTRUCTION:
+When answering questions about MAKE A DOODLE! 2026, use only the information contained in this event document and other explicitly provided official event sources.
+
+Do not invent:
+
+* Eligibility requirements
+* Team size
+* Round timings
+* Round duration
+* Judging criteria
+* Evaluation criteria
+* Submission format
+* Selection process
+* Additional rules
+* Prize distribution
+* Registration deadlines beyond those provided
+* Venue details beyond PCCOE
+* Contact details
+* URLs
+
+If the requested information is not present in the available MAKE A DOODLE! 2026 event information, state that the information is not available in the provided event details.
+
+Preserve all registration URLs exactly as provided.

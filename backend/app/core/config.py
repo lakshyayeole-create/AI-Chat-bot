@@ -76,7 +76,14 @@ class Settings(BaseSettings):
     @property
     def knowledge_path(self) -> Path:
         """Resolve knowledge directory relative to the backend root."""
-        return Path(__file__).resolve().parent.parent.parent / self.knowledge_dir
+        backend_root = Path(__file__).resolve().parent.parent.parent
+        primary = backend_root / self.knowledge_dir
+        if primary.exists():
+            return primary
+        fallback = backend_root / "event_info"
+        if fallback.exists():
+            return fallback
+        return primary
 
     @property
     def resolved_cache_path(self) -> Path:

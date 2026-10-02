@@ -1,0 +1,304 @@
+EVENT_ID: ANANTYA-002
+
+EVENT_NAME: SHE SOLVES 3.0
+
+EVENT_EDITION: ANANTYA '26
+
+EVENT_TYPE: Women-Oriented Hackathon
+
+EVENT_THEME: Time Stone – Ideas Beyond Time
+
+INSTITUTION: Pimpri Chinchwad College of Engineering (PCCOE)
+
+DEPARTMENT: Department of Computer Engineering
+
+ORGANIZING_CLUB: PCCOE ACM-W Student Chapter
+
+VENUE: Pimpri Chinchwad College of Engineering, Pune
+
+====================
+EVENT OVERVIEW
+==============
+
+SHE SOLVES 3.0 is a multi-stage women-oriented hackathon organized by the PCCOE ACM-W Student Chapter.
+
+The hackathon provides a platform for participants to innovate, build, and present technology-driven solutions to real-world problems.
+
+The event focuses on the following domains:
+
+* Health
+* Environment
+* Safety
+* Education
+* Entrepreneurship
+* Women Empowerment
+
+Event Theme:
+Time Stone – Ideas Beyond Time
+
+====================
+TEAM SIZE
+=========
+
+Minimum team size: 2 participants
+
+Maximum team size: 4 participants
+
+Team composition:
+2–4 female participants
+
+====================
+ELIGIBILITY
+===========
+
+Eligibility:
+Female Students Only
+
+====================
+DOMAINS
+=======
+
+Participants can develop solutions addressing real-world problems in the following domains:
+
+* Health
+* Environment
+* Safety
+* Education
+* Entrepreneurship
+* Women Empowerment
+
+====================
+ROUNDS
+======
+
+ROUND 1 — REGISTRATION, IDEATION AND PROPOSAL SUBMISSION
+
+Mode:
+Online
+
+Participants must submit:
+
+* Team details
+* Problem statement
+* Proposed solution
+* PPT
+
+Deadline:
+Up to 3rd October 2026
+
+ROUND 2 — PROTOTYPE DEVELOPMENT & ONLINE DEMO
+
+Mode:
+Online
+
+Participants must develop a working prototype or MVP and present it through an online demonstration.
+
+Demo Duration:
+10 minutes
+
+Date:
+5th October 2026
+
+ROUND 3 — OFFLINE HACKATHON
+
+Mode:
+Offline
+
+Participants take part in a 5-hour offline hackathon.
+
+During this round, teams build a solution based on an on-the-spot problem statement.
+
+Date:
+9th October 2026
+
+Time:
+9:00 AM – 5:00 PM
+
+Venue:
+Pimpri Chinchwad College of Engineering, Pune
+
+====================
+REGISTRATION
+============
+
+REGISTRATION FEES
+
+PCCOE Students:
+₹0
+
+Other Students:
+₹100
+
+REGISTRATION LINKS
+
+PCCOE Registration:
+https://forms.gle/Waeg8i4qGAoA1w1dA
+
+Unstop Registration:
+https://unstop.com/o/VX4Lv9M?lb=vrpByJoA&utm_medium=Share&utm_source=220krpat77987&utm_campaign=Online_coding_challenge
+
+Rulebook & PPT Template:
+https://drive.google.com/drive/folders/1Tvfgk1nUWpKdMsI7gYZCMgbdkvIYhyHH
+
+====================
+PRIZES & BENEFITS
+=================
+
+Prize Pool:
+₹16,000
+
+Additional benefits:
+
+* Certificates for all participants
+* Goodies for all participants
+
+====================
+RULES & GUIDELINES
+==================
+
+Problem Statement and Solution Alignment:
+The problem statement and proposed solution must align with one of the specified tracks and domains.
+
+Originality and Conduct:
+Any form of plagiarism, misconduct, or rule violation will result in disqualification.
+
+Team Participation:
+All team members are expected to actively contribute throughout the event.
+
+====================
+IMPORTANT DATES
+===============
+
+ROUND 1 DEADLINE:
+Up to 3rd October 2026
+
+ROUND 2:
+5th October 2026
+
+ROUND 3:
+9th October 2026
+
+ROUND 3 TIME:
+9:00 AM – 5:00 PM
+
+====================
+EVENT COORDINATORS
+==================
+
+Sanchita Sachin Sakhare
+Phone: 9822799225
+Email: [sanchita.sakhare24@pccoepune.org](mailto:sanchita.sakhare24@pccoepune.org)
+
+Shivani Vibhute
+Phone: 9226853657
+Email: [shivani.vibhute24@pccoepune.org](mailto:shivani.vibhute24@pccoepune.org)
+
+FACULTY COORDINATOR
+
+Dr. Aparna Joshi
+Email: [aparna.joshi@pccoepune.org](mailto:aparna.joshi@pccoepune.org)
+
+====================
+QUICK FACTS
+===========
+
+Event:
+SHE SOLVES 3.0
+
+Event ID:
+ANANTYA-002
+
+Type:
+Women-Oriented Hackathon
+
+Theme:
+Time Stone – Ideas Beyond Time
+
+Organizer:
+PCCOE ACM-W Student Chapter
+
+Institution:
+Pimpri Chinchwad College of Engineering (PCCOE)
+
+Department:
+Department of Computer Engineering
+
+Eligibility:
+Female Students Only
+
+Team Size:
+2–4 Female Participants
+
+Domains:
+Health, Environment, Safety, Education, Entrepreneurship, Women Empowerment
+
+Number of Rounds:
+3
+
+Round 1:
+Registration, Ideation and Proposal Submission — Online
+
+Round 2:
+Prototype Development & Online Demo — Online
+
+Round 3:
+Offline Hackathon
+
+Round 2 Demo Duration:
+10 minutes
+
+Round 3 Duration:
+5 hours
+
+PCCOE Registration Fee:
+₹0
+
+Other Students Registration Fee:
+₹100
+
+Prize Pool:
+₹16,000
+
+Final Round:
+9th October 2026
+
+Final Round Time:
+9:00 AM – 5:00 PM
+
+Venue:
+Pimpri Chinchwad College of Engineering, Pune
+
+====================
+SOURCE METADATA
+===============
+
+SOURCE_FILE:
+event_002_she_solves_3_0.txt
+
+SOURCE_TYPE:
+Official event information provided for ANANTYA '26 chatbot knowledge base
+
+KNOWLEDGE_SCOPE:
+This document contains the SHE SOLVES 3.0 event information supplied for the ANANTYA '26 chatbot.
+
+GROUNDING_INSTRUCTION:
+When answering questions about SHE SOLVES 3.0, use only the information contained in this event document and other explicitly provided official event sources.
+
+Do not invent:
+
+* Dates
+* Times
+* Venues
+* Fees
+* Rules
+* Eligibility conditions
+* Domains
+* Prize details
+* Registration information
+* Contact details
+* URLs
+* Round requirements
+
+If the requested information is not present in the available SHE SOLVES 3.0 event information, state that the information is not available in the provided event details.
+
+Preserve registration and resource URLs exactly as provided.
