@@ -93,6 +93,7 @@
     const reactorImgSrc = getReactorImageUrl();
     const root = document.createElement("div");
     root.id = "anantya-hud-root";
+    root.setAttribute("data-lenis-prevent", "true");
     root.innerHTML = `
       <!-- 1. Floating Circular Launcher (Iron Man Arc Reactor) -->
       <button class="anantya-hud-launcher" id="anantya-hud-launcher" aria-label="Open Anantya's Jarvis" title="Open Anantya's Jarvis Arc Reactor">
@@ -110,7 +111,7 @@
       </button>
 
       <!-- 2. Hologram HUD Window -->
-      <div class="anantya-hud-window" id="anantya-hud-window" role="dialog" aria-modal="true" aria-label="Anantya's Jarvis Event Assistant">
+      <div class="anantya-hud-window" id="anantya-hud-window" data-lenis-prevent="true" role="dialog" aria-modal="true" aria-label="Anantya's Jarvis Event Assistant">
         <div class="anantya-hud-scanlines"></div>
 
         <!-- Header -->
@@ -149,10 +150,10 @@
         </header>
 
         <!-- Message Stream -->
-        <div class="anantya-hud-stream" id="anantya-hud-stream"></div>
+        <div class="anantya-hud-stream" id="anantya-hud-stream" data-lenis-prevent="true"></div>
 
         <!-- Quick Query Chips Bar -->
-        <div class="anantya-hud-chips-bar" id="anantya-hud-chips">
+        <div class="anantya-hud-chips-bar" id="anantya-hud-chips" data-lenis-prevent="true">
           ${CONFIG.quickChips
         .map(
           (chip) => `<button class="anantya-hud-chip" data-prompt="${chip}">${chip}</button>`
@@ -230,6 +231,74 @@
       }
     });
 
+    // Isolate scrolling to chatbot window only when hovering
+    dom.window.addEventListener("mouseenter", function () {
+      if (window.__lenis && state.isOpen) {
+        window.__lenis.stop();
+      }
+    });
+
+    dom.window.addEventListener("mouseleave", function () {
+      if (window.__lenis) {
+        window.__lenis.start();
+      }
+    });
+
+    // Strictly trap wheel events inside the chatbot window
+    dom.window.addEventListener(
+      "wheel",
+      function (e) {
+        // Prevent event from bubbling to window / Lenis / ScrollTrigger
+        e.stopPropagation();
+
+        const stream = dom.stream;
+        const chips = dom.chips;
+        const target = e.target;
+
+        // 1. If scrolling over message stream
+        if (stream && (stream.contains(target) || target === stream)) {
+          const delta = e.deltaY;
+          const isAtTop = stream.scrollTop <= 0 && delta < 0;
+          const isAtBottom =
+            stream.scrollTop + stream.clientHeight >= stream.scrollHeight - 1 &&
+            delta > 0;
+
+          // If at boundary, prevent default so the outer webpage doesn't scroll chain
+          if (isAtTop || isAtBottom) {
+            e.preventDefault();
+          }
+          return;
+        }
+
+        // 2. If scrolling over quick chips bar horizontally
+        if (chips && (chips.contains(target) || target === chips)) {
+          if (chips.scrollWidth > chips.clientWidth) {
+            chips.scrollLeft += e.deltaY;
+            e.preventDefault();
+            return;
+          }
+        }
+
+        // 3. If scrolling over header, input, or any other part of HUD window,
+        // prevent page scrolling entirely
+        e.preventDefault();
+      },
+      { passive: false }
+    );
+
+    // Trap touchmove events on mobile/tablets
+    dom.window.addEventListener(
+      "touchmove",
+      function (e) {
+        e.stopPropagation();
+        const stream = dom.stream;
+        if (!stream || (!stream.contains(e.target) && e.target !== stream)) {
+          e.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+
     // Global click delegation for website triggers (works on ANY website UI)
     document.addEventListener("click", function (e) {
       const openBtn = e.target.closest("[data-action='open-chatbot']");
@@ -301,6 +370,9 @@
     state.isOpen = false;
     dom.window.classList.remove("is-active");
     dom.launcher.classList.remove("is-open");
+    if (window.__lenis) {
+      window.__lenis.start();
+    }
   }
 
   /**

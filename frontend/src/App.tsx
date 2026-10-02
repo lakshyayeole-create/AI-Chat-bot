@@ -385,6 +385,7 @@ export default function App() {
     });
 
     lenisRef.current = lenis;
+    (window as any).__lenis = lenis;
 
     // Immediately halt scroll and anchor to top
     lenis.scrollTo(0, { immediate: true });
@@ -403,6 +404,7 @@ export default function App() {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
       lenisRef.current = null;
+      delete (window as any).__lenis;
     };
   }, []);
 
