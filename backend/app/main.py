@@ -4,6 +4,17 @@ Main entry point for the backend server.
 Configures CORS, loads the vector store on startup, and includes
 the chat API router.
 """
+import os
+
+# Limit CPU thread pools to prevent memory bloat on low-memory containers (e.g. Render Free 512MB)
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
+os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ["TORCH_NUM_THREADS"] = "1"
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI

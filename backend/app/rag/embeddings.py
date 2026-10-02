@@ -4,12 +4,16 @@ Provides a clean interface for generating text embeddings.
 The embedding model is loaded once and reused for both ingestion and querying.
 """
 import numpy as np
+import torch
 from sentence_transformers import SentenceTransformer
 
 from app.core.config import get_settings
 from app.core.logging_config import get_logger
 
 logger = get_logger(__name__)
+
+# Force single-thread PyTorch CPU execution to keep memory tight
+torch.set_num_threads(1)
 
 # Module-level cache for the embedding model
 _model: SentenceTransformer | None = None
@@ -24,8 +28,9 @@ def _get_model() -> SentenceTransformer:
     global _model
     if _model is None:
         settings = get_settings()
-        logger.info("Loading embedding model: %s", settings.embedding_model)
-        _model = SentenceTransformer(settings.embedding_model)
+        logger.info("Loading embedding model on CPU: %s", settings.embedding_model)
+        torch.set_num_threads(1)
+        _model = SentenceTransformer(settings.embedding_model, device="cpu")
         logger.info(
             "Embedding model loaded. Dimension: %d",
             _model.get_sentence_embedding_dimension(),
