@@ -63,6 +63,10 @@ async def lifespan(app: FastAPI):
 
     # Connect to MongoDB Atlas
     await mongo_manager.connect()
+    if mongo_manager.is_connected:
+        from app.rag.semantic_cache import MongoDBSemanticCache, set_semantic_cache
+        set_semantic_cache(MongoDBSemanticCache())
+        logger.info("Semantic cache initialized with MongoDB Atlas backend.")
 
     # Pre-warm embedding model
     try:

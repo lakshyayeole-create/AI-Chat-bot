@@ -91,3 +91,22 @@ class UserRecord(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     role: str = "visitor"
     metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
+# ============================================================================
+# 5. Semantic Cache Schema (Stored in MongoDB Atlas)
+# ============================================================================
+class SemanticCacheRecord(BaseModel):
+    """Schema for semantic cache records stored in MongoDB."""
+    cache_id: str = Field(..., description="Unique UUID for cache entry")
+    query: str = Field(..., description="Normalized user query text")
+    query_embedding: List[float] = Field(..., description="1D embedding vector for query")
+    answer: str = Field(..., description="Grounded chatbot answer text")
+    sources: List[Dict[str, Any]] = Field(default_factory=list, description="Grounded source metadata")
+    event_ids: List[str] = Field(default_factory=list, description="Matched event IDs")
+    event_names: List[str] = Field(default_factory=list, description="Matched event names")
+    retrieved_chunk_ids: List[str] = Field(default_factory=list, description="Qdrant chunk IDs")
+    knowledge_version: str = Field(..., description="Canonical event knowledge hash version")
+    created_at: str = Field(..., description="ISO timestamp of creation")
+    created_at_ts: float = Field(..., description="Epoch timestamp for TTL checking")
+

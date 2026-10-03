@@ -62,10 +62,10 @@ async def generate_tts(request: TTSRequestBody):
         output_format=request.format,
     )
 
-    # 1. Check disk audio cache
+    # 1. Check pregenerated audio cache
     cached_audio = cache.get(cache_key)
     if cached_audio:
-        logger.info("Audio cache HIT for key %s (mode=%s)", cache_key[:12], request.mode)
+        logger.info("Pregenerated audio cache HIT for key %s (mode=%s)", cache_key[:12], request.mode)
         return Response(
             content=cached_audio,
             media_type="audio/mpeg",
@@ -75,29 +75,29 @@ async def generate_tts(request: TTSRequestBody):
             },
         )
 
-    logger.info("Audio cache MISS for key %s (mode=%s)", cache_key[:12], request.mode)
+    logger.info("Audio cache MISS for key %s (mode=%s) - Generating on-the-fly without disk persistence", cache_key[:12], request.mode)
 
-    # 2. Generator function to be run under bounded concurrency & coalescing
-    async def _generate_and_cache() -> bytes:
+    # 2. Generator function to be run under bounded concurrency & coalescing (NO disk caching for dynamic requests)
+    async def _generate_dynamic_speech() -> bytes:
         audio_bytes = await client.generate_speech(
             text=normalize_text_for_tts(raw_text),
             voice_id=voice_id,
             model_id=model_id,
         )
-        # Store in cache
-        cache.put(cache_key, audio_bytes)
+        # Note: Dynamic audio is not stored to disk cache. Only pregenerated voices are retained.
         return audio_bytes
 
     try:
-        audio_result = await limiter.execute_coalesced(cache_key, _generate_and_cache)
+        audio_result = await limiter.execute_coalesced(cache_key, _generate_dynamic_speech)
         return Response(
             content=audio_result,
             media_type="audio/mpeg",
             headers={
                 "X-Audio-Cache": "MISS",
-                "Cache-Control": f"public, max-age={settings.tts_cache_ttl_seconds}",
+                "Cache-Control": "no-store, no-cache, must-revalidate",
             },
         )
+
 
     except TTSBusyException as e:
         return JSONResponse(

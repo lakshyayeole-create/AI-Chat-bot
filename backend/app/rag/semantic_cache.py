@@ -364,6 +364,180 @@ class JSONSemanticCache(BaseSemanticCache):
 
 
 # ---------------------------------------------------------------------------
+# MongoDB Atlas Implementation
+# ---------------------------------------------------------------------------
+
+class MongoDBSemanticCache(BaseSemanticCache):
+    """MongoDB Atlas-backed semantic cache implementation.
+    
+    Persists grounded responses and embeddings to MongoDB Atlas in the
+    'semantic_cache' collection. Falls back gracefully to JSONSemanticCache
+    if MongoDB is unavailable or disconnected.
+    """
+
+    def __init__(self, fallback_cache: BaseSemanticCache | None = None):
+        self._fallback = fallback_cache or JSONSemanticCache()
+
+    async def get_cached_response(
+        self,
+        query: str,
+        query_embedding: np.ndarray,
+        event_ids: list[str],
+    ) -> dict | None:
+        settings = get_settings()
+        if not settings.semantic_cache_enabled:
+            return None
+
+        from app.db.mongodb import get_semantic_cache_collection
+        col = get_semantic_cache_collection()
+        if col is None:
+            logger.debug("MongoDB not connected for semantic cache lookup, using fallback.")
+            return await self._fallback.get_cached_response(query, query_embedding, event_ids)
+
+        current_kv = compute_knowledge_version()
+        now = time.time()
+        threshold = settings.semantic_cache_threshold
+        ttl = settings.semantic_cache_ttl
+
+        query_event_set = set(event_ids)
+
+        filter_doc: dict = {"knowledge_version": current_kv}
+        if ttl > 0:
+            filter_doc["created_at_ts"] = {"$gte": now - ttl}
+
+        try:
+            cursor = col.find(filter_doc).sort("created_at_ts", -1).limit(100)
+            candidates = await cursor.to_list(length=100)
+        except Exception as e:
+            logger.warning("MongoDB error during semantic cache lookup: %s; falling back.", str(e))
+            return await self._fallback.get_cached_response(query, query_embedding, event_ids)
+
+        best_entry: dict | None = None
+        best_similarity = -1.0
+
+        for entry in candidates:
+            # 1. Event identity check
+            entry_events = set(entry.get("event_ids", []))
+            if entry_events != query_event_set:
+                continue
+
+            # 2. Grounding sources check
+            if not entry.get("sources"):
+                continue
+
+            # 3. Vector similarity
+            stored_emb = entry.get("query_embedding")
+            if not stored_emb:
+                continue
+
+            sim = compute_cosine_similarity(query_embedding, np.array(stored_emb, dtype=np.float32))
+            if sim >= threshold and sim > best_similarity:
+                best_similarity = sim
+                best_entry = entry
+
+        if best_entry is not None:
+            logger.info(
+                "MongoDB Semantic Cache HIT! query='%s' matched='%s' (score=%.4f >= %.4f)",
+                query[:60],
+                best_entry.get("query", "")[:60],
+                best_similarity,
+                threshold,
+            )
+            return {
+                "answer": best_entry["answer"],
+                "sources": best_entry["sources"],
+                "cache_id": str(best_entry.get("_id", best_entry.get("cache_id"))),
+                "similarity": best_similarity,
+            }
+
+        logger.debug("MongoDB Semantic Cache MISS for query: '%s'", query[:60])
+        return None
+
+    async def save_cached_response(
+        self,
+        query: str,
+        query_embedding: np.ndarray,
+        answer: str,
+        sources: list[dict],
+        event_ids: list[str],
+        event_names: list[str] | None = None,
+        retrieved_chunk_ids: list[str] | None = None,
+    ) -> dict | None:
+        settings = get_settings()
+        if not settings.semantic_cache_enabled:
+            return None
+
+        if not is_cacheable_response(answer, sources):
+            logger.info("Response did not pass cache safety check; not caching")
+            return None
+
+        from app.db.mongodb import get_semantic_cache_collection
+        col = get_semantic_cache_collection()
+        if col is None:
+            logger.debug("MongoDB not connected for semantic cache save, using fallback.")
+            return await self._fallback.save_cached_response(
+                query, query_embedding, answer, sources, event_ids, event_names, retrieved_chunk_ids
+            )
+
+        now = time.time()
+        created_at_iso = datetime.now(timezone.utc).isoformat()
+        current_kv = compute_knowledge_version()
+
+        if event_names is None:
+            event_names = list({s.get("event_name", "") for s in sources if s.get("event_name")})
+
+        doc = {
+            "cache_id": str(uuid.uuid4()),
+            "query": query,
+            "query_embedding": query_embedding.tolist() if isinstance(query_embedding, np.ndarray) else list(query_embedding),
+            "answer": answer,
+            "sources": sources,
+            "event_ids": event_ids,
+            "event_names": event_names,
+            "retrieved_chunk_ids": retrieved_chunk_ids or [],
+            "knowledge_version": current_kv,
+            "created_at": created_at_iso,
+            "created_at_ts": now,
+        }
+
+        try:
+            await col.replace_one({"query": query}, doc, upsert=True)
+            logger.info(
+                "Saved response to MongoDB Semantic Cache: cache_id=%s, query='%s', events=%s, version=%s",
+                doc["cache_id"],
+                query[:60],
+                event_ids,
+                current_kv,
+            )
+            return doc
+        except Exception as e:
+            logger.warning("Failed to save response to MongoDB semantic cache: %s; using fallback.", str(e))
+            return await self._fallback.save_cached_response(
+                query, query_embedding, answer, sources, event_ids, event_names, retrieved_chunk_ids
+            )
+
+    async def invalidate_cache(self, event_id: str | None = None) -> int:
+        from app.db.mongodb import get_semantic_cache_collection
+        col = get_semantic_cache_collection()
+        if col is None:
+            return await self._fallback.invalidate_cache(event_id)
+
+        try:
+            if event_id is None:
+                res = await col.delete_many({})
+            else:
+                res = await col.delete_many({"event_ids": event_id})
+            logger.info("Invalidated %d entries from MongoDB semantic cache (filter=%s)", res.deleted_count, event_id)
+            return res.deleted_count
+        except Exception as e:
+            logger.warning("Failed to invalidate MongoDB semantic cache: %s; using fallback.", str(e))
+            return await self._fallback.invalidate_cache(event_id)
+
+    async def clear_cache(self) -> None:
+        await self.invalidate_cache(event_id=None)
+
+
+# ---------------------------------------------------------------------------
 # Module-level Singleton and Convenience Functions
 # ---------------------------------------------------------------------------
 
@@ -371,10 +545,14 @@ _cache_instance: BaseSemanticCache | None = None
 
 
 def get_semantic_cache() -> BaseSemanticCache:
-    """Get the active semantic cache instance."""
+    """Get the active semantic cache instance (MongoDB if connected, else JSON)."""
     global _cache_instance
     if _cache_instance is None:
-        _cache_instance = JSONSemanticCache()
+        from app.db.mongodb import mongo_manager
+        if mongo_manager.is_connected and mongo_manager.db is not None:
+            _cache_instance = MongoDBSemanticCache()
+        else:
+            _cache_instance = JSONSemanticCache()
     return _cache_instance
 
 
@@ -422,3 +600,4 @@ async def invalidate_cache(event_id: str | None = None) -> int:
 async def clear_cache() -> None:
     """Clear all cache entries using active semantic cache."""
     await get_semantic_cache().clear_cache()
+

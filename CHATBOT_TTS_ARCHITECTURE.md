@@ -33,10 +33,11 @@ This document defines the chatbot/TTS module only. The owner of this workstream 
 | Voice direction | Original futuristic, calm, clear, confident assistant voice; not an unauthorized clone |
 | Read Page input | Relevant, visible page content supplied by the host website or extracted from an explicitly selected content container |
 | Chatbot Voice input | The final text answer returned by the existing chatbot |
-| Cache | Cache reusable generated audio for stable text and voice settings |
+| Cache | **Pregenerated voice only:** Backend disk cache stores pregenerated narration audio (`full_website_read.mp3` & section clips); dynamic conversational speech is generated on-demand and streamed directly without backend disk persistence |
 | Concurrency | Server-side bounded concurrency, request coalescing, queue timeout and rate limiting |
 | Secrets | ElevenLabs API key stored only in server-side environment variables |
 | Integration | A small API/adapter contract; do not assume access to the entire website codebase |
+
 
 **Important:** provider plans, character quotas, request limits and concurrent-request limits change. Verify current limits in the actual ElevenLabs account and official documentation before launch. Do not hard-code a plan's assumed concurrency as a permanent fact.
 
@@ -119,7 +120,8 @@ Rules:
                                |                 |
                             Success            Failure
                                |                 |
-                         Store/cache       Error handling
+                        Stream directly    Error handling
+                       (No dynamic disk)
                                |                 |
                                +--------+--------+
                                         |
@@ -145,10 +147,11 @@ Adapt names and paths to the actual project; these are logical responsibilities,
 - `TTSClient`: calls the project's backend endpoint.
 
 ### Backend/server module
-- `POST /api/tts`: validate input, authorize/rate-limit the caller, check cache, coalesce identical in-flight work, enforce concurrency and call ElevenLabs.
+- `POST /api/tts`: validate input, check pregenerated voice cache, coalesce identical in-flight work, enforce concurrency, call ElevenLabs, and stream audio directly to client without saving dynamic speech to disk.
+- `GET /api/tts/page`: serve pregenerated complete website narration audio directly from `backend/data/audio_cache/full_website_read.mp3`.
 - Optional `GET /api/tts/status`: only if operational status is genuinely needed; don't expose secrets or provider internals.
 - Server-side provider adapter: isolates ElevenLabs-specific request/response handling.
-- Cache/storage adapter: use existing project infrastructure where available; otherwise begin with a simple documented cache abstraction.
+- Audio cache adapter: dedicated to managing pregenerated voice assets on disk (not dynamic conversational responses).
 - Queue/concurrency controller: limit active provider requests and reject or defer excess work safely.
 
 If the existing project has no backend that you can modify, document the required server-side endpoint and build against a mock interface locally. Do **not** expose the ElevenLabs key in browser code as a shortcut.

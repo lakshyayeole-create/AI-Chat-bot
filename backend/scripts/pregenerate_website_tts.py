@@ -76,10 +76,12 @@ async def main():
     deleted_count = cache.clear()
     print(f"  Deleted {deleted_count} cached audio files from {cache.cache_dir}")
 
-    cache_json = backend_dir / "data" / "cache.json"
-    if cache_json.is_file():
-        cache_json.write_text("{}", encoding="utf-8")
-        print("  Reset semantic cache (data/cache.json)")
+    try:
+        from app.rag.semantic_cache import clear_cache
+        await clear_cache()
+        print("  Reset semantic cache (MongoDB Atlas / JSON)")
+    except Exception as e:
+        print(f"  Note on semantic cache reset: {e}")
 
     # 2. Generate and cache speech for each section
     print(f"\n[2/4] Generating speech for {len(SECTIONS)} sections...")

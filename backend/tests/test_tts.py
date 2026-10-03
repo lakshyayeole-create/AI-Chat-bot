@@ -114,3 +114,27 @@ def test_tts_api_cache_hit(tmp_path):
     assert response.content == b"CACHED_BYTES_123"
     assert response.headers.get("x-audio-cache") == "HIT"
     assert response.headers.get("content-type") == "audio/mpeg"
+
+
+def test_tts_api_dynamic_does_not_save_to_disk(tmp_path):
+    """Dynamic TTS generation must return audio directly without persisting to backend disk cache."""
+    from app.tts.cache import get_audio_cache, compute_cache_key
+    cache = get_audio_cache()
+    unique_text = "Dynamic on-the-fly speech answer that should not be saved"
+    key = compute_cache_key(unique_text, "pNInz6obpgDQGcFmaJgB", "eleven_turbo_v2_5")
+
+    # Ensure not in cache before test
+    assert cache.get(key) is None
+
+    client = TestClient(app)
+    with patch("app.tts.elevenlabs_client.ElevenLabsClient.generate_speech", new_callable=AsyncMock) as mock_gen:
+        mock_gen.return_value = b"MOCK_DYNAMIC_AUDIO_STREAM_BYTES"
+
+        response = client.post("/api/tts", json={"text": unique_text})
+        assert response.status_code == 200
+        assert response.content == b"MOCK_DYNAMIC_AUDIO_STREAM_BYTES"
+        assert response.headers.get("x-audio-cache") == "MISS"
+
+        # Crucial check: audio must NOT be in disk cache!
+        assert cache.get(key) is None
+

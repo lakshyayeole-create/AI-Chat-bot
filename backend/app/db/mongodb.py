@@ -73,6 +73,13 @@ class MongoDBManager:
                 {"$setOnInsert": {"total_count": 0, "initialized_at": True}},
                 upsert=True,
             )
+
+            # 5. Semantic Cache collection indexes
+            await self.db.semantic_cache.create_index([("query", ASCENDING)], unique=True)
+            await self.db.semantic_cache.create_index([("knowledge_version", ASCENDING)])
+            await self.db.semantic_cache.create_index([("created_at_ts", DESCENDING)])
+            await self.db.semantic_cache.create_index([("event_ids", ASCENDING)])
+
             logger.info("MongoDB collections and indexes initialized successfully.")
         except PyMongoError as e:
             logger.warning("Error initializing MongoDB indexes: %s", str(e))
@@ -128,3 +135,11 @@ def get_users_collection():
     if mongo_manager.db is not None:
         return mongo_manager.db["users"]
     return None
+
+
+def get_semantic_cache_collection():
+    """Retrieve semantic_cache collection."""
+    if mongo_manager.db is not None:
+        return mongo_manager.db["semantic_cache"]
+    return None
+

@@ -1,4 +1,11 @@
-"""Disk-backed audio cache for Text-to-Speech (TTS)."""
+"""Disk-backed audio storage for pregenerated Text-to-Speech (TTS) voice assets.
+
+Note:
+Dynamic on-demand speech requests (e.g. chatbot conversational answers) are streamed/returned
+directly without persisting to backend disk cache to prevent disk storage bloat.
+Only pregenerated voice assets (such as complete website narration 'full_website_read.mp3'
+and official section clips) are retained on disk.
+"""
 import hashlib
 import time
 from pathlib import Path
@@ -33,7 +40,8 @@ def compute_cache_key(
 
 
 class AudioCache:
-    """Manages cached TTS audio files on disk with TTL."""
+    """Manages pregenerated TTS audio files on disk with TTL."""
+
 
     def __init__(self, cache_dir: Optional[str] = None, ttl_seconds: Optional[int] = None):
         settings = get_settings()

@@ -21,23 +21,26 @@ The three storage layers are strictly separated:
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ 2. BACKEND → DYNAMIC TTS GENERATED AUDIO ONLY                               │
-│    • Audio generated on-demand via ElevenLabs / Fallback                    │
+│ 2. BACKEND → PREGENERATED VOICE AUDIO ASSETS ONLY                           │
+│    • Complete website narration audio (`full_website_read.mp3`)             │
+│    • Pregenerated official event section narration audio clips              │
 │    • Stored locally on disk at `backend/data/audio_cache/*.mp3`             │
-│    • SHA-256 deterministic cache key based on text, voice, model & format   │
-│    • Served directly via `POST /api/tts` with HTTP caching headers          │
+│    • Dynamic chatbot TTS generated on-demand & streamed directly to client  │
+│    • NEVER bloats backend disk with dynamic conversational speech cache     │
 │    • NEVER uploaded to Cloudinary                                           │
 │    • NEVER listed in static `assets.json`                                   │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ 3. MONGODB ATLAS → APPLICATION & USER DATA ONLY                             │
-│    • User Information / Profiles                                            │
+│ 3. MONGODB ATLAS → APPLICATION, USER & SEMANTIC CACHE DATA                   │
+│    • User Information / Profiles (`users`)                                  │
 │    • Chatbot User Queries & Assistant Responses (`chat_messages`)           │
 │    • Contact Form Queries & Messages (`contact_queries`)                    │
 │    • Global Visitor Telemetry & Counter (`site_visitors`, `visitor_stats`)  │
+│    • Semantic Cache (`semantic_cache`) for instant grounded Q&A responses   │
 │    • NEVER stores large static media binaries (.glb, images, audio)         │
 └─────────────────────────────────────────────────────────────────────────────┘
+
 ```
 
 ---
@@ -119,9 +122,10 @@ python scripts/seed_assets.py --force
 | `POST` | `/api/contact` | Submits Contact form message | MongoDB (`contact_queries`) |
 | `POST` | `/api/visitors/track` | Tracks visit, increments visitor count | MongoDB (`site_visitors`, `visitor_stats`) |
 | `GET` | `/api/visitors/count` | Retrieves verified visitor count | MongoDB (`visitor_stats`) |
-| `POST` | `/api/chat` | Chatbot query (Qdrant + Gemini + log) | MongoDB (`chat_messages`) |
+| `POST` | `/api/chat` | Chatbot query (Semantic Cache + Qdrant + Gemini + log) | MongoDB (`semantic_cache`, `chat_messages`) |
 | `GET` | `/api/chat/status/{id}` | Polls async chat job status | In-Memory Queue |
-| `POST` | `/api/tts` | Generates or returns cached TTS audio | Backend Disk Cache (`data/audio_cache`) |
+| `POST` | `/api/tts` | Generates speech on-demand (no disk cache) or serves pregenerated clip | ElevenLabs Stream / Backend Pregenerated Audio |
+| `GET` | `/api/tts/page` | Retrieves pregenerated complete website narration | Backend Disk Cache (`data/audio_cache/full_website_read.mp3`) |
 | `GET` | `/api/tts/status` | TTS operational readiness | In-Memory |
 
 ---
@@ -188,7 +192,27 @@ Stores the atomic global visitor counter document:
 ```
 * Incremented via atomic MongoDB `$inc` operations only on new visitors.
 
+### 5. `semantic_cache`
+Stores grounded Q&A responses indexed with embeddings for sub-millisecond cache hits:
+```json
+{
+  "_id": ObjectId("..."),
+  "cache_id": "97e6beec-0a37-4d6d-8b01-1b0caef53912",
+  "query": "What are the rules of DecentraHack?",
+  "query_embedding": [0.0123, -0.0456, "... (384 float dimensions) ..."],
+  "answer": "DecentraHack 2.0 is a 3-round hackathon...",
+  "sources": [{"event_id": "ANANTYA-001", "event_name": "DecentraHack 2.0", "source_file": "decentrahack.md"}],
+  "event_ids": ["ANANTYA-001"],
+  "event_names": ["DecentraHack 2.0"],
+  "knowledge_version": "a4f89d31...",
+  "created_at": "2026-10-03T10:20:00.000Z",
+  "created_at_ts": 1791013200.0
+}
+```
+* Indexes: `query` (unique), `knowledge_version` (ascending), `created_at_ts` (descending), `event_ids` (ascending).
+
 ---
+
 
 ## 6. Frontend Integration
 
