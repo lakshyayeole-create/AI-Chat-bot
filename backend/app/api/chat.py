@@ -122,7 +122,7 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
             except asyncio.TimeoutError:
                 raise HTTPException(
                     status_code=504,
-                    detail="Job processing timed out after 30 seconds",
+                    detail="I am currently experiencing higher inquiry volume than usual. Please try asking again in a few moments!",
                 )
             if job.status == "completed" and job.result:
                 sources = [
@@ -142,7 +142,7 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
             else:
                 raise HTTPException(
                     status_code=503,
-                    detail=job.error or "Job failed to process",
+                    detail="I apologize, but I was unable to complete that inquiry right now. Please try asking again shortly!",
                 )
 
         # Default asynchronous behavior for frontend polling
@@ -157,13 +157,13 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
         logger.error("Runtime error in chat endpoint: %s", str(e))
         raise HTTPException(
             status_code=503,
-            detail=str(e),
+            detail="I am momentarily recalibrating my systems. Please try asking again in just a moment!",
         )
     except Exception as e:
         logger.error("Unexpected error in chat endpoint: %s", str(e), exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail="An internal server error occurred while processing your message.",
+            detail="I apologize for the inconvenience. An unexpected delay occurred. Please ask again in a moment!",
         )
 
 
@@ -203,7 +203,7 @@ async def get_chat_status(job_id: str) -> JobStatusResponse:
         return JobStatusResponse(
             status="failed",
             job_id=job.job_id,
-            error=job.error or "Error processing question",
+            error="I apologize, but I was unable to retrieve that detail right now. Please try asking again in a moment, or check with our event coordinators!",
         )
 
     return JobStatusResponse(

@@ -40,7 +40,7 @@ async def submit_contact_form(request: ContactFormRequest):
         logger.error("MongoDB contact collection is unavailable.")
         raise HTTPException(
             status_code=503,
-            detail="Contact database service is currently unavailable. Please try again later.",
+            detail="Our communication channel is momentarily busy. Please try sending your message again shortly.",
         )
 
     try:
@@ -56,5 +56,5 @@ async def submit_contact_form(request: ContactFormRequest):
         logger.error("Failed to insert contact form inquiry into MongoDB: %s", str(e))
         raise HTTPException(
             status_code=500,
-            detail="An error occurred while transmitting your message. Please try again.",
+            detail="Unable to complete transmission right now. Please try again shortly.",
         )

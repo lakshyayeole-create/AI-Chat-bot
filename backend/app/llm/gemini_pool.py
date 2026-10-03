@@ -238,7 +238,7 @@ async def generate_gemini_answer(
                             pool.mark_success(key_status)
                             return full_text
                     logger.warning("Empty content from Gemini response: %s", data)
-                    return "Information is not available in the provided event details."
+                    return "That specific detail is not covered in our official event announcements right now. Please feel free to check our schedule or contact our event coordinators!"
 
                 elif resp.status_code == 429:
                     pool.mark_rate_limited(key_status, cooldown_seconds=15.0)

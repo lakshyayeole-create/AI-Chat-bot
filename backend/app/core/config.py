@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     qdrant_collection_name: str = "anantya_events"
 
     # --- Paths ---
-    knowledge_dir: str = "../event_info"
+    knowledge_dir: str = "event_info"
 
     # --- CORS ---
     frontend_origin: str = "http://localhost:3000"
