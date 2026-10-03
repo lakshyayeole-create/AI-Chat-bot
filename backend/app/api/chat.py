@@ -101,7 +101,7 @@ async def chat(request: ChatRequest, wait: bool = Query(False, description="Wait
         queue_mgr = get_queue_manager()
         if not queue_mgr._workers:
             logger.info("Starting queue manager workers on-demand")
-            await queue_mgr.start_workers()
+            queue_mgr.start_workers()
 
         job = await queue_mgr.enqueue_job(
             message=request.message,

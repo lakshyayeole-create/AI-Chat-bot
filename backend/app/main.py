@@ -64,6 +64,15 @@ async def lifespan(app: FastAPI):
     # Connect to MongoDB Atlas
     await mongo_manager.connect()
 
+    # Pre-warm embedding model
+    try:
+        from app.rag import embeddings
+        logger.info("Pre-warming embedding model on CPU...")
+        embeddings.embed_text("Anantya 2026")
+        logger.info("Embedding model pre-warmed successfully.")
+    except Exception as e:
+        logger.error("Failed to pre-warm embedding model: %s", str(e))
+
     # Start request queue workers
     queue_mgr = get_queue_manager()
     queue_mgr.start_workers(settings.num_workers)

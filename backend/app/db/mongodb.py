@@ -1,5 +1,6 @@
 """MongoDB client and lifecycle manager using Motor async driver."""
 from typing import Optional
+import certifi
 import motor.motor_asyncio
 from pymongo import ASCENDING, DESCENDING
 from pymongo.errors import PyMongoError
@@ -29,6 +30,7 @@ class MongoDBManager:
             logger.info("Connecting to MongoDB Atlas...")
             self.client = motor.motor_asyncio.AsyncIOMotorClient(
                 settings.mongodb_uri,
+                tlsCAFile=certifi.where(),
                 serverSelectionTimeoutMS=5000,
                 connectTimeoutMS=5000,
                 maxPoolSize=20,
