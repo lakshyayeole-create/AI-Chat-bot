@@ -979,6 +979,24 @@
   let healthPollTimer = null;
 
   /**
+   * Updates online indicator dot, badge, and status text.
+   */
+  function setOnlineState(online, label) {
+    state.isOnline = online;
+    if (dom.badge) {
+      if (online) dom.badge.classList.remove("is-offline");
+      else dom.badge.classList.add("is-offline");
+    }
+    if (dom.liveDot) {
+      if (online) dom.liveDot.classList.remove("is-offline");
+      else dom.liveDot.classList.add("is-offline");
+    }
+    if (dom.statusText) {
+      dom.statusText.textContent = label || (online ? "Online • Jarvis Ready" : "Offline • Reconnecting...");
+    }
+  }
+
+  /**
    * Polls the backend health check endpoint with automatic retry and warm heartbeat.
    */
   async function checkHealth() {
@@ -993,13 +1011,8 @@
 
       if (res.ok) {
         const data = await res.json();
-        state.isOnline = true;
         const vsLoaded = data.vector_store === "loaded";
-        dom.badge.classList.remove("is-offline");
-        dom.liveDot.classList.remove("is-offline");
-        dom.statusText.textContent = vsLoaded
-          ? "Online • Jarvis Ready"
-          : "Online • Loading Events";
+        setOnlineState(true, vsLoaded ? "Online • Jarvis Ready" : "Online • Loading Events");
 
         // Keep heartbeat alive every 45s so Render stays warm
         if (healthPollTimer) clearTimeout(healthPollTimer);
@@ -1010,10 +1023,10 @@
       // Backend waking up or offline
     }
 
-    state.isOnline = false;
-    dom.badge.classList.add("is-offline");
-    dom.liveDot.classList.add("is-offline");
-    dom.statusText.textContent = "Connecting to Jarvis (Waking Up)...";
+    // Only display connecting/offline if not already confirmed online by a successful query
+    if (!state.isOnline) {
+      setOnlineState(false, "Connecting to Jarvis (Waking Up)...");
+    }
 
     // Auto-retry polling after 4 seconds
     if (healthPollTimer) clearTimeout(healthPollTimer);
@@ -1150,6 +1163,7 @@
 
         const data = await res.json();
         if (data.status === "completed") {
+          setOnlineState(true, "Online • Jarvis Ready");
           const finalAnswer = data.answer || "No response received.";
           updateTypingMessage(typingMsgEl, finalAnswer, data.sources || []);
           ttsManager.speakAnswer(finalAnswer);
@@ -1205,6 +1219,7 @@
       }
 
       const data = await response.json();
+      setOnlineState(true, "Online • Jarvis Ready");
 
       // Case 1: CACHE HIT → Immediate answer
       if (data.answer) {
